@@ -12,6 +12,7 @@ It is not yet finished.
 - [x] Full Constraint Control (what car settings are allowed)
 - [x] Rewards (Credits & XP)
 - [x] Picking AI & all their details (Skill Level)
+- [x] AI Region & Driver *original* implemenentation
 - [x] Most track parameters
 - [ ] Custom Evaluation Conditions
 - [ ] Custom rewards (Cars/Paint/Suits for GT6)
