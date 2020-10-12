@@ -1,0 +1,711 @@
+﻿<Window x:Class="GTEventGenerator.GameGeneratorWindow"
+	    xmlns = "http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+        xmlns:x = "http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+	    Title="Gran Turismo 5/6 Event Editor" Width="960" Height="600"
+        ResizeMode="NoResize"
+        Loaded="GameGenerator_Load">
+    <DockPanel >
+        <DockPanel DockPanel.Dock="Top" Background="#f0f0f0">
+            <Menu Name="menuStrip1" Height="22" HorizontalAlignment="Stretch">
+                <MenuItem Name="toolStripMenuItem1" Header="File">
+                    <MenuItem Header="New Folder" Name="newEventToolStripMenuItem" Click="newEventToolStripMenuItem_Click"></MenuItem>
+                    <MenuItem Header="Import Folder..." Name="importEventToolStripMenuItem" Click="importEventToolStripMenuItem_Click"></MenuItem>
+                    <MenuItem Header="Export Folder..." Name="exportEventToolStripMenuItem" Click="exportEventToolStripMenuItem_Click"></MenuItem>
+                </MenuItem>
+                <MenuItem Header="Help">
+                    <MenuItem Header="About"></MenuItem>
+                </MenuItem>
+            </Menu>
+            <ComboBox Name="cb_QuickEventPicker" SelectedIndex="0" DockPanel.Dock="Right" Width="340" Height="20" Margin="0,4,4,4" SelectionChanged="cb_QuickEventPicker_SelectionChanged"/>
+
+            <Label DockPanel.Dock="Right" Width="100" Content="Current Event:" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalAlignment="Bottom"/>
+        </DockPanel>
+        <TabControl DockPanel.Dock="Bottom" Name="tabEvent" TabStripPlacement= "Top" IsTabStop="False" Margin="0,-2,0,0">
+            <TabItem Name="tabFolderInfo" Header="Folder Info" >
+                <Canvas Name="cantabFolderInfo" >
+                    <GroupBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="376" Width="221" Height="131" >
+                        <GroupBox.Header>
+                            <TextBlock Text="Championship Options"/>
+                        </GroupBox.Header>
+                        <Canvas>
+                            <Button Name="btnChampionshipRewards" Height="44" Width="190" TabIndex="6" IsEnabled="False" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="61" >Set Championship Rewards</Button>
+                            <CheckBox Name="chkIsChampionship" Height="19" Width="106" TabIndex="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Checked="chkIsChampionship_CheckedChanged" Canvas.Left="10" Canvas.Top="25" >Championship</CheckBox>
+                        </Canvas>
+                    </GroupBox>
+                    <Label Name="label6" Height="24" Width="91"  TabIndex="8" Margin="8,189,826,343" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                           ToolTip="Leave as 0 if you want this folder to be accessable without a total star count.">Stars Needed</Label>
+                    <xctk:IntegerUpDown Name="iud_StarsNeeded" ValueChanged="iud_StarsNeeded_ValueChanged" Value="0" Height="20" Width="232" Canvas.Left="121" Canvas.Top="192" Minimum="0" Maximum="1000"/>
+
+                    <TextBox Name="txtGameParamName" Height="20" Width="232" TabIndex="1" TextChanged="txtEventsName_TextChanged" HorizontalAlignment="Right" VerticalAlignment="Bottom" TextWrapping="Wrap" Canvas.Left="121" Canvas.Top="35" />
+                    <TextBox Name="txtGameParamDesc" Height="92" Width="232" TabIndex="2" TextChanged="txtEventsDesc_TextChanged" HorizontalAlignment="Right" VerticalAlignment="Bottom" TextWrapping="Wrap" Canvas.Left="121" Canvas.Top="60" />
+                    <Label Name="label5" Height="24" Width="108"  TabIndex="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="8" Canvas.Top="60" >Folder Description</Label>
+                    <Label Name="label4" Height="24" Width="108"  TabIndex="4" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="8" Canvas.Top="33" >Folder Name</Label>
+                    <Label Name="label3" Height="27" Width="108" TabIndex="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="8" Canvas.Top="157" >Folder Category</Label>
+                    <ComboBox Name="cboEventCategory" Height="23" Width="232" TabIndex="3" Margin="121,157,572,376" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="cboEventCategory_SelectedIndexChanged" />
+                    <Button Name="btnEventGenerate" Height="43" Width="137" TabIndex="8" Click="btnEventGenerate_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="659" Canvas.Top="464" >Generate Event</Button>
+                    <Button Name="btnOpenMenuDB" Height="43" Width="137" TabIndex="7" Click="btnOpenMenuDB_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="801" Canvas.Top="464" >Open MenuDB</Button>
+                </Canvas>
+            </TabItem>
+            <TabItem Name="tabEvents" Header="Events" >
+                <Canvas >
+                    <GroupBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="517" Canvas.Left="325" Width="313" >
+                        <GroupBox.Header>
+                            <TextBlock Text="Event Information"/>
+                        </GroupBox.Header>
+                        <Canvas Margin="0,0,0,0" >
+                            <Button Name="btnPickImage" Height="53" Width="130" TabIndex="18" Click="btnPickImage_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="316" Canvas.Top="431" >Pick Image</Button>
+                            <Button Name="button7" Height="53" Width="130" TabIndex="17" Click="btnSaveImage_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="474" Canvas.Top="431" >Save Image</Button>
+                            <Border BorderThickness="1" BorderBrush="Gray" Canvas.Left="316" Canvas.Top="-8">
+                                <Image Name="pctImagePreview" Height="403" Width="288" Canvas.Left="316" Canvas.Top="-8"/>
+                            </Border>
+                            <Label Name="label_imagePreview" Height="26" Width="205" TabIndex="15" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="316" Canvas.Top="400" >Event Image Preview</Label>
+                            <Label Name="label_imagePreviewSize" Height="29" Width="55" TabIndex="15" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalAlignment="Top" VerticalContentAlignment="Top" Canvas.Left="555" Canvas.Top="391" Foreground="#FF646464" FontSize="11" >432x244</Label>
+                            <Label Name="label_gameMode" Height="23" Width="80" TabIndex="14" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="38" >Game Mode</Label>
+                            <ComboBox Name="cb_gameModes" Height="23" Width="200" IsEnabled="False" TabIndex="13" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="91" Canvas.Top="41" SelectionChanged="cb_gameModes_SelectionChanged" />
+                            <CheckBox Name="checkBox_SeasonalEvent" Height="24" Width="115" TabIndex="56" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding IsSeasonalEvent}" Canvas.Top="469" Canvas.Left="176" 
+                                      ToolTip="Whether if the event is a Seasonal Event, if so, the event will have date requirements to enter, fill in the Start/End Dates (and additionally Ranking tab)." >Seasonal Event</CheckBox>
+                            <GroupBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="412" >
+                                <GroupBox.Header>
+                                    <TextBlock Text="Event Stars"/>
+                                </GroupBox.Header>
+                                <Canvas Height="58" Width="149" >
+                                    <RadioButton Name="rdoStarsThree" Height="19" Width="63" TabIndex="1" Margin="-1,30,863,507" HorizontalAlignment="Right" VerticalAlignment="Bottom" >3 Stars</RadioButton>
+                                    <RadioButton Name="rdoStarsOne" Height="19" Width="57" TabIndex="0" Margin="-1,5,869,532" HorizontalAlignment="Right" VerticalAlignment="Bottom" >1 Star</RadioButton>
+                                </Canvas>
+                            </GroupBox>
+                            <Label Name="lblRaceName" Height="24" Width="80" TabIndex="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="11" >Event Name</Label>
+                            <TextBox Name="txtEventName" Height="21" Width="200" TabIndex="3" IsEnabled="False" TextChanged="txtEventName_TextChanged" HorizontalAlignment="Right" VerticalAlignment="Bottom" TextWrapping="Wrap" Canvas.Left="91" Canvas.Top="14" />
+                        </Canvas>
+                    </GroupBox>
+                    <Button Name="btnRemoveRace" Height="34" Width="157" TabIndex="4" IsEnabled="False" Click="btnRemoveRace_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="163" Canvas.Top="471" >Remove Selected Event</Button>
+                    <Button Name="btnAddRace" Height="34" Width="148" TabIndex="1" Click="btnAddRace_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="471" >Add Event</Button>
+                    <ListBox Name="lstRaces" Height="456" Width="310" TabIndex="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="lstEvent_SelectedIndexChanged" Canvas.Left="10" Canvas.Top="10" />
+                </Canvas>
+            </TabItem>
+            <TabItem Name="tabEventInfo" Header="Event Info" IsEnabled="False" >
+                <Canvas Name="cantabEventInfo" Height="506" Width="917" >
+                </Canvas>
+            </TabItem>
+            <TabItem Name="tabEventParams" Header="Event Settings" IsEnabled="False" >
+                <Canvas >
+                    <GroupBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="507" Width="256" Canvas.Left="682" >
+                        <GroupBox.Header>
+                            <TextBlock Text="Weather Parameters"/>
+                        </GroupBox.Header>
+                        <Canvas Height="487" Width="237" >
+                            <ComboBox Name="comboBox_DecisiveWeather" Height="21" Width="102" TabIndex="37" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_DecisiveWeather_SelectedIndexChanged" Canvas.Left="123" Canvas.Top="399" />
+                            <Label Name="label_DecisiveWeather" Height="28" Width="104" TabIndex="24" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="7" Canvas.Top="394" >Decisive Weather</Label>
+
+                            <Label Name="label_WeatherProgressionLength" Height="27" Width="162" TabIndex="22" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="7" Canvas.Top="361" 
+                                   ToolTip="Unknown - length of total weather progression? (XML: weather_total_sec)">Weather Progression Length</Label>
+                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherTotalSec}" Height="20" Width="51" Canvas.Left="174" Canvas.Top="365" Maximum="100000" Minimum="-1"/>
+
+                            <Label Name="label_WeatherRandomSeed" Height="32" Width="131" TabIndex="20" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="295" Canvas.Left="6" 
+                                   ToolTip="Seed if the weather is random(XML: weather_random_seed)">Weather Random Seed</Label>
+                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherRandomSeed}" Height="20" Width="70" Canvas.Left="155" Canvas.Top="302" Maximum="100000" Minimum="-1"/>
+
+                            <Label Name="label_WeatherTimeProgressionSpeed" Height="29" Width="148" TabIndex="18" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="7" Canvas.Top="327" 
+                                   ToolTip="Multiplier of how fast time progresses (1.0 = real-time, 60.0 = 60x (i.e. 24 minute day)) (XML: time_progress_speed)">Time Progression Speed</Label>
+                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.TimeProgressSpeed}" Height="20" Width="70" Canvas.Left="155" Canvas.Top="330" Maximum="100000" Minimum="-1"/>
+
+                            <CheckBox Name="checkBox_RandomWeather" Height="19" Width="226" TabIndex="17" HorizontalAlignment="Right" VerticalAlignment="Bottom" Checked="checkBox_WeatherRandom_CheckedChanged" Canvas.Top="271" Canvas.Left="7"
+                                      ToolTip="Forces the weather to be random or predetermined (XML: race->weather_random)">Random Weather</CheckBox>
+                            <CheckBox Name="checkBox_WeatherPrecSnowOnly" Height="24" Width="81" TabIndex="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" Checked="checkBox_WeatherPrecSnowOnly_CheckedChanged" Canvas.Top="242" Canvas.Left="155"
+                                      ToolTip="Forces any allowed precipitation to be either rain or snow (XML: race->weather_prec_rain_only)">Only Snow Precipitation</CheckBox>
+                            <CheckBox Name="checkBox_WeatherPrecRainOnly" Height="24" Width="149" TabIndex="15" HorizontalAlignment="Right" VerticalAlignment="Bottom" Checked="checkBox_WeatherPrecRainOnly_CheckedChanged" Canvas.Top="242" Canvas.Left="6" 
+                                      ToolTip="Forces any allowed precipitation to be either rain or snow (XML: race->weather_prec_snow_only)">Only Rain Precipitation</CheckBox>
+
+                            <Label Name="label_WeatherPointNum" Height="27" Width="131" TabIndex="13" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="7" Canvas.Top="210" 
+                                   ToolTip="Undocumented (XML: weather_point_num)">Weather Point Num</Label>
+                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherPointNum}" Height="20" Width="70" Canvas.Left="155" Canvas.Top="213" Maximum="100000" Minimum="-1"/>
+
+                            <Label Name="label_WeatherChangeRate" Height="26" Width="131" TabIndex="11" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="179" 
+                                   ToolTip="How fast weather and water can change (XML: weather_change_rate)">Weather Change Rate</Label>
+                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherAccel}" Height="20" Width="70" Canvas.Left="155" Canvas.Top="182" Maximum="100000" Minimum="-1"/>
+
+                            <CheckBox Name="checkBox_WeatherNoWind" Height="19" Width="104" TabIndex="10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Checked="checkBox_WeatherNoWind_CheckedChanged" Canvas.Left="7" Canvas.Top="155" 
+                                      ToolTip="Undocumented (XML: race->weather_no_wind)">No Wind</CheckBox>
+                            <CheckBox Name="checkBox_WeatherNoSchedule" Height="24" Width="104" TabIndex="9" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="7" Canvas.Top="126" 
+                                      ToolTip="Whether or not the weather can vary (XML: race->weather_no_schedule)">No Schedule</CheckBox>
+                            <CheckBox Name="checkBox_WeatherNoPrecipitation" Height="24" Width="113" TabIndex="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Checked="checkBox_WeatherNoPrecipitation_CheckedChanged" Canvas.Left="123" Canvas.Top="126" 
+                                      ToolTip="Whether or not the weather can progress to rain/snow (XML: race->weather_no_precipitation)&#10;
+To enable 'Realtime Weather', disable this and enable weather_prec_rain/snow_only">No Precipitation</CheckBox>
+
+                            <Label Name="label_MinTemp" Height="26" Width="149" TabIndex="6" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="7" Canvas.Top="95" 
+                                   ToolTip="Undocumented (XML: race->weather_min_celsius)">Min Temperature (in °C)</Label>
+                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherMinCelsius}"  Height="20" Width="70" Canvas.Left="157" Canvas.Top="100" Maximum="100000" Minimum="-1"/>
+
+                            <Label Name="label_MaxTemp" Height="23" Width="149" TabIndex="4" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="67" 
+                                   ToolTip="Undocumented (XML: race->weather_max_celsius)">Max Temperature (in °C)</Label>
+                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherMaxCelsius}"  Height="20" Width="70" Canvas.Left="157" Canvas.Top="70" Maximum="100000" Minimum="-1"/>
+
+                            <Label Name="label_BaseTemp" Height="30" Width="148" TabIndex="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="37" Canvas.Left="6" 
+                                   ToolTip="Undocumented (XML: race->weather_base_celsius)">Base Temperature (in °C)</Label>
+                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherBaseCelsius}"  Height="20" Width="70" Canvas.Left="157" Canvas.Top="41" Maximum="100000" Minimum="-1"/>
+
+                            <Label Name="label_StartTime" Height="26" Width="69" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="7" Canvas.Top="6" 
+                                   ToolTip="Track Time (XML: race->date)">Start Time</Label>
+                            <xctk:DateTimeUpDown Value="{Binding Path=RaceParameters.Date}"  Height="22" Width="148" TabIndex="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="79" Canvas.Top="8" Format="LongTime"/>
+                        </Canvas>
+                    </GroupBox>
+                    <GroupBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="506" Width="677" Canvas.Top="1" >
+                        <GroupBox.Header>
+                            <TextBlock Text="General"/>
+                        </GroupBox.Header>
+                        <Canvas>
+                            <CheckBox Name="checkBox_AutostartPitout" Height="24" Width="154" TabIndex="63" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.AutostartPitout}" Canvas.Left="501" Canvas.Top="126" 
+                                      ToolTip="Undocumented (XML: race->autostart_pitout)">Autostart Pitout</CheckBox>
+                            <ComboBox Name="comboBox_Flagset" Height="21" Width="168" TabIndex="62" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_Flagset_SelectedIndexChanged" Canvas.Left="319" Canvas.Top="181" />
+                            <Label Name="label_Flagset" Height="32" Width="54" TabIndex="61" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="260" Canvas.Top="177" 
+                                   ToolTip="Undocumented (GT5 only?) (XML: race->flagset)">Flagset</Label>
+                            <Label Name="label_MaxGhostLines" Height="24" Width="131" TabIndex="59" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="260" Canvas.Top="148" 
+                                   ToolTip="The maximum ghost lines (GT6 Seasonals) to show, if enabled. (XML: race->line_ghost_play_max)">Max Ghost Lines</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_MaxGhostLines" Height="20" Width="91" Canvas.Top="153" ValueChanged="numericUpDown_MaxGhostLines_ValueChanged" Canvas.Left="396" Value="0" Maximum="16" Minimum="0"/>
+
+                            <ComboBox Name="comboBox_LineGhostRecordType" Height="21" Width="86" TabIndex="58" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_LineGhostRecordType_SelectedIndexChanged" Canvas.Left="401" Canvas.Top="122" />
+                            <Label Name="label_LineGhostRecordType" Height="26" Width="136" TabIndex="57" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="260" Canvas.Top="117" 
+                                   ToolTip="The way ghost lines will show, if enabled. (XML: race->line_ghost_record_type)">Line Ghost Record Type</Label>
+                            <CheckBox Name="checkBox_GhostEnabled" Height="24" Width="154" TabIndex="55" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.WithGhost}" Canvas.Left="501" Canvas.Top="300"
+                                      ToolTip="Whether to enable ghosts for the player (XML: race->with_ghost)" >Ghost On/Off</CheckBox>
+                            <CheckBox Name="checkBox_OnlineOn" Height="24" Width="154" TabIndex="54" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.OnlineOn}" Canvas.Left="501" Canvas.Top="271" 
+                                      ToolTip="Undocumented (XML: race->online_on)" >Online On</CheckBox>
+
+                            <CheckBox Name="checkBox_PenaltyNoReset" Height="24" Width="154" TabIndex="52" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.PenaltyNoReset}" Canvas.Left="501" Canvas.Top="242" 
+                                      ToolTip="No reset on penalty (XML: race->penalty_no_reset)" >Penalty No Reset</CheckBox>
+                            <CheckBox Name="checkBox_BoostFlag" Height="24" Width="154" TabIndex="51" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.BoostFlag}" Canvas.Left="501" Canvas.Top="213" 
+                                      ToolTip="Undocumented (XML: race->boost_flag)" >Boost Flag</CheckBox>
+                            <CheckBox Name="checkBox_ImmediateFinish" Height="24" Width="154" TabIndex="50" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.ImmediateFinish}" Canvas.Left="501" Canvas.Top="184" 
+                                      ToolTip="Undocumented (XML: race->immediate_finish)">Immediate Finish</CheckBox>
+                            <CheckBox Name="checkBox_PaceNote" Height="24" Width="154" TabIndex="49" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.PaceNote}" Canvas.Left="501" Canvas.Top="155" 
+                                      ToolTip="Undocumented (XML: race->pace_note)" >Pace Note</CheckBox>
+                            <CheckBox Name="checkBox_CoDriver" Height="24" Width="154" TabIndex="47" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.AllowCoDriver}" Canvas.Left="501" Canvas.Top="97" 
+                                      ToolTip="Undocumented, GT5 only (XML: race->allow_codriver)" >Allow Co-Driver</CheckBox>
+                            <CheckBox Name="checkBox_Accumulation" Height="24" Width="154" TabIndex="46" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.Accumulation}" Canvas.Left="501" Canvas.Top="68" 
+                                      ToolTip="Whether to allow Tire/Oil Wear (XML: race->accumulation)" >Oil Breakdown/Tire Wear</CheckBox>
+                            <CheckBox Name="checkBox_AcademyEvent" Height="24" Width="154" TabIndex="45" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.AcademyEvent}" Canvas.Left="501" Canvas.Top="39"
+                                      ToolTip="Undocumented (XML: academy_event)" >Academy Event</CheckBox>
+                            <CheckBox Name="checkBox_DisableReplayRecord" Height="24" Width="154" TabIndex="44" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.DisableRecordingReplay}"  Canvas.Left="501" Canvas.Top="10" 
+                                      ToolTip="If enabled, replay recording will not be available (XML: disable_recording_replay)">Disable Recording Replay</CheckBox>
+
+                            <ComboBox Name="comboBox_SlipstreamBehavior" Height="21" Width="105" TabIndex="43" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_SlipstreamBehavior_SelectedIndexChanged" Canvas.Left="382" Canvas.Top="95" />
+
+                            <Label Name="label_SlipstreamBehavior" Height="24" Width="118" TabIndex="41" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="259" Canvas.Top="91" 
+                                ToolTip="How strong slipstream is (XML: behavior_slipstream_type)">Slipstream Behavior</Label>
+                            <ComboBox Name="comboBox_PenaltyLevel" Height="21" Width="116" TabIndex="40" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_PenaltyLevel_SelectedIndexChanged" Canvas.Left="371" Canvas.Top="68" />
+                            <Label Name="label_PenaltyLevel" Height="27" Width="88" TabIndex="39" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="260" Canvas.Top="67" 
+                                   ToolTip="How severe penalties are (XML: race->penalty_level)">Penalty Level</Label>
+
+                            <ComboBox Name="comboBox_LightingMode" Height="21" Width="116" TabIndex="38" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_LightingMode_SelectedIndexChanged" Canvas.Left="371" Canvas.Top="38" />
+                            <Label Name="label_LightingMode" Height="27" Width="88" TabIndex="37" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="260" Canvas.Top="35" 
+                                   ToolTip="How cars behave to upcoming night (XML: race->lighting_mode)">Lighting Mode</Label>
+
+                            <Label Name="label_GridSortType" Height="28" Width="88" TabIndex="35" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="260" Canvas.Top="4" 
+                                   ToolTip="How to sort the grid entries (XML: race->grid_sort_type)">Grid Sort Type</Label>
+                            <ComboBox Name="comboBox_GridSortType" Height="21" Width="116" TabIndex="38" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_GridSortType_SelectedIndexChanged" Canvas.Left="371" Canvas.Top="10"/>
+
+                            <Label Name="label_FuelConsumptionMultiplier" Height="29" Width="169" TabIndex="32" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="458" 
+                                   ToolTip="Whether or not, and how quickly, tires and fuel are consumed (XML: race->consume_tire)&#10;
+In GT5 appears to be a bit - 1 = yes, 0 = no&#10;
+In GT6 appears to be a bit - most likely a multiplier (e.g. 5 = 5x faster), 0 = off&#10;">Fuel Consumption Multiplier</Label>
+
+                            <xctk:IntegerUpDown Name="numericUpDown_FuelConsumptionMultiplier" Height="20" Width="70" Canvas.Top="461" ValueChanged="numericUpDown_FuelConsumptionMultiplier_ValueChanged" Canvas.Left="178" Value="0"/>
+                            <Label Name="label_TireConsumptionMultiplier" Height="29" Width="167" TabIndex="31" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="424"
+                                   ToolTip="Whether or not, and how quickly, tires and fuel are consumed (XML: race->consume_tire)&#10;
+In GT5 appears to be a bit - 1 = yes, 0 = no&#10;
+In GT6 appears to be a bit - most likely a multiplier (e.g. 5 = 5x faster), 0 = off&#10;">Tire Consumption Multiplier</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_TireConsumptionMultiplier" Height="20" Width="70" ValueChanged="numericUpDown_TireConsumptionMultiplier_ValueChanged" Canvas.Left="178" Canvas.Top="428" Value="0"/>
+
+                            <Label Name="label_StartingType" Height="28" Width="102" TabIndex="29" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="396" 
+                                   ToolTip="How the entrants start the race (XML: race->start_type) &#10;
+Unknown if initial_position and initial_velocity override this&#10;
+&#10;
+Start types:&#10;
+GRID - Entrants are sat on the starting grid, overrides custom position&#10;
+ROLLING - Single-file rolling start&#10;
+ROLLING_D(L/R) - Double-file rolling left&#10;
+
+ROLLING_NOLIMIT - Rolling start, presumably at max acceleration&#10;
+ROLLING2 - Rolling with custom vstart with rolling_start_v&#10;
+STANDING - Standing at a certain position&#10;
+ATTACK - Starts behind the grid (automatically sets the position for you unless custom via initial_position), timer starts as soon as you cross the start line/sector&#10;
+COURSEINFO - Take sector information from .cinf/menudb, mainly for drift&#10;
+COURSEINFO_ROLLING - Same as above but rolling, mainly for drift&#10;
+&#10;
+Undocumented Entries:&#10;
+DISPERSED&#10;
+ROLLING2&#10;
+SAMEGRID&#10;
+ROLLING3&#10;
+PIT&#10;
+FREE&#10;
+STANDING_L&#10;
+STANDING_R&#10;
+PITWORK&#10;
+GRID_FLYING&#10;
+PITIN&#10;
+RALLY&#10;
+STANDING_CENTER">Starting Type</Label>
+                            <ComboBox Name="comboBox_StartingType" Height="21" Width="154" TabIndex="28" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_StartingType_SelectedIndexChanged" Canvas.Left="95" Canvas.Top="401" />
+
+                            <ComboBox Name="comboBox_GhostPresence" Height="21" Width="139" TabIndex="27" IsEnabled="False" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_GhostPresence_SelectedIndexChanged" Canvas.Left="110" Canvas.Top="370" />
+                            <Label Name="label_GhostPresence" Height="24" Width="99" TabIndex="26" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="367" 
+                                   ToolTip="If ghosts are enabled, how they will display (XML: race->ghost_presence)">Ghost Presence</Label>
+                            <Label Name="label_GhostType" Height="27" Width="77" TabIndex="25" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="335" 
+                                   ToolTip="If ghosts are enabled, the type (XML: race->ghost_type)">Ghost Type</Label>
+                            <ComboBox Name="comboBox_GhostType" Height="21" Width="169" TabIndex="24" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_GhostType_SelectedIndexChanged" Canvas.Left="80" Canvas.Top="339" />
+                            <ComboBox Name="comboBox_DamageBehavior" Height="21" Width="128" TabIndex="23" IsEnabled="False" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="120" Canvas.Top="310" />
+                            <Label Name="label_DamageBehavior" Height="25" Width="111" TabIndex="22" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="9" Canvas.Top="307" 
+                                   ToolTip="How damage should manifest if enabled (XML: race->behavior_damage_type)&#10;
+Weak - Only visual damage (?)&#10;
+Middle - Mechanical damage, may repair itself over time (?)&#10;
+Strong - Mechanical damage">Damage Behavior</Label>
+                            <CheckBox Name="checkBox_Endless" Height="24" Width="108" TabIndex="21" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" IsChecked="{Binding RaceParameters.Endless}" Canvas.Top="280" 
+                                      ToolTip="Undocumented (XML: race->endless)">Endless</CheckBox>
+                            <CheckBox Name="checkBox_DisableCollision" Height="24" Width="124" TabIndex="20" Margin="125,280,676,252" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.DisableCollision}" 
+                                      ToolTip="If this is enabled, car collisions will be off (XML: race->disable_collision)">Disable Collision</CheckBox>
+                            <CheckBox Name="checkBox_EnableDamage" Height="24" Width="110" TabIndex="19" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.EnableDamage}" Canvas.Left="10" Canvas.Top="252" 
+                                      ToolTip="If this is enabled, the player will have visual or mechanical damage (XML: race->enable_damage)">Enable Damage</CheckBox>
+                            <CheckBox Name="checkBox_EnablePits" Height="22" Width="123" TabIndex="18" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.EnablePit}" Canvas.Left="125" Canvas.Top="252" 
+                                      ToolTip="If this is enabled, the player will drive through the pits and stop, else they will just continue (XML: race->enable_pit)">Enable Pits</CheckBox>
+                            <Label Name="label_MinutesToFinish" Height="27" Width="108" TabIndex="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="220" 
+                                   ToolTip="If the complete time is By Time (XML: race->race_limit_minutes)">Minutes to Finish</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_MinutesToFinish" Height="20" Width="129" Canvas.Left="119" Canvas.Top="225" ValueChanged="numericUpDown_MinutesToFinish_ValueChanged" Value="0" Maximum="3000" Minimum="0"/>
+
+                            <Label Name="label_LapsToFinish" Height="27" Width="122" TabIndex="14" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="7" Canvas.Top="188" 
+                                   ToolTip="Amount of laps before the race ends (Complete Type needs to be By Laps) (XML: race->race_limit_laps)">No. of Laps</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_LapsToFinish" Height="20" Width="128" Canvas.Top="195" ValueChanged="numericUpDown_LapsToFinish_ValueChanged" Canvas.Left="120" Maximum="1000" Minimum="0" Value="1"/>
+
+                            <Label Name="label_TimeToStart" Height="27" Width="167" TabIndex="12" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="156" 
+                                   ToolTip="How long until the race starts or the player has control of the car (XML: race->time_to_start)">Pre-Start Countdown (in MS)</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_TimeToStart" Height="20" Width="70" ValueChanged="numericUpDown_TimeToStart_ValueChanged" Canvas.Left="178" Canvas.Top="160" Value="3000" Maximum="100000" Minimum="-1"/>
+
+                            <Label Name="label_TimeToFinish" Height="27" Width="167" TabIndex="10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="124" 
+                                   ToolTip="How long the vehicles behind 1st place are given to finish before showing the result/reward screen (XML: race->time_to_finish)">Time after finishing (in MS)</Label>
+
+                            <xctk:IntegerUpDown Name="numericUpDown_TimeToFinish" Height="20" Width="70" ValueChanged="numericUpDown_TimeToFinish_ValueChanged" Canvas.Top="129" Canvas.Left="178" Maximum="100000" Minimum="-1" Value="-1"/>
+
+                            <Label Name="label_FinishWidth" Height="23" Width="135" TabIndex="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="96" 
+                                   ToolTip="If using a custom finish (FinishVCoord), the width of the finish (XML: race->event_goal_width)">Finish Width (in Meters)</Label>
+
+                            <xctk:IntegerUpDown Name="numericUpDown_FinishWidth" Height="20" Width="70" ValueChanged="numericUpDown_FinishWidth_ValueChanged" Canvas.Top="99" Canvas.Left="178" Minimum="-1" Maximum="100000" Value="-1"/>
+
+                            <Label Name="label_FinishVCoord" Height="28" Width="167" TabIndex="7" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="63" 
+                                   ToolTip="Custom finish location (XML: race->event_goal_v)">Finish Coordinates (in Meters)</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_FinishVCoord" Height="20" Width="70" ValueChanged="numericUpDown_FinishVCoord_ValueChanged" Canvas.Left="178" Canvas.Top="66" Value="-1" Maximum="100000" Minimum="-1"/>
+
+                            <ComboBox Name="comboBox_FinishType" Height="21" Width="154" TabIndex="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_FinishType_SelectedIndexChanged" Canvas.Left="95" Canvas.Top="37" />
+                            <Label Name="label_FinishType" Height="27" Width="74" TabIndex="4" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="7" Canvas.Top="32" 
+                                   ToolTip="Possibly how the final rankings are determined (XML: race->finish_type)">Finish Type</Label>
+
+                            <ComboBox Name="comboBox_CompleteType" Height="20" Width="154" TabIndex="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_CompleteType_SelectedIndexChanged" Canvas.Left="95" Canvas.Top="8" />
+                            <Label Name="label_CompleteType" Height="28" Width="96" TabIndex="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="4" 
+                                   ToolTip="How the race end is determined (XML: race->complete_type)&#10;
+&#10;
+Complete types:&#10;
+BYLAPS - Ends after laps defined in race_limit_laps &#10;
+BYSECTION - Ends after crossing a defined section of track, most likely depends on event_goal_v being defined&#10;
+BYSTOP - Ends after stopping in zone - licences&#10;
+BYTIME - Triggers final lap when race_limit_minute is reached, ends after finishing final lap&#10;
+NONE - Use for time trials if its endless and meant to give rewards for the best time - also used for drift events, maybe automatially determined by track sections&#10;
+&#10;
+Undocumented Entries:&#10;
+OTHER&#10;
+&#10;
+Notes:&#10;
+    For ONLINE_DRIFT_ATTACK, set to NONE, but do NOT provide license_condition like regular COFFEE_BREAK do.&#10;
+    Causes rewards not to be given. Instead, use eval_condition and set the type to DRIFT.&#10;
+&#10;
+    For ONLINE_TIME_TRIAL, also set to NONE.&#10;
+&#10;
+    Too many hours spent debugging this -Nenkai">Complete Type</Label>
+                        </Canvas>
+                    </GroupBox>
+                </Canvas>
+            </TabItem>
+            <TabItem Name="tabEventRegulation" Header="Regulations" IsEnabled="False" >
+                <Canvas Name="cantabEventRegulation"  >
+                    <GroupBox Margin="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="168" Canvas.Left="298" Canvas.Top="347" >
+                        <GroupBox.Header>
+                            <TextBlock Text="Country And Car Categories"/>
+                        </GroupBox.Header>
+                        <Canvas Height="140" Width="273" >
+                            <Button Name="btn_RemoveCarCountry" Height="24" Width="118" TabIndex="51" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="145" Canvas.Top="110" Click="btn_RemoveCarCountry_Click" 
+                                    ToolTip="Remove selected country from allowed countries">Remove Country</Button>
+                            <Button Name="btn_RemoveCarCategory" Height="24" Width="120" TabIndex="50" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="110" Click="btn_RemoveCarCategory_Click" >Remove Category</Button>
+                            <ComboBox Name="cb_CarCategories" Height="21" Width="120" TabIndex="49" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="6" Canvas.Left="10" SelectionChanged="cb_CarCategory_SelectionChanged" SelectedIndex="0"
+                                       ToolTip="Which car category can enter the event (XML: regulations->categories[]->category)">
+                                <ComboBoxItem Content="Select Category..."/>
+                            </ComboBox>
+                            <ComboBox Name="cb_CarCountries" Height="21" Width="120" TabIndex="48" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="143" Canvas.Top="6" SelectionChanged="cb_CarCountries_SelectionChanged" SelectedIndex="0"
+                                      ToolTip="Which car country can enter the event (XML: regulations->countries[]->country)">
+                                <ComboBoxItem Content="Select Country..."/>
+                            </ComboBox>
+
+                            <ListBox Name="lb_AllowedCategories" Height="73" Width="120" TabIndex="44" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="32" Canvas.Left="10"/>
+
+                            <ListBox Name="lb_AllowedCountries" Height="73" Width="120" TabIndex="47" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="143" Canvas.Top="32" SelectionMode="Multiple" />
+                        </Canvas>
+                    </GroupBox>
+                    <GroupBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="588" Canvas.Top="256" Width="348" Height="259" >
+                        <GroupBox.Header>
+                            <TextBlock Text="Other Regulations"/>
+                        </GroupBox.Header>
+                        <Canvas>
+                            <Label Name="label_CarLength" Height="27" Width="102" TabIndex="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="142" 
+                                   ToolTip="Maximum car length to enter the event (XML: regulations->limit_length))">Car Length (mm):</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_CarLength" Height="20" Width="54" Canvas.Left="111" Canvas.Top="146" Value="{Binding Regulations.CarLengthMax}" Maximum="10000" Minimum="-1"/>
+
+                            <Label Name="label_WeightMax" Height="27" Width="97" TabIndex="15" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="172" Canvas.Top="110" 
+                                   ToolTip="Maximum car weight to enter the event (XML: regulations->limit_weight)">Weight Max (kg):</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_WeightMax" Height="20" Width="54" Canvas.Left="273" Canvas.Top="115" Value="{Binding Regulations.WeightMax}" Maximum="10000" Minimum="-1"/>
+
+                            <Label Name="label_WeightMin" Height="27" Width="94" TabIndex="14" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="175" Canvas.Top="78" 
+                                   ToolTip="Minimum car weight to enter the event (XML: regulations->need_weight)">Weight Min (kg):</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_WeightMin" Height="20" Width="54" Canvas.Left="274" Canvas.Top="82" Value="{Binding Regulations.WeightMin}" Maximum="10000" Minimum="-1"/>
+
+                            <Label Name="label_PowerMax" Height="27" Width="92" TabIndex="9" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="14" Canvas.Top="110" 
+                                   ToolTip="Maximum car power to enter the event (XML: regulations->limit_power)">Power Max (ps):</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_PowerMax" Height="20" Width="54" Canvas.Left="111" Canvas.Top="115" Value="{Binding Regulations.PowerMax}" Minimum="-1" Maximum="10000" />
+
+                            <Label Name="label_PowerMin" Height="27" Width="89" TabIndex="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="17" Canvas.Top="78" 
+                                    ToolTip="Minimum car power to enter the event (XML: regulations->need_power)">Power Min (ps):</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_PowerMin" Height="20" Width="54" Canvas.Left="111" Canvas.Top="82" Value="{Binding Regulations.PowerMin}" Maximum="10000" Minimum="-1" />
+
+                            <Label Name="label_TorqueMax" Height="27" Width="99" TabIndex="7" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="170" Canvas.Top="46" 
+                                    ToolTip="Maximum car torque to enter the event (XML: regulations->limit_torque)">Torque Max (nm):</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_TorqueMax" Height="20" Width="54" Canvas.Left="273" Canvas.Top="51" Value="{Binding Regulations.TorqueMax}" Maximum="10000" Minimum="-1"/>
+
+                            <Label Name="label_TorqueMin" Height="27" Width="99" TabIndex="4" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="170" Canvas.Top="14"
+                                    ToolTip="Minimum car power to enter the event (XML: regulations->need_torque)">Torque Min (nm):</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_TorqueMin" Height="20" Width="54" Canvas.Left="274" Canvas.Top="19" Value="{Binding Regulations.TorqueMin}" Maximum="10000" Minimum="-1"/>
+
+                            <Label Name="label_PPMax" Height="27" Width="59" TabIndex="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="50" Canvas.Top="46" 
+                                    ToolTip="Maximum car PP to enter the event (XML: regulations->limit_pp)">PP. Max:</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_PPMax" Height="20" Width="54" Canvas.Left="111" Canvas.Top="51" Value="{Binding Regulations.PPMax}" Maximum="100000" Minimum="-1"/>
+
+                            <Label Name="label_PPMin" Height="27" Width="56" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="50" Canvas.Top="14" 
+                                    ToolTip="Minimum car PP to enter the event (XML: regulations->need_pp)">PP. Min:</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_PPMin" Height="20" Width="54" Canvas.Left="111" Canvas.Top="19" Maximum="10000" Minimum="-1" Value="{Binding Regulations.PPMin}"/>
+                        </Canvas>
+                    </GroupBox>
+                    <GroupBox Margin="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="168" Canvas.Top="347" Width="293" >
+                        <GroupBox.Header>
+                            <TextBlock Text="Allowed Manufacturers"/>
+                        </GroupBox.Header>
+                        <Canvas Margin="0,0,0,0">
+                            <Button Name="btn_ManufacturersAdd" Height="50" Width="23" TabIndex="48" Click="btn_ManufacturersAdd_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="128" Canvas.Top="13" >&gt;&gt;</Button>
+                            <ListBox Name="lbManufacturers" Height="126" Width="113" TabIndex="44" Margin="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="9" SelectionMode="Multiple" 
+                                     ToolTip="Which car manufacturer can enter the event (XML: regulations->tuners[]->tuner)"/>
+                            <Button Name="btn_RemoveManufacturer" Height="40" Width="23" TabIndex="46" Click="btn_RemoveManufacturer_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="128" Canvas.Top="95" >&lt;&lt;</Button>
+                            <ListBox Name="lb_AllowedManufacturers" Height="125" Width="115" TabIndex="47" Margin="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="156" Canvas.Top="10" SelectionMode="Multiple" />
+                        </Canvas>
+                    </GroupBox>
+                    <GroupBox Margin="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" >
+                        <GroupBox.Header>
+                            <TextBlock Text="Cars"/>
+                        </GroupBox.Header>
+                        <Canvas Height="319" Width="568" >
+                            <Label Name="label24" Height="29" Width="261" TabIndex="54" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="297" Canvas.Top="155" 
+                                   ToolTip="Specific cars that can NOT enter the race (XML: regulations->ban_cars[]->car)">Banned Cars</Label>
+                            <Label Name="label23" Height="26" Width="261" TabIndex="53" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="297" Canvas.Top="3" 
+                                   ToolTip="Specific cars that can enter the race (XML: regulations->cars[]->car)">Allowed Cars</Label>
+                            <Button Name="btn_RemoveBannedCar" Height="53" Width="23" Click="btn_RemoveBannedCar_Click" TabIndex="52" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="267" Canvas.Top="256" >&lt;&lt;</Button>
+                            <Button Name="btn_AddBannedCar" Height="46" Width="23" TabIndex="51" Click="btn_AddBannedCar_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="267" Canvas.Top="189" >&gt;&gt;</Button>
+                            <Button Name="btn_RemoveAllowedCar" Height="46" Width="23" TabIndex="50" Click="btn_RemoveAllowedCar_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="267" Canvas.Top="104" >&lt;&lt;</Button>
+                            <Button Name="btn_AddAllowedCar" Height="46" Width="23" TabIndex="49" Click="btn_AddAllowedCar_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="267" Canvas.Top="34" >&gt;&gt;</Button>
+                            <ComboBox Name="cbo_Manufacturers" Height="21" Width="251" TabIndex="38" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="cbo_Manufacturers_SelectedIndexChanged" Canvas.Left="10" Canvas.Top="3" />
+                            <ListBox Name="lb_BannedCars" Height="120" Width="261" TabIndex="37" Margin="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="297" Canvas.Top="189" SelectionMode="Multiple" />
+                            <ListBox Name="lb_AllowedCars" Height="116" Width="261" TabIndex="18" Margin="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="297" Canvas.Top="34" SelectionMode="Multiple" />
+                            <ListBox Name="lb_CarSelection" Height="275" Width="251" TabIndex="16" Margin="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="34" Canvas.Left="10" SelectionMode="Multiple" />
+                        </Canvas>
+                    </GroupBox>
+                    <GroupBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="149" Canvas.Left="585" Canvas.Top="107" Width="351" >
+                        <GroupBox.Header>
+                            <TextBlock Text="Tire Compound Restrictions"/>
+                        </GroupBox.Header>
+                        <Canvas >
+                            <Label Name="label13" Height="24" Width="70" TabIndex="7" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="97" 
+                                   ToolTip="Maximum rear tyres the player needs to enter the event (XML: regulations->limit_tire_r)">Rear Max</Label>
+                            <ComboBox Name="cbo_MaxTireCompoundR" Height="22" Width="179" TabIndex="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="cbo_MaxTireCompoundR_SelectedIndexChanged" Canvas.Left="150" Canvas.Top="99" >
+                                <ComboBoxItem>No Restrictions</ComboBoxItem>
+                            </ComboBox>
+                            <ComboBox Name="cbo_MinTireCompoundR" Height="22" Width="179" TabIndex="4" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="cbo_MinTireCompoundR_SelectedIndexChanged" Canvas.Left="150" Canvas.Top="71" >
+                                <ComboBoxItem>No Restrictions</ComboBoxItem>
+                            </ComboBox>
+                            <Label Name="label12" Height="24" Width="67" TabIndex="6" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="69" 
+                                   ToolTip="Minimum rear tyres the player needs to enter the event (XML: regulations->need_tire_r)">Rear Min</Label>
+                            <Label Name="label10" Height="24" Width="74" TabIndex="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="40" 
+                                   ToolTip="Maximum front tyres the player needs to enter the event (XML: regulations->limit_tire_f)">Front Max.</Label>
+                            <ComboBox Name="cbo_MaxTireCompoundF" Height="22" Width="179" TabIndex="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="cbo_MaxTireCompoundF_SelectedIndexChanged" Canvas.Left="150" Canvas.Top="42" >
+                                <ComboBoxItem>No Restrictions</ComboBoxItem>
+                            </ComboBox>
+                            <Label Name="label11" Height="24" Width="71" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="11" 
+                                   ToolTip="Minimum front tyres the player needs to enter the event (XML: regulations->need_tire_f)">Front Min.</Label>
+                            <ComboBox Name="cbo_MinTireCompoundF" Height="22" Width="179" TabIndex="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="cbo_MinTireCompoundF_SelectedIndexChanged" Canvas.Left="150" Canvas.Top="15" >
+                                <ComboBoxItem>No Restrictions</ComboBoxItem>
+                            </ComboBox>
+                        </Canvas>
+                    </GroupBox>
+                    <GroupBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="585" Height="102" Width="177" >
+                        <GroupBox.Header>
+                            <TextBlock Text="Aspiration Restrictions"
+                                       ToolTip="Specific aspiration types that can enter the race (XML: regulations->need_aspiration)" />
+                        </GroupBox.Header>
+                        <Canvas >
+                            <CheckBox Name="chkSC" Height="19" Width="101" TabIndex="7" HorizontalAlignment="Right" VerticalAlignment="Bottom" Checked="chkSC_CheckedChanged" Unchecked="chkSC_CheckedChanged" Canvas.Left="10" Canvas.Top="54" >Supercharger</CheckBox>
+                            <CheckBox Name="chkNA" Height="19" Width="42" TabIndex="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Checked="chkNA_CheckedChanged" Unchecked="chkNA_CheckedChanged" Canvas.Top="6" Canvas.Left="10" >NA</CheckBox>
+                            <CheckBox Name="chkT" Height="19" Width="58" TabIndex="6" HorizontalAlignment="Right" VerticalAlignment="Bottom" Checked="chkT_CheckedChanged" Unchecked="chkT_CheckedChanged" Canvas.Left="10" Canvas.Top="30" >Turbo</CheckBox>
+                        </Canvas>
+                    </GroupBox>
+                    <GroupBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="767" Width="179" >
+                        <GroupBox.Header>
+                            <TextBlock Text="Drivetrain Restrictions"
+                                       ToolTip="Specific drivetrain types that can enter the race (XML: regulations->need_drivetrain)"/>
+                        </GroupBox.Header>
+                        <Canvas Height="79" Width="135" >
+                            <CheckBox Name="chkRR" Height="19" Width="44" TabIndex="4" Margin="69,30,812,507" HorizontalAlignment="Right" VerticalAlignment="Bottom" Unchecked="chkRR_CheckedChanged" Checked="chkRR_CheckedChanged" >RR</CheckBox>
+                            <CheckBox Name="chkMR" Height="19" Width="46" TabIndex="3" Margin="69,5,810,532" HorizontalAlignment="Right" VerticalAlignment="Bottom" Unchecked="chkMR_CheckedChanged" Checked="chkMR_CheckedChanged" >MR</CheckBox>
+                            <CheckBox Name="chkAWD" Height="19" Width="53" TabIndex="2" Margin="-4,55,876,482" HorizontalAlignment="Right" VerticalAlignment="Bottom" Unchecked="chkAWD_CheckedChanged" Checked="chkAWD_CheckedChanged" >4WD</CheckBox>
+                            <CheckBox Name="chkFF" Height="19" Width="40" TabIndex="1" Margin="-4,30,889,507" HorizontalAlignment="Right" VerticalAlignment="Bottom" Unchecked="chkFF_CheckedChanged"  Checked="chkFF_CheckedChanged" >FF</CheckBox>
+                            <CheckBox Name="chkFR" Height="19" Width="42" TabIndex="0" Margin="-4,5,887,532" HorizontalAlignment="Right" VerticalAlignment="Bottom" Unchecked="chkFR_CheckedChanged" Checked="chkFR_CheckedChanged" >FR</CheckBox>
+                        </Canvas>
+                    </GroupBox>
+                </Canvas>
+            </TabItem>
+            <TabItem Name="tabEntries" Header="Event Entries" IsEnabled="False" >
+                <Canvas Name="cantabEntries" >
+                    <GroupBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="576" Height="507" Width="362" >
+                        <GroupBox.Header>
+                            <TextBlock Text="Entry Settings/Generate Options"/>
+                        </GroupBox.Header>
+                        <Canvas>
+                            <CheckBox Name="checkBox_RandomCarColor" Height="25" Width="128" TabIndex="68" HorizontalAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="217" 
+                                      ToolTip="When an AI is generated, whether it has a random car color.">Random Car Color</CheckBox>
+                            <CheckBox Name="checkBox_RandomDriverName" IsChecked="True" Height="25" Width="146" TabIndex="67" HorizontalAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Canvas.Top="187" Canvas.Left="10" 
+                                      ToolTip="When an AI is generated, whether it has a random name.">Random Driver Name</CheckBox>
+                            <CheckBox Name="checkBox_GenerateRandomFlag" IsChecked="True" Height="25" Width="158" TabIndex="66" HorizontalAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Canvas.Left="180" Canvas.Top="187" 
+                                      ToolTip="When an AI is generated, whether it has a random region.">Generate Random Flag</CheckBox>
+                            <CheckBox Name="checkBox_AINotRandom" Height="25" Width="128" TabIndex="68" HorizontalAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Canvas.Left="180" Canvas.Top="217" 
+                                      ToolTip="Used for now, this makes this checkbox utterly useless. Don't mind it for now.">Entry is not Random</CheckBox>
+
+                            <Label Name="label_AccelSkillMax" Height="25" Width="36" TabIndex="65" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="156" 
+                                   ToolTip="When an AI is generated, the maximum acceleration skill it will use to make a random one.">Max</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_AccelSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="158" Value="80" Maximum="200" Minimum="0"/>
+
+                            <Label Name="label_BrakeSkillMax" Height="25" Width="36" TabIndex="64" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="126" 
+                                   ToolTip="When an AI is generated, the minimum brake skill it will use to make a random one.">Max</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_BrakeSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="129" Value="80" Maximum="200" Minimum="0"/>
+
+                            <Label Name="label_AccelSkillMin" Height="25" Width="33" TabIndex="63" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="153" 
+                                   ToolTip="When an AI is generated, the minimum acceleration skill it will use to make a random one.">Min</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_AccelSkillMin" Height="20" Width="50" Canvas.Left="192" Canvas.Top="158" Value="80" Maximum="200" Minimum="0"/>
+
+                            <Label Name="label_AccelSkill" Height="24" Width="140" TabIndex="62" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="9" Canvas.Top="158" >AI Acceleration Skill</Label>
+
+                            <Label Name="label_CornerSkillMax" Height="25" Width="36" TabIndex="59" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="98" 
+                                   ToolTip="When an AI is generated, the maximum corner skill it will use to make a random one.">Max</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_CornerSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="101" Value="80" Maximum="200" Minimum="0"/>
+
+                            <Label Name="label_BrakeSkillMin" Height="25" Width="33" TabIndex="58" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="124" 
+                                   ToolTip="When an AI is generated, the minimum brake skill it will use to make a random one.">Min</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_BrakeSkillMin" Height="20" Width="50" Canvas.Left="192" Canvas.Top="131" Value="80" Maximum="200" Minimum="0"/>
+
+                            <Label Name="label_CornerSkillMin" Height="25" Width="33" TabIndex="57" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="99" 
+                                   ToolTip="When an AI is generated, the minimum corner skill it will use to make a random one.">Min</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_CornerSkillMin" Height="20" Width="50" Canvas.Left="192" Canvas.Top="103" Value="80" Maximum="200" Minimum="0"/>
+
+                            <Label Name="label_BrakeSkill" Height="25" Width="128" TabIndex="56" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="9" Canvas.Top="128" 
+                                   ToolTip="Decides how skilled the entry is at braking. (Default max is 100, can go to 200 - be warned that the AI may not brake if at all)">AI Braking Skill</Label>
+
+                            <Label Name="label_CornerSkill" Height="26" Width="109" TabIndex="53" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="98" 
+                                   ToolTip="Decides how skilled the entry is at cornering. (Default max is 100, can go to 200 - be warned that the AI may not drive correctly at all)">AI Cornering Skill</Label>
+
+                            <Label Name="label_BaseSkillMin" Height="25" Width="33" TabIndex="50" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="69" 
+                                   ToolTip="When an AI is generated, the minimum base skill it will use to make a random one.">Min</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_BaseSkillMin" Height="20" Width="50" Canvas.Left="192" Canvas.Top="74" Value="80" Maximum="200" Minimum="0"/>
+
+                            <Label Name="label_BaseSkillMax" Height="25" Width="36" TabIndex="49" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="68" 
+                                   ToolTip="When an AI is generated, the maximum base skill it will use to make a random one.">Max</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_BaseSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="74" Value="80" Maximum="200" Minimum="0"/>
+
+                            <Label Name="label_BaseSkill" Height="25" Width="78" TabIndex="48" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="9" Canvas.Top="68" >AI Base Skill</Label>
+                            <Label Name="label_AIGenRTyreComp" Height="25" Width="131" TabIndex="42" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="38" 
+                                   ToolTip="If selected, generated entries will use the selected rear tyres.">Rear Tires Compound</Label>
+                            <Label Name="label_AIGenFTyreComp" Height="25" Width="169" TabIndex="41" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="8" 
+                                   ToolTip="If selected, generated entries will use the selected front tyres.">Front Tires Compound</Label>
+                            <ComboBox Name="comboBox_AIGenRTyreComp" Height="21" Width="158" TabIndex="40" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="180" Canvas.Top="38" >
+                                <ComboBoxItem Content="Use Car Defaults" HorizontalAlignment="Left" Width="156"/>
+                            </ComboBox>
+                            <Separator Width="330" Canvas.Left="10" Margin="0" Canvas.Top="413"/>
+
+                            <Label Name="label_EntryGenerateType" Height="25" Width="167" TabIndex="42" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="250" 
+                                   ToolTip="How entries are picked from the entry pool. (XML:entry_generate->generate_type)">Random Entry Gen Type</Label>
+                            <ComboBox Name="comboBox_entryGenerateType" Height="21" Width="186" TabIndex="39" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="254" SelectionChanged="comboBox_entryGenerateType_SelectionChanged" />
+
+                            <Label Name="label_EntrySortType" Height="25" Width="167" TabIndex="42" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="280" 
+                                   ToolTip="The order in which AI entries will appear on the starting Grid Type. (XML: entry_generate->enemy_sort_type)" >Random Entry Sort Type</Label>
+                            <ComboBox Name="comboBox_EntrySortType" Height="21" Width="186" TabIndex="39" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="284" SelectionChanged="comboBox_EntrySortType_SelectionChanged" />
+
+                            <Label Content="Player Position" Canvas.Left="10" Canvas.Top="348" Width="109"
+                                   ToolTip="The position where the player will. (XML: entry_generate->player_pos)"/>
+                            <Slider Name="sl_EntryPlayerPos" Value="{Binding Path=Entries.PlayerPos}" Canvas.Left="125" Canvas.Top="352"  AutoToolTipPrecision="1" AutoToolTipPlacement="BottomRight" Width="183" Minimum="1" TickFrequency="1" TickPlacement="BottomRight" IsSnapToTickEnabled="True" ValueChanged="sl_EntryPlayerPos_ValueChanged"/>
+                            <Label Name="label_PlayerPos" Height="25" Width="32" TabIndex="42" HorizontalAlignment="Right" HorizontalContentAlignment="Center" VerticalAlignment="Bottom" Canvas.Left="308" Canvas.Top="350" >#1</Label>
+
+                            <Label Content="Max Event Entries" Canvas.Left="10" Canvas.Top="382" Width="109"/>
+                            <Slider Name="sl_EntryCount" Value="{Binding Path=Entries.EntryCount}" Canvas.Left="125" Canvas.Top="384" Width="183" Minimum="1"
+                                    TickFrequency="1" AutoToolTipPrecision="1" AutoToolTipPlacement="BottomRight" TickPlacement="BottomRight" Maximum="16" IsSnapToTickEnabled="True" ValueChanged="slider_EntryCount_ValueChanged"/>
+                            <Label Name="label_EntryCount" Height="25" Width="32" TabIndex="42" HorizontalAlignment="Right" HorizontalContentAlignment="Center" VerticalAlignment="Bottom" Canvas.Left="308" Canvas.Top="382" >1</Label>
+
+                            <ComboBox Name="comboBox_AIGenFTyreComp" Height="21" Width="158" TabIndex="39" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="180" Canvas.Top="9" >
+                                <ComboBoxItem Content="Use Car Defaults" HorizontalAlignment="Left" Width="156"/>
+                            </ComboBox>
+
+                            <Button Name="button_EditPlayerEntry" Height="34" Width="156" TabIndex="53" IsEnabled="False" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="440" Click="button_EditPlayerEntry_Click">Edit Player Entry</Button>
+                            <Label Name="label_PlayerRentedCar" Content="No custom player entry set - Player will not use a rented Car" Canvas.Left="10" Canvas.Top="413" Width="330" Height="27" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom"/>
+                            <Button Name="button_RemovePlayerEntry" Height="34" Width="160" TabIndex="53" IsEnabled="False" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="180" Canvas.Top="440" Click="button_RemovePlayerEntry_Click">Remove Player Entry</Button>
+
+                        </Canvas>
+                    </GroupBox>
+                    <GroupBox Margin="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="507" Canvas.Left="318" Width="253" >
+                        <GroupBox.Header>
+                            <TextBlock Text="AI Entries"
+                                       ToolTip="AIs here will have a chance of appearing in the race.&#10;
+You can have as many as you want, amount of cars generated depends on 'Max Event Entries'.&#10; 
+If you have less than Max Event Entries, the cars will always appear.&#10;
+The way they are picked from the pool depends on 'Random Entry Gen Type'."/>
+                        </GroupBox.Header>
+                        <Canvas >
+                            <Button Name="button_RemoveAI" IsEnabled="False" Height="24" Width="98" TabIndex="52" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="460" Click="button_EditAI_Clicked">Edit AI</Button>
+                            <Button Name="button_EditAI" IsEnabled="False" Height="24" Width="98" TabIndex="51" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="133" Canvas.Top="460" Click="button_RemoveAI_Clicked">Remove AI(s)</Button>
+                            <ListBox Name="listBox_AIEntries" Height="445" Width="221" TabIndex="16" Margin="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="10" Canvas.Left="10" />
+                        </Canvas>
+                    </GroupBox>
+                    <GroupBox Margin="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="507" Canvas.Left="3" Width="310" >
+                        <GroupBox.Header>
+                            <TextBlock Text="Car Picker"/>
+                        </GroupBox.Header>
+                        <Canvas>
+                            <Button Name="button_SetCarAsPlayer" Height="24" Width="131" TabIndex="52" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="157" Canvas.Top="460" Click="button_SetCarAsPlayer_Click" 
+                                    ToolTip="Forces a player to use a rented car">Set Car as Player's</Button>
+                            <Button Name="button_GenerateAI" Height="24" Width="131" TabIndex="51" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="460" Click="button_GenerateAI_Clicked" 
+                                    ToolTip="Adds an AI to the entry pool" >Generate AI with car</Button>
+                            <ComboBox Name="comboBox_AIManifacturerList" Height="21" Width="278" TabIndex="38" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="10" SelectionChanged="comboBox_AIManifacturerList_SelectionChanged" />
+                            <ListBox Name="listBox_AICarList" Height="419" Width="278" TabIndex="16" Margin="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="36" Canvas.Left="10" />
+                        </Canvas>
+                    </GroupBox>
+                </Canvas>
+            </TabItem>
+            <TabItem Name="tabEventConstraints" Header="Player Entry Constraints" IsEnabled="False" >
+                <Canvas Name="cantabEventConstraints" Margin="0,0,9,-3" >
+                    <GroupBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="274" Height="224" Width="292" >
+                        <GroupBox.Header>
+                            <TextBlock Text="Tyres"/>
+                        </GroupBox.Header>
+                        <Canvas >
+                            <Label Name="label_SuggestTyreR" Height="27" Width="104" TabIndex="11" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="164" 
+                                   ToolTip="Undocumented (XML: constraint->suggest_tire_r)">Suggested Rear:</Label>
+                            <Label Name="label_SuggestTyreF" Height="26" Width="104" TabIndex="10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="133" Canvas.Left="5" 
+                                   ToolTip="Undocumented (XML: constraint->suggest_tire_f)">Suggested Front:</Label>
+                            <Label Name="label_CTyreMaxR" Height="27" Width="104" TabIndex="9" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="5" Canvas.Top="102" 
+                                   ToolTip="Maximum rear tyres the player can have to enter the track (XML: constraint->limit_tire_r)">Rear Max:</Label>
+                            <Label Name="label_CTyreMaxF" Height="26" Width="103" TabIndex="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="71" 
+                                   ToolTip="Maximum front tyres the player can have to enter the track (XML: constraint->limit_tire_f)">Front Max:</Label>
+                            <Label Name="label_CTyreMinR" Height="26" Width="103" TabIndex="7" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="40"
+                                ToolTip="Minimum rear tyres the player needs to enter the track (XML: constraint->need_tire_r)">Rear Min:</Label>
+                            <Label Name="label_CTyreMinF" Height="26" Width="103" TabIndex="6" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="9" 
+                                    ToolTip="Minimum front tyres the player needs to enter the track (XML: constraint->need_tire_f)">Front Min:</Label>
+                            <ComboBox Name="comboBox_ConstrainedTiresSuggestR" Height="26" Width="156" TabIndex="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_ConstrainedTiresSuggestR_SelectedIndexChanged" Canvas.Left="115" Canvas.Top="164" >
+                                <ComboBoxItem>None</ComboBoxItem>
+                            </ComboBox>
+                            <ComboBox Name="comboBox_ConstrainedTiresSuggestF" Height="26" Width="156" TabIndex="4" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_ConstrainedTiresSuggestF_SelectedIndexChanged" Canvas.Left="115" Canvas.Top="133">
+                                <ComboBoxItem>None</ComboBoxItem>
+                            </ComboBox>
+                            <ComboBox Name="comboBox_ConstrainedTiresMaxF" Height="26" Width="156" TabIndex="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_ConstrainedTiresMaxF_SelectedIndexChanged" Canvas.Left="115" Canvas.Top="71">
+                                <ComboBoxItem>Not Constrained</ComboBoxItem>
+                            </ComboBox>
+                            <ComboBox Name="comboBox_ConstrainedTiresMinR" Height="26" Width="156" TabIndex="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_ConstrainedTiresMinR_SelectedIndexChanged" Canvas.Left="115" Canvas.Top="40">
+                                <ComboBoxItem>Not Constrained</ComboBoxItem>
+                            </ComboBox>
+                            <ComboBox Name="comboBox_ConstrainedTiresMaxR" Height="26" Width="156" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_ConstrainedTiresMaxR_SelectedIndexChanged" Canvas.Left="115" Canvas.Top="102" >
+                                <ComboBoxItem>Not Constrained</ComboBoxItem>
+                            </ComboBox>
+                            <ComboBox Name="comboBox_ConstrainedTiresMinF" Height="26" Width="156" TabIndex="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_ConstrainedTiresMinF_SelectedIndexChanged" Canvas.Left="115" Canvas.Top="9">
+                                <ComboBoxItem>Not Constrained</ComboBoxItem>
+                            </ComboBox>
+                        </Canvas>
+                    </GroupBox>
+                    <GroupBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="487" Canvas.Left="8" >
+                        <GroupBox.Header>
+                            <TextBlock Text="Driving Settings"/>
+                        </GroupBox.Header>
+                        <Canvas Width="249" Margin="0,0,0,-13" >
+                            <CheckBox Name="checkBox_DrivingLineConstrained" Height="14" Width="15" TabIndex="21" HorizontalAlignment="Right" IsChecked="{Binding Path=Constraints.DrivingLineConstrained}" VerticalAlignment="Bottom" Canvas.Left="145" Canvas.Top="215" />
+                            <CheckBox Name="checkBox_DrivingLineForced" Height="14" Width="15" TabIndex="22" IsEnabled="{Binding Path=Constraints.DrivingLineConstrained}" IsChecked="{Binding Path=Constraints.DrivingLineEnabled}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="210" Canvas.Top="215" />
+                            <Label Name="label_DrivingLine" Height="26" Width="131" TabIndex="20" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="207" 
+                                   ToolTip="Whether Driving Line is forced ON or OFF (Auto) (XML: constraint->driving_line)">Driving Line</Label>
+
+                            <CheckBox Name="checkBox_TransmissionConstrained" Height="14" Width="15" TabIndex="18" IsChecked="{Binding Path=Constraints.TransmissionConstrained}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="145" Canvas.Top="183" />
+                            <CheckBox Name="checkBox_TransmissionForced" Height="14" Width="15" TabIndex="19" IsEnabled="{Binding Path=Constraints.TransmissionConstrained}" IsChecked="{Binding Path=Constraints.TransmissionEnabled}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="210" Canvas.Top="183" />
+                            <Label Name="label_Transmission" Height="26" Width="131" TabIndex="17" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="176" 
+                                   ToolTip="Whether Manual Transmission is forced ON or OFF (Auto) (XML: constraint->transmission)">Manual Transmission</Label>
+
+                            <CheckBox Name="checkBox_TCSConstrained" Height="14" Width="15" TabIndex="15" HorizontalAlignment="Right" IsChecked="{Binding Path=Constraints.TCSConstrained}" VerticalAlignment="Bottom" Canvas.Left="145" Canvas.Top="152" />
+                            <CheckBox Name="checkBox_TCSForced" Height="14" Width="15" TabIndex="16" IsEnabled="{Binding Path=Constraints.TCSConstrained}" IsChecked="{Binding Path=Constraints.TCSEnabled}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="210" Canvas.Top="152" />
+                            <Label Name="label_TCS" Height="26" Width="127" TabIndex="14" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="145" Canvas.Left="6" 
+                                   ToolTip="Whether TCS is forced ON or OFF (XML: constraint->tcs)">TCS</Label>
+
+                            <CheckBox Name="checkBox_SRFConstrained" Height="14" Width="15" TabIndex="12" IsChecked="{Binding Path=Constraints.SkidRecoveryForceConstrained}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="145" Canvas.Top="121" />
+                            <CheckBox Name="checkBox_SRFForced" Height="14" Width="15" TabIndex="13" IsEnabled="{Binding Path=Constraints.SkidRecoveryForceConstrained}" IsChecked="{Binding Path=Constraints.SkidRecoveryForceEnabled}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="210" Canvas.Top="121" />
+                            <Label Name="label_SkidRecoveryForce" Height="26" Width="131" TabIndex="11" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="114" 
+                                   ToolTip="Whether Skid Recovery Force is forced ON or OFF (XML: constraint->simulation)">Skid Recovery Force</Label>
+
+                            <CheckBox Name="checkBox_ASMConstrained" Height="14" Width="15" TabIndex="9" IsChecked="{Binding Path=Constraints.ASMConstrained}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="145" Canvas.Top="91" />
+                            <CheckBox Name="checkBox_ASMForced" Height="14" Width="15" TabIndex="10" IsEnabled="{Binding Path=Constraints.ASMConstrained}" IsChecked="{Binding Path=Constraints.ASMEnabled}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="210" Canvas.Top="91" />
+                            <Label Name="label_ASM" Height="26" Width="131" TabIndex="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="85" 
+                                   ToolTip="Whether ASM is forced ON or OFF (XML: constraint->asm)">ASM</Label>
+
+                            <CheckBox Name="checkBox_ActiveSteeringConstrained" Height="14" Width="15" IsChecked="{Binding Path=Constraints.ActiveSteeringConstrained}" TabIndex="6" HorizontalAlignment="Right" VerticalAlignment="Bottom"  Canvas.Left="145" Canvas.Top="61" />
+                            <CheckBox Name="checkBox_ActiveSteeringForced" Height="14" Width="15" TabIndex="7" IsEnabled="{Binding Path=Constraints.ActiveSteeringConstrained}" IsChecked="{Binding Path=Constraints.ActiveSteeringEnabled}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="210" Canvas.Top="61" />
+                            <Label Name="label_ActiveSteering" Height="26" Width="125" TabIndex="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="54" Canvas.Left="6" 
+                                   ToolTip="Whether Active Steering is forced ON or OFF (XML: constraint->active_steering)">Active Steering</Label>
+
+                            <CheckBox Name="checkBox_ABSConstrained" Height="14" Width="15" TabIndex="4" IsChecked="{Binding Path=Constraints.ABSConstrained}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="145" Canvas.Top="31" />
+                            <CheckBox Name="checkBox_ABSForced" Height="14" Width="15" TabIndex="3" IsEnabled="{Binding Path=Constraints.ABSConstrained}" IsChecked="{Binding Path=Constraints.ABSEnabled}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="210" Canvas.Top="31" />
+                            <Label Name="label_ABS" Height="26" Width="131" TabIndex="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="23" 
+                                   ToolTip="Whether ABS is forced ON or OFF (XML: constraint->abs)">ABS</Label>
+
+                            <Label Name="label_Constrained" Height="25" Width="75" TabIndex="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="115" Canvas.Top="1" 
+                                   ToolTip="Whether the parameter is *has* to be forced ON or OFF, if this is unchecked, player can enter with any parameter" >Constrained</Label>
+                            <Label Name="label_ConstraintForced" Height="25" Width="53" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="195" Canvas.Top="2" 
+                                   ToolTip="Whether if the parameter *is* forced ON or OFF" >On/Off</Label>
+                        </Canvas>
+                    </GroupBox>
+                </Canvas>
+            </TabItem>
+            <TabItem Name="tabEventCourse" Header="Course" IsEnabled="False" >
+                <Canvas Name="cantabEventCourse" Height="506" Width="917" >
+                    <ComboBox Name="comboBox_CourseList" Height="21" Width="213" TabIndex="6" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_CourseList_SelectedIndexChanged" Canvas.Left="65" Canvas.Top="13" />
+                    <Label Name="label1" Height="24" Width="50" TabIndex="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="10" 
+                           ToolTip="Track to play the event in (XML: reward->track->course_code)">Course</Label>
+                </Canvas>
+            </TabItem>
+            <TabItem Name="tabEventRewards" Header="Rewards" IsEnabled="False" >
+                <Canvas Name="cantabEventRewards" Height="506" Width="917" >
+                    <GroupBox Height="192" Width="212">
+                        <GroupBox.Header>
+                            <TextBlock Text="General Rewards"/>
+                        </GroupBox.Header>
+                        <Canvas>
+                            <Button Name="btnCreditRewards" Height="63" TabIndex="4" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="8" Width="180" Click="btnCreditRewards_Click" 
+                                    ToolTip="Credit Rewards for this event (XML: reward->prize_table[]->prize)">Set Credit Rewards</Button>
+                            <Separator Width="180" Canvas.Left="10" Margin="0" Canvas.Top="81"/>
+                            <Button Name="btnXPRewards" Height="63" TabIndex="4" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="96" Width="180" Click="btnXPRewards_Click" 
+                                    ToolTip="XP Rewards for GT5 (XML: reward->point_table[]->point)" >Set XP Rewards (GT5)</Button>
+                        </Canvas>
+                    </GroupBox>
+                </Canvas>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>
