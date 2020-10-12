@@ -1,5 +1,5 @@
 # GTEventGenerator
-Gran Turismo 5 &amp; 6 Tool to create custom events and categories.
+Gran Turismo 5 &amp; 6 Tool to create custom events and categories. **This tool is mainly targetted for GT6, but should work for GT5.**
 
 This is a near full rewrite of the original tool made by TheAdmiester that allowed basic event creation. This one aims to be a lot more complete by having all features present for an event.
 It is not yet finished.
