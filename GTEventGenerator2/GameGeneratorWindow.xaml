@@ -726,7 +726,7 @@ The way they are picked from the pool depends on 'Random Entry Gen Type'."/>
                     <GroupBox Header="GroupBox" Height="165" Canvas.Left="10" Canvas.Top="10" Width="278">
                         <Canvas>
                             <Label Content="Evaluation Type" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="98"/>
-                            <ComboBox Name="cb_EvalType" Canvas.Left="113" Canvas.Top="13" Width="143"/>
+                            <ComboBox Name="cb_EvalType" Canvas.Left="113" Canvas.Top="13" Width="143" SelectionChanged="cb_EvalType_SelectedIndexChanged"/>
                             <Separator Width="246" Margin="0" Canvas.Top="44" Canvas.Left="10"></Separator>
 
                             <Label Content="Gold" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" Width="98"/>
