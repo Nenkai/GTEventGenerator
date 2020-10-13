@@ -197,7 +197,7 @@ namespace GTEventGenerator.Entities
                     case "consume_tire": 
                         TireUseMultiplier = raceNode.ReadValueInt(); break;
                     case "datetime":
-                        Date = DateTime.Parse(raceNode.ReadValueString()); break;
+                        Date = DateTime.Parse(raceNode.Attributes["datetime"].Value); break;
                     //case "decisive_weather":
                     //  Date = DateTime.Parse(raceNode.ReadValueString());
                     // break;
@@ -416,6 +416,9 @@ namespace GTEventGenerator.Entities
         SECTOR_ATTACK,
         NORMAL,
         TRGRANK_ALL,
+
+        [Description("Full (GT5?)")]
+        FULL, 
     }
 
     public enum LineGhostRecordType

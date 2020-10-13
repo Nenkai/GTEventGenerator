@@ -12,7 +12,7 @@
             <Grid>
                 <Label Content="Initial V Coord" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"
                        ToolTip="Position in meters in the track the entry will start (XML: entry->initial_position)"/>
-                <xctk:IntegerUpDown Name="iud_InitialVCoord" Value="{Binding InitialVCoord}" Margin="123,13,10,168" Minimum="-1" Maximum="99999"/>
+                <xctk:IntegerUpDown Name="iud_InitialVCoord" Value="{Binding InitialVCoord}" Margin="123,13,10,168" Minimum="-99999" Maximum="99999"/>
 
                 <Label Content="Initial Velocity (km/h)" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="86"
                        ToolTip="The speed in km/h the entry will start (XML: entry->initial_velocity)"/>

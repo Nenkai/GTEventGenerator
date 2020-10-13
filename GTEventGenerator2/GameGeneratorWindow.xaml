@@ -721,6 +721,27 @@ The way they are picked from the pool depends on 'Random Entry Gen Type'."/>
                     </GroupBox>
                 </Canvas>
             </TabItem>
+            <TabItem Name="tabEvalConditions" Header="Eval Conditions" IsEnabled="False">
+                <Canvas>
+                    <GroupBox Header="GroupBox" Height="165" Canvas.Left="10" Canvas.Top="10" Width="278">
+                        <Canvas>
+                            <Label Content="Evaluation Type" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="98"/>
+                            <ComboBox Name="cb_EvalType" Canvas.Left="113" Canvas.Top="13" Width="143"/>
+                            <Separator Width="246" Margin="0" Canvas.Top="44" Canvas.Left="10"></Separator>
+
+                            <Label Content="Gold" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" Width="98"/>
+                            <xctk:IntegerUpDown Name="iud_EvalGold" Value="{Binding Path=EvalConditions.Gold, Mode=TwoWay}" Minimum="0" Canvas.Left="64" Canvas.Top="55" Width="190"/>
+                            <Label Content="Silver" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top" Width="98"/>
+                            <xctk:IntegerUpDown Name="iud_EvalSilver" Value="{Binding Path=EvalConditions.Silver, Mode=TwoWay}" Minimum="0" Canvas.Left="64" Canvas.Top="85" Width="190"/>
+                            <Label Content="Bronze" HorizontalAlignment="Left" Margin="10,110,0,0" VerticalAlignment="Top" Width="98"/>
+                            <xctk:IntegerUpDown Name="iud_EvalBronze" Value="{Binding Path=EvalConditions.Bronze, Mode=TwoWay}" Minimum="0" Canvas.Left="64" Canvas.Top="115" Width="190"/>
+                        </Canvas>
+                    </GroupBox>
+
+                    <Label Content="Ghost Data Path" HorizontalAlignment="Left" VerticalAlignment="Top" Width="98" Canvas.Left="293" Canvas.Top="25"/>
+                    <TextBox Name="tb_EvalGhostTime" Text="{Binding Path=EvalConditions.GhostDataPath}" Canvas.Left="396" Canvas.Top="29" Width="235" Height="22"/>
+                </Canvas>
+            </TabItem>
         </TabControl>
     </DockPanel>
 </Window>

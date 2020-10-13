@@ -83,6 +83,12 @@ namespace GTEventGenerator.Entities
                         }
                     }
                 }
+                else if (entrySetNode.Name == "entry")
+                {
+                    var newEntry = ParseEntry(entrySetNode);
+                    if (!newEntry.IsAI)
+                        Player = newEntry;
+                }
             }
         }
 
@@ -126,15 +132,25 @@ namespace GTEventGenerator.Entities
                         break;
 
                     case "ai_skill_accelerating":
-                        newEntry.AccelSkill = entryDetailNode.ReadValueInt(); ;
+                        newEntry.AccelSkill = entryDetailNode.ReadValueInt();
                         break;
 
+                    case "initial_velocity":
+                        newEntry.InitialVelocity = entryDetailNode.ReadValueInt();
+                        break;
+                    case "initial_position":
+                        newEntry.InitialVCoord = entryDetailNode.ReadValueInt();
+                        break;
                     case "tire_f":
                         newEntry.TireFront = (TireType)Enum.Parse(typeof(TireType), entryDetailNode.ReadValueString());
                         break;
 
                     case "tire_r":
                         newEntry.TireRear = (TireType)Enum.Parse(typeof(TireType), entryDetailNode.ReadValueString());
+                        break;
+
+                    case "player_no":
+                        newEntry.IsAI = entryDetailNode.ReadValueInt() == -1;
                         break;
                 }
             }

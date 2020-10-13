@@ -107,6 +107,9 @@ namespace GTEventGenerator
                                 case "reward":
                                     newEvent.Rewards.ParseRaceRewards(newEvent, node);
                                     break;
+                                case "eval_condition":
+                                    newEvent.EvalConditions.ParseEvalConditionData(node);
+                                    break;
 
                                 case "track":
                                     newEvent.Course.ReadEventCourse(node);

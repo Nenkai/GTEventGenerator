@@ -98,7 +98,7 @@ namespace GTEventGenerator
 
         public int GetCourseIndexByLabel(string label)
         {
-            var res = ExecuteQuery($"SELECT CourseIndex FROM Courses WHERE CourseInternalName = \"{label}\"");
+            var res = ExecuteQuery($"SELECT CourseIndex FROM Courses WHERE CourseInternalName = '{label}'");
             res.Read();
 
             return res.GetInt32(0);
@@ -106,7 +106,7 @@ namespace GTEventGenerator
 
         public string GetCarLabelByActualName(string name)
         {
-            var res = ExecuteQuery($"SELECT VehicleInternalName FROM Vehicles WHERE VehicleName = \"{name}\"");
+            var res = ExecuteQuery($"SELECT VehicleInternalName FROM Vehicles WHERE VehicleName = '{name}'");
             res.Read();
 
             return res.GetString(0);

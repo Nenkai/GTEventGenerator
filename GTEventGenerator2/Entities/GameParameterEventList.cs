@@ -122,6 +122,12 @@ namespace GTEventGenerator.Entities
             {
                 switch (node.Name)
                 {
+                    case "arcade":
+                    case "championship":
+                    case "editor_info":
+                    case "events":
+                        throw new InvalidDataException("Could not load folder info - this is an event list, not a folder xml, import it using \"Import Event List (GT5)\"");
+
                     // Use GB only without localisation for the time being
                     case "title":
                         foreach (XmlNode titleNode in node.ChildNodes)

@@ -36,8 +36,6 @@ namespace GTEventGenerator
             {
                 foreach (var courseName in GameDatabase.GetAllCourseNamesSorted())
                     comboBox_CourseList.Items.Add(courseName);
-
-                comboBox_CourseList.SelectedIndex = 11; // Autumn Ring - Mini 
             }
         }
 

@@ -97,12 +97,14 @@
     <Compile Include="CreditXPEditWindow.xaml.cs">
       <DependentUpon>CreditXPEditWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Entities\EventEvalConditions.cs" />
     <Compile Include="Entities\GameParameterEventList.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="EventCategory.cs" />
     <Compile Include="EventEntryEditWindow.xaml.cs">
       <DependentUpon>EventEntryEditWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GameGenerator_EvalConditions.cs" />
     <Compile Include="GameGenerator_Rewards.cs" />
     <Compile Include="MenuDB.cs" />
     <Compile Include="GameDB.cs" />

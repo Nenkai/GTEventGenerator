@@ -49,7 +49,7 @@ namespace GTEventGenerator.Entities
             {
                 if (trackNode.Name == "course_code")
                 {
-                    CourseLabel = trackNode.ReadValueString();
+                    CourseLabel = trackNode.Attributes["label"].Value;
                     break;
                 }
             }

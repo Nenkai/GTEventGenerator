@@ -6,7 +6,7 @@ namespace GTEventGenerator
 {
     public class RaceEntry
     {
-        public bool IsAI { get; set; }
+        public bool IsAI { get; set; } = true;
 
         public string DriverName { get; set; } = "Unnamed";
         public string DriverRegion { get; set; } = "PDI";
@@ -85,7 +85,7 @@ namespace GTEventGenerator
             get => _initialVCoord;
             set
             {
-                if (value <= 200 && value >= -1)
+                if (value <= 200)
                     _initialVCoord = value;
             }
         }

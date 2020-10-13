@@ -14,6 +14,7 @@ namespace GTEventGenerator
         public EventRegulations Regulations { get; set; }
         public EventEntries Entries { get; set; }
         public EventCourse Course { get; set; }
+        public EventEvalConditions EvalConditions { get; set; }
 
         public int eventRaceId { get; set; }
         public int Id { get; set; }
@@ -49,6 +50,7 @@ namespace GTEventGenerator
             Regulations = new EventRegulations();
             Entries = new EventEntries();
             Course = new EventCourse();
+            EvalConditions = new EventEvalConditions();
 
             MoneyPrizes[0] = 25_000;
             MoneyPrizes[1] = 12_750;
@@ -66,7 +68,6 @@ namespace GTEventGenerator
             {
                 Constraints.WriteToXml(xml);
                 Entries.WriteToXml(xml);
-
                 //sw.WriteLine(string.Format("                <failure_condition>"));
                 //sw.WriteLine(string.Format("                    <type_list />"));
                 //sw.WriteLine(string.Format("                    <no_failure_at_result value=\"1\" />"));
@@ -87,13 +88,7 @@ namespace GTEventGenerator
                 */
                 xml.WriteElementValue("penalty_script", PenaltyScriptName);
                 xml.WriteElementValue("ai_script", AIScriptName);
-                /*
-                sw.WriteLine(string.Format("                <eval_condition>"));
-                sw.WriteLine(string.Format("                    <gold value=\"0\" />"));
-                sw.WriteLine(string.Format("                    <silver value=\"0\" />"));
-                sw.WriteLine(string.Format("                    <bronze value=\"0\" />"));
-                sw.WriteLine(string.Format("                </eval_condition>"));
-                */
+                EvalConditions.WriteToXml(xml);
                 xml.WriteElementBool("is_seasonal_event", IsSeasonalEvent);
             }
             xml.WriteEndElement();
@@ -107,6 +102,7 @@ namespace GTEventGenerator
             Regulations.NeedsPopulating = true;
             Entries.NeedsPopulating = true;
             Course.NeedsPopulating = true;
+            EvalConditions.NeedsPopulating = true;
         }
     }
 

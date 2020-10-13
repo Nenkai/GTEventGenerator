@@ -171,6 +171,9 @@ namespace GTEventGenerator
 
         private void txtEventName_TextChanged(object sender, EventArgs e)
         {
+            if (CurrentEvent is null)
+                return;
+
             CurrentEvent.Name = txtEventName.Text;
             CurrentEvent.Information.SetTitle(CurrentEvent.Name);
 
@@ -234,14 +237,11 @@ namespace GTEventGenerator
             MessageBoxResult newOverwrite = MessageBox.Show("This will delete the event you are currently editing. Would you like to save your event now?", "New Event", MessageBoxButton.YesNoCancel, MessageBoxImage.Information);
 
             if (newOverwrite == MessageBoxResult.Yes)
-            {
                 btnEventGenerate_Click(sender, e);
-            }
             else if (newOverwrite == MessageBoxResult.No)
             {
-
                 GameParameter = new GameParameter();
-                GameParameter.Events = new List<Event>();
+                CurrentEvent = null;
 
                 GameParameter.EventList.Title = "New Event";
                 GameParameter.EventList.Description = "Event Description";
@@ -255,6 +255,7 @@ namespace GTEventGenerator
                 txtEventName.Text = "";
 
                 ReloadEventLists();
+                UpdateEventListing();
             }
         }
 
@@ -265,6 +266,8 @@ namespace GTEventGenerator
 
             if (importOverwrite == MessageBoxResult.Yes)
                 btnEventGenerate_Click(sender, e);
+            else if (importOverwrite == MessageBoxResult.Cancel)
+                return;
 
             var openFile = new OpenFileDialog();
             openFile.InitialDirectory = Directory.GetCurrentDirectory();
@@ -274,20 +277,27 @@ namespace GTEventGenerator
 
             if (openFile.FileName.Contains(".xml"))
             {
-                GameParameter = ImportFolder(openFile.FileName);
-                CurrentEvent = GameParameter.Events[0];
+                try
+                {
+                    GameParameter = ImportFolder(openFile.FileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Could not import folder\nError: {ex.Message}",
+                        "Import failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                OnNewEventSelected(0);
+                ReloadEventLists();
+                UpdateEventListing();
 
                 if (GameParameter.Events != null && GameParameter.Events.Count > 0)
                     ToggleEventControls(true);
                 else
-                {
                     ToggleEventControls(false);
 
-                    GameParameter.Events = new List<Event>();
-                }
-
                 RefreshControls();
-                PopulateSelectedTab();
             }
         }
 
@@ -324,6 +334,8 @@ namespace GTEventGenerator
 
             if (importOverwrite == MessageBoxResult.Yes)
                 btnEventGenerate_Click(sender, e);
+            else if (importOverwrite == MessageBoxResult.Cancel)
+                return;
 
             var openFile = new OpenFileDialog();
             openFile.InitialDirectory = Directory.GetCurrentDirectory();
@@ -334,19 +346,16 @@ namespace GTEventGenerator
             if (openFile.FileName.Contains(".xml"))
             {
                 GameParameter = ImportFromEventList(openFile.FileName);
-                CurrentEvent = GameParameter.Events[0];
+                OnNewEventSelected(0);
+                ReloadEventLists();
+                UpdateEventListing();
 
                 if (GameParameter.Events != null && GameParameter.Events.Count > 0)
                     ToggleEventControls(true);
                 else
-                {
                     ToggleEventControls(false);
 
-                    GameParameter.Events = new List<Event>();
-                }
-
                 RefreshControls();
-                PopulateSelectedTab();
             }
         }
 
@@ -359,8 +368,11 @@ namespace GTEventGenerator
             {
                 foreach (Event evnt in GameParameter.Events)
                 {
-                    if (evnt.Name.Contains(GameParameter.EventList.Title))
-                        evnt.Name = evnt.Name.Replace(GameParameter.EventList.Title, txtGameParamName.Text);
+                    if (!string.IsNullOrEmpty(evnt.Name))
+                    {
+                        if (evnt.Name.Contains(GameParameter.EventList.Title))
+                            evnt.Name = evnt.Name.Replace(GameParameter.EventList.Title, txtGameParamName.Text);
+                    }
                 }
 
                 ReloadEventLists();
@@ -769,6 +781,10 @@ namespace GTEventGenerator
             else if (current.Name.Equals("tabEventCourse"))
             {
                 PrePopulateCourses();
+            }
+            else if (current.Name.Equals("tabEvalConditions"))
+            {
+                PrePopulateEvalConditions();
             }
         }
     }

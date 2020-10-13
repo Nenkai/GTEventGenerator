@@ -285,7 +285,7 @@ namespace GTEventGenerator
             PrePopulateComboBoxes();
 
             numericUpDown_FinishVCoord.Value = CurrentEvent.RaceParameters.EventGoalV != null ? (int)CurrentEvent.RaceParameters.EventGoalV.Value : -1;
-            numericUpDown_FinishWidth.Value = CurrentEvent.RaceParameters.EventGoalWidth != null ? (int)CurrentEvent.RaceParameters.EventGoalV.Value : -1;
+            numericUpDown_FinishWidth.Value = CurrentEvent.RaceParameters.EventGoalWidth != null ? (int)CurrentEvent.RaceParameters.EventGoalWidth.Value : -1;
             numericUpDown_TimeToFinish.Value = (int)CurrentEvent.RaceParameters.TimeToFinish.TotalMilliseconds;
             numericUpDown_TimeToStart.Value = (int)CurrentEvent.RaceParameters.TimeToStart.TotalMilliseconds;
             numericUpDown_LapsToFinish.Value = CurrentEvent.RaceParameters.LapCount;
