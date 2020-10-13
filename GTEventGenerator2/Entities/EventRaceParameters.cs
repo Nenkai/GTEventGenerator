@@ -46,7 +46,7 @@ namespace GTEventGenerator.Entities
         public bool OnlineOn { get; set; }
         public bool PaceNote { get; set; }
         public PenaltyLevel PenaltyLevel { get; set; } = PenaltyLevel.NONE;
-        public bool PenaltyNoReset { get; set; }
+        public bool PenaltyNoLevel { get; set; }
         public RaceType RaceType { get; set; } = RaceType.COMPETITION;
 
         private int _trackWetness;
@@ -100,11 +100,7 @@ namespace GTEventGenerator.Entities
             xml.WriteElementValue("complete_type", CompleteType.ToString());
             xml.WriteElementInt("consume_fuel", FuelUseMultiplier);
             xml.WriteElementInt("consume_tire", TireUseMultiplier);
-
-            xml.WriteStartElement("datetime");
-            xml.WriteAttributeString("datetime", Date.ToString("yyyy/dd/MM HH:mm:ss"));
-            xml.WriteEndElement();
-
+            xml.WriteStartElement("datetime"); xml.WriteAttributeString("datetime", Date.ToString("yyyy/dd/MM HH:mm:ss")); xml.WriteEndElement();
             xml.WriteElementValue("decisive_weather", DecisiveWeather.ToString());
             xml.WriteElementBool("disable_collision", DisableCollision);
             xml.WriteElementBool("disable_recording_replay", DisableRecordingReplay);
@@ -130,7 +126,7 @@ namespace GTEventGenerator.Entities
             xml.WriteElementBool("online_on", OnlineOn);
             xml.WriteElementBool("pace_note", PaceNote);
             xml.WriteElementInt("penalty_level", (int)PenaltyLevel);
-            xml.WriteElementBool("penalty_no_level", PenaltyNoReset);
+            xml.WriteElementBool("penalty_no_level", PenaltyNoLevel);
             xml.WriteElementInt("race_limit_laps", LapCount);
             xml.WriteElementInt("race_limit_minutes", MinutesCount);
             xml.WriteElementValue("race_type", RaceType.ToString());
@@ -178,29 +174,127 @@ namespace GTEventGenerator.Entities
             {
                 switch (raceNode.Name)
                 {
-                    case "complete_type":
-                        CompleteType = raceNode.ReadValueEnum<CompleteType>();
+                    case "academy_event": AcademyEvent = raceNode.ReadValueBool();
                         break;
-
-                    case "consume_fuel":
-                        FuelUseMultiplier = raceNode.ReadValueInt();
+                    case "accumulation":
+                        Accumulation = raceNode.ReadValueBool(); break;
+                    case "autostart_pitout":
+                        AutostartPitout = raceNode.ReadValueBool(); break;
+                    case "allow_codriver":
+                        AllowCoDriver = raceNode.ReadValueBool(); break;
+                    //case "auto_standing_delay":
+                    //   Stand = raceNode.ReadValueBool();
+                    // break;
+                    case "behavior_damage_type":
+                        BehaviorDamage = raceNode.ReadValueEnum<BehaviorDamageType>();
                         break;
-
-                    case "consume_tire":
-                        TireUseMultiplier = raceNode.ReadValueInt();
+                    case "behavior_slip_stream_type":
+                        SlipstreamBehavior = raceNode.ReadValueEnum<SlipstreamBehavior>(); break;
+                    case "complete_type": CompleteType = raceNode.ReadValueEnum<CompleteType>();
                         break;
-
-                    case "race_limit_laps":
-                        LapCount = raceNode.ReadValueInt();
-                        break;
-
-                    case "race_limit_minutes":
-                        MinutesCount = raceNode.ReadValueInt();
-                        break;
-
+                    case "consume_fuel": 
+                        FuelUseMultiplier = raceNode.ReadValueInt(); break;
+                    case "consume_tire": 
+                        TireUseMultiplier = raceNode.ReadValueInt(); break;
+                    case "datetime":
+                        Date = DateTime.Parse(raceNode.ReadValueString()); break;
+                    //case "decisive_weather":
+                    //  Date = DateTime.Parse(raceNode.ReadValueString());
+                    // break;
+                    case "disable_collision":
+                        DisableCollision = raceNode.ReadValueBool(); break;
+                    case "disable_recording_replay":
+                        DisableRecordingReplay = raceNode.ReadValueBool(); break;
+                    case "enable_damage":
+                        EnableDamage = raceNode.ReadValueBool(); break;
+                    case "enable_pit":
+                        EnablePit = raceNode.ReadValueBool(); break;
+                    case "endless":
+                        Endless = raceNode.ReadValueBool(); break;
                     case "entry_max":
-                        EntriesCount = raceNode.ReadValueInt();
-                        break;
+                        EntriesCount = raceNode.ReadValueInt(); break;
+                    case "event_goal_v":
+                        EventGoalV = raceNode.ReadValueInt(); break;
+                    case "event_goal_width":
+                        EventGoalWidth = raceNode.ReadValueInt(); break;
+                    case "finish_type":
+                        FinishType = raceNode.ReadValueEnum<FinishType>(); break;
+                    case "fixed_retention":
+                        FixedRetention = raceNode.ReadValueBool(); break;
+                    case "flagset":
+                        Flagset = raceNode.ReadValueEnum<Flagset>(); break;
+                    case "ghost_presence_type":
+                        GhostPresenceType = raceNode.ReadValueEnum<GhostPresenceType>(); break;
+                    case "ghost_type":
+                        GhostType = raceNode.ReadValueEnum<GhostType>(); break;
+                    case "grid_sort_type":
+                        GridSortType = raceNode.ReadValueEnum<GridSortType>(); break;
+                    case "immediate_finish":
+                        ImmediateFinish = raceNode.ReadValueBool(); break;
+                    case "initial_retention10":
+                        TrackWetness = raceNode.ReadValueInt(); break;
+                    case "keep_load_ghost":
+                        KeepLoadGhost = raceNode.ReadValueBool(); break;
+                    case "lighting_mode":
+                        LightingMode = raceNode.ReadValueEnum<LightingMode>(); break;
+                    case "line_ghost_record_type":
+                        LineGhostRecordType = raceNode.ReadValueEnum<LineGhostRecordType>(); break;
+                    case "line_ghost_play_max":
+                        LineGhostPlayMax = raceNode.ReadValueInt(); break;
+                    case "online_on":
+                        OnlineOn = raceNode.ReadValueBool(); break;
+                    case "pace_note":
+                        PaceNote = raceNode.ReadValueBool(); break;
+                    case "penalty_level":
+                        PenaltyLevel = raceNode.ReadValueEnum<PenaltyLevel>(); break;
+                    case "penalty_no_level":
+                        PenaltyNoLevel = raceNode.ReadValueBool(); break;
+                    case "race_limit_laps": 
+                        LapCount = raceNode.ReadValueInt(); break;
+                    case "race_limit_minutes": 
+                        MinutesCount = raceNode.ReadValueInt(); break;
+                    case "race_type":
+                        RaceType = raceNode.ReadValueEnum<RaceType>(); break;
+                    case "start_type":
+                        StartType = raceNode.ReadValueEnum<StartType>(); break;
+                    case "time_progress_speed":
+                        TimeProgressSpeed = raceNode.ReadValueInt(); break;
+                    case "time_to_finish":
+                        TimeToFinish = TimeSpan.FromMilliseconds(raceNode.ReadValueInt()); break;
+                    case "time_to_start":
+                        TimeToStart = TimeSpan.FromMilliseconds(raceNode.ReadValueInt()); break;
+                    case "weather_base_celsius":
+                        WeatherBaseCelsius = raceNode.ReadValueInt(); break;
+                    case "weather_max_celsius":
+                        WeatherMaxCelsius = raceNode.ReadValueInt(); break;
+                    case "weather_min_celsius":
+                        WeatherMinCelsius = raceNode.ReadValueInt(); break;
+                    case "weather_no_precipitation":
+                        WeatherNoPrecipitation = raceNode.ReadValueBool(); break;
+                    case "weather_no_schedule":
+                        WeatherNoSchedule = raceNode.ReadValueBool(); break;
+                    case "weather_no_wind":
+                        WeatherNoSchedule = raceNode.ReadValueBool(); break;
+                    case "weather_point_num":
+                        WeatherPointNum = raceNode.ReadValueInt(); break;
+                    case "weather_prec_rain_only":
+                        WeatherPrecRainOnly = raceNode.ReadValueBool(); break;
+                    case "weather_prec_snow_only":
+                        WeatherPrecSnowOnly = raceNode.ReadValueBool(); break;
+                    case "weather_random":
+                        WeatherRandom = raceNode.ReadValueBoolNull(); break;
+                    case "weather_random_seed":
+                        WeatherRandomSeed = raceNode.ReadValueInt(); break;
+                    case "weather_total_sec":
+                        WeatherTotalSec = raceNode.ReadValueInt(); break;
+                    case "with_ghost":
+                        WithGhost = raceNode.ReadValueBool(); break;
+                    case "replace_at_courseout":
+                        ReplaceAtCourseOut = raceNode.ReadValueBool(); break;
+                    case "weather_accel10":
+                        WeatherAccel = raceNode.ReadValueInt(); break;
+                    case "boost_flag":
+                        BoostFlag = raceNode.ReadValueBool(); break;
                 }
             }
         }

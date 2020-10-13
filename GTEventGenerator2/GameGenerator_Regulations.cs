@@ -254,7 +254,6 @@ namespace GTEventGenerator
         }
         #endregion
 
-
         private void cb_CarCountries_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cb_CarCountries.SelectedIndex <= 0)
@@ -310,6 +309,8 @@ namespace GTEventGenerator
             {
                 foreach (var manufacturer in GameDatabase.GetAllManufacturersSorted())
                     cbo_Manufacturers.Items.Add(manufacturer);
+
+                cbo_Manufacturers.SelectedIndex = 0;
             }
 
             if (cbo_MaxTireCompoundF.Items.Count == 1) // Load them if empty
@@ -325,6 +326,7 @@ namespace GTEventGenerator
                     cbo_MinTireCompoundR.Items.Add(tireName);
                 }
             }
+
         }
 
         // ------ Non-generated functions ------

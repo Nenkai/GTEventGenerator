@@ -22,7 +22,10 @@ namespace GTEventGenerator
     {
         #region Pane 1
         private void comboBox_CompleteType_SelectedIndexChanged(object sender, EventArgs e)
-            => CurrentEvent.RaceParameters.CompleteType = (CompleteType)comboBox_CompleteType.SelectedIndex;
+        {
+            CurrentEvent.RaceParameters.CompleteType = (CompleteType)comboBox_CompleteType.SelectedIndex;
+
+        }
 
         private void comboBox_FinishType_SelectedIndexChanged(object sender, EventArgs e)
             => CurrentEvent.RaceParameters.FinishType = (FinishType)comboBox_FinishType.SelectedIndex;
@@ -81,7 +84,6 @@ namespace GTEventGenerator
         private void comboBox_StartingType_SelectedIndexChanged(object sender, EventArgs e)
             => CurrentEvent.RaceParameters.StartType = (StartType)comboBox_StartingType.SelectedIndex;
 
-
         private void numericUpDown_TireConsumptionMultiplier_ValueChanged(object sender, EventArgs e)
         {
             if (CurrentEvent is null)
@@ -100,7 +102,6 @@ namespace GTEventGenerator
 
         private void checkBox_EnableDamage_CheckedChanged(object sender, EventArgs e)
         {
-            CurrentEvent.RaceParameters.EnableDamage = checkBox_EnableDamage.IsChecked.Value;
             comboBox_DamageBehavior.IsEnabled = checkBox_EnableDamage.IsChecked.Value;
             if (!checkBox_EnableDamage.IsChecked.Value)
             {
@@ -142,6 +143,10 @@ namespace GTEventGenerator
         {
             CurrentEvent.RaceParameters.SlipstreamBehavior = (SlipstreamBehavior)comboBox_SlipstreamBehavior.SelectedIndex;
         }
+
+        private void comboBox_RaceType_SelectedIndexChanged(object sender, EventArgs e)
+            => CurrentEvent.RaceParameters.RaceType = (RaceType)comboBox_RaceType.SelectedIndex;
+
 
         private void comboBox_LineGhostRecordType_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -225,7 +230,7 @@ namespace GTEventGenerator
         private void checkBox_PenaltyNoReset_CheckedChanged(object sender, EventArgs e)
         {
             var chk = sender as CheckBox;
-            CurrentEvent.RaceParameters.PenaltyNoReset = chk.IsChecked.Value;
+            CurrentEvent.RaceParameters.PenaltyNoLevel = chk.IsChecked.Value;
         }
 
         private void checkBox_OnlineOn_CheckedChanged(object sender, EventArgs e)
@@ -302,7 +307,7 @@ namespace GTEventGenerator
             numericUpDown_MaxGhostLines.Value = CurrentEvent.RaceParameters.LineGhostPlayMax;
             comboBox_Flagset.SelectedIndex = (int)CurrentEvent.RaceParameters.Flagset;
             comboBox_StartingType.SelectedIndex = (int)CurrentEvent.RaceParameters.StartType;
-
+            comboBox_RaceType.SelectedIndex = (int)CurrentEvent.RaceParameters.RaceType;
             CurrentEvent.RaceParameters.NeedsPopulating = false;
         }
 
@@ -404,6 +409,14 @@ namespace GTEventGenerator
                 var s = (StartType)i;
                 string sName = s.Humanize();
                 comboBox_StartingType.Items.Add(sName);
+            }
+
+            var raceTypes = (RaceType[])Enum.GetValues(typeof(RaceType));
+            for (int i = 0; i < raceTypes.Length; i++)
+            {
+                var r = (RaceType)i;
+                string rName = r.Humanize();
+                comboBox_RaceType.Items.Add(rName);
             }
         }
     }

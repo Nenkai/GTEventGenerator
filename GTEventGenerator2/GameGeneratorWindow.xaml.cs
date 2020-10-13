@@ -258,26 +258,23 @@ namespace GTEventGenerator
             }
         }
 
-        private void importEventToolStripMenuItem_Click(object sender, EventArgs e)
+        private void importEventToolStripMenuItem_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult importOverwrite = MessageBox.Show("This will overwrite the folder you are currently editing. Would you like to save your folder now?",
                 "Import Folder", MessageBoxButton.YesNoCancel, MessageBoxImage.Information);
 
             if (importOverwrite == MessageBoxResult.Yes)
-            {
                 btnEventGenerate_Click(sender, e);
-            }
-
 
             var openFile = new OpenFileDialog();
             openFile.InitialDirectory = Directory.GetCurrentDirectory();
-            openFile.Filter = "XML Files (*.xml)|*.xml";
-            openFile.Title = "Import Event";
+            openFile.Filter = "Folder XML Files (i.e sundaycup.xml) (*.xml)|*.xml";
+            openFile.Title = "Import Folder";
             openFile.ShowDialog();
 
             if (openFile.FileName.Contains(".xml"))
             {
-                GameParameter = ImportEvent(openFile.FileName);
+                GameParameter = ImportFolder(openFile.FileName);
                 CurrentEvent = GameParameter.Events[0];
 
                 if (GameParameter.Events != null && GameParameter.Events.Count > 0)
@@ -294,7 +291,12 @@ namespace GTEventGenerator
             }
         }
 
-        private void exportEventToolStripMenuItem_Click(object sender, EventArgs e)
+        private void exit_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void exportEventToolStripMenuItem_Click(object sender, RoutedEventArgs e)
         {
             if (GameParameter.Events == null || GameParameter.Events.Count == 0)
             {
@@ -315,7 +317,40 @@ namespace GTEventGenerator
 
         }
 
-        private void cboEventCategory_SelectedIndexChanged(object sender, EventArgs e)
+        private void importEventListToolStripMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult importOverwrite = MessageBox.Show("This will overwrite the folder you are currently editing. Would you like to save your folder now?",
+                "Import Folder", MessageBoxButton.YesNoCancel, MessageBoxImage.Information);
+
+            if (importOverwrite == MessageBoxResult.Yes)
+                btnEventGenerate_Click(sender, e);
+
+            var openFile = new OpenFileDialog();
+            openFile.InitialDirectory = Directory.GetCurrentDirectory();
+            openFile.Filter = "Event List XML Files (r/l*.xml) (*.xml)|*.xml";
+            openFile.Title = "Import Events";
+            openFile.ShowDialog();
+
+            if (openFile.FileName.Contains(".xml"))
+            {
+                GameParameter = ImportFromEventList(openFile.FileName);
+                CurrentEvent = GameParameter.Events[0];
+
+                if (GameParameter.Events != null && GameParameter.Events.Count > 0)
+                    ToggleEventControls(true);
+                else
+                {
+                    ToggleEventControls(false);
+
+                    GameParameter.Events = new List<Event>();
+                }
+
+                RefreshControls();
+                PopulateSelectedTab();
+            }
+        }
+
+        private void cboEventCategory_SelectedIndexChanged(object sender, RoutedEventArgs e)
             => GameParameter.EventList.Category = GameParameterEventList.EventCategories.Find(x => x.name == cboEventCategory.SelectedItem.ToString());
 
         private void txtEventsName_TextChanged(object sender, EventArgs e)
@@ -524,17 +559,24 @@ namespace GTEventGenerator
         {
             MenuDB = new MenuDB(file);
 
-            if (MenuDB.CreateConnection())
+            try
             {
-                // Check if the table we need exists
-                if (MenuDB.GetFolderNameByID(23).Equals("sundaycup"))
-                    MessageBox.Show("Menudb.dat valid!", "Menudb.dat", MessageBoxButton.OK, MessageBoxImage.Information);
+                if (MenuDB.CreateConnection())
+                {
+                    // Check if the table we need exists
+                    if (MenuDB.GetFolderNameByID(23).Equals("sundaycup"))
+                        MessageBox.Show("Menudb.dat valid!", "Menudb.dat", MessageBoxButton.OK, MessageBoxImage.Information);
+                    else
+                        MessageBox.Show("Could not verify menudb.dat, please try again.", "Menudb.dat", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
                 else
-                    MessageBox.Show("Could not verify menudb.dat, please try again.", "Menudb.dat", MessageBoxButton.OK, MessageBoxImage.Warning);
+                {
+                    MessageBox.Show("No MenuDB connection was established, please try again.", "Menudb.dat", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
-            else
+            catch (Exception e)
             {
-                MessageBox.Show("No MenuDB connection was established, please try again.", "Menudb.dat", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show($"Could not open MenuDB.dat: {e.Message}", "Menudb.dat error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
@@ -657,21 +699,30 @@ namespace GTEventGenerator
                 "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        public GameParameter ImportEvent(string filePath)
+        public GameParameter ImportFolder(string filePath)
         {
-            GameParameter newEvent = new GameParameter();
+            GameParameter gp = new GameParameter();
 
             XmlDocument doc = new XmlDocument();
             doc.Load(filePath);
 
-            newEvent.EventList.ParseEventList(doc);
+            gp.EventList.ParseEventList(doc);
 
             string dir = Path.GetDirectoryName(filePath);
             XmlDocument eventDoc = new XmlDocument();
-            eventDoc.Load(Path.Combine(dir, $"r{newEvent.EventList.FileNameID}.xml"));
-            newEvent.ParseEventsFromFile(eventDoc);
+            eventDoc.Load(Path.Combine(dir, $"r{gp.EventList.FileNameID}.xml"));
+            gp.ParseEventsFromFile(eventDoc);
 
-            return newEvent;
+            return gp;
+        }
+
+        public GameParameter ImportFromEventList(string filePath)
+        {
+            XmlDocument eventDoc = new XmlDocument();
+            GameParameter gp = new GameParameter();
+            eventDoc.Load(filePath);
+            gp.ParseEventsFromFile(eventDoc);
+            return gp;
         }
 
         public void ParseEventRaces(GameParameter gameParam, string filePath)

@@ -163,6 +163,9 @@ namespace GTEventGenerator.Entities
                     case "need_tire_r":
                         NeededRearTire = constraintNode.ReadValueEnum<TireType>();
                         break;
+                    case "simulation":
+                        SkidRecoveryForceEnabled = constraintNode.ReadValueBoolNull();
+                        break;
                     case "suggest_tire_f":
                         SuggestedFrontTire = constraintNode.ReadValueEnum<TireType>();
                         break;

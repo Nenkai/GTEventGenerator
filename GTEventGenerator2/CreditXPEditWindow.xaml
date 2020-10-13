@@ -6,72 +6,72 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:GTEventGenerator"
         mc:Ignorable="d"
-        Title="Edit Credits/XP" Height="550" Width="213.41" ResizeMode="NoResize">
+        Title="Edit Credits/XP" Height="560" Width="213.41" ResizeMode="NoResize">
     <Grid>
-        <Label Content="#1" Margin="10,8,163,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" VerticalContentAlignment="Top"
-               ToolTip="Prize for 1st"/>
+        <Label Content="#1" Margin="10,8,0,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" VerticalContentAlignment="Top"
+               ToolTip="Prize for 1st" Width="34"/>
         <xctk:IntegerUpDown Name="num_1" Height="20" Margin="49,11,10,0" VerticalAlignment="Top"/>
 
-        <Label Content="#2" Margin="10,38,163,456" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" VerticalContentAlignment="Top"
+        <Label Content="#2" Margin="10,38,0,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" VerticalContentAlignment="Top"
                ToolTip="Prize for 2nd"/>
         <xctk:IntegerUpDown Name="num_2" Height="20" Margin="49,41,10,0" VerticalAlignment="Top"/>
 
-        <Label Content="#3" Margin="10,68,163,426" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" VerticalContentAlignment="Top"
+        <Label Content="#3" Margin="10,67,0,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" VerticalContentAlignment="Top"
                ToolTip="Prize for 3rd"/>
         <xctk:IntegerUpDown Name="num_3" Height="20" Margin="49,71,10,0" VerticalAlignment="Top"/>
 
-        <Label Content="#4" Margin="10,98,163,396" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" VerticalContentAlignment="Top"
+        <Label Content="#4" Margin="10,97,0,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" VerticalContentAlignment="Top"
                ToolTip="Prize for 4th"/>
         <xctk:IntegerUpDown Name="num_4" Height="20" Margin="49,101,10,0" VerticalAlignment="Top"/>
 
-        <Label Content="#5" Margin="10,128,163,366" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" VerticalContentAlignment="Top"
+        <Label Content="#5" Margin="10,128,0,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" VerticalContentAlignment="Top"
                ToolTip="Prize for 5th"/>
         <xctk:IntegerUpDown Name="num_5" Height="20" Margin="49,131,10,0" VerticalAlignment="Top"/>
 
-        <Label Content="#6" Margin="10,158,163,336" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" VerticalContentAlignment="Top"
+        <Label Content="#6" Margin="10,157,0,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" VerticalContentAlignment="Top"
                ToolTip="Prize for 6th"/>
         <xctk:IntegerUpDown Name="num_6" Height="20" Margin="49,161,10,0" VerticalAlignment="Top"/>
 
-        <Label Content="#7" Margin="10,188,163,306" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" VerticalContentAlignment="Top"
+        <Label Content="#7" Margin="10,188,0,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" VerticalContentAlignment="Top"
                ToolTip="Prize for 7th"/>
         <xctk:IntegerUpDown Name="num_7" Height="20" Margin="49,191,10,0" VerticalAlignment="Top"/>
 
-        <Label Content="#8" Margin="10,218,163,276" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" VerticalContentAlignment="Top"
+        <Label Content="#8" Margin="10,217,0,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" VerticalContentAlignment="Top"
                ToolTip="Prize for 8th"/>
         <xctk:IntegerUpDown Name="num_8" Height="20" Margin="49,221,10,0" VerticalAlignment="Top"/>
 
-        <Label Content="#9" Margin="10,248,163,246" VerticalAlignment="Top"  Height="26" HorizontalAlignment="Left" VerticalContentAlignment="Top"
+        <Label Content="#9" Margin="10,246,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" VerticalContentAlignment="Top"
                ToolTip="Prize for 9th"/>
         <xctk:IntegerUpDown Name="num_9" Height="20" Margin="49,251,10,0" VerticalAlignment="Top"/>
 
-        <Label Content="#10" Margin="10,278,0,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" VerticalContentAlignment="Top" Width="34"
+        <Label Content="#10" Margin="10,279,0,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" VerticalContentAlignment="Top" Width="34"
                ToolTip="Prize for 10th"/>
         <xctk:IntegerUpDown Name="num_10" Height="20" Margin="49,281,10,0" VerticalAlignment="Top"/>
 
-        <Label Content="#11" Margin="10,308,0,0" VerticalAlignment="Top"  Height="26" HorizontalAlignment="Left"  VerticalContentAlignment="Top" Width="34"
+        <Label Content="#11" Margin="10,307,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  VerticalContentAlignment="Top" Width="34"
                ToolTip="Prize for 11st"/>
         <xctk:IntegerUpDown Name="num_11" Height="20" Margin="49,311,10,0" VerticalAlignment="Top"/>
 
-        <Label Content="#12" Margin="10,338,0,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" VerticalContentAlignment="Top" Width="34"
+        <Label Content="#12" Margin="10,337,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" VerticalContentAlignment="Top" Width="34"
                ToolTip="Prize for 12nd"/>
         <xctk:IntegerUpDown Name="num_12" Height="20" Margin="49,341,10,0" VerticalAlignment="Top"/>
 
-        <Label Content="#13" Margin="10,368,0,0" VerticalAlignment="Top"  Height="26" HorizontalAlignment="Left" VerticalContentAlignment="Top" Width="34"
+        <Label Content="#13" Margin="10,368,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" VerticalContentAlignment="Top" Width="34"
                ToolTip="Prize for 13rd"/>
         <xctk:IntegerUpDown Name="num_13" Height="20" Margin="49,371,10,0" VerticalAlignment="Top"/>
 
-        <Label Content="#14" Margin="10,398,0,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" VerticalContentAlignment="Top" Width="34"
+        <Label Content="#14" Margin="10,399,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" VerticalContentAlignment="Top" Width="34"
                ToolTip="Prize for 14th"/>
         <xctk:IntegerUpDown Name="num_14" Height="20" Margin="49,401,10,0" VerticalAlignment="Top"/>
 
-        <Label Content="#15" Margin="10,428,0,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" VerticalContentAlignment="Top" Width="34"
+        <Label Content="#15" Margin="10,428,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" VerticalContentAlignment="Top" Width="34"
                ToolTip="Prize for 15th"/>
         <xctk:IntegerUpDown Name="num_15" Height="20" Margin="49,431,10,0" VerticalAlignment="Top"/>
 
-        <Label Content="#16" Margin="10,458,0,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" VerticalContentAlignment="Top" Width="34"
+        <Label Content="#16" Margin="10,457,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" VerticalContentAlignment="Top" Width="34"
                ToolTip="Prize for 16th"/>
         <xctk:IntegerUpDown Name="num_16" Height="20" Margin="49,461,10,0" VerticalAlignment="Top"/>
 
-        <Button Content="Save" Margin="10,488,10,7" Click="Button_Click"/>
+        <Button Content="Save" Margin="10,491,10,0" VerticalAlignment="Top" Click="Button_Click"/>
     </Grid>
 </Window>

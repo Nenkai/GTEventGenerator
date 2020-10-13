@@ -107,11 +107,8 @@ namespace GTEventGenerator
                     string typeName = type.Humanize();
                     comboBox_entryGenerateType.Items.Add(typeName);
                 }
-
-                comboBox_entryGenerateType.SelectedIndex = 0;
             }
-            else
-                comboBox_entryGenerateType.SelectedIndex = (int)CurrentEvent.Entries.AIEntryGenerateType;
+            comboBox_entryGenerateType.SelectedIndex = (int)CurrentEvent.Entries.AIEntryGenerateType;
 
             if (comboBox_EntrySortType.Items.Count == 0)
             {
@@ -122,11 +119,8 @@ namespace GTEventGenerator
                     string typeName = type.Humanize();
                     comboBox_EntrySortType.Items.Add(typeName);
                 }
-
-                comboBox_EntrySortType.SelectedIndex = 0;
             }
-            else
-                comboBox_EntrySortType.SelectedIndex = (int)CurrentEvent.Entries.AISortType;
+            comboBox_EntrySortType.SelectedIndex = (int)CurrentEvent.Entries.AISortType;
         }
 
         private void UpdateAIEntriesCarList()

@@ -65,6 +65,7 @@ namespace GTEventGenerator
             Values[14] = num_15.Value.Value;
             Values[15] = num_16.Value.Value;
             Saved = true;
+            Close();
         }
     }
 }

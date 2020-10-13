@@ -10,8 +10,12 @@
             <Menu Name="menuStrip1" Height="22" HorizontalAlignment="Stretch">
                 <MenuItem Name="toolStripMenuItem1" Header="File">
                     <MenuItem Header="New Folder" Name="newEventToolStripMenuItem" Click="newEventToolStripMenuItem_Click"></MenuItem>
-                    <MenuItem Header="Import Folder..." Name="importEventToolStripMenuItem" Click="importEventToolStripMenuItem_Click"></MenuItem>
-                    <MenuItem Header="Export Folder..." Name="exportEventToolStripMenuItem" Click="exportEventToolStripMenuItem_Click"></MenuItem>
+                    <MenuItem Header="Import Folder (GT6)..." Name="importEventToolStripMenuItem" Click="importEventToolStripMenuItem_Click"></MenuItem>
+                    <MenuItem Header="Export Folder (GT6)..." Name="exportEventToolStripMenuItem" Click="exportEventToolStripMenuItem_Click"></MenuItem>
+                    <Separator />
+                    <MenuItem Header="Import Event List (GT5)..." Click="importEventListToolStripMenuItem_Click"></MenuItem>
+                    <Separator />
+                    <MenuItem Header="Exit" Click="exit_Click"></MenuItem>
                 </MenuItem>
                 <MenuItem Header="Help">
                     <MenuItem Header="About"></MenuItem>
@@ -54,16 +58,9 @@
                             <TextBlock Text="Event Information"/>
                         </GroupBox.Header>
                         <Canvas Margin="0,0,0,0" >
-                            <Button Name="btnPickImage" Height="53" Width="130" TabIndex="18" Click="btnPickImage_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="316" Canvas.Top="431" >Pick Image</Button>
-                            <Button Name="button7" Height="53" Width="130" TabIndex="17" Click="btnSaveImage_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="474" Canvas.Top="431" >Save Image</Button>
-                            <Border BorderThickness="1" BorderBrush="Gray" Canvas.Left="316" Canvas.Top="-8">
-                                <Image Name="pctImagePreview" Height="403" Width="288" Canvas.Left="316" Canvas.Top="-8"/>
-                            </Border>
-                            <Label Name="label_imagePreview" Height="26" Width="205" TabIndex="15" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="316" Canvas.Top="400" >Event Image Preview</Label>
-                            <Label Name="label_imagePreviewSize" Height="29" Width="55" TabIndex="15" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalAlignment="Top" VerticalContentAlignment="Top" Canvas.Left="555" Canvas.Top="391" Foreground="#FF646464" FontSize="11" >432x244</Label>
                             <Label Name="label_gameMode" Height="23" Width="80" TabIndex="14" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="38" >Game Mode</Label>
                             <ComboBox Name="cb_gameModes" Height="23" Width="200" IsEnabled="False" TabIndex="13" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="91" Canvas.Top="41" SelectionChanged="cb_gameModes_SelectionChanged" />
-                            <CheckBox Name="checkBox_SeasonalEvent" Height="24" Width="115" TabIndex="56" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding IsSeasonalEvent}" Canvas.Top="469" Canvas.Left="176" 
+                            <CheckBox Name="checkBox_SeasonalEvent" Height="24" Width="115" TabIndex="56" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding IsSeasonalEvent}" Canvas.Top="470" Canvas.Left="176" 
                                       ToolTip="Whether if the event is a Seasonal Event, if so, the event will have date requirements to enter, fill in the Start/End Dates (and additionally Ranking tab)." >Seasonal Event</CheckBox>
                             <GroupBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="412" >
                                 <GroupBox.Header>
@@ -81,6 +78,16 @@
                     <Button Name="btnRemoveRace" Height="34" Width="157" TabIndex="4" IsEnabled="False" Click="btnRemoveRace_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="163" Canvas.Top="471" >Remove Selected Event</Button>
                     <Button Name="btnAddRace" Height="34" Width="148" TabIndex="1" Click="btnAddRace_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="471" >Add Event</Button>
                     <ListBox Name="lstRaces" Height="456" Width="310" TabIndex="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="lstEvent_SelectedIndexChanged" Canvas.Left="10" Canvas.Top="10" />
+
+                    <Label Name="label_imagePreview" Height="26" TabIndex="15" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="640" Canvas.Top="423" 
+                           ToolTip="GT6 Only - Event Cover if the event is not in a regular folder (i.e mission/license)">Special Event Image Preview</Label>
+                    <Label Name="label_imagePreviewSize" Height="29" Width="55" TabIndex="15" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalAlignment="Top" VerticalContentAlignment="Top" Canvas.Left="883" Canvas.Top="420" Foreground="#FF646464" FontSize="11" >432x244</Label>
+
+                    <Button Name="btnPickImage" Height="50" Width="141" TabIndex="18" Click="btnPickImage_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="647" Canvas.Top="454" >Pick Image</Button>
+                    <Button Name="button7" Height="50" Width="130" TabIndex="17" Click="btnSaveImage_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="808" Canvas.Top="454" >Save Image</Button>
+                    <Border BorderThickness="1" BorderBrush="Gray" Canvas.Left="640" Width="298" Height="412" Canvas.Top="9">
+                        <Image Name="pctImagePreview" Margin="-1,-1,-1,-1"/>
+                    </Border>
                 </Canvas>
             </TabItem>
             <TabItem Name="tabEventInfo" Header="Event Info" IsEnabled="False" >
@@ -159,20 +166,28 @@ To enable 'Realtime Weather', disable this and enable weather_prec_rain/snow_onl
                             <ComboBox Name="comboBox_Flagset" Height="21" Width="168" TabIndex="62" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_Flagset_SelectedIndexChanged" Canvas.Left="319" Canvas.Top="181" />
                             <Label Name="label_Flagset" Height="32" Width="54" TabIndex="61" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="260" Canvas.Top="177" 
                                    ToolTip="Undocumented (GT5 only?) (XML: race->flagset)">Flagset</Label>
+
+                            <Label Name="label_RaceType" Height="32" Width="70" TabIndex="61" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="260" Canvas.Top="207" 
+                                   ToolTip="Undocumented - would not touch (XML: race->race_type)">Race Type</Label>
+                            <ComboBox Name="comboBox_RaceType" Height="21" Width="157" TabIndex="62" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_RaceType_SelectedIndexChanged" Canvas.Left="330" Canvas.Top="212" />
+
                             <Label Name="label_MaxGhostLines" Height="24" Width="131" TabIndex="59" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="260" Canvas.Top="148" 
                                    ToolTip="The maximum ghost lines (GT6 Seasonals) to show, if enabled. (XML: race->line_ghost_play_max)">Max Ghost Lines</Label>
                             <xctk:IntegerUpDown Name="numericUpDown_MaxGhostLines" Height="20" Width="91" Canvas.Top="153" ValueChanged="numericUpDown_MaxGhostLines_ValueChanged" Canvas.Left="396" Value="0" Maximum="16" Minimum="0"/>
 
                             <ComboBox Name="comboBox_LineGhostRecordType" Height="21" Width="86" TabIndex="58" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_LineGhostRecordType_SelectedIndexChanged" Canvas.Left="401" Canvas.Top="122" />
-                            <Label Name="label_LineGhostRecordType" Height="26" Width="136" TabIndex="57" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="260" Canvas.Top="117" 
+                            <Label Name="label_LineGhostRecordType" Height="26" Width="136" TabIndex="57" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="260" Canvas.Top="119" 
                                    ToolTip="The way ghost lines will show, if enabled. (XML: race->line_ghost_record_type)">Line Ghost Record Type</Label>
                             <CheckBox Name="checkBox_GhostEnabled" Height="24" Width="154" TabIndex="55" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.WithGhost}" Canvas.Left="501" Canvas.Top="300"
                                       ToolTip="Whether to enable ghosts for the player (XML: race->with_ghost)" >Ghost On/Off</CheckBox>
+                            <CheckBox Name="checkBox_ReplaceAtCourseout" Height="24" Width="154" TabIndex="55" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.ReplaceAtCourseout}" Canvas.Left="501" Canvas.Top="330"
+                                      ToolTip="Undocumented (XML: race->replace_at_courseout)" >Replace At Course-Out</CheckBox>
+
                             <CheckBox Name="checkBox_OnlineOn" Height="24" Width="154" TabIndex="54" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.OnlineOn}" Canvas.Left="501" Canvas.Top="271" 
                                       ToolTip="Undocumented (XML: race->online_on)" >Online On</CheckBox>
 
-                            <CheckBox Name="checkBox_PenaltyNoReset" Height="24" Width="154" TabIndex="52" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.PenaltyNoReset}" Canvas.Left="501" Canvas.Top="242" 
-                                      ToolTip="No reset on penalty (XML: race->penalty_no_reset)" >Penalty No Reset</CheckBox>
+                            <CheckBox Name="checkBox_PenaltyNoReset" Height="24" Width="154" TabIndex="52" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.PenaltyNoLevel}" Canvas.Left="501" Canvas.Top="242" 
+                                      ToolTip="Undocumented (XML: race->penalty_no_level)" >Penalty No Reset</CheckBox>
                             <CheckBox Name="checkBox_BoostFlag" Height="24" Width="154" TabIndex="51" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.BoostFlag}" Canvas.Left="501" Canvas.Top="213" 
                                       ToolTip="Undocumented (XML: race->boost_flag)" >Boost Flag</CheckBox>
                             <CheckBox Name="checkBox_ImmediateFinish" Height="24" Width="154" TabIndex="50" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.ImmediateFinish}" Canvas.Left="501" Canvas.Top="184" 
@@ -193,7 +208,7 @@ To enable 'Realtime Weather', disable this and enable weather_prec_rain/snow_onl
                             <Label Name="label_SlipstreamBehavior" Height="24" Width="118" TabIndex="41" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="259" Canvas.Top="91" 
                                 ToolTip="How strong slipstream is (XML: behavior_slipstream_type)">Slipstream Behavior</Label>
                             <ComboBox Name="comboBox_PenaltyLevel" Height="21" Width="116" TabIndex="40" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_PenaltyLevel_SelectedIndexChanged" Canvas.Left="371" Canvas.Top="68" />
-                            <Label Name="label_PenaltyLevel" Height="27" Width="88" TabIndex="39" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="260" Canvas.Top="67" 
+                            <Label Name="label_PenaltyLevel" Height="27" Width="88" TabIndex="39" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="260" Canvas.Top="64" 
                                    ToolTip="How severe penalties are (XML: race->penalty_level)">Penalty Level</Label>
 
                             <ComboBox Name="comboBox_LightingMode" Height="21" Width="116" TabIndex="38" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_LightingMode_SelectedIndexChanged" Canvas.Left="371" Canvas.Top="38" />
@@ -255,7 +270,7 @@ STANDING_CENTER">Starting Type</Label>
                                    ToolTip="If ghosts are enabled, the type (XML: race->ghost_type)">Ghost Type</Label>
                             <ComboBox Name="comboBox_GhostType" Height="21" Width="169" TabIndex="24" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_GhostType_SelectedIndexChanged" Canvas.Left="80" Canvas.Top="339" />
                             <ComboBox Name="comboBox_DamageBehavior" Height="21" Width="128" TabIndex="23" IsEnabled="False" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="120" Canvas.Top="310" />
-                            <Label Name="label_DamageBehavior" Height="25" Width="111" TabIndex="22" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="9" Canvas.Top="307" 
+                            <Label Name="label_DamageBehavior" Height="25" Width="111" TabIndex="22" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="307" 
                                    ToolTip="How damage should manifest if enabled (XML: race->behavior_damage_type)&#10;
 Weak - Only visual damage (?)&#10;
 Middle - Mechanical damage, may repair itself over time (?)&#10;
@@ -264,7 +279,7 @@ Strong - Mechanical damage">Damage Behavior</Label>
                                       ToolTip="Undocumented (XML: race->endless)">Endless</CheckBox>
                             <CheckBox Name="checkBox_DisableCollision" Height="24" Width="124" TabIndex="20" Margin="125,280,676,252" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.DisableCollision}" 
                                       ToolTip="If this is enabled, car collisions will be off (XML: race->disable_collision)">Disable Collision</CheckBox>
-                            <CheckBox Name="checkBox_EnableDamage" Height="24" Width="110" TabIndex="19" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.EnableDamage}" Canvas.Left="10" Canvas.Top="252" 
+                            <CheckBox Name="checkBox_EnableDamage" Height="24" Width="110" TabIndex="19" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.EnableDamage}" Canvas.Left="10" Canvas.Top="252" Checked="checkBox_EnableDamage_CheckedChanged" Unchecked="checkBox_EnableDamage_CheckedChanged"
                                       ToolTip="If this is enabled, the player will have visual or mechanical damage (XML: race->enable_damage)">Enable Damage</CheckBox>
                             <CheckBox Name="checkBox_EnablePits" Height="22" Width="123" TabIndex="18" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.EnablePit}" Canvas.Left="125" Canvas.Top="252" 
                                       ToolTip="If this is enabled, the player will drive through the pits and stop, else they will just continue (XML: race->enable_pit)">Enable Pits</CheckBox>
@@ -285,7 +300,7 @@ Strong - Mechanical damage">Damage Behavior</Label>
 
                             <xctk:IntegerUpDown Name="numericUpDown_TimeToFinish" Height="20" Width="70" ValueChanged="numericUpDown_TimeToFinish_ValueChanged" Canvas.Top="129" Canvas.Left="178" Maximum="100000" Minimum="-1" Value="-1"/>
 
-                            <Label Name="label_FinishWidth" Height="23" Width="135" TabIndex="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="96" 
+                            <Label Name="label_FinishWidth" Height="26" Width="135" TabIndex="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="94" 
                                    ToolTip="If using a custom finish (FinishVCoord), the width of the finish (XML: race->event_goal_width)">Finish Width (in Meters)</Label>
 
                             <xctk:IntegerUpDown Name="numericUpDown_FinishWidth" Height="20" Width="70" ValueChanged="numericUpDown_FinishWidth_ValueChanged" Canvas.Top="99" Canvas.Left="178" Minimum="-1" Maximum="100000" Value="-1"/>
@@ -294,11 +309,11 @@ Strong - Mechanical damage">Damage Behavior</Label>
                                    ToolTip="Custom finish location (XML: race->event_goal_v)">Finish Coordinates (in Meters)</Label>
                             <xctk:IntegerUpDown Name="numericUpDown_FinishVCoord" Height="20" Width="70" ValueChanged="numericUpDown_FinishVCoord_ValueChanged" Canvas.Left="178" Canvas.Top="66" Value="-1" Maximum="100000" Minimum="-1"/>
 
-                            <ComboBox Name="comboBox_FinishType" Height="21" Width="154" TabIndex="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_FinishType_SelectedIndexChanged" Canvas.Left="95" Canvas.Top="37" />
+                            <ComboBox Name="comboBox_FinishType" Height="22" Width="154" TabIndex="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_FinishType_SelectedIndexChanged" Canvas.Left="95" Canvas.Top="36" />
                             <Label Name="label_FinishType" Height="27" Width="74" TabIndex="4" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="7" Canvas.Top="32" 
                                    ToolTip="Possibly how the final rankings are determined (XML: race->finish_type)">Finish Type</Label>
 
-                            <ComboBox Name="comboBox_CompleteType" Height="20" Width="154" TabIndex="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_CompleteType_SelectedIndexChanged" Canvas.Left="95" Canvas.Top="8" />
+                            <ComboBox Name="comboBox_CompleteType" Height="22" Width="154" TabIndex="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_CompleteType_SelectedIndexChanged" Canvas.Left="95" Canvas.Top="6" />
                             <Label Name="label_CompleteType" Height="28" Width="96" TabIndex="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="4" 
                                    ToolTip="How the race end is determined (XML: race->complete_type)&#10;
 &#10;
