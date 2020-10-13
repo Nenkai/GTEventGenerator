@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
+using System.Windows.Threading;
 namespace GTEventGenerator2
 {
     /// <summary>
@@ -13,5 +14,10 @@ namespace GTEventGenerator2
     /// </summary>
     public partial class App : Application
     {
+        void AppDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show($"An error occured in the editor, please report to the creator:\n {e.Exception.InnerException.Message}");
+            e.Handled = true;
+        }
     }
 }
