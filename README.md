@@ -19,3 +19,4 @@ It is not yet finished.
 - [ ] Fail Conditions
 
 
+![Preview](https://cdn.discordapp.com/attachments/615245340773187602/765037980493676594/unknown.png)
