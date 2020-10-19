@@ -370,16 +370,28 @@ namespace GTEventGenerator
             GameParameter.EventList.Description = txtGameParamDesc.Text;
         }
 
-        private void iud_StarsNeeded_ValueChanged(object sender, RoutedEventArgs e)
+        private void iud_StarsNeeded_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            if (GameParameter != null)
-                GameParameter.EventList.StarsNeeded = ((Xceed.Wpf.Toolkit.IntegerUpDown)sender).Value.Value;
+            if (GameParameter is null)
+                return;
+
+            var iud = ((Xceed.Wpf.Toolkit.IntegerUpDown)sender);
+            if (iud.Value is null)
+                iud.Value = (int)e.OldValue;
+
+            GameParameter.EventList.StarsNeeded = iud.Value.Value;
         }
 
         private void iud_FolderID_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            if (GameParameter != null)
-                GameParameter.FolderId = ((Xceed.Wpf.Toolkit.IntegerUpDown)sender).Value.Value;
+            if (GameParameter is null)
+                return;
+
+            var iud = ((Xceed.Wpf.Toolkit.IntegerUpDown)sender);
+            if (iud.Value is null)
+                iud.Value = (int)e.OldValue;
+
+            GameParameter.FolderId = iud.Value.Value;
         }
 
         private void rdoStarsOne_CheckedChanged(object sender, EventArgs e)

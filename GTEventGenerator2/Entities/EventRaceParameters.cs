@@ -27,7 +27,6 @@ namespace GTEventGenerator.Entities
         public bool EnableDamage { get; set; }
         public bool EnablePit { get; set; }
         public bool Endless { get; set; }
-        public int EntriesCount { get; set; }
         public float? EventGoalV { get; set; }
         public float? EventGoalWidth { get; set; }
         public FinishType FinishType { get; set; } = FinishType.TARGET;
@@ -86,7 +85,7 @@ namespace GTEventGenerator.Entities
         public bool? WeatherRandom { get; set; }
         public int WeatherRandomSeed { get; set; }
 
-        public void WriteToXml(XmlWriter xml)
+        public void WriteToXml(Event parent, XmlWriter xml)
         {
             xml.WriteStartElement("race");
             xml.WriteElementBool("academy_event", AcademyEvent);
@@ -163,8 +162,8 @@ namespace GTEventGenerator.Entities
             sw.WriteLine(string.Format("                        </point>"));
             sw.WriteLine(string.Format("                    </new_weather_data>"));
             */
-            xml.WriteElementInt("entry_max", EntriesCount);
-            xml.WriteElementInt("racers_max", EntriesCount);
+            xml.WriteElementInt("entry_max", 0);
+            xml.WriteElementInt("racers_max", parent.Entries.EntryCount);
             xml.WriteEmptyElement("boost_table_array");
             xml.WriteEndElement();
         }
@@ -214,8 +213,8 @@ namespace GTEventGenerator.Entities
                         EnablePit = raceNode.ReadValueBool(); break;
                     case "endless":
                         Endless = raceNode.ReadValueBool(); break;
-                    case "entry_max":
-                        EntriesCount = raceNode.ReadValueInt(); break;
+                    //case "entry_max":
+                    //    EntriesCount = raceNode.ReadValueInt(); break;
                     case "event_goal_v":
                         EventGoalV = raceNode.ReadValueInt(); break;
                     case "event_goal_width":

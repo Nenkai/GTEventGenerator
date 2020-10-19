@@ -48,22 +48,22 @@ namespace GTEventGenerator
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Values[0] = num_1.Value.Value;
-            Values[1] = num_2.Value.Value;
-            Values[2] = num_3.Value.Value;
-            Values[3] = num_4.Value.Value;
-            Values[4] = num_5.Value.Value;
-            Values[5] = num_6.Value.Value;
-            Values[6] = num_7.Value.Value;
-            Values[7] = num_8.Value.Value;
-            Values[8] = num_9.Value.Value;
-            Values[9] = num_10.Value.Value;
-            Values[10] = num_11.Value.Value;
-            Values[11] = num_12.Value.Value;
-            Values[12] = num_13.Value.Value;
-            Values[13] = num_14.Value.Value;
-            Values[14] = num_15.Value.Value;
-            Values[15] = num_16.Value.Value;
+            Values[0] = num_1.Value ?? -1;
+            Values[1] = num_2.Value ?? -1;
+            Values[2] = num_3.Value ?? -1;
+            Values[3] = num_4.Value ?? -1;
+            Values[4] = num_5.Value ?? -1;
+            Values[5] = num_6.Value ?? -1;
+            Values[6] = num_7.Value ?? -1;
+            Values[7] = num_8.Value ?? -1;
+            Values[8] = num_9.Value ?? -1;
+            Values[9] = num_10.Value ?? -1;
+            Values[10] = num_11.Value ?? -1;
+            Values[11] = num_12.Value ?? -1;
+            Values[12] = num_13.Value ?? -1;
+            Values[13] = num_14.Value ?? -1;
+            Values[14] = num_15.Value ?? -1;
+            Values[15] = num_16.Value ?? -1;
             Saved = true;
             Close();
         }

@@ -35,6 +35,9 @@ namespace GTEventGenerator
             if (CurrentEvent is null)
                 return;
 
+            if (numericUpDown_FinishVCoord.Value is null)
+                numericUpDown_FinishVCoord.Value = 0;
+
             CurrentEvent.RaceParameters.EventGoalV = (int)numericUpDown_FinishVCoord.Value;
         }
 
@@ -42,6 +45,9 @@ namespace GTEventGenerator
         {
             if (CurrentEvent is null)
                 return;
+
+            if (numericUpDown_FinishWidth.Value is null)
+                numericUpDown_FinishWidth.Value = 0;
 
             CurrentEvent.RaceParameters.EventGoalWidth = (int)numericUpDown_FinishWidth.Value;
         }
@@ -51,6 +57,9 @@ namespace GTEventGenerator
             if (CurrentEvent is null)
                 return;
 
+            if (numericUpDown_TimeToFinish.Value is null)
+                numericUpDown_TimeToFinish.Value = 0;
+
             CurrentEvent.RaceParameters.TimeToFinish = TimeSpan.FromMilliseconds((double)numericUpDown_TimeToFinish.Value);
         }
 
@@ -58,6 +67,9 @@ namespace GTEventGenerator
         {
             if (CurrentEvent is null)
                 return;
+
+            if (numericUpDown_TimeToStart.Value is null)
+                numericUpDown_TimeToStart.Value = 0;
 
             CurrentEvent.RaceParameters.TimeToStart = TimeSpan.FromMilliseconds((double)numericUpDown_TimeToStart.Value);
         }
@@ -67,6 +79,9 @@ namespace GTEventGenerator
             if (CurrentEvent is null)
                 return;
 
+            if (numericUpDown_LapsToFinish.Value is null)
+                numericUpDown_LapsToFinish.Value = 0;
+
             CurrentEvent.RaceParameters.LapCount = (int)numericUpDown_LapsToFinish.Value;
         }
 
@@ -74,6 +89,9 @@ namespace GTEventGenerator
         {
             if (CurrentEvent is null)
                 return;
+
+            if (numericUpDown_MinutesToFinish.Value is null)
+                numericUpDown_MinutesToFinish.Value = 0;
 
             CurrentEvent.RaceParameters.MinutesCount = (int)numericUpDown_MinutesToFinish.Value;
         }
@@ -89,6 +107,9 @@ namespace GTEventGenerator
             if (CurrentEvent is null)
                 return;
 
+            if (numericUpDown_TireConsumptionMultiplier.Value is null)
+                numericUpDown_TireConsumptionMultiplier.Value = 0;
+
             CurrentEvent.RaceParameters.TireUseMultiplier = (int)numericUpDown_TireConsumptionMultiplier.Value;
         }
 
@@ -96,6 +117,9 @@ namespace GTEventGenerator
         {
             if (CurrentEvent is null)
                 return;
+
+            if (numericUpDown_FuelConsumptionMultiplier.Value is null)
+                numericUpDown_FuelConsumptionMultiplier.Value = 0;
 
             CurrentEvent.RaceParameters.FuelUseMultiplier = (int)numericUpDown_FuelConsumptionMultiplier.Value;
         }

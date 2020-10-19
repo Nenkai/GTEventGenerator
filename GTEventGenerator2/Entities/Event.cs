@@ -84,7 +84,7 @@ namespace GTEventGenerator.Entities
                 xml.WriteElementValue("game_mode", GameMode.ToString());
                 Information.WriteToXml(xml);
                 xml.WriteElementBool("inheritance", false);
-                RaceParameters.WriteToXml(xml);
+                RaceParameters.WriteToXml(this, xml);
                 Rewards.WriteToXml(xml);
                 Course.WriteToXml(xml);
                 Regulations.WriteToXml(xml);
