@@ -30,7 +30,6 @@ namespace GTEventGenerator.Entities
                 SeriesRewardCredits[i] = -1;
 
             Events = new List<Event>();
-            FolderId = -1;
         }
 
         public void OrderEventIDs()

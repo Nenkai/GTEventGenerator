@@ -155,7 +155,7 @@ namespace GTEventGenerator
             if (CurrentEvent is null || !_processEventSwitch)
                 return;
 
-            CurrentEvent.Name = txtEventName.Text;
+            CurrentEvent.Name = txt_EventTitle.Text;
             CurrentEvent.Information.SetTitle(CurrentEvent.Name);
 
             int currentEventIndex = GameParameter.Events.IndexOf(CurrentEvent);
@@ -163,6 +163,7 @@ namespace GTEventGenerator
             if (currentEventIndex < EventNames.Count)
                 EventNames[currentEventIndex] = $"{CurrentEvent.Index} - {CurrentEvent.Name}";
 
+            ReloadEventLists();
             UpdateEventListing();
         }
 

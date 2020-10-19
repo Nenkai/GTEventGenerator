@@ -63,7 +63,7 @@ namespace GTEventGenerator.Entities
                 for (int i = 0; i < PointTable.Length; i++)
                 {
                     if (MoneyPrizes[i] == -1)
-                        xml.WriteEmptyElement("point");
+                        xml.WriteElementInt("prize", 0);
                     else
                         xml.WriteElementInt("point", PointTable[i]);
                 }
@@ -73,7 +73,7 @@ namespace GTEventGenerator.Entities
                 for (int i = 0; i < MoneyPrizes.Length; i++)
                 {
                     if (MoneyPrizes[i] == -1)
-                        xml.WriteEmptyElement("prize");
+                        xml.WriteElementInt("prize", 0);
                     else
                         xml.WriteElementInt("prize", MoneyPrizes[i]);
                 }
