@@ -756,16 +756,6 @@ The way they are picked from the pool depends on 'Random Entry Gen Type'."/>
 
                     <GroupBox Header="GT6 Custom Track Data" Canvas.Left="626" Height="517" Width="322">
                         <Canvas>
-                            <Label Content="OwO" Canvas.Left="110" Canvas.Top="37" FontWeight="Bold" RenderTransformOrigin="0.5,0.5" Height="52" Width="87" FontSize="18" >
-                                <Label.RenderTransform>
-                                    <TransformGroup>
-                                        <ScaleTransform/>
-                                        <SkewTransform/>
-                                        <RotateTransform Angle="-30"/>
-                                        <TranslateTransform/>
-                                    </TransformGroup>
-                                </Label.RenderTransform>
-                            </Label>
 
                             <Label Content="Scenery :" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="133"/>
                             <Label Name="label_CustomScenery" Content="N/A" HorizontalAlignment="Left" HorizontalContentAlignment="Right" VerticalAlignment="Top" Canvas.Left="72" Canvas.Top="135" Width="228"/>
