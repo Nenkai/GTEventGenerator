@@ -14,8 +14,9 @@ It is not yet finished.
 - [x] Picking AI & all their details (Skill Level)
 - [x] AI Region & Driver *original* implemenentation
 - [x] Most track parameters
+- [x] Custom GT6 Tracks
+- [x] Custom GT6 Prizes (Paints & Cars)
 - [ ] Custom Evaluation Conditions
-- [ ] Custom rewards (Cars/Paint/Suits for GT6)
 - [ ] Fail Conditions
 
 
