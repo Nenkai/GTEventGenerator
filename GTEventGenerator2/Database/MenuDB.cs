@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
+using GTEventGenerator.Entities;
 
-namespace GTEventGenerator
+namespace GTEventGenerator.Database
 {
     public class MenuDB
     {

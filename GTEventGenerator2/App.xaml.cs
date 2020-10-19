@@ -16,7 +16,7 @@ namespace GTEventGenerator2
     {
         void AppDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            MessageBox.Show($"An error occured in the editor, please report to the creator:\n {e.Exception.InnerException.Message}");
+            MessageBox.Show($"An error occured in the editor, please report to the creator:\n {e.Exception?.InnerException ?? e.Exception}");
             e.Handled = true;
         }
     }

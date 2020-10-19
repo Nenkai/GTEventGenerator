@@ -15,7 +15,6 @@ namespace GTEventGenerator.Entities
         public string Title { get; set; } = "Folder Title";
         public string Description { get; set; } = "Folder Description";
         public string FileName { get; set; } = string.Empty;
-        public string FileNameID { get; set; } = string.Empty;
         public int Stars { get; set; }
         public int StarsNeeded { get; set; }
         public bool IsChampionship { get; set; }
@@ -32,7 +31,7 @@ namespace GTEventGenerator.Entities
             Category = new EventCategory("", 1000);
         }
 
-        public void WriteToXML(GameParameter parent, string dir, ref int lastEventRaceId, ref int eventRaceId, string eventType)
+        public void WriteToXML(GameParameter parent, string dir, int eventRaceIDStart, string eventType)
         {
             using (var xml = XmlWriter.Create(Path.Combine(dir, FileName+".xml"), new XmlWriterSettings() { Indent = true }))
             {
@@ -66,7 +65,7 @@ namespace GTEventGenerator.Entities
                 xml.WriteEndElement();
 
                 xml.WriteEmptyElement("ranking_list");
-                xml.WriteStartElement("id"); xml.WriteString(FileNameID.ToString()); xml.WriteEndElement();
+                xml.WriteStartElement("id"); xml.WriteString(parent.FolderId.ToString()); xml.WriteEndElement();
                 xml.WriteEmptyElement("voucher");
                 xml.WriteStartElement("registration"); xml.WriteString(0.ToString()); xml.WriteEndElement();
                 xml.WriteEmptyElement("bg_image");
@@ -83,23 +82,11 @@ namespace GTEventGenerator.Entities
                 xml.WriteStartElement("championship_value"); xml.WriteString(IsChampionship ? "1" : "0"); xml.WriteEndElement();
                 xml.WriteEmptyElement("need_folder_id");
 
+                parent.OrderEventIDs();
                 xml.WriteStartElement("event_id_list");
-                foreach (Event evnt in parent.Events)
-                {
-                    evnt.eventRaceId = lastEventRaceId = eventRaceId;
-
-                    if (evnt == parent.Events.Last())
-                    {
-                        xml.WriteString(eventRaceId.ToString());
-                        eventRaceId++;
-                    }
-                    else
-                    {
-                        xml.WriteString($"{eventRaceId.ToString()},");
-                        eventRaceId++;
-                    }
-                }
+                xml.WriteString(string.Join(",", parent.Events.Select(e => e.EventID)));
                 xml.WriteEndElement();
+
                 xml.WriteStartElement("argument1"); xml.WriteString((-1).ToString()); xml.WriteEndElement();
                 xml.WriteEmptyElement("argument2");
                 xml.WriteStartElement("argument3"); xml.WriteString(0.ToString()); xml.WriteEndElement();
@@ -110,10 +97,10 @@ namespace GTEventGenerator.Entities
             }
         }
 
-        public void ParseEventList(XmlDocument doc)
+        public void ParseEventList(GameParameter parent, XmlDocument doc)
         {
             ParseEventText(doc);
-            ParseEventData(doc);
+            ParseEventData(parent, doc);
         }
 
         private void ParseEventText(XmlDocument doc)
@@ -148,14 +135,14 @@ namespace GTEventGenerator.Entities
             }
         }
 
-        private void ParseEventData(XmlDocument doc)
+        private void ParseEventData(GameParameter parent, XmlDocument doc)
         {
             foreach (XmlNode node in doc.DocumentElement.ChildNodes[0])
             {
                 switch (node.Name)
                 {
                     case "id":
-                        FileNameID = node.InnerText;
+                        parent.FolderId = int.Parse(node.InnerText);
                         break;
 
                     case "event_type":

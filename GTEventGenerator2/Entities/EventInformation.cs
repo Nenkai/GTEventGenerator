@@ -8,6 +8,8 @@ namespace GTEventGenerator.Entities
 {
     public class EventInformation
     {
+        public bool NeedsPopulating { get; set; } = true;
+
         public Dictionary<string, string> Titles { get; set; }
         public Dictionary<string, string> OneLineTitles { get; set; }
         public Dictionary<string, string> Descriptions { get; set; }
@@ -46,6 +48,12 @@ namespace GTEventGenerator.Entities
         {
             foreach (var locale in Locales)
                 Titles[locale.Key] = title;
+        }
+
+        public void SetOneLineTitle(string title)
+        {
+            foreach (var locale in Locales)
+                OneLineTitles[locale.Key] = title;
         }
 
         public void SetDescription(string description)
@@ -113,9 +121,16 @@ namespace GTEventGenerator.Entities
                         {
                             if (Descriptions.TryGetValue(descNode.Name, out _))
                             {
-                                if (descNode.Name == "GB")
-                                    //evnt.Description = descNode.InnerText;
-                                Titles[descNode.Name] = descNode.InnerText;
+                                Descriptions[descNode.Name] = descNode.InnerText;
+                            }
+                        }
+                        break;
+                    case "one_line_title":
+                        foreach (XmlNode descNode in informationNode.ChildNodes)
+                        {
+                            if (Descriptions.TryGetValue(descNode.Name, out _))
+                            {
+                                OneLineTitles[descNode.Name] = descNode.InnerText;
                             }
                         }
                         break;

@@ -1,0 +1,43 @@
+﻿<Window x:Class="GTEventGenerator.PresentPickerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GTEventGenerator"
+        mc:Ignorable="d"
+        Title="Present Selection" Height="450" Width="800">
+    <Grid>
+        <GroupBox Header="Car Present" HorizontalAlignment="Left" Margin="10,0,0,0" Width="254">
+            <Canvas>
+                <ComboBox Name="cb_Manufacturers" SelectionChanged="cb_Manufacturers_SelectionChanged" Canvas.Left="10" Canvas.Top="10" Width="222"/>
+                <ListView Name="lv_CarList" Canvas.Left="10" Canvas.Top="37" Height="318" Width="222"/>
+                <Button Name="btn_SelectCar" Content="Select Car" Canvas.Left="10" Canvas.Top="360" Width="222" Click="btn_SelectCar_Click"/>
+            </Canvas>
+        </GroupBox>
+
+        <GroupBox Header="Paint Present" HorizontalAlignment="Left" Margin="269,0,0,0" Width="254">
+            <Canvas>
+                <TextBox Name="tb_PaintSearcher" Canvas.Left="10" Canvas.Top="14" Width="163"/>
+                <ListView Name="lv_PaintList" Canvas.Left="10" Canvas.Top="37" Height="318" Width="222">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Rectangle Fill="{Binding Color}" Visibility="Visible" Width="16" Height="16" Stroke="Gray"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Stretch="UniformToFill"/>
+                                <TextBlock Text="{Binding Path=PaintName}" Padding="5 0 0 0"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <Button Name="btn_PaintSearch" Content="Search" Canvas.Left="178" Canvas.Top="12" Width="54" Click="btn_PaintSearch_Click"/>
+                <Button Name="btn_SelectPaint" Content="Select Paint" Canvas.Left="10" Canvas.Top="360" Width="222" Click="btn_SelectPaint_Click"/>
+            </Canvas>
+        </GroupBox>
+
+        <GroupBox Header="Racing Gear Present" HorizontalAlignment="Left" Margin="528,0,0,10" Width="254">
+            <Canvas>
+
+            </Canvas>
+        </GroupBox>
+
+    </Grid>
+</Window>

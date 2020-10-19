@@ -18,7 +18,7 @@ using Humanizer;
 
 using GTEventGenerator.Entities;
 using GTEventGenerator.Utils;
-
+using GTEventGenerator.Database;
 
 namespace GTEventGenerator
 {
@@ -31,9 +31,12 @@ namespace GTEventGenerator
         private SQLiteDataReader results;
         public GameParameter GameParameter { get; set; }
         public Event CurrentEvent { get; set; }
-        int lastEventFolderId = 1000, lastEventRaceId = 9900000, eventFolderId = 1000, eventRaceId = 9900000;
+
         bool menuDBValid = false, eventHasNoStars = false, validationErrors = false;
         string selectedPath = "";
+
+        public const int BaseEventID = 9900000;
+        public const int BaseFolderID = 1000;
 
         private bool _processEventSwitch = true;
         public List<string> EventNames { get; set; }
@@ -53,56 +56,30 @@ namespace GTEventGenerator
             this.DataContext = evnt;
 
             // Assign default values
-            evnt.Id = GameParameter.Events.Count + 1;
-            evnt.Name = $"{GameParameter.EventList.Title}: Event {evnt.Id}";
-
+            evnt.Index = GameParameter.Events.Count + 1;
+            evnt.Name = $"{GameParameter.EventList.Title}: Event {evnt.Index}";
             evnt.Rewards.Stars = 3;
+            GameParameter.OrderEventIDs();
 
             _processEventSwitch = false;
 
-            EventNames.Add($"{evnt.Id} - {evnt.Name}");
+            EventNames.Add($"{evnt.Index} - {evnt.Name}");
             UpdateEventListing();
 
             GameParameter.Events.Add(evnt);
 
-            SelectEvent(evnt.Id - 1);
+            SelectEvent(evnt.Index - 1);
             rdoStarsThree.IsChecked = true;
 
             ToggleEventControls(true);
 
-            btnRemoveRace.IsEnabled = GameParameter.Events.Count <= 64;
+            btnRemoveRace.IsEnabled = GameParameter.Events.Count <= 100;
 
             _processEventSwitch = true;
         }
 
         private void GameGenerator_Load(object sender, EventArgs e)
         {
-            if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "eventid.dat")))
-            {
-                // Check what the last eventid written was
-                using (StreamReader sr = new StreamReader(Path.Combine(Directory.GetCurrentDirectory(), "eventid.dat")))
-                {
-                    if (int.TryParse(sr.ReadLine(), out eventRaceId))
-                    {
-                        // Increment after reading
-                        eventRaceId++;
-                    }
-                }
-            }
-
-            if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "folderid.dat")))
-            {
-                // Check what the last eventid written was
-                using (StreamReader sr = new StreamReader(Path.Combine(Directory.GetCurrentDirectory(), "folderid.dat")))
-                {
-                    if (int.TryParse(sr.ReadLine(), out eventRaceId))
-                    {
-                        // Increment after reading
-                        eventFolderId++;
-                    }
-                }
-            }
-
             var dbPath = Path.Combine(Directory.GetCurrentDirectory(), "data", "data.db");
             if (!File.Exists(dbPath))
             {
@@ -153,7 +130,11 @@ namespace GTEventGenerator
                     return;
                 }
 
-                PopulateSelectedTab();
+
+                if (tabControl.SelectedIndex == 1)
+                    UpdateEventListing();
+                else
+                    PopulateSelectedTab();
             }
         }
 
@@ -171,14 +152,16 @@ namespace GTEventGenerator
 
         private void txtEventName_TextChanged(object sender, EventArgs e)
         {
-            if (CurrentEvent is null)
+            if (CurrentEvent is null || !_processEventSwitch)
                 return;
 
             CurrentEvent.Name = txtEventName.Text;
             CurrentEvent.Information.SetTitle(CurrentEvent.Name);
 
             int currentEventIndex = GameParameter.Events.IndexOf(CurrentEvent);
-            EventNames[currentEventIndex] = $"{CurrentEvent.Id} - {CurrentEvent.Name}";
+
+            if (currentEventIndex < EventNames.Count)
+                EventNames[currentEventIndex] = $"{CurrentEvent.Index} - {CurrentEvent.Name}";
 
             UpdateEventListing();
         }
@@ -194,10 +177,13 @@ namespace GTEventGenerator
             MessageBoxResult deletionResult = MessageBox.Show($"Are you sure you wish to delete the event \"{CurrentEvent.Name}\"?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (deletionResult == MessageBoxResult.Yes)
             {
-                //raceIdCounter = CurrentEvent.Id;
-                GameParameter.Events.Remove(GameParameter.Events.Find(x => x.Id == CurrentEvent.Id));
-
+                GameParameter.Events.Remove(GameParameter.Events.Find(x => x.Index == CurrentEvent.Index));
                 CurrentEvent = GameParameter.Events.Count > 0 ? GameParameter.Events.Last() : null;
+
+                int eventID = GameParameter.Events.FirstOrDefault()?.EventID - 1 ?? GameParameter.BaseEventID;
+                GameParameter.FirstEventID = eventID;
+                GameParameter.OrderEventIDs();
+
                 ReloadEventLists(GameParameter.Events.Count - 1);
                 UpdateEventListing();
 
@@ -234,7 +220,7 @@ namespace GTEventGenerator
 
         private void newEventToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBoxResult newOverwrite = MessageBox.Show("This will delete the event you are currently editing. Would you like to save your event now?", "New Event", MessageBoxButton.YesNoCancel, MessageBoxImage.Information);
+            MessageBoxResult newOverwrite = MessageBox.Show("This will delete the folder you are currently editing. Would you like to save your folder now?", "New Event", MessageBoxButton.YesNoCancel, MessageBoxImage.Information);
 
             if (newOverwrite == MessageBoxResult.Yes)
                 btnEventGenerate_Click(sender, e);
@@ -245,9 +231,6 @@ namespace GTEventGenerator
 
                 GameParameter.EventList.Title = "New Event";
                 GameParameter.EventList.Description = "Event Description";
-
-                GameParameter.FolderId = eventFolderId;
-                GameParameter.EventList.FileNameID = "";
 
                 txtGameParamName.Text = GameParameter.EventList.Title;
                 txtGameParamDesc.Text = GameParameter.EventList.Description;
@@ -297,7 +280,7 @@ namespace GTEventGenerator
                 else
                     ToggleEventControls(false);
 
-                RefreshControls();
+                RefreshFolderControls();
             }
         }
 
@@ -355,7 +338,7 @@ namespace GTEventGenerator
                 else
                     ToggleEventControls(false);
 
-                RefreshControls();
+                RefreshFolderControls();
             }
         }
 
@@ -390,6 +373,12 @@ namespace GTEventGenerator
         {
             if (GameParameter != null)
                 GameParameter.EventList.StarsNeeded = ((Xceed.Wpf.Toolkit.IntegerUpDown)sender).Value.Value;
+        }
+
+        private void iud_FolderID_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (GameParameter != null)
+                GameParameter.FolderId = ((Xceed.Wpf.Toolkit.IntegerUpDown)sender).Value.Value;
         }
 
         private void rdoStarsOne_CheckedChanged(object sender, EventArgs e)
@@ -493,13 +482,13 @@ namespace GTEventGenerator
         {
             _processEventSwitch = false;
             SelectEvent(eventIndex);
-            _processEventSwitch = true;
 
             this.DataContext = CurrentEvent;
 
             CurrentEvent.MarkUnpopulated();
             PopulateSelectedTab();
             PopulateEventDetails();
+            _processEventSwitch = true;
         }
 
         /// <summary>
@@ -526,12 +515,12 @@ namespace GTEventGenerator
             _processEventSwitch = false;
             EventNames.Clear();
             // Rebuild list from 1 e.g. if 1, 2, 3, delete 2, 3 becomes 2
-            int eventIdCounter = 1;
+            int eventCounter = 1;
             for (int i = 0; i < GameParameter.Events.Count; i++)
             {
                 Event evnt = GameParameter.Events[i];
-                evnt.Id = eventIdCounter++;
-                EventNames.Add($"{evnt.Id} - {evnt.Name}");
+                evnt.Index = eventCounter++;
+                EventNames.Add($"{evnt.Index} - {evnt.Name}");
             }
 
 
@@ -635,12 +624,10 @@ namespace GTEventGenerator
         public void SerializeGameParameter(bool shouldEditDB)
         {
             GameParameter.EventList.FileName = Regex.Replace(GameParameter.EventList.Title.Replace(" ", "").Replace(".", ""), "[^a-zA-Z0-9_.]+", "", RegexOptions.Compiled).ToLower();
-
-            lastEventFolderId = eventFolderId;
-
+            /*
             if (menuDBValid && shouldEditDB)
             {
-                int firstSafeFolderID = 9999, firstSafeSortOrderInCategory = 9999, firstSafeTitleID = 9999;
+                
 
                 int lastID = MenuDB.GetLastFolderID();
                
@@ -648,8 +635,8 @@ namespace GTEventGenerator
                     firstSafeFolderID = lastID + 1;
 
                     // If not already input - probably from saved file
-                    if (string.IsNullOrEmpty(GameParameter.EventList.FileNameID))
-                        GameParameter.EventList.FileNameID = firstSafeFolderID.ToString();
+                    if (string.IsNullOrEmpty(GameParameter.EventList.FolderID))
+                        GameParameter.EventList.FolderID = firstSafeFolderID.ToString();
 
                     if (GameParameter.FolderId == -1)
                         GameParameter.FolderId = firstSafeFolderID;
@@ -671,58 +658,47 @@ namespace GTEventGenerator
             }
             else
             {
-                GameParameter.EventList.FileNameID = lastEventFolderId.ToString();
+                GameParameter.FolderId = BaseFolderID.ToString();
             }
+            */
 
             if (selectedPath == "")
                 selectedPath = Path.Combine(Directory.GetCurrentDirectory(), "output", "game_parameter", "gt6", "event");
 
             string mainParamFile = Path.Combine(selectedPath);
-            GameParameter.EventList.WriteToXML(GameParameter, mainParamFile, ref lastEventRaceId, ref eventRaceId, cboEventCategory.SelectedItem.ToString());
+            GameParameter.EventList.WriteToXML(GameParameter, mainParamFile, BaseEventID, cboEventCategory.SelectedItem.ToString());
 
-            string filePath = Path.Combine(Path.GetDirectoryName(selectedPath), $"r{GameParameter.EventList.FileNameID}.xml");
-
-            /*
-            // Assume new event's races are in the same path as the event itself, as it should be for GT
-            if (GameParameter.EventList.FileNameID != null && GameParameter.EventList.FileNameID != "xxx" && File.Exists(filePath))
-                ParseEventRaces(GameParameter, filePath);
-            else
-                MessageBox.Show("No races found for the imported event. This event will have no races until some are added.", "Import Event", MessageBoxButton.OK, MessageBoxImage.Information);
-                */
-
-            using (var xml = XmlWriter.Create(Path.Combine(selectedPath, $"r{GameParameter.EventList.FileNameID}.xml"), new XmlWriterSettings() { Indent = true }))
+            using (var xml = XmlWriter.Create(Path.Combine(selectedPath, $"r{GameParameter.FolderId}.xml"), new XmlWriterSettings() { Indent = true }))
             {
                 xml.WriteStartElement("xml");
                 GameParameter.WriteToXml(xml);
                 xml.WriteEndElement();
             }
 
-            using (var sw = new StreamWriter(Path.Combine(Directory.GetCurrentDirectory(), "eventid.dat")))
-                sw.WriteLine(lastEventRaceId);
-
-            eventFolderId++;
-
-            using (var sw = new StreamWriter(Path.Combine(Directory.GetCurrentDirectory(), "folderid.dat")))
-                sw.WriteLine(lastEventFolderId);
-
             GameParameter.EventList.Stars = 0;
 
-            MessageBox.Show($"Event and races successfully written to {selectedPath}\\{GameParameter.EventList.FileName}.xml and {selectedPath}\\r{GameParameter.EventList.FileNameID}.xml!", 
+            MessageBox.Show($"Event and races successfully written to {selectedPath}\\{GameParameter.EventList.FileName}.xml and {selectedPath}\\r{GameParameter.FolderId}.xml!", 
                 "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
+
         public GameParameter ImportFolder(string filePath)
         {
-            GameParameter gp = new GameParameter();
+            var gp = new GameParameter();
 
-            XmlDocument doc = new XmlDocument();
+            var doc = new XmlDocument();
             doc.Load(filePath);
 
-            gp.EventList.ParseEventList(doc);
+            gp.EventList.ParseEventList(gp, doc);
 
             string dir = Path.GetDirectoryName(filePath);
-            XmlDocument eventDoc = new XmlDocument();
-            eventDoc.Load(Path.Combine(dir, $"r{gp.EventList.FileNameID}.xml"));
+
+            var settings = new XmlReaderSettings();
+            settings.IgnoreComments = true;
+            var reader = XmlReader.Create(Path.Combine(dir, $"r{gp.FolderId}.xml"), settings);
+            var eventDoc = new XmlDocument();
+            eventDoc.Load(reader);
+
             gp.ParseEventsFromFile(eventDoc);
 
             return gp;
@@ -731,24 +707,23 @@ namespace GTEventGenerator
         public GameParameter ImportFromEventList(string filePath)
         {
             XmlDocument eventDoc = new XmlDocument();
-            GameParameter gp = new GameParameter();
-            eventDoc.Load(filePath);
+            var settings = new XmlReaderSettings();
+            settings.IgnoreComments = true;
+            var reader = XmlReader.Create(filePath, settings);
+            var gp = new GameParameter();
+            eventDoc.Load(reader);
+
             gp.ParseEventsFromFile(eventDoc);
             return gp;
         }
 
-        public void ParseEventRaces(GameParameter gameParam, string filePath)
-        {
-            XmlDocument doc = new XmlDocument();
-            doc.Load(filePath);
-            gameParam.ParseEventsFromFile(doc);
-        }
 
-        public void RefreshControls()
+        public void RefreshFolderControls()
         {
             txtGameParamName.Text = GameParameter.EventList.Title;
             txtGameParamDesc.Text = GameParameter.EventList.Description;
             iud_StarsNeeded.Value = GameParameter.EventList.StarsNeeded;
+            iud_FolderID.Value = GameParameter.FolderId;
 
             if (GameParameter.Events != null)
                 ReloadEventLists(isQuickPick: false);
@@ -759,7 +734,12 @@ namespace GTEventGenerator
         public void PopulateSelectedTab()
         {
             var current = tabEvent.SelectedItem as TabItem;
-            if (current.Name.Equals("tabEventRegulation"))
+            if (current.Name.Equals("tabEventInfo"))
+            {
+                if (CurrentEvent.Information.NeedsPopulating)
+                    PopulateEventInfoTab();
+            }
+            else if (current.Name.Equals("tabEventRegulation"))
             {
                 if (CurrentEvent.Regulations.NeedsPopulating)
                     PrePopulateRegulations();
@@ -776,15 +756,23 @@ namespace GTEventGenerator
             }
             else if (current.Name.Equals("tabEntries"))
             {
-                PopulateEntries();
+                if (CurrentEvent.Entries.NeedsPopulating)
+                    PopulateEntries();
             }
             else if (current.Name.Equals("tabEventCourse"))
             {
-                PrePopulateCourses();
+                if (CurrentEvent.Course.NeedsPopulating)
+                    PrePopulateCourses();
             }
             else if (current.Name.Equals("tabEvalConditions"))
             {
-                PrePopulateEvalConditions();
+                if (CurrentEvent.EvalConditions.NeedsPopulating)
+                    PrePopulateEvalConditions();
+            }
+            else if (current.Name.Equals("tabEventRewards"))
+            {
+                if (CurrentEvent.Rewards.NeedsPopulating)
+                    PopulateRewards();
             }
         }
     }

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
 
-namespace GTEventGenerator
+namespace GTEventGenerator.Database
 {
     public class GameDB
     {
@@ -70,7 +70,7 @@ namespace GTEventGenerator
 
         public List<string> GetAllCourseNamesSorted()
         {
-            var res = ExecuteQuery("SELECT * FROM Courses ORDER BY CourseName");
+            var res = ExecuteQuery("SELECT * FROM Courses");
 
             List<string> list = new List<string>();
             while (res.Read())
@@ -104,9 +104,17 @@ namespace GTEventGenerator
             return res.GetInt32(0);
         }
 
+        public string GetCourseLogoByLabel(string label)
+        {
+            var res = ExecuteQuery($"SELECT CourseLogo FROM Courses WHERE CourseInternalName = '{label}'");
+            res.Read();
+
+            return res.GetString(0);
+        }
+
         public string GetCarLabelByActualName(string name)
         {
-            var res = ExecuteQuery($"SELECT VehicleInternalName FROM Vehicles WHERE VehicleName = '{name}'");
+            var res = ExecuteQuery($"SELECT VehicleInternalName FROM Vehicles WHERE VehicleName = \"{name}\"");
             res.Read();
 
             return res.GetString(0);
@@ -118,6 +126,26 @@ namespace GTEventGenerator
             res.Read();
 
             return (res.GetString(0), res.GetInt32(1));
+        }
+
+        public List<(int id, string name, int color)> SearchPaintsByName(string name)
+        {
+            var res = ExecuteQuery($"SELECT * FROM PaintColors WHERE LabelEng LIKE '%{name}%'  --case-insensitive");
+            res.Read();
+
+            var list = new List<(int, string, int)>();
+            while (res.Read())
+                list.Add( (res.GetInt32(3), res.GetString(1), res.GetInt32(2)) );
+
+            return list;
+        }
+
+        public string GetPaintNameByID(int id)
+        {
+            var res = ExecuteQuery($"SELECT LabelEng FROM PaintColors WHERE id = {id}");
+            res.Read();
+
+            return res.GetString(0);
         }
 
         public SQLiteDataReader ExecuteQuery(string query)

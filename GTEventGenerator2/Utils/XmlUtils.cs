@@ -34,6 +34,18 @@ namespace GTEventGenerator
                 WriteElementBool(xml, localName, value.Value);
         }
 
+        public static void WriteElementBoolIfSet(this XmlWriter xml, string localName, bool? value)
+        {
+            if (value != null)
+                WriteElementValue(xml, localName, value.Value ? "1" : "0");
+        }
+
+        public static void WriteElementBoolIfTrue(this XmlWriter xml, string localName, bool value)
+        {
+            if (value)
+                WriteElementValue(xml, localName, "1");
+        }
+
         public static void WriteElementInt(this XmlWriter xml, string localName, int value)
             => WriteElementValue(xml, localName, value.ToString());
 

@@ -86,7 +86,7 @@ namespace GTEventGenerator.Entities
                 else if (entrySetNode.Name == "entry")
                 {
                     var newEntry = ParseEntry(entrySetNode);
-                    if (!newEntry.IsAI)
+                    if (!newEntry.IsAI && !string.IsNullOrEmpty(newEntry.CarLabel))
                         Player = newEntry;
                 }
             }

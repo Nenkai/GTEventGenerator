@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
+using System.ComponentModel;
 namespace GTEventGenerator.Entities
 {
     public class EventRewards
@@ -16,12 +17,17 @@ namespace GTEventGenerator.Entities
         public int PercentAtPP100 { get; set; }
         public int PPBase { get; set; }
         public bool GivesAllTrophyRewards { get; set; }
-        public PresentType PresentType { get; set; } = PresentType.ORDER;
+        public PresentOrderType PresentType { get; set; } = PresentOrderType.ORDER;
+        public ParticipationPresentType ParticipationPresentType { get; set; }
+
         public int[] MoneyPrizes = new int[16];
         public int[] PointTable = new int[16];
         public int Stars { get; set; }
 
         public bool NeedsPopulating { get; set; } = true;
+
+        public EventPresent[] RewardPresents = new EventPresent[3];
+        public EventPresent[] ParticipatePresents = new EventPresent[3];
 
         public EventRewards()
         {
@@ -34,6 +40,12 @@ namespace GTEventGenerator.Entities
             for (int i = 6; i < 16; i++)
                 MoneyPrizes[i] = -1;
         }
+
+        public void SetRewardPresent(int index, EventPresent present)
+            => RewardPresents[index] = present;
+
+        public void SetParticipatePresent(int index, EventPresent present)
+            => ParticipatePresents[index] = present;
 
         public void WriteToXml(XmlWriter xml)
         {
@@ -75,6 +87,34 @@ namespace GTEventGenerator.Entities
                     xml.WriteElementValue("star", "COMPLETE");
                 }
                 xml.WriteEndElement();
+
+                if (RewardPresents.Any(e => e != null))
+                {
+                    xml.WriteElementValue("present_type", PresentType.ToString());
+                    xml.WriteStartElement("present");
+                    foreach (var present in RewardPresents)
+                    {
+                        if (present is null)
+                            xml.WriteEmptyElement("item");
+                        else
+                            present.WriteToXml(xml);
+                    }
+                    xml.WriteEndElement();
+                }
+
+                if (ParticipatePresents.Any(e => e != null))
+                {
+                    xml.WriteElementValue("entry_present_type", ParticipationPresentType.ToString());
+                    xml.WriteStartElement("entry_present");
+                    foreach (var present in ParticipatePresents)
+                    {
+                        if (present is null)
+                            xml.WriteEmptyElement("item");
+                        else
+                            present.WriteToXml(xml);
+                    }
+                    xml.WriteEndElement();
+                }
             }
             xml.WriteEndElement();
         }
@@ -96,7 +136,12 @@ namespace GTEventGenerator.Entities
                         PPBase = rewardNode.ReadValueInt(); break;
 
                     case "present_type":
-                        PresentType = rewardNode.ReadValueEnum<PresentType>(); break;
+                        PresentType = rewardNode.ReadValueEnum<PresentOrderType>(); break;
+                    case "present":
+                        ParsePresentRewards(rewardNode); break;
+
+                    case "entry_present":
+                        ParseParticipateRewards(rewardNode); break;
 
                     case "prize_type":
                         GivesAllTrophyRewards = rewardNode.ReadValueBool(); break;
@@ -115,12 +160,159 @@ namespace GTEventGenerator.Entities
                 }
             }
         }
+
+        public void ParsePresentRewards(XmlNode node)
+        {
+            int i = 0;
+            foreach (XmlNode itemNode in node.SelectNodes("item"))
+            {
+                if (i >= 3)
+                    return;
+
+                if (itemNode.Attributes.Count == 0) // No present for this tier
+                {
+                    i++;
+                    continue;
+                }
+
+                PresentType type = (PresentType)int.Parse(itemNode.Attributes["category_id"].Value);
+                switch (type)
+                {
+                    case Entities.PresentType.CAR:
+                        RewardPresents[i] = EventPresent.FromCar(itemNode.Attributes["f_name"].Value);
+                        break;
+                    case Entities.PresentType.PAINT:
+                        RewardPresents[i] = EventPresent.FromPaint(int.Parse(itemNode.Attributes["argument1"].Value));
+                        break;
+                }
+
+                i++;
+            }
+        }
+
+        public void ParseParticipateRewards(XmlNode node)
+        {
+            int i = 0;
+            foreach (XmlNode itemNode in node.SelectNodes("item"))
+            {
+                if (i >= 3)
+                    return;
+
+                if (itemNode.Attributes.Count == 0) // No present for this tier
+                {
+                    i++;
+                    continue;
+                }
+
+                PresentType type = (PresentType)int.Parse(itemNode.Attributes["category_id"].Value);
+                switch (type)
+                {
+                    case Entities.PresentType.CAR:
+                        ParticipatePresents[i] = EventPresent.FromCar(itemNode.Attributes["f_name"].Value);
+                        break;
+                    case Entities.PresentType.PAINT:
+                        ParticipatePresents[i] = EventPresent.FromPaint(int.Parse(itemNode.Attributes["argument1"].Value));
+                        break;
+                }
+
+                i++;
+            }
+        }
+    }
+
+    public class EventPresent
+    {
+        public PresentType PresentType { get; set; }
+        public int PaintID { get; set; }
+        public string CarLabel { get; set; }
+        public int SuitID { get; set; }
+
+        public static EventPresent FromCar(string carLabel)
+        {
+            var present = new EventPresent();
+            present.PresentType = PresentType.CAR;
+            present.CarLabel = carLabel;
+            return present;
+        }
+
+        public static EventPresent FromPaint(int paintID)
+        {
+            var present = new EventPresent();
+            present.PresentType = PresentType.PAINT;
+            present.PaintID = paintID;
+            return present;
+        }
+
+        public static EventPresent FromSuit(int suitID)
+        {
+            var present = new EventPresent();
+            present.PresentType = PresentType.SUIT;
+            present.SuitID = suitID;
+            return present;
+        }
+
+        public void WriteToXml(XmlWriter xml)
+        {
+            xml.WriteStartElement("item");
+            if (PresentType == PresentType.PAINT)
+                xml.WriteAttributeString("argument1", PaintID.ToString());
+            else if (PresentType == PresentType.SUIT)
+                xml.WriteAttributeString("argument1", "0");
+            else
+                xml.WriteAttributeString("argument1", "-1");
+
+            xml.WriteAttributeString("argument2", "");
+            xml.WriteAttributeString("argument3", "0");
+
+            if (PresentType == PresentType.SUIT)
+                xml.WriteAttributeString("argument4", SuitID.ToString());
+            else
+                 xml.WriteAttributeString("argument4", "");
+
+            xml.WriteAttributeString("category_id", ((int)PresentType).ToString());
+            if (PresentType == PresentType.CAR)
+            {
+                xml.WriteAttributeString("f_name", CarLabel);
+                xml.WriteAttributeString("type_id", "9");
+            }
+            else if (PresentType == PresentType.PAINT)
+            {
+                xml.WriteAttributeString("f_name", "");
+                xml.WriteAttributeString("type_id", "3");
+            }
+
+            xml.WriteEndElement();
+
+        }
+
     }
 
     public enum PresentType
     {
         NONE,
+        SUIT = 302,
+        PAINT = 601,
+        CAR = 901,
+    }
+
+    public enum PresentOrderType
+    {
+        [Description("By Placement Order (1st/2nd/3rd)")]
         ORDER,
+
+        [Description("Randomly regardless of Placement")]
+        RANDOM,
+    }
+
+    public enum ParticipationPresentType
+    {
+        [Description("Finishing Event")]
+        FINISH,
+
+        [Description("All (?)")]
+        ORDER,
+
+        [Description("Completing One Lap")]
         RANDOM,
     }
 }

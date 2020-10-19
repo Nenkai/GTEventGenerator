@@ -106,6 +106,42 @@ namespace GTEventGenerator.Entities
             }
         }
 
+        public bool TuningConstrained { get; set; }
+        private bool? _tuningEnabled;
+        public bool? TuningEnabled
+        {
+            get => TuningConstrained ? _tuningEnabled : null;
+            set
+            {
+                _tuningEnabled = value;
+                TuningConstrained = _tuningEnabled.HasValue;
+            }
+        }
+
+        public bool SuggestedGearConstrained { get; set; }
+        private bool? _suggestedGearEnabled;
+        public bool? SuggestedGearEnabled
+        {
+            get => SuggestedGearConstrained ? _suggestedGearEnabled : null;
+            set
+            {
+                _suggestedGearEnabled = value;
+                SuggestedGearConstrained = _suggestedGearEnabled.HasValue;
+            }
+        }
+
+        public bool PowerLimitConstrained { get; set; }
+        private float? _powerLimit;
+        public float? PowerLimit
+        {
+            get => PowerLimitConstrained ? _powerLimit : null;
+            set
+            {
+                _powerLimit = value;
+                PowerLimitConstrained = _powerLimit.HasValue;
+            }
+        }
+
         public void WriteToXml(XmlWriter xml)
         {
             xml.WriteStartElement("constraint");
@@ -119,11 +155,17 @@ namespace GTEventGenerator.Entities
             xml.WriteElementEnumInt("limit_tire_r", RearTireLimit);
             xml.WriteElementEnumInt("need_tire_f", NeededFrontTire);
             xml.WriteElementEnumInt("need_tire_r", NeededRearTire);
+
+            if (PowerLimit.HasValue)
+                xml.WriteElementFloat("restrictor_limit", (float)Math.Floor((double)(PowerLimit * 10f)));
+
             xml.WriteElementBoolOrNull("simulation", !SkidRecoveryForceEnabled);
             xml.WriteElementEnumInt("suggest_tire_f", SuggestedFrontTire);
             xml.WriteElementEnumInt("suggest_tire_r", SuggestedRearTire);
+            xml.WriteElementBoolIfSet("suggested_gear", SuggestedGearEnabled);
             xml.WriteElementBoolOrNull("tcs", TCSEnabled);
             xml.WriteElementBoolOrNull("transmission", TransmissionEnabled);
+            xml.WriteElementBoolIfSet("tuning", TuningEnabled);
             xml.WriteEndElement();
         }
 
@@ -177,6 +219,9 @@ namespace GTEventGenerator.Entities
                         break;
                     case "transmission":
                         TransmissionEnabled = constraintNode.ReadValueBoolNull();
+                        break;
+                    case "tuning":
+                        TuningEnabled = constraintNode.ReadValueBoolNull();
                         break;
 
                 }

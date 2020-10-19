@@ -5,6 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
+using System.IO.Compression;
+
+using Syroot.BinaryData;
+using Syroot.BinaryData.Core;
+using ICSharpCode.SharpZipLib.Zip.Compression;
+
 namespace GTEventGenerator.Utils
 {
     public static class MiscUtils
@@ -45,6 +52,40 @@ namespace GTEventGenerator.Utils
             }
 
             return bitmap;
+        }
+
+        public static byte[] ZlibCompress(byte[] input)
+        {
+            using (var ms = new MemoryStream(input.Length))
+            using (var bs = new BinaryStream(ms))
+            {
+                bs.WriteUInt32(0xFFF7EEC5);
+                bs.WriteInt32(-input.Length);
+
+                var d = new Deflater(Deflater.DEFAULT_COMPRESSION, true);
+                d.SetInput(input);
+                d.Finish();
+
+                int count = d.Deflate(input);
+                bs.Write(input, 0, count);
+                return ms.ToArray();
+            }
+        }
+
+        public static byte[] Deflate(byte[] data)
+        {
+            using (var ms = new MemoryStream(data))
+            using (var bs = new BinaryStream(ms))
+            {
+                bs.ReadUInt32(); // Magic
+                int outSize = -bs.ReadInt32();
+
+                byte[] deflatedData = new byte[outSize];
+                using (var ds = new DeflateStream(bs, CompressionMode.Decompress))
+                    ds.Read(deflatedData, 0, deflatedData.Length);
+
+                return deflatedData;   
+            }
         }
     }
 }

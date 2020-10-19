@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml;
+using System.Windows;
 using System.Windows.Controls;
 
 using GTEventGenerator.Entities;
@@ -76,6 +77,11 @@ namespace GTEventGenerator
         }
         #endregion
 
+        public void sud_PowerLimit_ValueChanged(object sender, RoutedEventArgs e)
+        {
+            CurrentEvent.Constraints.PowerLimit = sud_PowerLimit.Value.Value;
+        }
+
         public void PopulateConstraints()
         {
             if (comboBox_ConstrainedTiresMinF.Items.Count == 1)
@@ -92,24 +98,17 @@ namespace GTEventGenerator
                     comboBox_ConstrainedTiresSuggestF.Items.Add(tireName);
                     comboBox_ConstrainedTiresSuggestR.Items.Add(tireName);
                 }
-
-                comboBox_ConstrainedTiresMinF.SelectedIndex = 0;
-                comboBox_ConstrainedTiresMinR.SelectedIndex = 0;
-                comboBox_ConstrainedTiresMaxR.SelectedIndex = 0;
-                comboBox_ConstrainedTiresMaxF.SelectedIndex = 0;
-                comboBox_ConstrainedTiresSuggestF.SelectedIndex = 0;
-                comboBox_ConstrainedTiresSuggestR.SelectedIndex = 0;
-            }
-            else
-            {
-                comboBox_ConstrainedTiresMinF.SelectedIndex = (int)CurrentEvent.Constraints.NeededFrontTire+1;
-                comboBox_ConstrainedTiresMinR.SelectedIndex = (int)CurrentEvent.Constraints.NeededRearTire+1;
-                comboBox_ConstrainedTiresMaxR.SelectedIndex = (int)CurrentEvent.Constraints.RearTireLimit+1;
-                comboBox_ConstrainedTiresMaxF.SelectedIndex = (int)CurrentEvent.Constraints.FrontTireLimit+1;
-                comboBox_ConstrainedTiresSuggestF.SelectedIndex = (int)CurrentEvent.Constraints.SuggestedFrontTire+1;
-                comboBox_ConstrainedTiresSuggestR.SelectedIndex = (int)CurrentEvent.Constraints.SuggestedRearTire+1;
             }
 
+            comboBox_ConstrainedTiresMinF.SelectedIndex = (int)CurrentEvent.Constraints.NeededFrontTire+1;
+            comboBox_ConstrainedTiresMinR.SelectedIndex = (int)CurrentEvent.Constraints.NeededRearTire+1;
+            comboBox_ConstrainedTiresMaxR.SelectedIndex = (int)CurrentEvent.Constraints.RearTireLimit+1;
+            comboBox_ConstrainedTiresMaxF.SelectedIndex = (int)CurrentEvent.Constraints.FrontTireLimit+1;
+            comboBox_ConstrainedTiresSuggestF.SelectedIndex = (int)CurrentEvent.Constraints.SuggestedFrontTire+1;
+            comboBox_ConstrainedTiresSuggestR.SelectedIndex = (int)CurrentEvent.Constraints.SuggestedRearTire+1;
+            
+
+            sud_PowerLimit.Value = CurrentEvent.Constraints.PowerLimit;
             CurrentEvent.Constraints.NeedsPopulating = false;
         }
     }

@@ -14,6 +14,8 @@ namespace GTEventGenerator.Entities
 
         public bool NeedsPopulating { get; set; } = true;
 
+        public CustomCourse CustomCourse { get; set; }
+
         public void WriteToXml(XmlWriter xml)
         {
             xml.WriteStartElement("track");
@@ -21,6 +23,12 @@ namespace GTEventGenerator.Entities
             xml.WriteStartElement("course_code");
             xml.WriteAttributeString("label", CourseLabel);
             xml.WriteEndElement();
+
+            if (CourseLabel.Equals("coursemaker") && CustomCourse != null)
+            {
+                xml.WriteElementInt("generated_course_id", 0);
+                xml.WriteElementValue("edit_data", Encoding.ASCII.GetString(CustomCourse.Data));
+            }
 
             xml.WriteElementInt("course_layout_no", CourseLayoutNumber);
             xml.WriteElementBool("is_omedeto_difficulty", false);
@@ -51,6 +59,11 @@ namespace GTEventGenerator.Entities
                 {
                     CourseLabel = trackNode.Attributes["label"].Value;
                     break;
+                }
+
+                if (trackNode.Name == "edit_data")
+                {
+                    CustomCourse = CustomCourse.FromBase64(Encoding.ASCII.GetBytes(trackNode.ReadValueString()));
                 }
             }
         }

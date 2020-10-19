@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.ComponentModel;
+using System.Globalization;
 
 namespace GTEventGenerator.Entities
 {
@@ -186,18 +187,20 @@ namespace GTEventGenerator.Entities
                     //   Stand = raceNode.ReadValueBool();
                     // break;
                     case "behavior_damage_type":
-                        BehaviorDamage = raceNode.ReadValueEnum<BehaviorDamageType>();
-                        break;
+                        BehaviorDamage = raceNode.ReadValueEnum<BehaviorDamageType>(); break;
                     case "behavior_slip_stream_type":
                         SlipstreamBehavior = raceNode.ReadValueEnum<SlipstreamBehavior>(); break;
-                    case "complete_type": CompleteType = raceNode.ReadValueEnum<CompleteType>();
-                        break;
+                    case "complete_type": 
+                        CompleteType = raceNode.ReadValueEnum<CompleteType>(); break;
                     case "consume_fuel": 
                         FuelUseMultiplier = raceNode.ReadValueInt(); break;
                     case "consume_tire": 
                         TireUseMultiplier = raceNode.ReadValueInt(); break;
                     case "datetime":
-                        Date = DateTime.Parse(raceNode.Attributes["datetime"].Value); break;
+                        string date = raceNode.Attributes["datetime"].Value.Replace("/00", "/01");
+                        DateTime.TryParseExact(date, "yyyy/dd/MM HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime time);
+                        Date = time; 
+                        break;
                     //case "decisive_weather":
                     //  Date = DateTime.Parse(raceNode.ReadValueString());
                     // break;
@@ -255,6 +258,8 @@ namespace GTEventGenerator.Entities
                         MinutesCount = raceNode.ReadValueInt(); break;
                     case "race_type":
                         RaceType = raceNode.ReadValueEnum<RaceType>(); break;
+                    case "replace_at_courseout":
+                        ReplaceAtCourseOut = raceNode.ReadValueBool(); break;
                     case "start_type":
                         StartType = raceNode.ReadValueEnum<StartType>(); break;
                     case "time_progress_speed":
@@ -289,8 +294,6 @@ namespace GTEventGenerator.Entities
                         WeatherTotalSec = raceNode.ReadValueInt(); break;
                     case "with_ghost":
                         WithGhost = raceNode.ReadValueBool(); break;
-                    case "replace_at_courseout":
-                        ReplaceAtCourseOut = raceNode.ReadValueBool(); break;
                     case "weather_accel10":
                         WeatherAccel = raceNode.ReadValueInt(); break;
                     case "boost_flag":
@@ -424,7 +427,7 @@ namespace GTEventGenerator.Entities
     public enum LineGhostRecordType
     {
         OFF,
-        ON,
+        ONE,
         TRACKDAY
     }
 
