@@ -45,8 +45,8 @@
                            ToolTip="This is your *unique* folder ID, which will also point to the XML file number.">Folder ID</Label>
                     <xctk:IntegerUpDown Name="iud_FolderID" ValueChanged="iud_FolderID_ValueChanged" Height="20" Width="232" Canvas.Left="121" Canvas.Top="222" Value="1000" Minimum="0" Maximum="10000"/>
 
-                    <TextBox Name="txtGameParamName" Height="20" Width="232" TabIndex="1" TextChanged="txtEventsName_TextChanged" HorizontalAlignment="Right" VerticalAlignment="Bottom" TextWrapping="Wrap" Canvas.Left="121" Canvas.Top="35" />
-                    <TextBox Name="txtGameParamDesc" Height="92" Width="232" TabIndex="2" TextChanged="txtEventsDesc_TextChanged" HorizontalAlignment="Right" VerticalAlignment="Bottom" TextWrapping="Wrap" Canvas.Left="121" Canvas.Top="60" />
+                    <TextBox Name="txtGameParamName" Height="20" Width="232" TabIndex="1" TextChanged="txtFolderName_TextChanged" HorizontalAlignment="Right" VerticalAlignment="Bottom" TextWrapping="Wrap" Canvas.Left="121" Canvas.Top="35" />
+                    <TextBox Name="txtGameParamDesc" Height="92" Width="232" TabIndex="2" TextChanged="txtFolderDesc_TextChanged" HorizontalAlignment="Right" VerticalAlignment="Bottom" TextWrapping="Wrap" Canvas.Left="121" Canvas.Top="60" />
                     <Label Name="label5" Height="24" Width="108"  TabIndex="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="8" Canvas.Top="60" >Folder Description</Label>
                     <Label Name="label4" Height="24" Width="108"  TabIndex="4" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="8" Canvas.Top="33" >Folder Name</Label>
                     <Label Name="label3" Height="27" Width="108" TabIndex="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="8" Canvas.Top="157" >Folder Category</Label>

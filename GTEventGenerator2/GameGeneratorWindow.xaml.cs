@@ -57,7 +57,7 @@ namespace GTEventGenerator
 
             // Assign default values
             evnt.Index = GameParameter.Events.Count + 1;
-            evnt.Name = $"{GameParameter.EventList.Title}: Event {evnt.Index}";
+            evnt.Name = $"Event {evnt.Index}";
             evnt.Rewards.Stars = 3;
             GameParameter.OrderEventIDs();
 
@@ -155,7 +155,12 @@ namespace GTEventGenerator
             if (CurrentEvent is null || !_processEventSwitch)
                 return;
 
-            CurrentEvent.Name = txt_EventTitle.Text;
+            CurrentEvent.Name = (sender as TextBox).Text;
+            _processEventSwitch = false;
+            txtEventName.Text = CurrentEvent.Name;
+            txt_EventTitle.Text = CurrentEvent.Name;
+            _processEventSwitch = true;
+
             CurrentEvent.Information.SetTitle(CurrentEvent.Name);
 
             int currentEventIndex = GameParameter.Events.IndexOf(CurrentEvent);
@@ -230,8 +235,8 @@ namespace GTEventGenerator
                 GameParameter = new GameParameter();
                 CurrentEvent = null;
 
-                GameParameter.EventList.Title = "New Event";
-                GameParameter.EventList.Description = "Event Description";
+                GameParameter.EventList.Title = "New Folder";
+                GameParameter.EventList.Description = "Folder Description";
 
                 txtGameParamName.Text = GameParameter.EventList.Title;
                 txtGameParamDesc.Text = GameParameter.EventList.Description;
@@ -346,26 +351,12 @@ namespace GTEventGenerator
         private void cboEventCategory_SelectedIndexChanged(object sender, RoutedEventArgs e)
             => GameParameter.EventList.Category = GameParameterEventList.EventCategories.Find(x => x.name == cboEventCategory.SelectedItem.ToString());
 
-        private void txtEventsName_TextChanged(object sender, EventArgs e)
+        private void txtFolderName_TextChanged(object sender, EventArgs e)
         {
-            if (GameParameter.Events != null)
-            {
-                foreach (Event evnt in GameParameter.Events)
-                {
-                    if (!string.IsNullOrEmpty(evnt.Name))
-                    {
-                        if (evnt.Name.Contains(GameParameter.EventList.Title))
-                            evnt.Name = evnt.Name.Replace(GameParameter.EventList.Title, txtGameParamName.Text);
-                    }
-                }
-
-                ReloadEventLists();
-
-                GameParameter.EventList.Title = txtGameParamName.Text;
-            }
+            GameParameter.EventList.Title = txtGameParamName.Text;
         }
 
-        private void txtEventsDesc_TextChanged(object sender, EventArgs e)
+        private void txtFolderDesc_TextChanged(object sender, EventArgs e)
         {
             GameParameter.EventList.Description = txtGameParamDesc.Text;
         }
