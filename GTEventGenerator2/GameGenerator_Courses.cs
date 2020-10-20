@@ -39,6 +39,7 @@ namespace GTEventGenerator
                 {
                     Button_SelectCustomTrack.IsEnabled = false;
                     CurrentEvent.Course.CustomCourse = null;
+                    PrePopulateCourses();
                 }
 
                 UpdateCourseLogos();
@@ -63,6 +64,8 @@ namespace GTEventGenerator
                 label_Created.Content = CurrentEvent.Course.CustomCourse.Time.ToString();
                 label_HomeStraightLength.Content = CurrentEvent.Course.CustomCourse.HomeStraightLength;
                 label_CustomIsCircuit.Content = CurrentEvent.Course.CustomCourse.IsCircuit.ToString();
+
+                UpdateCustomCourseLogo();
             }
             else
             {
@@ -76,10 +79,12 @@ namespace GTEventGenerator
                 label_Created.Content = "N/A";
                 label_HomeStraightLength.Content = "N/A";
                 label_CustomIsCircuit.Content = "N/A";
+                image_CustomCourseLogo.Source = null;
             }
 
 
             UpdateCourseLogos();
+            CurrentEvent.Course.NeedsPopulating = false;
         }
 
         public void UpdateCourseLogos()
@@ -88,17 +93,71 @@ namespace GTEventGenerator
             {
                 if (CurrentEvent.Course.CourseLabel == "coursemaker" || CurrentEvent.Course.CourseLabel.StartsWith("rail") || CurrentEvent.Course.CourseLabel.StartsWith("scenery"))
                 {
-                    image_CourseLogo.Source = null;
+                    SetNoLogo();
+                    SetNoMiniMap();
                     return;
                 }
 
                 var logoName = GameDatabase.GetCourseLogoByLabel(CurrentEvent.Course.CourseLabel);
                 var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "CourseLogos", logoName + ".png");
                 if (File.Exists(path))
+                {
                     image_CourseLogo.Source = new BitmapImage(new Uri(path));
+                    image_CourseLogoNoPreview.Visibility = Visibility.Hidden;
+                }
                 else
-                    image_CourseLogo.Source = null;
+                    SetNoLogo();
+
+                var mapName = GameDatabase.GetCourseMapByLabel(CurrentEvent.Course.CourseLabel);
+                var mappath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "CourseMaps", mapName + ".png");
+                if (File.Exists(mappath))
+                {
+                    image_CourseMap.Source = new BitmapImage(new Uri(mappath));
+                    image_CourseMapNoPreview.Visibility = Visibility.Hidden;
+                }
+                else
+                    SetNoMiniMap();
             }
+        }
+
+        public void UpdateCustomCourseLogo()
+        {
+            if (CurrentEvent.Course.CustomCourse != null)
+            {
+                string path;
+                switch (CurrentEvent.Course.CustomCourse.Scenery)
+                {
+                    case SceneryType.Andalusia:
+                        path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "CourseLogos", "t_scenery_andalusia.png"); break;
+                    case SceneryType.Eifel:
+                    case SceneryType.Eifel_Flat:
+                        path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "CourseLogos", "t_scenery_eifel.png"); break;
+                    case SceneryType.Death_Valley:
+                        path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "CourseLogos", "t_scenery_deathvalley.png"); break;
+                    default:
+                        path = string.Empty;
+                        break;
+                }
+
+                if (!string.IsNullOrEmpty(path))
+                    image_CustomCourseLogo.Source = new BitmapImage(new Uri(path));
+                else
+                    image_CustomCourseLogo.Source = null;
+            }
+            else
+                image_CustomCourseLogo.Source = null;
+        }
+
+        public void SetNoLogo()
+        {
+            image_CourseLogo.Source = null;
+            image_CourseLogoNoPreview.Visibility = Visibility.Visible;
+        }
+
+        public void SetNoMiniMap()
+        {
+            image_CourseMap.Source = null;
+            image_CourseMapNoPreview.Visibility = Visibility.Visible;
         }
 
         public void PopulateOneTimeCourseControls()

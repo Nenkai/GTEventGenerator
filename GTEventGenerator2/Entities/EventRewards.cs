@@ -80,11 +80,14 @@ namespace GTEventGenerator.Entities
                 xml.WriteEndElement();
 
                 xml.WriteStartElement("star_table");
-                xml.WriteElementValue("star", "RANK_1");
-                if (Stars == 3)
+                if (Stars >= 1)
                 {
-                    xml.WriteElementValue("star", "RANK_3");
-                    xml.WriteElementValue("star", "COMPLETE");
+                    xml.WriteElementValue("star", "RANK_1");
+                    if (Stars == 3)
+                    {
+                        xml.WriteElementValue("star", "RANK_3");
+                        xml.WriteElementValue("star", "COMPLETE");
+                    }
                 }
                 xml.WriteEndElement();
 

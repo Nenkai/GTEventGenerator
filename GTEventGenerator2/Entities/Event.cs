@@ -16,6 +16,7 @@ namespace GTEventGenerator.Entities
         public EventEntries Entries { get; set; }
         public EventCourse Course { get; set; }
         public EventEvalConditions EvalConditions { get; set; }
+        public EventPlayStyle PlayStyle { get; set; }
 
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
@@ -58,6 +59,7 @@ namespace GTEventGenerator.Entities
             Entries = new EventEntries();
             Course = new EventCourse();
             EvalConditions = new EventEvalConditions();
+            PlayStyle = new EventPlayStyle();
 
             MoneyPrizes[0] = 25_000;
             MoneyPrizes[1] = 12_750;
@@ -87,6 +89,7 @@ namespace GTEventGenerator.Entities
                 RaceParameters.WriteToXml(this, xml);
                 Rewards.WriteToXml(xml);
                 Course.WriteToXml(xml);
+                PlayStyle.WriteToXml(xml);
                 Regulations.WriteToXml(xml);
                 /*
                 sw.WriteLine(string.Format("                <play_style>"));
@@ -162,6 +165,9 @@ namespace GTEventGenerator.Entities
 
                     case "regulation":
                         Regulations.ParseRegulations(node);
+                        break;
+                    case "play_style":
+                        PlayStyle.ParsePlayStyle(node);
                         break;
 
                     case "is_seasonal_event":

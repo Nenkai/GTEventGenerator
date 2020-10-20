@@ -62,25 +62,35 @@
                             <TextBlock Text="Event Information"/>
                         </GroupBox.Header>
                         <Canvas Margin="0,0,0,0" >
-                            <Label Name="label_gameMode" Height="23" Width="80" TabIndex="14" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="38" >Game Mode</Label>
+                            <Label Name="label_gameMode" Height="23" Width="76" TabIndex="14" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="40" >Game Mode</Label>
                             <ComboBox Name="cb_gameModes" Height="23" Width="200" IsEnabled="False" TabIndex="13" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="91" Canvas.Top="41" SelectionChanged="cb_gameModes_SelectionChanged" />
                             <CheckBox Name="checkBox_SeasonalEvent" Height="24" Width="115" TabIndex="56" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding IsSeasonalEvent}" Canvas.Top="470" Canvas.Left="176" 
                                       ToolTip="Whether if the event is a Seasonal Event, if so, the event will have date requirements to enter, fill in the Start/End Dates (and additionally Ranking tab)." >Seasonal Event</CheckBox>
-                            <GroupBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="412" >
+
+                            <Label Content="A/B Spec" Canvas.Left="10" Canvas.Top="68"
+                                   ToolTip="Whether event is A/B/Both Spec (XML: play_style->bspec_type)" Width="76"/>
+                            <ComboBox Name="cb_Spec" Height="23" Width="200" IsEnabled="False" TabIndex="13" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="91" Canvas.Top="71" SelectionChanged="cb_Spec_SelectionChanged" />
+
+                            <Label Content="Play Type" Canvas.Left="10" Canvas.Top="99"
+                                   ToolTip="Whether if the event is a regular event or demo, should leave as Race (XML: play_style->play_type)" Width="76"/>
+                            <ComboBox Name="cb_PlayType" Height="23" Width="200" IsEnabled="False" TabIndex="13" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="91" Canvas.Top="101" SelectionChanged="cb_PlayType_SelectionChanged" />
+
+                            <GroupBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="382" Height="111" Width="165" >
                                 <GroupBox.Header>
                                     <TextBlock Text="Event Stars"/>
                                 </GroupBox.Header>
-                                <Canvas Height="58" Width="149" >
-                                    <RadioButton Name="rdoStarsThree" Height="19" Width="63" TabIndex="1" Margin="-1,30,863,507" HorizontalAlignment="Right" VerticalAlignment="Bottom" >3 Stars</RadioButton>
-                                    <RadioButton Name="rdoStarsOne" Height="19" Width="57" TabIndex="0" Margin="-1,5,869,532" HorizontalAlignment="Right" VerticalAlignment="Bottom" >1 Star</RadioButton>
+                                <Canvas >
+                                    <RadioButton Name="rdoStarsNone" Height="24" Width="133" TabIndex="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="10" >No Stars</RadioButton>
+                                    <RadioButton Name="rdoStarsOne" Height="24" Width="133" TabIndex="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="39" >1 Star (Winning)</RadioButton>
+                                    <RadioButton Name="rdoStarsThree" Height="24" Width="133" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="68" >3 Stars (1st/3rd/Any)</RadioButton>
                                 </Canvas>
                             </GroupBox>
-                            <Label Name="lblRaceName" Height="24" Width="80" TabIndex="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="11" >Event Name</Label>
+                            <Label Name="lblRaceName" Height="24" Width="76" TabIndex="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="11" >Event Name</Label>
                             <TextBox Name="txtEventName" Height="21" Width="200" TabIndex="3" IsEnabled="False" TextChanged="txtEventName_TextChanged" HorizontalAlignment="Right" VerticalAlignment="Bottom" TextWrapping="Wrap" Canvas.Left="91" Canvas.Top="14" />
                         </Canvas>
                     </GroupBox>
                     <Button Name="btnRemoveRace" Height="34" Width="157" TabIndex="4" IsEnabled="False" Click="btnRemoveRace_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="163" Canvas.Top="471" >Remove Selected Event</Button>
-                    <Button Name="btnAddRace" Height="34" Width="148" TabIndex="1" Click="btnAddRace_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="471" >Add Event</Button>
+                    <Button Name="btnAddRace" Height="34" Width="148" TabIndex="1" Click="btnAddEvent_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="471" >Add Event</Button>
                     <ListBox Name="lstRaces" Height="456" Width="310" TabIndex="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="lstEvent_SelectedIndexChanged" Canvas.Left="10" Canvas.Top="10" />
 
                     <Label Name="label_imagePreview" Height="26" TabIndex="15" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="640" Canvas.Top="423" 
@@ -749,13 +759,26 @@ The way they are picked from the pool depends on 'Random Entry Gen Type'."/>
             </TabItem>
             <TabItem Name="tabEventCourse" Header="Course" IsEnabled="False" >
                 <Canvas Name="cantabEventCourse" >
-                    <ComboBox Name="comboBox_CourseList" Height="21" Width="213" TabIndex="6" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_CourseList_SelectedIndexChanged" Canvas.Left="65" Canvas.Top="13" />
-                    <Label Name="label1" Height="24" Width="50" TabIndex="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="10" 
+                    <ComboBox Name="comboBox_CourseList" Height="21" Width="301" TabIndex="6" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_CourseList_SelectedIndexChanged" Canvas.Left="65" Canvas.Top="381" />
+                    <Label Name="label1" Height="24" Width="50" TabIndex="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="377" 
                            ToolTip="Track to play the event in (XML: reward->track->course_code)">Course</Label>
-                    <Image Name="image_CourseLogo" Width="338" Canvas.Left="283" Canvas.Top="10" Height="192"/>
+
+                    <Border Background="DarkGray" Width="250" Canvas.Left="371" Canvas.Top="374" Height="133" BorderThickness="1" BorderBrush="LightGray">
+                        <Image Name="image_CourseLogo"/>
+                    </Border>
+                    <Label Name="image_CourseLogoNoPreview" Content="Track Logo Unavailable" Width="200" Height="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Canvas.Left="398" Canvas.Top="417" FontSize="16" FontWeight="Bold"/>
+
+                    <Border Background="DarkGray" Width="611" Canvas.Left="10" Canvas.Top="10" Height="359" BorderThickness="1" BorderBrush="LightGray">
+                        <Image Name="image_CourseMap" />
+                    </Border>
+                    <Label Name="image_CourseMapNoPreview" Content="Map Preview Unavailable" Width="200" Height="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Canvas.Left="215" Canvas.Top="171" FontSize="16" FontWeight="Bold"/>
 
                     <GroupBox Header="GT6 Custom Track Data" Canvas.Left="626" Height="517" Width="322">
                         <Canvas>
+                            <Border Width="246" Canvas.Left="31" Canvas.Top="10" Height="125">
+                                <Image Name="image_CustomCourseLogo" />
+                            </Border>
+
 
                             <Label Content="Scenery :" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="133"/>
                             <Label Name="label_CustomScenery" Content="N/A" HorizontalAlignment="Left" HorizontalContentAlignment="Right" VerticalAlignment="Top" Canvas.Left="72" Canvas.Top="135" Width="228"/>

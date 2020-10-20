@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
+using GTEventGenerator.Utils;
+
 namespace GTEventGenerator.Entities
 {
     public class EventCourse
@@ -27,7 +29,8 @@ namespace GTEventGenerator.Entities
             if (CourseLabel.Equals("coursemaker") && CustomCourse != null)
             {
                 xml.WriteElementInt("generated_course_id", 0);
-                xml.WriteElementValue("edit_data", Encoding.ASCII.GetString(CustomCourse.Data));
+                var ted = Convert.ToBase64String(MiscUtils.ZlibCompress(CustomCourse.Data));
+                xml.WriteElementValue("edit_data", ted);
             }
 
             xml.WriteElementInt("course_layout_no", CourseLayoutNumber);
@@ -58,7 +61,6 @@ namespace GTEventGenerator.Entities
                 if (trackNode.Name == "course_code")
                 {
                     CourseLabel = trackNode.Attributes["label"].Value;
-                    break;
                 }
 
                 if (trackNode.Name == "edit_data")

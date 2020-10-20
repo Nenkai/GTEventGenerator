@@ -112,6 +112,14 @@ namespace GTEventGenerator.Database
             return res.GetString(0);
         }
 
+        public string GetCourseMapByLabel(string label)
+        {
+            var res = ExecuteQuery($"SELECT CourseMap FROM Courses WHERE CourseInternalName = '{label}'");
+            res.Read();
+
+            return res.GetString(0);
+        }
+
         public string GetCarLabelByActualName(string name)
         {
             var res = ExecuteQuery($"SELECT VehicleInternalName FROM Vehicles WHERE VehicleName = \"{name}\"");

@@ -50,7 +50,7 @@ namespace GTEventGenerator
             cb_QuickEventPicker.ItemsSource = EventNames;
         }
 
-        private void btnAddRace_Click(object sender, EventArgs e)
+        private void btnAddEvent_Click(object sender, EventArgs e)
         {
             Event evnt = new Event();
             this.DataContext = evnt;
@@ -116,7 +116,16 @@ namespace GTEventGenerator
 
             foreach (var i in (GameMode[])Enum.GetValues(typeof(GameMode)))
                 cb_gameModes.Items.Add(i.Humanize());
+
+            foreach (var i in (SpecType[])Enum.GetValues(typeof(SpecType)))
+                cb_Spec.Items.Add(i.Humanize());
+
+            foreach (var i in (PlayType[])Enum.GetValues(typeof(PlayType)))
+                cb_PlayType.Items.Add(i.Humanize());
+
             cb_gameModes.SelectedIndex = 0;
+            cb_Spec.SelectedIndex = 0;
+            cb_PlayType.SelectedIndex = 0;
         }
 
         private void tabEvent_Selecting(object sender, SelectionChangedEventArgs e)
@@ -335,6 +344,22 @@ namespace GTEventGenerator
             if (openFile.FileName.Contains(".xml"))
             {
                 GameParameter = ImportFromEventList(openFile.FileName);
+
+                // Set names
+                for (int i = 0; i < GameParameter.Events.Count; i++)
+                {
+                    var evnt = GameParameter.Events[i];
+                    if (!string.IsNullOrEmpty(evnt.Information.Titles["GB"])) // Grab GB one if provided
+                    {
+                        GameParameter.Events[i].Name = evnt.Information.Titles["GB"];
+                    }
+                    else
+                    {
+                        GameParameter.Events[i].Name = $"Event {i + 1}";
+                        GameParameter.Events[i].Information.SetTitle($"Event {i + 1}");
+                    }
+                }
+
                 OnNewEventSelected(0);
                 ReloadEventLists();
                 UpdateEventListing();
@@ -385,6 +410,9 @@ namespace GTEventGenerator
             GameParameter.FolderId = iud.Value.Value;
         }
 
+        private void rdoStarsNone_CheckedChanged(object sender, EventArgs e)
+            => CurrentEvent.Rewards.Stars = 0;
+
         private void rdoStarsOne_CheckedChanged(object sender, EventArgs e)
             => CurrentEvent.Rewards.Stars = rdoStarsOne.IsChecked.Value ? 1 : 0;
 
@@ -397,6 +425,22 @@ namespace GTEventGenerator
                 return;
 
             CurrentEvent.GameMode = (GameMode)(sender as ComboBox).SelectedIndex;
+        }
+
+        private void cb_Spec_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CurrentEvent is null)
+                return;
+
+            CurrentEvent.PlayStyle.SpecType = (SpecType)(sender as ComboBox).SelectedIndex;
+        }
+
+        private void cb_PlayType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CurrentEvent is null)
+                return;
+
+            CurrentEvent.PlayStyle.PlayType = (PlayType)(sender as ComboBox).SelectedIndex;
         }
 
         private void chkIsChampionship_CheckedChanged(object sender, EventArgs e)
@@ -438,7 +482,7 @@ namespace GTEventGenerator
                     "Save Image", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            else if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "TXS3Converter.exe")))
+            else if (!File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "TXS3Converter.exe")))
             {
                 MessageBox.Show("TexConv not found. Please download TexConv from https://github.com/microsoft/DirectXTex/releases and place it in the program folder.",
                     "Save Image", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -446,21 +490,22 @@ namespace GTEventGenerator
             }
 
             string imageFileName = Regex.Replace(GameParameter.EventList.Title.Replace(" ", "").Replace(".", ""), "[^a-zA-Z0-9_.]+", "", RegexOptions.Compiled).ToLower();
-            string imageFilePath = Path.Combine(Directory.GetCurrentDirectory(), imageFileName+".img");
+            string imageFilePath = Path.Combine(Directory.GetCurrentDirectory(), imageFileName + ".png");
 
             _eventImage.Save(imageFilePath, ImageFormat.Png);
 
             Process p = new Process();
             p.StartInfo.FileName = Path.Combine(Directory.GetCurrentDirectory(), "TXS3Converter.exe");
-            p.StartInfo.Arguments = $"{imageFilePath} --DXT3";
+            p.StartInfo.Arguments = $"{Path.GetFileName(imageFilePath)} --DXT3";
             p.StartInfo.CreateNoWindow = true;
+            p.Start();
             p.WaitForExit();
 
             string newPath = Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "output", "piece", "gt6", "event_flyer")).FullName;
 
-            string oldPath = Path.Combine(Directory.GetCurrentDirectory(), imageFilePath + ".img");
+            string imgOutput = Path.Combine(Directory.GetCurrentDirectory(), imageFileName, ".img");
             string finalPath = Path.Combine(newPath, imageFileName + ".img");
-            File.Move(oldPath, finalPath);
+            File.Move(imgOutput, finalPath);
 
         }
 
@@ -511,6 +556,15 @@ namespace GTEventGenerator
         private void PopulateEventDetails()
         {
             cb_gameModes.SelectedIndex = (int)CurrentEvent.GameMode;
+            cb_Spec.SelectedIndex = (int)CurrentEvent.PlayStyle.SpecType;
+            cb_PlayType.SelectedIndex = (int)CurrentEvent.PlayStyle.PlayType;
+
+            if (CurrentEvent.Rewards.Stars == 0)
+                rdoStarsNone.IsChecked = true;
+            else if (CurrentEvent.Rewards.Stars == 1)
+                rdoStarsOne.IsChecked = true;
+            else if (CurrentEvent.Rewards.Stars == 3)
+                rdoStarsThree.IsChecked = true;
             txtEventName.Text = CurrentEvent.Name;
         }
 
@@ -552,9 +606,12 @@ namespace GTEventGenerator
 
             txtEventName.IsEnabled = isEnabled;
             btnCreditRewards.IsEnabled = isEnabled;
+            rdoStarsNone.IsEnabled = isEnabled;
             rdoStarsOne.IsEnabled = isEnabled;
             rdoStarsThree.IsEnabled = isEnabled;
             cb_gameModes.IsEnabled = isEnabled;
+            cb_Spec.IsEnabled = isEnabled;
+            cb_PlayType.IsEnabled = isEnabled;
 
             checkBox_SeasonalEvent.IsEnabled = isEnabled;
             cb_QuickEventPicker.IsEnabled = isEnabled;
