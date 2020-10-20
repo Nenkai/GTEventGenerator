@@ -75,6 +75,14 @@
                                    ToolTip="Whether if the event is a regular event or demo, should leave as Race (XML: play_style->play_type)" Width="76"/>
                             <ComboBox Name="cb_PlayType" Height="23" Width="200" IsEnabled="False" TabIndex="13" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="91" Canvas.Top="101" SelectionChanged="cb_PlayType_SelectionChanged" />
 
+                            <Label Content="Max Cars" Canvas.Left="10" Canvas.Top="130" Width="76"
+                                   ToolTip="How many cars are allowed on the track at once. (XML: race->racers_max)&#10;
+IMPORTANT: Be VERY aware when using this value especially with Custom Tracks. It affects directly the memory allocated for the entries."/>
+                            <xctk:IntegerUpDown Name="iud_RacerMax" Canvas.Left="91" Canvas.Top="136" Width="200" Minimum="1" Value="{Binding RaceParameters.RacersMax}" Maximum="16"/>
+
+                            <Label Content="Event ID" Canvas.Left="10" Canvas.Top="351" Width="63"/>
+                            <xctk:IntegerUpDown Name="iud_EventID" ValueChanged="iud_EventID_ValueChanged" IsEnabled="False" Canvas.Left="73" Canvas.Top="355" Width="98" Minimum="1" Value="{Binding EventID}" Maximum="9900000"/>
+
                             <GroupBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="382" Height="111" Width="165" >
                                 <GroupBox.Header>
                                     <TextBlock Text="Event Stars"/>
@@ -89,8 +97,10 @@
                             <TextBox Name="txtEventName" Height="21" Width="200" TabIndex="3" IsEnabled="False" TextChanged="txtEventName_TextChanged" HorizontalAlignment="Right" VerticalAlignment="Bottom" TextWrapping="Wrap" Canvas.Left="91" Canvas.Top="14" />
                         </Canvas>
                     </GroupBox>
-                    <Button Name="btnRemoveRace" Height="34" Width="157" TabIndex="4" IsEnabled="False" Click="btnRemoveRace_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="163" Canvas.Top="471" >Remove Selected Event</Button>
-                    <Button Name="btnAddRace" Height="34" Width="148" TabIndex="1" Click="btnAddEvent_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="471" >Add Event</Button>
+                    <Button Name="btnRemoveRace" Height="34" Width="100" TabIndex="4" IsEnabled="False" Click="btnRemoveRace_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="220" Canvas.Top="471" >Delete Selected</Button>
+                    <Button Name="btnCopyRace" Height="34" Width="100" TabIndex="4" IsEnabled="False" Click="btnCopyRace_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="115" Canvas.Top="471" >Copy Selected</Button>
+
+                    <Button Name="btnAddRace" Height="34" Width="100" TabIndex="1" Click="btnAddEvent_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="471" >Add Event</Button>
                     <ListBox Name="lstRaces" Height="456" Width="310" TabIndex="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="lstEvent_SelectedIndexChanged" Canvas.Left="10" Canvas.Top="10" />
 
                     <Label Name="label_imagePreview" Height="26" TabIndex="15" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="640" Canvas.Top="423" 
@@ -152,11 +162,11 @@
                                    ToolTip="Unknown - length of total weather progression? (XML: weather_total_sec)">Weather Progression Length</Label>
                             <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherTotalSec}" Height="20" Width="51" Canvas.Left="174" Canvas.Top="365" Maximum="100000" Minimum="-1"/>
 
-                            <Label Name="label_WeatherRandomSeed" Height="32" Width="131" TabIndex="20" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="295" Canvas.Left="6" 
+                            <Label Name="label_WeatherRandomSeed" Height="27" Width="131" TabIndex="20" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="295" Canvas.Left="6" 
                                    ToolTip="Seed if the weather is random(XML: weather_random_seed)">Weather Random Seed</Label>
-                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherRandomSeed}" Height="20" Width="70" Canvas.Left="155" Canvas.Top="302" Maximum="100000" Minimum="-1"/>
+                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherRandomSeed}" Height="20" Width="70" Canvas.Left="155" Canvas.Top="300" Maximum="100000" Minimum="-1"/>
 
-                            <Label Name="label_WeatherTimeProgressionSpeed" Height="29" Width="148" TabIndex="18" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="7" Canvas.Top="327" 
+                            <Label Name="label_WeatherTimeProgressionSpeed" Height="29" Width="143" TabIndex="18" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="7" Canvas.Top="327" 
                                    ToolTip="Multiplier of how fast time progresses (1.0 = real-time, 60.0 = 60x (i.e. 24 minute day)) (XML: time_progress_speed)">Time Progression Speed</Label>
                             <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.TimeProgressSpeed}" Height="20" Width="70" Canvas.Left="155" Canvas.Top="330" Maximum="100000" Minimum="-1"/>
 
@@ -184,20 +194,20 @@
 To enable 'Realtime Weather', disable this and enable weather_prec_rain/snow_only">No Precipitation</CheckBox>
 
                             <Label Name="label_MinTemp" Height="26" Width="149" TabIndex="6" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="7" Canvas.Top="95" 
-                                   ToolTip="Undocumented (XML: race->weather_min_celsius)">Min Temperature (in °C)</Label>
+                                   ToolTip="Min temperature on the track (XML: race->weather_min_celsius)">Min Temperature (in °C)</Label>
                             <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherMinCelsius}"  Height="20" Width="70" Canvas.Left="157" Canvas.Top="100" Maximum="100000" Minimum="-1"/>
 
                             <Label Name="label_MaxTemp" Height="23" Width="149" TabIndex="4" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="67" 
-                                   ToolTip="Undocumented (XML: race->weather_max_celsius)">Max Temperature (in °C)</Label>
+                                   ToolTip="Max temperature on the track (XML: race->weather_max_celsius)">Max Temperature (in °C)</Label>
                             <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherMaxCelsius}"  Height="20" Width="70" Canvas.Left="157" Canvas.Top="70" Maximum="100000" Minimum="-1"/>
 
                             <Label Name="label_BaseTemp" Height="30" Width="148" TabIndex="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="37" Canvas.Left="6" 
-                                   ToolTip="Undocumented (XML: race->weather_base_celsius)">Base Temperature (in °C)</Label>
+                                   ToolTip="Affects how fast water can dry (XML: race->weather_base_celsius)">Base Temperature (in °C)</Label>
                             <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherBaseCelsius}"  Height="20" Width="70" Canvas.Left="157" Canvas.Top="41" Maximum="100000" Minimum="-1"/>
 
-                            <Label Name="label_StartTime" Height="26" Width="69" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="7" Canvas.Top="6" 
-                                   ToolTip="Track Time (XML: race->date)">Start Time</Label>
-                            <xctk:DateTimeUpDown Value="{Binding Path=RaceParameters.Date}"  Height="22" Width="148" TabIndex="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="79" Canvas.Top="8" Format="LongTime"/>
+                            <Label Name="label_StartTime" Height="26" Width="69" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="4" Canvas.Top="8" 
+                                   ToolTip="Event Date, aka time of day. Date reflects seasons, e.g January would mean late sunrise (XML: race->date)">Event Date</Label>
+                            <xctk:DateTimeUpDown Value="{Binding Path=RaceParameters.Date}"  Height="22" Width="160" TabIndex="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="74" Canvas.Top="10" Format="FullDateTime"/>
                         </Canvas>
                     </GroupBox>
                     <GroupBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="506" Width="677" Canvas.Top="1" >
@@ -446,6 +456,10 @@ Notes:&#10;
                             <Label Name="label_PPMin" Height="27" Width="56" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="50" Canvas.Top="14" 
                                     ToolTip="Minimum car PP to enter the event (XML: regulations->need_pp)">PP. Min:</Label>
                             <xctk:IntegerUpDown Name="numericUpDown_PPMin" Height="20" Width="54" Canvas.Left="111" Canvas.Top="19" Maximum="10000" Minimum="-1" Value="{Binding Regulations.PPMin}"/>
+                            <Label Name="label_NOS" Height="27" Width="99" TabIndex="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="170" Canvas.Top="142" 
+                                   ToolTip="Whether if NOS is required or not (XML: regulations->NOS)">NOS Regulated</Label>
+                            <CheckBox Canvas.Left="274" Canvas.Top="149" IsChecked="{Binding Path=Regulations.NOSRegulated}"/>
+                            <CheckBox Canvas.Left="310" Canvas.Top="149" IsEnabled="{Binding Path=Regulations.NOSRegulated}" IsChecked="{Binding Path=Regulations.NOSNeeded}"/>
                         </Canvas>
                     </GroupBox>
                     <GroupBox Margin="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="168" Canvas.Top="347" Width="293" >
@@ -611,7 +625,8 @@ Notes:&#10;
                             <Slider Name="sl_EntryPlayerPos" Value="{Binding Path=Entries.PlayerPos}" Canvas.Left="125" Canvas.Top="352"  AutoToolTipPrecision="1" AutoToolTipPlacement="BottomRight" Width="183" Minimum="1" TickFrequency="1" TickPlacement="BottomRight" IsSnapToTickEnabled="True" ValueChanged="sl_EntryPlayerPos_ValueChanged"/>
                             <Label Name="label_PlayerPos" Height="25" Width="32" TabIndex="42" HorizontalAlignment="Right" HorizontalContentAlignment="Center" VerticalAlignment="Bottom" Canvas.Left="308" Canvas.Top="350" >#1</Label>
 
-                            <Label Content="Max Event Entries" Canvas.Left="10" Canvas.Top="382" Width="109"/>
+                            <Label Content="Max Event Entries" Canvas.Left="10" Canvas.Top="382" Width="109"
+                                   ToolTip="How many entries to pick in an event from the pool, make sure it is NOT higher than 'Max Cars' (XML: entry_generate->entry_num)"/>
                             <Slider Name="sl_EntryCount" Value="{Binding Path=Entries.EntryCount}" Canvas.Left="125" Canvas.Top="384" Width="183" Minimum="1"
                                     TickFrequency="1" AutoToolTipPrecision="1" AutoToolTipPlacement="BottomRight" TickPlacement="BottomRight" Maximum="16" IsSnapToTickEnabled="True" ValueChanged="slider_EntryCount_ValueChanged"/>
                             <Label Name="label_EntryCount" Height="25" Width="32" TabIndex="42" HorizontalAlignment="Right" HorizontalContentAlignment="Center" VerticalAlignment="Bottom" Canvas.Left="308" Canvas.Top="382" >1</Label>
@@ -831,9 +846,11 @@ The way they are picked from the pool depends on 'Random Entry Gen Type'."/>
                     </GroupBox>
                     <GroupBox Header="Settings" Canvas.Left="224" Height="517" Width="320">
                         <Canvas>
-                            <Label Content="Prizes only obtainable once after Winning" Canvas.Left="10" Canvas.Top="10" />
+                            <Label Content="Prizes only obtainable once after Winning" Canvas.Left="10" Canvas.Top="10" 
+                                   ToolTip="(XML: reward->is_once)"/>
                             <CheckBox IsChecked="{Binding Path=Rewards.IsOnce}" Canvas.Left="282" Canvas.Top="18" />
-                            <Label Content="All Tier rewards are combined" Canvas.Left="10" Canvas.Top="41" />
+                            <Label Content="All Tier rewards are combined" Canvas.Left="10" Canvas.Top="41" 
+                                   ToolTip="(XML: reward->prize_type)"/>
                             <CheckBox IsChecked="{Binding Path=Rewards.GivesAllTrophyRewards}" Canvas.Left="282" Canvas.Top="48" />
                         </Canvas>
                     </GroupBox>

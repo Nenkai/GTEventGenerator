@@ -15,7 +15,7 @@ using System.Xml;
 
 using Microsoft.Win32;
 using Humanizer;
-
+using Force.DeepCloner;
 using GTEventGenerator.Entities;
 using GTEventGenerator.Utils;
 using GTEventGenerator.Database;
@@ -53,28 +53,25 @@ namespace GTEventGenerator
         private void btnAddEvent_Click(object sender, EventArgs e)
         {
             Event evnt = new Event();
-            this.DataContext = evnt;
-
-            // Assign default values
             evnt.Index = GameParameter.Events.Count + 1;
             evnt.Name = $"Event {evnt.Index}";
             evnt.Rewards.Stars = 3;
-            GameParameter.OrderEventIDs();
-
-            _processEventSwitch = false;
 
             EventNames.Add($"{evnt.Index} - {evnt.Name}");
-            UpdateEventListing();
-
             GameParameter.Events.Add(evnt);
+            GameParameter.OrderEventIDs();
 
+            this.DataContext = evnt;
+
+            _processEventSwitch = false;
+            UpdateEventListing();
             SelectEvent(evnt.Index - 1);
             rdoStarsThree.IsChecked = true;
 
             ToggleEventControls(true);
 
             btnRemoveRace.IsEnabled = GameParameter.Events.Count <= 100;
-
+            btnCopyRace.IsEnabled = GameParameter.Events.Count <= 100;
             _processEventSwitch = true;
         }
 
@@ -195,7 +192,7 @@ namespace GTEventGenerator
                 GameParameter.Events.Remove(GameParameter.Events.Find(x => x.Index == CurrentEvent.Index));
                 CurrentEvent = GameParameter.Events.Count > 0 ? GameParameter.Events.Last() : null;
 
-                int eventID = GameParameter.Events.FirstOrDefault()?.EventID - 1 ?? GameParameter.BaseEventID;
+                int eventID = GameParameter.Events.FirstOrDefault()?.EventID ?? GameParameter.BaseEventID;
                 GameParameter.FirstEventID = eventID;
                 GameParameter.OrderEventIDs();
 
@@ -205,11 +202,40 @@ namespace GTEventGenerator
                 if (lstRaces.Items.Count == 0)
                 {
                     btnRemoveRace.IsEnabled = false;
+                    btnCopyRace.IsEnabled = false;
                     ToggleEventControls(false);
                 }
                 else
                     PopulateEventDetails();
             }
+        }
+
+        private void btnCopyRace_Click(object sender, EventArgs e)
+        {
+            if (lstRaces.SelectedIndex == -1)
+            {
+                MessageBox.Show("No event selected.", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var copy = CurrentEvent.DeepClone();
+
+            copy.Index = GameParameter.Events.Count + 1;
+            EventNames.Add($"{copy.Index} - {copy.Name}");
+            GameParameter.Events.Add(copy);
+            GameParameter.OrderEventIDs();
+
+            _processEventSwitch = false;
+            SelectEvent(copy.Index - 1);
+            this.DataContext = copy;
+            UpdateEventListing();
+            rdoStarsThree.IsChecked = true;
+
+            ToggleEventControls(true);
+
+            btnRemoveRace.IsEnabled = GameParameter.Events.Count <= 100;
+            btnCopyRace.IsEnabled = GameParameter.Events.Count <= 100;
+            _processEventSwitch = true;
         }
 
         private void btnOpenMenuDB_Click(object sender, EventArgs e)
@@ -410,6 +436,15 @@ namespace GTEventGenerator
             GameParameter.FolderId = iud.Value.Value;
         }
 
+        private void iud_EventID_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (iud_EventID.Value is null || GameParameter.Events.Count == 0)
+                return;
+
+            GameParameter.FirstEventID = GameParameter.Events[0].EventID;
+            GameParameter.OrderEventIDs();
+        }
+
         private void rdoStarsNone_CheckedChanged(object sender, EventArgs e)
             => CurrentEvent.Rewards.Stars = 0;
 
@@ -566,6 +601,8 @@ namespace GTEventGenerator
             else if (CurrentEvent.Rewards.Stars == 3)
                 rdoStarsThree.IsChecked = true;
             txtEventName.Text = CurrentEvent.Name;
+
+            iud_EventID.IsEnabled = GameParameter.Events.Any() && CurrentEvent == GameParameter.Events[0];
         }
 
         private void ReloadEventLists(int selectedIndex = 0, bool isQuickPick = false)
@@ -612,9 +649,13 @@ namespace GTEventGenerator
             cb_gameModes.IsEnabled = isEnabled;
             cb_Spec.IsEnabled = isEnabled;
             cb_PlayType.IsEnabled = isEnabled;
+            iud_RacerMax.IsEnabled = isEnabled;
+            checkBox_SeasonalEvent.IsEnabled = isEnabled;
 
             checkBox_SeasonalEvent.IsEnabled = isEnabled;
             cb_QuickEventPicker.IsEnabled = isEnabled;
+
+            iud_EventID.IsEnabled = isEnabled && GameParameter.Events.Any() && CurrentEvent == GameParameter.Events[0];
         }
 
         void CheckMenuDB(string file)
@@ -644,12 +685,10 @@ namespace GTEventGenerator
 
         void GenerateGameParameter()
         {
-            GameParameter.EventList.Stars = 0;
-
             foreach (Event @event in GameParameter.Events)
                 eventHasNoStars = @event.Rewards.Stars == 0;
 
-            if (!eventHasNoStars && !validationErrors)
+            if (/*!eventHasNoStars && */!validationErrors)
             {
                 if (selectedPath == "")
                 {
@@ -671,9 +710,10 @@ namespace GTEventGenerator
             }
             else
             {
+                /*
                 if (eventHasNoStars)
                     MessageBox.Show("One or more races has no stars assigned to it. Please pick a number of stars and try again.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
-
+                    */
                 if (validationErrors)
                 {
                     MessageBox.Show("One or more text fields is blank. Please populate the highlighted fields and try again.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -735,8 +775,6 @@ namespace GTEventGenerator
                 GameParameter.WriteToXml(xml);
                 xml.WriteEndElement();
             }
-
-            GameParameter.EventList.Stars = 0;
 
             MessageBox.Show($"Event and races successfully written to {selectedPath}\\{GameParameter.EventList.FileName}.xml and {selectedPath}\\r{GameParameter.FolderId}.xml!", 
                 "Success", MessageBoxButton.OK, MessageBoxImage.Information);

@@ -60,22 +60,28 @@ namespace GTEventGenerator.Entities
                 xml.WriteElementInt("special_reward_code", 0);
 
                 xml.WriteStartElement("point_table");
-                for (int i = 0; i < PointTable.Length; i++)
+                if (PointTable.Any(e => e != 0))
                 {
-                    if (MoneyPrizes[i] == -1)
-                        xml.WriteElementInt("prize", 0);
-                    else
-                        xml.WriteElementInt("point", PointTable[i]);
+                    for (int i = 0; i < PointTable.Length; i++)
+                    {
+                        if (MoneyPrizes[i] == -1)
+                            xml.WriteElementInt("point", 0);
+                        else
+                            xml.WriteElementInt("point", PointTable[i]);
+                    }
                 }
                 xml.WriteEndElement();
 
                 xml.WriteStartElement("prize_table");
-                for (int i = 0; i < MoneyPrizes.Length; i++)
+                if (MoneyPrizes.Any(e => e != 0))
                 {
-                    if (MoneyPrizes[i] == -1)
-                        xml.WriteElementInt("prize", 0);
-                    else
-                        xml.WriteElementInt("prize", MoneyPrizes[i]);
+                    for (int i = 0; i < MoneyPrizes.Length; i++)
+                    {
+                        if (MoneyPrizes[i] == -1)
+                            xml.WriteElementInt("prize", 0);
+                        else
+                            xml.WriteElementInt("prize", MoneyPrizes[i]);
+                    }
                 }
                 xml.WriteEndElement();
 
@@ -126,6 +132,7 @@ namespace GTEventGenerator.Entities
         {
             int i = 0;
             Array.Clear(MoneyPrizes, 0, MoneyPrizes.Length);
+            Array.Clear(PointTable, 0, PointTable.Length);
 
             foreach (XmlNode rewardNode in node.ChildNodes)
             {
@@ -149,6 +156,11 @@ namespace GTEventGenerator.Entities
                     case "prize_type":
                         GivesAllTrophyRewards = rewardNode.ReadValueBool(); break;
 
+                    case "point_table":
+                        foreach (XmlNode prizeNode in rewardNode.ChildNodes)
+                            PointTable[i++] = prizeNode.ReadValueInt();
+                        break;
+
                     case "prize_table":
                         foreach (XmlNode prizeNode in rewardNode.ChildNodes)
                             MoneyPrizes[i++] = prizeNode.ReadValueInt();
@@ -157,8 +169,10 @@ namespace GTEventGenerator.Entities
                     case "star_table":
                         if (rewardNode.ChildNodes.Count == 3)
                             Stars = 3;
-                        else
+                        else if (rewardNode.ChildNodes.Count >= 1)
                             Stars = 1;
+                        else
+                            Stars = 0;
                         break;
                 }
             }

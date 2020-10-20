@@ -28,12 +28,13 @@ namespace GTEventGenerator.Entities
             {
                 xml.WriteElementValue("bspec_type", SpecType.ToString());
 
-                if (PlayType != PlayType.GAMBLE)
+                if (PlayType != PlayType.RACE)
                     xml.WriteElementValue("play_type", PlayType.ToString());
 
-                xml.WriteElementValue("bspec_type", SpecType.ToString());
                 xml.WriteElementBoolIfTrue("no_quickmenu", NoQuickMenu);
-                xml.WriteElementBool("replay_record_enable", ReplayRecordEnable);
+
+                if (!ReplayRecordEnable)
+                    xml.WriteElementBool("replay_record_enable", ReplayRecordEnable);
             }
             xml.WriteEndElement();
         }

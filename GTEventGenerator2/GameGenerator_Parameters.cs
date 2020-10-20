@@ -126,6 +126,9 @@ namespace GTEventGenerator
 
         private void checkBox_EnableDamage_CheckedChanged(object sender, EventArgs e)
         {
+            if (CurrentEvent is null)
+                return;
+
             comboBox_DamageBehavior.IsEnabled = checkBox_EnableDamage.IsChecked.Value;
             if (!checkBox_EnableDamage.IsChecked.Value)
             {

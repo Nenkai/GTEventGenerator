@@ -112,14 +112,15 @@ namespace GTEventGenerator
             else
                 xml.WriteStartElement("entry");
 
-            xml.WriteElementFloatIfSet("initial_position", InitialVCoord);
-            xml.WriteElementIntIfSet("initial_velocity", InitialVelocity);
+            xml.WriteElementFloat("initial_position", InitialVCoord);
+            xml.WriteElementInt("initial_velocity", InitialVelocity);
+
+            xml.WriteElementValue("driver_name", IsAI ? DriverName : "Player");
+            if (!IsAI)
+                xml.WriteElementInt("player_no", 0);
 
             if (IsAI)
-            {
-                xml.WriteElementValue("driver_name", DriverName);
                 xml.WriteElementValue("driver_region", DriverRegion);
-            }
 
             xml.WriteElementInt("delay", Delay);
             xml.WriteStartElement("car");

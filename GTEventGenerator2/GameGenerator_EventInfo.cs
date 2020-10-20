@@ -34,7 +34,7 @@ namespace GTEventGenerator
 
         public void PopulateOneTimeInfoControls()
         {
-            if (comboBox_CompleteType.Items.Count > 0)
+            if (cb_RankingDisplayType.Items.Count > 0)
                 return; // Assume it was already all filled in
 
             var types = (RankingDisplayType[])Enum.GetValues(typeof(RankingDisplayType));

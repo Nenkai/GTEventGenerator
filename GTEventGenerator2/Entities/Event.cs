@@ -20,11 +20,11 @@ namespace GTEventGenerator.Entities
 
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public RankingDisplayType RankingDisplayType { get; set; }
+        public RankingDisplayType RankingDisplayType { get; set; } = RankingDisplayType.NONE;
         public DateTime RankingStartDate { get; set; }
         public DateTime RankingEndDate { get; set; }
 
-        public int EventID { get; set; }
+        public int EventID { get; set; } = GameParameter.BaseEventID;
         public int Index { get; set; }
 
         private string _name { get; set; }
@@ -100,15 +100,20 @@ namespace GTEventGenerator.Entities
                 xml.WriteElementValue("ai_script", AIScriptName);
                 EvalConditions.WriteToXml(xml);
                 xml.WriteElementBool("is_seasonal_event", IsSeasonalEvent);
-                xml.WriteStartElement("begin_date"); xml.WriteString(StartDate.ToString("yyyy/dd/MM HH:mm:ss")); xml.WriteEndElement();
-                xml.WriteStartElement("end_date"); xml.WriteString(EndDate.ToString("yyyy/dd/MM HH:mm:ss")); xml.WriteEndElement();
+                xml.WriteStartElement("begin_date"); xml.WriteString(StartDate.ToString("yyyy/MM/dd HH:mm:ss")); xml.WriteEndElement();
+                xml.WriteStartElement("end_date"); xml.WriteString(EndDate.ToString("yyyy/MM/dd HH:mm:ss")); xml.WriteEndElement();
 
-                if (IsSeasonalEvent)
+                if (IsSeasonalEvent && RankingDisplayType != RankingDisplayType.NONE)
                 {
                     xml.WriteStartElement("ranking");
-                    xml.WriteStartElement("begin_date"); xml.WriteString(RankingStartDate.ToString("yyyy/dd/MM HH:mm:ss")); xml.WriteEndElement();
-                    xml.WriteStartElement("end_date"); xml.WriteString(RankingEndDate.ToString("yyyy/dd/MM HH:mm:ss")); xml.WriteEndElement();
+                    xml.WriteStartElement("begin_date"); xml.WriteString(RankingStartDate.ToString("yyyy/MM/dd HH:mm:ss")); xml.WriteEndElement();
+                    xml.WriteStartElement("end_date"); xml.WriteString(RankingEndDate.ToString("yyyy/MM/dd HH:mm:ss")); xml.WriteEndElement();
                     xml.WriteElementValue("type", RankingDisplayType.ToString());
+                    xml.WriteElementInt("board_id", EventID);
+                    xml.WriteElementInt("display_rank_limit", -1);
+                    xml.WriteElementBool("is_local", false);
+                    xml.WriteElementInt("replay_rank_limit", 0);
+                    xml.WriteElementInt("registration", 0);
                     xml.WriteEndElement();
                 }
             }
@@ -176,12 +181,12 @@ namespace GTEventGenerator.Entities
 
                     case "begin_date":
                         string date = node.InnerText.Replace("/00", "/01");
-                        DateTime.TryParseExact(date, "yyyy/dd/MM HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime time);
+                        DateTime.TryParseExact(date, "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime time);
                         StartDate = time;
                         break;
                     case "end_date":
                         string eDate = node.InnerText.Replace("/00", "/01");
-                        DateTime.TryParseExact(eDate, "yyyy/dd/MM HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime eTime);
+                        DateTime.TryParseExact(eDate, "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime eTime);
                         EndDate = eTime;
                         break;
 
@@ -200,12 +205,12 @@ namespace GTEventGenerator.Entities
                 {
                     case "begin_date":
                         string date = rNode.InnerText.Replace("/00", "/01");
-                        DateTime.TryParseExact(date, "yyyy/dd/MM HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime time);
+                        DateTime.TryParseExact(date, "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime time);
                         RankingStartDate = time;
                         break;
                     case "end_date":
                         string eDate = rNode.InnerText.Replace("/00", "/01");
-                        DateTime.TryParseExact(eDate, "yyyy/dd/MM HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime eTime);
+                        DateTime.TryParseExact(eDate, "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime eTime);
                         RankingEndDate = eTime;
                         break;
                     case "type":
@@ -273,6 +278,9 @@ namespace GTEventGenerator.Entities
 
     public enum RankingDisplayType
     {
+        [Description("No Rankings")]
+        NONE,
+
         [Description("By Best Time")]
         TIME,
 

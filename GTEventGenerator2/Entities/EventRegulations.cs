@@ -73,6 +73,18 @@ namespace GTEventGenerator.Entities
 
         public bool? KartPermitted { get; set; }
 
+        public bool NOSRegulated { get; set; }
+        private bool? _nosNeeded;
+        public bool? NOSNeeded
+        {
+            get => NOSRegulated ? _nosNeeded : null;
+            set
+            {
+                _nosNeeded = value;
+                NOSRegulated = _nosNeeded.HasValue;
+            }
+        }
+
         public TireType TireCompoundMinFront { get; set; } = TireType.NONE_SPECIFIED;
         public TireType TireCompoundMinRear { get; set; } = TireType.NONE_SPECIFIED;
 
@@ -129,6 +141,7 @@ namespace GTEventGenerator.Entities
             xml.WriteElementInt("limit_length", CarLengthMax);
             xml.WriteElementBoolOrNull("kart_permitted", KartPermitted);
             xml.WriteElementInt("restrictor_limit", -1);
+            xml.WriteElementBoolIfSet("NOS", NOSNeeded);
 
             xml.WriteStartElement("cars");
             foreach (string vehicle in AllowedVehicles)
@@ -216,6 +229,10 @@ namespace GTEventGenerator.Entities
                     case "need_drivetrain":
                         int val2 = regulationNode.ReadValueInt();
                         DrivetrainNeeded = (DrivetrainBits)(val2 == -1 ? 0 : val2);
+                        break;
+
+                    case "NOS":
+                        NOSNeeded = regulationNode.ReadValueBoolNull();
                         break;
 
                     case "tuners":

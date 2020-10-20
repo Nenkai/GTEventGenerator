@@ -48,12 +48,13 @@ namespace GTEventGenerator.Entities
         public PenaltyLevel PenaltyLevel { get; set; } = PenaltyLevel.NONE;
         public bool PenaltyNoLevel { get; set; }
         public RaceType RaceType { get; set; } = RaceType.COMPETITION;
+        public int RacersMax { get; set; } = 8;
 
         private int _trackWetness;
         public int TrackWetness
         {
             get => _trackWetness;
-            set => _trackWetness = value > 10 ? value : 10;
+            set => _trackWetness = value > 10 ? 10 : value;
         }
 
         public bool KeepLoadGhost { get; set; }
@@ -71,7 +72,7 @@ namespace GTEventGenerator.Entities
         public SlipstreamBehavior SlipstreamBehavior { get; set; } = SlipstreamBehavior.GAME;
         public bool WithGhost { get; set; }
         public bool ReplaceAtCourseOut { get; set; }
-        public int WeatherAccel { get; set; } = 10;
+        public int WeatherAccel { get; set; } 
         public int WeatherBaseCelsius { get; set; } = 24;
         public int WeatherMaxCelsius { get; set; } = 3;
         public int WeatherMinCelsius { get; set; } = 3;
@@ -100,7 +101,7 @@ namespace GTEventGenerator.Entities
             xml.WriteElementValue("complete_type", CompleteType.ToString());
             xml.WriteElementInt("consume_fuel", FuelUseMultiplier);
             xml.WriteElementInt("consume_tire", TireUseMultiplier);
-            xml.WriteStartElement("datetime"); xml.WriteAttributeString("datetime", Date.ToString("yyyy/dd/MM HH:mm:ss")); xml.WriteEndElement();
+            xml.WriteStartElement("datetime"); xml.WriteAttributeString("datetime", Date.ToString("yyyy/MM/dd HH:mm:ss")); xml.WriteEndElement();
             xml.WriteElementValue("decisive_weather", DecisiveWeather.ToString());
             xml.WriteElementBool("disable_collision", DisableCollision);
             xml.WriteElementBool("disable_recording_replay", DisableRecordingReplay);
@@ -119,7 +120,7 @@ namespace GTEventGenerator.Entities
             xml.WriteElementInt("initial_retention10", TrackWetness);
             xml.WriteElementBool("keep_load_ghost", KeepLoadGhost);
             xml.WriteElementValue("lighting_mode", LightingMode.ToString());
-            xml.WriteElementEnumIntIfSet("line_ghost_record_type", LineGhostRecordType);
+            xml.WriteElementValue("line_ghost_record_type", LineGhostRecordType.ToString());
             xml.WriteElementIntIfSet("line_ghost_play_max", LineGhostPlayMax);
             xml.WriteElementValue("low_mu_type", "MODERATE");
             xml.WriteElementInt("mu_ratio100", 100);
@@ -150,7 +151,7 @@ namespace GTEventGenerator.Entities
             xml.WriteElementBool("with_ghost", WithGhost);
             xml.WriteElementBool("replace_at_courseout", ReplaceAtCourseOut);
             xml.WriteElementInt("weather_accel10", WeatherAccel);
-            xml.WriteElementInt("weather_accel_water_retention10", 10);
+            xml.WriteElementInt("weather_accel_water_retention10", 0);
             xml.WriteElementBool("boost_flag", BoostFlag);
 
             /*
@@ -162,8 +163,8 @@ namespace GTEventGenerator.Entities
             sw.WriteLine(string.Format("                        </point>"));
             sw.WriteLine(string.Format("                    </new_weather_data>"));
             */
-            xml.WriteElementInt("entry_max", 0);
-            xml.WriteElementInt("racers_max", parent.Entries.EntryCount);
+            xml.WriteElementInt("entry_max", RacersMax);
+            xml.WriteElementInt("racers_max", RacersMax);
             xml.WriteEmptyElement("boost_table_array");
             xml.WriteEndElement();
         }
@@ -197,7 +198,7 @@ namespace GTEventGenerator.Entities
                         TireUseMultiplier = raceNode.ReadValueInt(); break;
                     case "datetime":
                         string date = raceNode.Attributes["datetime"].Value.Replace("/00", "/01");
-                        DateTime.TryParseExact(date, "yyyy/dd/MM HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime time);
+                        DateTime.TryParseExact(date, "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime time);
                         Date = time; 
                         break;
                     //case "decisive_weather":
@@ -257,12 +258,15 @@ namespace GTEventGenerator.Entities
                         MinutesCount = raceNode.ReadValueInt(); break;
                     case "race_type":
                         RaceType = raceNode.ReadValueEnum<RaceType>(); break;
+                    case "racers_max":
+                        RacersMax = raceNode.ReadValueInt(); break;
+
                     case "replace_at_courseout":
                         ReplaceAtCourseOut = raceNode.ReadValueBool(); break;
                     case "start_type":
                         StartType = raceNode.ReadValueEnum<StartType>(); break;
                     case "time_progress_speed":
-                        TimeProgressSpeed = raceNode.ReadValueInt(); break;
+                        TimeProgressSpeed = float.Parse(raceNode.ReadValueString()); break;
                     case "time_to_finish":
                         TimeToFinish = TimeSpan.FromMilliseconds(raceNode.ReadValueInt()); break;
                     case "time_to_start":
@@ -290,7 +294,7 @@ namespace GTEventGenerator.Entities
                     case "weather_random_seed":
                         WeatherRandomSeed = raceNode.ReadValueInt(); break;
                     case "weather_total_sec":
-                        WeatherTotalSec = raceNode.ReadValueInt(); break;
+                        WeatherTotalSec = float.Parse(raceNode.ReadValueString()); break;
                     case "with_ghost":
                         WithGhost = raceNode.ReadValueBool(); break;
                     case "weather_accel10":

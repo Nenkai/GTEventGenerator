@@ -65,7 +65,7 @@ namespace GTEventGenerator.Database
         public void AddNewFolderID(GameParameter param, int firstSafeTitleID, int firstSafeFolderID, int firstSafeSortOrderInCategory)
         {
             ExecuteQuery("INSERT INTO t_event_folder (NeedFolderID, Star, NeedStar, Name, TitleID, FolderID, Type, FolderOrder) " +
-                            $"VALUES(0,{param.EventList.Stars},{param.EventList.StarsNeeded},'{param.EventList.FileName}',{firstSafeTitleID},{firstSafeFolderID},{param.EventList.Category.typeID},{firstSafeSortOrderInCategory})");
+                            $"VALUES(0,{param.Events.Sum(e => e.Rewards.Stars)},{param.EventList.StarsNeeded},'{param.EventList.FileName}',{firstSafeTitleID},{firstSafeFolderID},{param.EventList.Category.typeID},{firstSafeSortOrderInCategory})");
         }
 
         public void AddNewFolderLocalization(int firstSafeTitleID, string desc)

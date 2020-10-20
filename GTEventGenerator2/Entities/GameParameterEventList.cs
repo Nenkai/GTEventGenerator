@@ -15,7 +15,6 @@ namespace GTEventGenerator.Entities
         public string Title { get; set; } = "Folder Title";
         public string Description { get; set; } = "Folder Description";
         public string FileName { get; set; } = string.Empty;
-        public int Stars { get; set; }
         public int StarsNeeded { get; set; }
         public bool IsChampionship { get; set; }
 
@@ -77,7 +76,7 @@ namespace GTEventGenerator.Entities
                 xml.WriteStartElement("gameitem_id"); xml.WriteString(0.ToString()); xml.WriteEndElement();
                 xml.WriteEmptyElement("gameitem_value");
                 xml.WriteStartElement("dlc_flag"); xml.WriteString(0.ToString()); xml.WriteEndElement();
-                xml.WriteStartElement("star"); xml.WriteString(Stars.ToString()); xml.WriteEndElement();
+                xml.WriteStartElement("star"); xml.WriteString(parent.Events.Sum(e => e.Rewards.Stars).ToString()); xml.WriteEndElement();
                 xml.WriteStartElement("need_star"); xml.WriteString(StarsNeeded.ToString()); xml.WriteEndElement();
                 xml.WriteStartElement("championship_value"); xml.WriteString(IsChampionship ? "1" : "0"); xml.WriteEndElement();
                 xml.WriteEmptyElement("need_folder_id");
@@ -150,7 +149,7 @@ namespace GTEventGenerator.Entities
                         break;
 
                     case "star":
-                        Stars = int.Parse(node.InnerText);
+                        //Stars = int.Parse(node.InnerText); // We don't need it
                         break;
 
                     case "need_star":
