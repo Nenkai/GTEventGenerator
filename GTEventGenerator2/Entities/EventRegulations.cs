@@ -186,6 +186,13 @@ namespace GTEventGenerator.Entities
                     case "countries":
                         ParseAllowedCountries(regulationNode);
                         break;
+                    case "car_categories":
+                        ParseAllowedCategories(regulationNode);
+                        break;
+
+                    case "limit_length":
+                        CarLengthMax = regulationNode.ReadValueInt();
+                        break;
 
                     case "need_year":
                         YearMin = regulationNode.ReadValueInt(); break;
@@ -278,6 +285,16 @@ namespace GTEventGenerator.Entities
             AllowedCountries = new List<string>();
             foreach (XmlNode countryNode in node.SelectNodes("country"))
                 AllowedCountries.Add(countryNode.ReadValueString());
+        }
+
+        private void ParseAllowedCategories(XmlNode node)
+        {
+            AllowedCategories = new List<CarCategoryRestriction>();
+            foreach (XmlNode countryNode in node.SelectNodes("category"))
+            {
+                if (Enum.TryParse(countryNode.ReadValueString(), out CarCategoryRestriction category))
+                    AllowedCategories.Add(category);
+            }
         }
     }
 
