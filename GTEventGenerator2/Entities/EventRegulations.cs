@@ -256,14 +256,14 @@ namespace GTEventGenerator.Entities
         private void ParseRaceAllowedManufacturers(XmlNode node)
         {
             AllowedManufacturers = new List<string>();
-            foreach (XmlNode manufacturerNode in node.ChildNodes)
+            foreach (XmlNode manufacturerNode in node.SelectNodes("tuner"))
                 AllowedManufacturers.Add(manufacturerNode.ReadValueString());
         }
 
         private void ParseRaceAllowedVehicles(XmlNode node)
         {
             AllowedVehicles = new List<string>();
-            foreach (XmlNode vehicleNode in node.ChildNodes)
+            foreach (XmlNode vehicleNode in node.SelectNodes("car"))
             {
                 string vehicle = vehicleNode.Attributes["label"].Value;
                 AllowedVehicles.Add(vehicle);
@@ -273,7 +273,7 @@ namespace GTEventGenerator.Entities
         private void ParseRaceDisallowedVehicles(XmlNode node)
         {
             RestrictedVehicles = new List<string>();
-            foreach (XmlNode vehicleNode in node.ChildNodes)
+            foreach (XmlNode vehicleNode in node.SelectNodes("car"))
             {
                 string vehicle = vehicleNode.Attributes["label"].Value;
                 RestrictedVehicles.Add(vehicle);

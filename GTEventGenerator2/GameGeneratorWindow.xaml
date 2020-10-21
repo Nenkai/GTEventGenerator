@@ -78,7 +78,7 @@
                             <Label Content="Max Cars" Canvas.Left="10" Canvas.Top="130" Width="76"
                                    ToolTip="How many cars are allowed on the track at once. (XML: race->racers_max)&#10;
 IMPORTANT: Be VERY aware when using this value especially with Custom Tracks. It affects directly the memory allocated for the entries."/>
-                            <xctk:IntegerUpDown Name="iud_RacerMax" Canvas.Left="91" Canvas.Top="136" Width="200" Minimum="1" Value="{Binding RaceParameters.RacersMax}" Maximum="16"/>
+                            <xctk:IntegerUpDown Name="iud_RacerMax" Canvas.Left="91" Canvas.Top="136" Width="200" Minimum="1" Value="{Binding Path=RaceParameters.RacersMax}" Maximum="16"/>
 
                             <Label Content="Event ID" Canvas.Left="10" Canvas.Top="351" Width="63"/>
                             <xctk:IntegerUpDown Name="iud_EventID" ValueChanged="iud_EventID_ValueChanged" IsEnabled="False" Canvas.Left="73" Canvas.Top="355" Width="98" Minimum="1" Value="{Binding EventID}" Maximum="9900000"/>

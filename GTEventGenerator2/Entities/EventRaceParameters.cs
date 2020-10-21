@@ -20,7 +20,7 @@ namespace GTEventGenerator.Entities
         public BehaviorDamageType BehaviorDamage { get; set; } = BehaviorDamageType.WEAK;
         public bool BoostFlag { get; set; }
         public CompleteType CompleteType { get; set; } = CompleteType.BYLAPS;
-        public DateTime Date { get; set; } = new DateTime(1970, 1, 1, 12, 00, 59);
+        public DateTime Date { get; set; } = new DateTime(1970, 1, 1, 12, 00, 00);
         public DecisiveWeatherType DecisiveWeather { get; set; } = DecisiveWeatherType.NONE;
         public bool DisableRecordingReplay { get; set; }
         public bool DisableCollision { get; set; }
@@ -63,7 +63,7 @@ namespace GTEventGenerator.Entities
         public float TimeProgressSpeed
         {
             get => _timeProgressSpeed;
-            set => _timeProgressSpeed = value > 3f ? value : 3f;
+            set => _timeProgressSpeed = value > 3f ? 3f : value;
         }
 
         public TimeSpan TimeToStart { get; set; } = TimeSpan.FromSeconds(3);
