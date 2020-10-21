@@ -170,11 +170,11 @@ IMPORTANT: Be VERY aware when using this value especially with Custom Tracks. It
                                    ToolTip="Multiplier of how fast time progresses (1.0 = real-time, 60.0 = 60x (i.e. 24 minute day)) (XML: time_progress_speed)">Time Progression Speed</Label>
                             <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.TimeProgressSpeed}" Height="20" Width="70" Canvas.Left="155" Canvas.Top="330" Maximum="100000" Minimum="-1"/>
 
-                            <CheckBox Name="checkBox_RandomWeather" Height="19" Width="226" TabIndex="17" HorizontalAlignment="Right" VerticalAlignment="Bottom" Checked="checkBox_WeatherRandom_CheckedChanged" Canvas.Top="271" Canvas.Left="7"
+                            <CheckBox Name="checkBox_RandomWeather" Height="19" Width="226" TabIndex="17" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding Path=RaceParameters.WeatherRandom}" Canvas.Top="271" Canvas.Left="7"
                                       ToolTip="Forces the weather to be random or predetermined (XML: race->weather_random)">Random Weather</CheckBox>
-                            <CheckBox Name="checkBox_WeatherPrecSnowOnly" Height="24" Width="81" TabIndex="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" Checked="checkBox_WeatherPrecSnowOnly_CheckedChanged" Canvas.Top="242" Canvas.Left="155"
+                            <CheckBox Name="checkBox_WeatherPrecSnowOnly" Height="24" Width="81" TabIndex="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding Path=RaceParameters.WeatherPrecSnowOnly}" Canvas.Top="242" Canvas.Left="155"
                                       ToolTip="Forces any allowed precipitation to be either rain or snow (XML: race->weather_prec_rain_only)">Only Snow Precipitation</CheckBox>
-                            <CheckBox Name="checkBox_WeatherPrecRainOnly" Height="24" Width="149" TabIndex="15" HorizontalAlignment="Right" VerticalAlignment="Bottom" Checked="checkBox_WeatherPrecRainOnly_CheckedChanged" Canvas.Top="242" Canvas.Left="6" 
+                            <CheckBox Name="checkBox_WeatherPrecRainOnly" Height="24" Width="149" TabIndex="15" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding Path=RaceParameters.WeatherPrecRainOnly}" Canvas.Top="242" Canvas.Left="6" 
                                       ToolTip="Forces any allowed precipitation to be either rain or snow (XML: race->weather_prec_snow_only)">Only Rain Precipitation</CheckBox>
 
                             <Label Name="label_WeatherPointNum" Height="27" Width="131" TabIndex="13" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="7" Canvas.Top="210" 
@@ -185,11 +185,11 @@ IMPORTANT: Be VERY aware when using this value especially with Custom Tracks. It
                                    ToolTip="How fast weather and water can change (XML: weather_change_rate)">Weather Change Rate</Label>
                             <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherAccel}" Height="20" Width="70" Canvas.Left="155" Canvas.Top="182" Maximum="100000" Minimum="-1"/>
 
-                            <CheckBox Name="checkBox_WeatherNoWind" Height="19" Width="104" TabIndex="10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Checked="checkBox_WeatherNoWind_CheckedChanged" Canvas.Left="7" Canvas.Top="155" 
+                            <CheckBox Name="checkBox_WeatherNoWind" Height="19" Width="104" TabIndex="10" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding Path=RaceParameters.WeatherNoWind}" Canvas.Left="7" Canvas.Top="155" 
                                       ToolTip="Undocumented (XML: race->weather_no_wind)">No Wind</CheckBox>
-                            <CheckBox Name="checkBox_WeatherNoSchedule" Height="24" Width="104" TabIndex="9" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="7" Canvas.Top="126" 
+                            <CheckBox Name="checkBox_WeatherNoSchedule" Height="24" Width="104" TabIndex="9" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding Path=RaceParameters.WeatherNoSchedule}" Canvas.Left="7" Canvas.Top="126" 
                                       ToolTip="Whether or not the weather can vary (XML: race->weather_no_schedule)">No Schedule</CheckBox>
-                            <CheckBox Name="checkBox_WeatherNoPrecipitation" Height="24" Width="113" TabIndex="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Checked="checkBox_WeatherNoPrecipitation_CheckedChanged" Canvas.Left="123" Canvas.Top="126" 
+                            <CheckBox Name="checkBox_WeatherNoPrecipitation" Height="24" Width="113" TabIndex="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding Path=RaceParameters.WeatherNoPrecipitation}" Canvas.Left="123" Canvas.Top="126" 
                                       ToolTip="Whether or not the weather can progress to rain/snow (XML: race->weather_no_precipitation)&#10;
 To enable 'Realtime Weather', disable this and enable weather_prec_rain/snow_only">No Precipitation</CheckBox>
 
@@ -774,19 +774,19 @@ The way they are picked from the pool depends on 'Random Entry Gen Type'."/>
             </TabItem>
             <TabItem Name="tabEventCourse" Header="Course" IsEnabled="False" >
                 <Canvas Name="cantabEventCourse" >
-                    <ComboBox Name="comboBox_CourseList" Height="21" Width="301" TabIndex="6" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_CourseList_SelectedIndexChanged" Canvas.Left="65" Canvas.Top="381" />
-                    <Label Name="label1" Height="24" Width="50" TabIndex="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="377" 
-                           ToolTip="Track to play the event in (XML: reward->track->course_code)">Course</Label>
 
-                    <Border Background="DarkGray" Width="250" Canvas.Left="371" Canvas.Top="374" Height="133" BorderThickness="1" BorderBrush="LightGray">
-                        <Image Name="image_CourseLogo"/>
-                    </Border>
-                    <Label Name="image_CourseLogoNoPreview" Content="Track Logo Unavailable" Width="200" Height="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Canvas.Left="398" Canvas.Top="417" FontSize="16" FontWeight="Bold"/>
-
-                    <Border Background="DarkGray" Width="611" Canvas.Left="10" Canvas.Top="10" Height="359" BorderThickness="1" BorderBrush="LightGray">
+                    <Border Background="DarkGray" Width="611" Canvas.Left="10" Canvas.Top="10" Height="497" BorderThickness="1" BorderBrush="LightGray">
                         <Image Name="image_CourseMap" />
                     </Border>
-                    <Label Name="image_CourseMapNoPreview" Content="Map Preview Unavailable" Width="200" Height="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Canvas.Left="215" Canvas.Top="171" FontSize="16" FontWeight="Bold"/>
+
+                    <Image Name="image_CourseLogo" Width="250" Canvas.Left="371" Canvas.Top="374" Height="133"/>
+                    <Label Name="image_CourseLogoNoPreview" Content="Track Logo Unavailable" Width="200" Height="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Canvas.Left="398" Canvas.Top="417" FontSize="16" FontWeight="Bold"/>
+
+                    <Label Name="image_CourseMapNoPreview" Content="Map Preview Unavailable" Width="200" Height="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Canvas.Left="217" Canvas.Top="215" FontSize="16" FontWeight="Bold"/>
+                    <ComboBox Name="comboBox_CourseList" Height="21" Width="301" TabIndex="6" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_CourseList_SelectedIndexChanged" Canvas.Left="74" Canvas.Top="22" />
+
+                    <Label Name="label1" Height="24" Width="50" TabIndex="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="19" Canvas.Top="19" 
+                           ToolTip="Track to play the event in (XML: reward->track->course_code)">Course</Label>
 
                     <GroupBox Header="GT6 Custom Track Data" Canvas.Left="626" Height="517" Width="322">
                         <Canvas>

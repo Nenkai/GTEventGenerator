@@ -438,9 +438,10 @@ namespace GTEventGenerator
 
             while (results.Read())
             {
+                var car = results.GetString(0);
                 // Only re-load the vehicle into the source list if it isn't in either
-                if (!lb_AllowedCars.Items.Contains(results.GetString(0)) && !lb_BannedCars.Items.Contains(results.GetString(0)))
-                    lb_CarSelection.Items.Add(results.GetString(0));
+                if (!lb_AllowedCars.Items.Contains(car) && !lb_BannedCars.Items.Contains(car))
+                    lb_CarSelection.Items.Add(car);
             }
         }
 
@@ -472,7 +473,7 @@ namespace GTEventGenerator
                 chkNA.IsChecked = mask.HasFlag(AspirationBits.NA);
             }
         }
-
+            
         public void PopulateDrivetrains()
         {
             DrivetrainBits mask = CurrentEvent.Regulations.DrivetrainNeeded;

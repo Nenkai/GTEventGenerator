@@ -83,7 +83,7 @@ namespace GTEventGenerator.Entities
         public bool WeatherPrecRainOnly { get; set; }
         public bool WeatherPrecSnowOnly { get; set; }
         public float WeatherTotalSec { get; set; }
-        public bool? WeatherRandom { get; set; }
+        public bool WeatherRandom { get; set; }
         public int WeatherRandomSeed { get; set; }
 
         public void WriteToXml(Event parent, XmlWriter xml)
@@ -144,7 +144,7 @@ namespace GTEventGenerator.Entities
             xml.WriteElementInt("weather_point_num", WeatherPointNum);
             xml.WriteElementBool("weather_prec_rain_only", WeatherPrecRainOnly);
             xml.WriteElementBool("weather_prec_snow_only", WeatherPrecSnowOnly);
-            xml.WriteElementBoolOrNull("weather_random", WeatherRandom);
+            xml.WriteElementBool("weather_random", WeatherRandom);
             xml.WriteElementInt("weather_random_seed", WeatherRandomSeed);
             xml.WriteElementFloat("weather_total_sec", WeatherTotalSec);
             xml.WriteElementInt("over_entry_max", 0);
@@ -290,7 +290,7 @@ namespace GTEventGenerator.Entities
                     case "weather_prec_snow_only":
                         WeatherPrecSnowOnly = raceNode.ReadValueBool(); break;
                     case "weather_random":
-                        WeatherRandom = raceNode.ReadValueBoolNull(); break;
+                        WeatherRandom = raceNode.ReadValueBool(); break;
                     case "weather_random_seed":
                         WeatherRandomSeed = raceNode.ReadValueInt(); break;
                     case "weather_total_sec":

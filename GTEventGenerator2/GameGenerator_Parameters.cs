@@ -275,31 +275,6 @@ namespace GTEventGenerator
 
         #region Pane 4
 
-        private void checkBox_WeatherNoPrecipitation_CheckedChanged(object sender, EventArgs e)
-        {
-            CurrentEvent.RaceParameters.WeatherNoPrecipitation = (sender as CheckBox).IsChecked.Value;
-        }
-
-        private void checkBox_WeatherNoWind_CheckedChanged(object sender, EventArgs e)
-        {
-            CurrentEvent.RaceParameters.WeatherNoWind = (sender as CheckBox).IsChecked.Value;
-        }
-
-        private void checkBox_WeatherPrecRainOnly_CheckedChanged(object sender, EventArgs e)
-        {
-            CurrentEvent.RaceParameters.WeatherPrecRainOnly = (sender as CheckBox).IsChecked.Value;
-        }
-
-        private void checkBox_WeatherPrecSnowOnly_CheckedChanged(object sender, EventArgs e)
-        {
-            CurrentEvent.RaceParameters.WeatherPrecSnowOnly = (sender as CheckBox).IsChecked.Value;
-        }
-
-        private void checkBox_WeatherRandom_CheckedChanged(object sender, EventArgs e)
-        {
-            CurrentEvent.RaceParameters.WeatherRandom = (sender as CheckBox).IsChecked.Value;
-        }
-
         private void comboBox_DecisiveWeather_SelectedIndexChanged(object sender, EventArgs e)
         {
 

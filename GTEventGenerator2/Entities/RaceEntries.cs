@@ -41,7 +41,7 @@ namespace GTEventGenerator.Entities
                     xml.WriteElementInt("entry_num", EntryCount);
                     xml.WriteElementInt("player_pos", PlayerPos - 1);
                     xml.WriteElementValue("generate_type", AIEntryGenerateType.ToString());
-                    xml.WriteElementValue("enemy_start_type", AISortType.ToString());
+                    xml.WriteElementValue("enemy_sort_type", AISortType.ToString());
                     xml.WriteElementInt("use_rolling_start_value", 0);
                     xml.WriteElementInt("rolling_start_v", RollingStartV);
                     xml.WriteElementInt("gap_for_rolling_start_distance", GapForRollingDistance);
@@ -70,16 +70,32 @@ namespace GTEventGenerator.Entities
                 {
                     foreach (XmlNode entryGenerateNode in entrySetNode)
                     {
-                        if (entryGenerateNode.Name == "entry_base_array")
+                        switch (entryGenerateNode.Name)
                         {
-                            foreach (XmlNode entryBaseNode in entryGenerateNode.ChildNodes)
-                            {
-                                if (entryBaseNode.Name == "entry_base")
+                            case "entry_base_array":
+                                foreach (XmlNode entryBaseNode in entryGenerateNode.SelectNodes("entry_base"))
                                 {
                                     var newEntry = ParseEntry(entryBaseNode);
                                     AIBases.Add(newEntry);
                                 }
-                            }
+                                break;
+
+                            case "entry_num":
+                                EntryCount = entryGenerateNode.ReadValueInt();
+                                break;
+                            case "player_pos":
+                                PlayerPos = entryGenerateNode.ReadValueInt() + 1;
+                                break;
+                            case "enemy_sort_type":
+                                AISortType = entryGenerateNode.ReadValueEnum<EnemySortType>();
+                                break;
+                            case "generate_type":
+                                AIEntryGenerateType = entryGenerateNode.ReadValueEnum<EntryGenerateType>();
+                                break;
+                            case "gap_for_rolling_start_distance":
+                                GapForRollingDistance = entryGenerateNode.ReadValueInt();
+                                break;
+
                         }
                     }
                 }
