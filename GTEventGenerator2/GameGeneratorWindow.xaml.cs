@@ -340,7 +340,7 @@ namespace GTEventGenerator
 
             var saveFile = new System.Windows.Forms.FolderBrowserDialog();
 
-            saveFile.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            //saveFile.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
             saveFile.ShowDialog();
             if (string.IsNullOrEmpty(saveFile.SelectedPath))
                 return;
