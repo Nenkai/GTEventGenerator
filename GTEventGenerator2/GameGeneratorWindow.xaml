@@ -3,7 +3,7 @@
         xmlns:x = "http://schemas.microsoft.com/winfx/2006/xaml" 
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
 	    Title="Gran Turismo 5/6 Event Editor" Width="960" Height="600"
-        ResizeMode="NoResize"
+        ResizeMode="CanMinimize"
         Loaded="GameGenerator_Load">
     <DockPanel >
         <DockPanel DockPanel.Dock="Top" Background="#f0f0f0">
@@ -263,7 +263,7 @@ To enable 'Realtime Weather', disable this and enable weather_prec_rain/snow_onl
                                 ToolTip="How strong slipstream is (XML: behavior_slipstream_type)">Slipstream Behavior</Label>
                             <ComboBox Name="comboBox_PenaltyLevel" Height="21" Width="116" TabIndex="40" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_PenaltyLevel_SelectedIndexChanged" Canvas.Left="371" Canvas.Top="68" />
                             <Label Name="label_PenaltyLevel" Height="27" Width="88" TabIndex="39" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="260" Canvas.Top="64" 
-                                   ToolTip="How severe penalties are (XML: race->penalty_level)">Penalty Level</Label>
+                                   ToolTip="How severe penalties are - Default depends on game mode, lap was invalidated (XML: race->penalty_level)">Penalty Level</Label>
 
                             <ComboBox Name="comboBox_LightingMode" Height="21" Width="116" TabIndex="38" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_LightingMode_SelectedIndexChanged" Canvas.Left="371" Canvas.Top="38" />
                             <Label Name="label_LightingMode" Height="27" Width="88" TabIndex="37" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="260" Canvas.Top="35" 
@@ -330,7 +330,7 @@ Weak - Only visual damage (?)&#10;
 Middle - Mechanical damage, may repair itself over time (?)&#10;
 Strong - Mechanical damage">Damage Behavior</Label>
                             <CheckBox Name="checkBox_Endless" Height="24" Width="108" TabIndex="21" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" IsChecked="{Binding RaceParameters.Endless}" Canvas.Top="280" 
-                                      ToolTip="Undocumented (XML: race->endless)">Endless</CheckBox>
+                                      ToolTip="Undocumented, related to drift mode (XML: race->endless)">Endless</CheckBox>
                             <CheckBox Name="checkBox_DisableCollision" Height="24" Width="124" TabIndex="20" Margin="125,280,676,252" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.DisableCollision}" 
                                       ToolTip="If this is enabled, car collisions will be off (XML: race->disable_collision)">Disable Collision</CheckBox>
                             <CheckBox Name="checkBox_EnableDamage" Height="24" Width="110" TabIndex="19" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.EnableDamage}" Canvas.Left="10" Canvas.Top="252" Checked="checkBox_EnableDamage_CheckedChanged" Unchecked="checkBox_EnableDamage_CheckedChanged"
@@ -346,8 +346,9 @@ Strong - Mechanical damage">Damage Behavior</Label>
                             <xctk:IntegerUpDown Name="numericUpDown_LapsToFinish" Height="20" Width="128" Canvas.Top="195" ValueChanged="numericUpDown_LapsToFinish_ValueChanged" Canvas.Left="120" Maximum="1000" Minimum="0" Value="1"/>
 
                             <Label Name="label_TimeToStart" Height="27" Width="167" TabIndex="12" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="156" 
-                                   ToolTip="How long until the race starts or the player has control of the car (XML: race->time_to_start)">Pre-Start Countdown (in MS)</Label>
-                            <xctk:IntegerUpDown Name="numericUpDown_TimeToStart" Height="20" Width="70" ValueChanged="numericUpDown_TimeToStart_ValueChanged" Canvas.Left="178" Canvas.Top="160" Value="3000" Maximum="100000" Minimum="-1"/>
+                                   ToolTip="How long until the race starts or the player has control of the car (XML: race->time_to_start)&#10;
+For a Grid Start, set to 6000 (6s, Camera Animation + Grid Countdown)">Pre-Start Countdown (in MS)</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_TimeToStart" Height="20" Width="70" ValueChanged="numericUpDown_TimeToStart_ValueChanged" Canvas.Left="178" Canvas.Top="160" Value="6000" Maximum="100000" Minimum="-1"/>
 
                             <Label Name="label_TimeToFinish" Height="27" Width="167" TabIndex="10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="124" 
                                    ToolTip="How long the vehicles behind 1st place are given to finish before showing the result/reward screen (XML: race->time_to_finish)">Time after finishing (in MS)</Label>
@@ -553,52 +554,62 @@ Notes:&#10;
                             <TextBlock Text="Entry Settings/Generate Options"/>
                         </GroupBox.Header>
                         <Canvas>
-                            <CheckBox Name="checkBox_RandomCarColor" Height="25" Width="128" TabIndex="68" HorizontalAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="217" 
+                            <CheckBox Name="checkBox_RandomCarColor" Height="25" Width="128" TabIndex="68" HorizontalAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Canvas.Left="14" Canvas.Top="242" 
                                       ToolTip="When an AI is generated, whether it has a random car color.">Random Car Color</CheckBox>
-                            <CheckBox Name="checkBox_RandomDriverName" IsChecked="True" Height="25" Width="146" TabIndex="67" HorizontalAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Canvas.Top="187" Canvas.Left="10" 
+                            <CheckBox Name="checkBox_RandomDriverName" IsChecked="True" Height="25" Width="146" TabIndex="67" HorizontalAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Canvas.Top="214" Canvas.Left="13" 
                                       ToolTip="When an AI is generated, whether it has a random name.">Random Driver Name</CheckBox>
-                            <CheckBox Name="checkBox_GenerateRandomFlag" IsChecked="True" Height="25" Width="158" TabIndex="66" HorizontalAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Canvas.Left="180" Canvas.Top="187" 
+                            <CheckBox Name="checkBox_GenerateRandomFlag" IsChecked="True" Height="25" Width="158" TabIndex="66" HorizontalAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Canvas.Left="177" Canvas.Top="214" 
                                       ToolTip="When an AI is generated, whether it has a random region.">Generate Random Flag</CheckBox>
-                            <CheckBox Name="checkBox_AINotRandom" Height="25" Width="128" TabIndex="68" HorizontalAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Canvas.Left="180" Canvas.Top="217" 
+                            <CheckBox Name="checkBox_AINotRandom" Height="25" Width="128" TabIndex="68" HorizontalAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Canvas.Left="177" Canvas.Top="242" 
                                       ToolTip="Used for now, this makes this checkbox utterly useless. Don't mind it for now.">Entry is not Random</CheckBox>
 
-                            <Label Name="label_AccelSkillMax" Height="25" Width="36" TabIndex="65" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="156" 
+                            <Label Name="label_AccelSkillMax" Height="25" Width="36" TabIndex="65" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="158" 
                                    ToolTip="When an AI is generated, the maximum acceleration skill it will use to make a random one.">Max</Label>
-                            <xctk:IntegerUpDown Name="numericUpDown_AccelSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="158" Value="80" Maximum="200" Minimum="0"/>
+                            <xctk:IntegerUpDown Name="numericUpDown_AccelSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="162" Value="80" Maximum="200" Minimum="0"/>
 
-                            <Label Name="label_BrakeSkillMax" Height="25" Width="36" TabIndex="64" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="126" 
+                            <Label Name="label_StartSkillMax" Height="25" Width="36" TabIndex="65" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="187" 
+                                   ToolTip="When an AI is generated, the maximum starting skill it will use to make a random one.">Max</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_StartSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="191" Value="80" Maximum="200" Minimum="0"/>
+
+                            <Label Name="label_BrakeSkillMax" Height="25" Width="36" TabIndex="64" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="130" 
                                    ToolTip="When an AI is generated, the minimum brake skill it will use to make a random one.">Max</Label>
-                            <xctk:IntegerUpDown Name="numericUpDown_BrakeSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="129" Value="80" Maximum="200" Minimum="0"/>
+                            <xctk:IntegerUpDown Name="numericUpDown_BrakeSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="132" Value="80" Maximum="200" Minimum="0"/>
 
-                            <Label Name="label_AccelSkillMin" Height="25" Width="33" TabIndex="63" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="153" 
+                            <Label Name="label_AccelSkillMin" Height="25" Width="33" TabIndex="63" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="158" 
                                    ToolTip="When an AI is generated, the minimum acceleration skill it will use to make a random one.">Min</Label>
-                            <xctk:IntegerUpDown Name="numericUpDown_AccelSkillMin" Height="20" Width="50" Canvas.Left="192" Canvas.Top="158" Value="80" Maximum="200" Minimum="0"/>
+                            <xctk:IntegerUpDown Name="numericUpDown_AccelSkillMin" Value="{Binding Path=Entries.AIAccelSkillStarting}" Height="20" Width="50" Canvas.Left="192" Canvas.Top="162" Maximum="200" Minimum="0"/>
 
                             <Label Name="label_AccelSkill" Height="24" Width="140" TabIndex="62" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="9" Canvas.Top="158" >AI Acceleration Skill</Label>
 
-                            <Label Name="label_CornerSkillMax" Height="25" Width="36" TabIndex="59" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="98" 
+                            <Label Name="label_StartSkillMin" Height="25" Width="33" TabIndex="63" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="188" 
+                                   ToolTip="When an AI is generated, the minimum starting skill it will use to make a random one.">Min</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_StartSkillMin" Value="{Binding Path=Entries.AIStartSkillStarting}" Height="20" Width="50" Canvas.Left="192" Canvas.Top="191" Maximum="200" Minimum="0"/>
+                            <Label Name="label_StartSkill" Height="26" Width="136" TabIndex="62" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="187" >AI Starting Skill</Label>
+
+
+                            <Label Name="label_CornerSkillMax" Height="25" Width="36" TabIndex="59" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="100" 
                                    ToolTip="When an AI is generated, the maximum corner skill it will use to make a random one.">Max</Label>
-                            <xctk:IntegerUpDown Name="numericUpDown_CornerSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="101" Value="80" Maximum="200" Minimum="0"/>
+                            <xctk:IntegerUpDown Name="numericUpDown_CornerSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="102" Maximum="200" Value="80" Minimum="0"/>
 
-                            <Label Name="label_BrakeSkillMin" Height="25" Width="33" TabIndex="58" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="124" 
+                            <Label Name="label_BrakeSkillMin" Height="25" Width="33" TabIndex="58" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="128" 
                                    ToolTip="When an AI is generated, the minimum brake skill it will use to make a random one.">Min</Label>
-                            <xctk:IntegerUpDown Name="numericUpDown_BrakeSkillMin" Height="20" Width="50" Canvas.Left="192" Canvas.Top="131" Value="80" Maximum="200" Minimum="0"/>
+                            <xctk:IntegerUpDown Name="numericUpDown_BrakeSkillMin" Value="{Binding Path=Entries.AIBrakingSkillStarting}" Height="20" Width="50" Canvas.Left="192" Canvas.Top="131" Maximum="200" Minimum="0"/>
 
-                            <Label Name="label_CornerSkillMin" Height="25" Width="33" TabIndex="57" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="99" 
+                            <Label Name="label_CornerSkillMin" Height="25" Width="33" TabIndex="57" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="98" 
                                    ToolTip="When an AI is generated, the minimum corner skill it will use to make a random one.">Min</Label>
-                            <xctk:IntegerUpDown Name="numericUpDown_CornerSkillMin" Height="20" Width="50" Canvas.Left="192" Canvas.Top="103" Value="80" Maximum="200" Minimum="0"/>
+                            <xctk:IntegerUpDown Name="numericUpDown_CornerSkillMin" Value="{Binding Path=Entries.AICornerSkillStarting}" Height="20" Width="50" Canvas.Left="192" Canvas.Top="101"  Maximum="200" Minimum="0"/>
 
-                            <Label Name="label_BrakeSkill" Height="25" Width="128" TabIndex="56" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="9" Canvas.Top="128" 
+                            <Label Name="label_BrakeSkill" Height="30" Width="128" TabIndex="56" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="9" Canvas.Top="128" 
                                    ToolTip="Decides how skilled the entry is at braking. (Default max is 100, can go to 200 - be warned that the AI may not brake if at all)">AI Braking Skill</Label>
 
                             <Label Name="label_CornerSkill" Height="26" Width="109" TabIndex="53" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="98" 
                                    ToolTip="Decides how skilled the entry is at cornering. (Default max is 100, can go to 200 - be warned that the AI may not drive correctly at all)">AI Cornering Skill</Label>
 
-                            <Label Name="label_BaseSkillMin" Height="25" Width="33" TabIndex="50" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="69" 
+                            <Label Name="label_BaseSkillMin" Height="25" Width="33" TabIndex="50" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="68" 
                                    ToolTip="When an AI is generated, the minimum base skill it will use to make a random one.">Min</Label>
-                            <xctk:IntegerUpDown Name="numericUpDown_BaseSkillMin" Height="20" Width="50" Canvas.Left="192" Canvas.Top="74" Value="80" Maximum="200" Minimum="0"/>
+                            <xctk:IntegerUpDown Name="numericUpDown_BaseSkillMin" Value="{Binding Path=Entries.AIBaseSkillStarting}" Height="20" Width="50" Canvas.Left="192" Canvas.Top="72" Maximum="200" Minimum="0"/>
 
-                            <Label Name="label_BaseSkillMax" Height="25" Width="36" TabIndex="49" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="68" 
+                            <Label Name="label_BaseSkillMax" Height="25" Width="36" TabIndex="49" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="71" 
                                    ToolTip="When an AI is generated, the maximum base skill it will use to make a random one.">Max</Label>
                             <xctk:IntegerUpDown Name="numericUpDown_BaseSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="74" Value="80" Maximum="200" Minimum="0"/>
 
@@ -612,18 +623,22 @@ Notes:&#10;
                             </ComboBox>
                             <Separator Width="330" Canvas.Left="10" Margin="0" Canvas.Top="413"/>
 
-                            <Label Name="label_EntryGenerateType" Height="25" Width="167" TabIndex="42" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="250" 
+                            <Label Name="label_EntryGenerateType" Height="25" Width="167" TabIndex="42" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="269" 
                                    ToolTip="How entries are picked from the entry pool. (XML:entry_generate->generate_type)">Random Entry Gen Type</Label>
-                            <ComboBox Name="comboBox_entryGenerateType" Height="21" Width="186" TabIndex="39" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="254" SelectionChanged="comboBox_entryGenerateType_SelectionChanged" />
+                            <ComboBox Name="comboBox_entryGenerateType" Height="21" Width="186" TabIndex="39" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="272" SelectionChanged="comboBox_entryGenerateType_SelectionChanged" />
 
-                            <Label Name="label_EntrySortType" Height="25" Width="167" TabIndex="42" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="280" 
+                            <Label Name="label_EntrySortType" Height="25" Width="167" TabIndex="42" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="299" 
                                    ToolTip="The order in which AI entries will appear on the starting Grid Type. (XML: entry_generate->enemy_sort_type)" >Random Entry Sort Type</Label>
-                            <ComboBox Name="comboBox_EntrySortType" Height="21" Width="186" TabIndex="39" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="284" SelectionChanged="comboBox_EntrySortType_SelectionChanged" />
+                            <ComboBox Name="comboBox_EntrySortType" Height="21" Width="186" TabIndex="39" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="302" SelectionChanged="comboBox_EntrySortType_SelectionChanged" />
 
-                            <Label Content="Player Position" Canvas.Left="10" Canvas.Top="348" Width="109"
+                            <Label Name="label_GapForRolling" Height="29" Width="262" TabIndex="42" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="9" Canvas.Top="327" 
+                                   ToolTip="Used for Rolling Starts (XML: entry_generate->gap_for_rolling_start_distance)" >Dist. Between Cars for a Rolling Start (in Meters)</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_GapForRollingDistance" Value="{Binding Path=Entries.GapForRollingDistance}" Height="20" Width="64" Canvas.Left="276" Canvas.Top="332" Maximum="2000" Minimum="0"/>
+
+                            <Label Content="Player Position" Canvas.Left="10" Canvas.Top="354" Width="109"
                                    ToolTip="The position where the player will. (XML: entry_generate->player_pos)"/>
-                            <Slider Name="sl_EntryPlayerPos" Value="{Binding Path=Entries.PlayerPos}" Canvas.Left="125" Canvas.Top="352"  AutoToolTipPrecision="1" AutoToolTipPlacement="BottomRight" Width="183" Minimum="1" TickFrequency="1" TickPlacement="BottomRight" IsSnapToTickEnabled="True" ValueChanged="sl_EntryPlayerPos_ValueChanged"/>
-                            <Label Name="label_PlayerPos" Height="25" Width="32" TabIndex="42" HorizontalAlignment="Right" HorizontalContentAlignment="Center" VerticalAlignment="Bottom" Canvas.Left="308" Canvas.Top="350" >#1</Label>
+                            <Slider Name="sl_EntryPlayerPos" Value="{Binding Path=Entries.PlayerPos}" Canvas.Left="125" Canvas.Top="358"  AutoToolTipPrecision="1" AutoToolTipPlacement="BottomRight" Width="183" Minimum="1" TickFrequency="1" TickPlacement="BottomRight" IsSnapToTickEnabled="True" ValueChanged="sl_EntryPlayerPos_ValueChanged"/>
+                            <Label Name="label_PlayerPos" Height="25" Width="32" TabIndex="42" HorizontalAlignment="Right" HorizontalContentAlignment="Center" VerticalAlignment="Bottom" Canvas.Left="308" Canvas.Top="355" >#1</Label>
 
                             <Label Content="Max Event Entries" Canvas.Left="10" Canvas.Top="382" Width="109"
                                    ToolTip="How many entries to pick in an event from the pool, make sure it is NOT higher than 'Max Cars' (XML: entry_generate->entry_num)"/>

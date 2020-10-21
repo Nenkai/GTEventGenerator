@@ -130,13 +130,13 @@ namespace GTEventGenerator.Entities
                 switch (evalNode.Name)
                 {
                     case "bronze":
-                        Bronze = evalNode.ReadValueInt();
+                        _bronze = evalNode.ReadValueInt();
                         break;
                     case "silver":
-                        Silver = evalNode.ReadValueInt();
+                        _silver = evalNode.ReadValueInt();
                         break;
                     case "gold":
-                        Gold = evalNode.ReadValueInt();
+                        _gold = evalNode.ReadValueInt();
                         break;
 
                     case "type":

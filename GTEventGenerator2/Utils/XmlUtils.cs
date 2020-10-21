@@ -82,7 +82,13 @@ namespace GTEventGenerator
         }
 
         public static T ReadValueEnum<T>(this XmlNode node) where T : Enum
-            => (T)Enum.Parse(typeof(T), node.Attributes["value"].Value);
+        {
+            var val = node.Attributes["value"].Value;
+            if (string.IsNullOrEmpty(val))
+                throw new ArgumentException($"Node {node.Name} has empty attribute value.");
+
+            return (T)Enum.Parse(typeof(T), node.Attributes["value"].Value);
+        }
 
         public static string ReadValueString(this XmlNode node)
         {

@@ -19,6 +19,13 @@ namespace GTEventGenerator.Entities
         public int RollingStartV { get; set; }
         public int GapForRollingDistance { get; set; }
         public int AIRoughness { get; set; }
+
+        public int AIBaseSkillStarting { get; set; } = 80;
+        public int AICornerSkillStarting { get; set; } = 80;
+        public int AIBrakingSkillStarting { get; set; } = 80;
+        public int AIAccelSkillStarting { get; set; } = 80;
+        public int AIStartSkillStarting { get; set; } = 80;
+
         public EntryGenerateType AIEntryGenerateType { get; set; } = EntryGenerateType.ENTRY_BASE_SHUFFLE;
         public EnemySortType AISortType { get; set; } = EnemySortType.NONE;
 
@@ -42,11 +49,16 @@ namespace GTEventGenerator.Entities
                     xml.WriteElementInt("player_pos", PlayerPos - 1);
                     xml.WriteElementValue("generate_type", AIEntryGenerateType.ToString());
                     xml.WriteElementValue("enemy_sort_type", AISortType.ToString());
-                    xml.WriteElementInt("use_rolling_start_value", 0);
                     xml.WriteElementInt("rolling_start_v", RollingStartV);
                     xml.WriteElementInt("gap_for_rolling_start_distance", GapForRollingDistance);
+                    xml.WriteElementBool("use_rolling_start_value", GapForRollingDistance != 0);
                     xml.WriteElementInt("ai_skill_starting", AIBases.Max(x => x.BaseSkill));
                     xml.WriteElementInt("ai_roughness", 0);
+                    xml.WriteElementInt("ai_skill", AIBaseSkillStarting);
+                    xml.WriteElementInt("ai_skill_breaking", AIBrakingSkillStarting);
+                    xml.WriteElementInt("ai_skill_cornering", AICornerSkillStarting);
+                    xml.WriteElementInt("ai_skill_accelerating", AIAccelSkillStarting);
+                    xml.WriteElementInt("ai_skill_starting", AIStartSkillStarting);
 
                     xml.WriteStartElement("entry_base_array");
                     {
@@ -72,6 +84,25 @@ namespace GTEventGenerator.Entities
                     {
                         switch (entryGenerateNode.Name)
                         {
+                            case "ai_skill":
+                                AIBaseSkillStarting = entryGenerateNode.ReadValueInt();
+                                break;
+                            case "ai_skill_breaking":
+                                AIBrakingSkillStarting = entryGenerateNode.ReadValueInt();
+                                break;
+                            case "ai_skill_cornering":
+                                AICornerSkillStarting = entryGenerateNode.ReadValueInt();
+                                break;
+                            case "ai_skill_accelerating":
+                                AIAccelSkillStarting = entryGenerateNode.ReadValueInt();
+                                break;
+                            case "ai_skill_starting":
+                                AIStartSkillStarting = entryGenerateNode.ReadValueInt();
+                                break;
+                            case "rolling_start_v":
+                                RollingStartV = entryGenerateNode.ReadValueInt();
+                                break;
+
                             case "entry_base_array":
                                 foreach (XmlNode entryBaseNode in entryGenerateNode.SelectNodes("entry_base"))
                                 {
@@ -92,7 +123,7 @@ namespace GTEventGenerator.Entities
                             case "generate_type":
                                 AIEntryGenerateType = entryGenerateNode.ReadValueEnum<EntryGenerateType>();
                                 break;
-                            case "gap_for_rolling_start_distance":
+                            case "gap_for_start_rolling_distance":
                                 GapForRollingDistance = entryGenerateNode.ReadValueInt();
                                 break;
 

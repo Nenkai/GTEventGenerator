@@ -6,9 +6,9 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:GTEventGenerator"
         mc:Ignorable="d"
-        Title="Editing Entry" Height="540" Width="280">
+        Title="Editing Entry" Height="540" Width="663">
     <Grid>
-        <GroupBox Header="Entry Settings" Height="225" Margin="10,10,10,0" VerticalAlignment="Top">
+        <GroupBox Header="Entry Settings" Height="225" Margin="10,10,394,0" VerticalAlignment="Top">
             <Grid>
                 <Label Content="Initial V Coord" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"
                        ToolTip="Position in meters in the track the entry will start (XML: entry->initial_position)"/>
@@ -29,7 +29,7 @@
                 <xctk:IntegerUpDown Name="iud_Delay" Value="{Binding Delay}" Margin="123,138,10,43" Minimum="-1" Maximum="999999" UpdateValueOnEnterKey="True"/>
             </Grid>
         </GroupBox>
-        <GroupBox Header="AI Settings" Margin="10,240,10,10">
+        <GroupBox Header="AI Settings" Margin="10,240,394,10">
             <Grid>
                 <Label Content="Base Skill" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="92"/>
                 <xctk:IntegerUpDown Name="iud_BaseSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding BaseSkill}" Margin="123,10,0,0" Height="26" Width="107"
@@ -47,12 +47,16 @@
                        ToolTip="(XML: entry->ai_skill_accelerating)"/>
                 <xctk:IntegerUpDown Name="iud_AccelSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding AccelSkill}" Margin="123,103,0,0" Height="26" Width="107"/>
 
-                <Label Content="Driver Name" HorizontalAlignment="Left" Margin="10,134,0,0" VerticalAlignment="Top" Width="92"
+                <Label Content="Starting Skill" HorizontalAlignment="Left" Margin="10,134,0,0" VerticalAlignment="Top" Width="108"
+                       ToolTip="(XML: entry->ai_skill_starting)"/>
+                <xctk:IntegerUpDown Name="iud_StartingSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding StartingSkill}" Margin="122,134,0,0" Height="26" Width="107"/>
+
+                <Label Content="Driver Name" HorizontalAlignment="Left" Margin="10,165,0,0" VerticalAlignment="Top" Width="92"
                        ToolTip="(XML: entry->driver_name)"/>
-                <Label Content="Driver Country" HorizontalAlignment="Left" Margin="10,165,0,0" VerticalAlignment="Top" Width="92"
+                <Label Content="Driver Country" HorizontalAlignment="Left" Margin="9,192,0,0" VerticalAlignment="Top" Width="92"
                        ToolTip="If invalid, no flag will be displayed (XML: entry->driver_region)"/>
-                <TextBox Name="tb_DriverName" HorizontalAlignment="Left" Height="23" Margin="107,138,0,0" TextWrapping="Wrap" Text="{Binding DriverName}" VerticalAlignment="Top" Width="123"/>
-                <TextBox Name="tb_DriverCountry" HorizontalAlignment="Left" Height="23" Margin="107,169,0,0" TextWrapping="Wrap" Text="{Binding DriverRegion}" VerticalAlignment="Top" Width="123"/>
+                <TextBox Name="tb_DriverName" HorizontalAlignment="Left" Height="23" Margin="107,165,0,0" TextWrapping="Wrap" Text="{Binding DriverName}" VerticalAlignment="Top" Width="123"/>
+                <TextBox Name="tb_DriverCountry" HorizontalAlignment="Left" Height="23" Margin="106,193,0,0" TextWrapping="Wrap" Text="{Binding DriverRegion}" VerticalAlignment="Top" Width="123"/>
             </Grid>
         </GroupBox>
     </Grid>

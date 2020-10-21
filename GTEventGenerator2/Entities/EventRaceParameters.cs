@@ -20,7 +20,7 @@ namespace GTEventGenerator.Entities
         public BehaviorDamageType BehaviorDamage { get; set; } = BehaviorDamageType.WEAK;
         public bool BoostFlag { get; set; }
         public CompleteType CompleteType { get; set; } = CompleteType.BYLAPS;
-        public DateTime Date { get; set; } = new DateTime(1970, 1, 1, 12, 00, 00);
+        public DateTime Date { get; set; } = new DateTime(1970, 6, 1, 12, 00, 00);
         public DecisiveWeatherType DecisiveWeather { get; set; } = DecisiveWeatherType.NONE;
         public bool DisableRecordingReplay { get; set; }
         public bool DisableCollision { get; set; }
@@ -40,12 +40,12 @@ namespace GTEventGenerator.Entities
         public bool ImmediateFinish { get; set; }
         public int LapCount { get; set; } = 1;
         public LightingMode LightingMode { get; set; } = LightingMode.AUTO;
-        public LineGhostRecordType? LineGhostRecordType { get; set; }
+        public LineGhostRecordType LineGhostRecordType { get; set; }
         public int? LineGhostPlayMax { get; set; }
         public int MinutesCount { get; set; }
         public bool OnlineOn { get; set; }
         public bool PaceNote { get; set; }
-        public PenaltyLevel PenaltyLevel { get; set; } = PenaltyLevel.NONE;
+        public PenaltyLevel PenaltyLevel { get; set; } = PenaltyLevel.DEFAULT;
         public bool PenaltyNoLevel { get; set; }
         public RaceType RaceType { get; set; } = RaceType.COMPETITION;
         public int RacersMax { get; set; } = 8;
@@ -66,8 +66,8 @@ namespace GTEventGenerator.Entities
             set => _timeProgressSpeed = value > 3f ? 3f : value;
         }
 
-        public TimeSpan TimeToStart { get; set; } = TimeSpan.FromSeconds(3);
-        public TimeSpan TimeToFinish { get; set; }
+        public TimeSpan TimeToStart { get; set; } = TimeSpan.FromSeconds(6);
+        public TimeSpan TimeToFinish { get; set; } 
         public StartType StartType { get; set; } = StartType.GRID;
         public SlipstreamBehavior SlipstreamBehavior { get; set; } = SlipstreamBehavior.GAME;
         public bool WithGhost { get; set; }
@@ -320,6 +320,9 @@ namespace GTEventGenerator.Entities
 
     public enum PenaltyLevel
     {
+        [Description("Default (Game Mode dependant)")]
+        DEFAULT = -1,
+
         [Description("No Penalties")]
         NONE,
 

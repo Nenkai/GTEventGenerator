@@ -300,6 +300,7 @@ namespace GTEventGenerator
             raceEntry.AccelSkill = _random.Next(numericUpDown_AccelSkillMin.Value.Value, numericUpDown_AccelSkillMax.Value.Value + 1);
             raceEntry.BrakingSkill = _random.Next(numericUpDown_BrakeSkillMin.Value.Value, numericUpDown_AccelSkillMax.Value.Value + 1);
             raceEntry.CorneringSkill = _random.Next(numericUpDown_CornerSkillMin.Value.Value, numericUpDown_CornerSkillMax.Value.Value + 1);
+            raceEntry.StartingSkill = _random.Next(numericUpDown_StartSkillMin.Value.Value, numericUpDown_StartSkillMax.Value.Value + 1);
 
             raceEntry.TireFront = (TireType)comboBox_AIGenFTyreComp.SelectedIndex - 1;
             raceEntry.TireRear = (TireType)comboBox_AIGenRTyreComp.SelectedIndex - 1;

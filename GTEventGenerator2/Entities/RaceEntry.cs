@@ -54,7 +54,18 @@ namespace GTEventGenerator
                     _accelSkill = value;
             }
         }
-        
+
+        private int _startSkill = 80;
+        public int StartingSkill
+        {
+            get => _startSkill;
+            set
+            {
+                if (value <= 200 && value >= 0)
+                    _startSkill = value;
+            }
+        }
+
         private int _delay
         {
             get => _delay;
@@ -134,6 +145,7 @@ namespace GTEventGenerator
                 xml.WriteElementInt("ai_skill_accelerating", AccelSkill);
                 xml.WriteElementInt("ai_skill_breaking", BrakingSkill);
                 xml.WriteElementInt("ai_skill_cornering", CorneringSkill);
+                xml.WriteElementInt("ai_skill_starting", StartingSkill);
                 xml.WriteElementInt("ai_roughness", -1);
             }
 

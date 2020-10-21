@@ -179,8 +179,7 @@ namespace GTEventGenerator
         {
             CurrentEvent.RaceParameters.LineGhostRecordType = (LineGhostRecordType)comboBox_LineGhostRecordType.SelectedIndex;
             numericUpDown_MaxGhostLines.IsEnabled = CurrentEvent.RaceParameters.LineGhostRecordType != LineGhostRecordType.OFF;
-            if (numericUpDown_MaxGhostLines.IsEnabled)
-                numericUpDown_MaxGhostLines.Value = 1;
+            numericUpDown_MaxGhostLines.Value = numericUpDown_MaxGhostLines.IsEnabled ? 1 : 0;
         }
 
         private void numericUpDown_MaxGhostLines_ValueChanged(object sender, EventArgs e)
@@ -305,7 +304,7 @@ namespace GTEventGenerator
             comboBox_LightingMode.SelectedIndex = (int)CurrentEvent.RaceParameters.LightingMode;
             comboBox_PenaltyLevel.SelectedIndex = (int)CurrentEvent.RaceParameters.PenaltyLevel;
             comboBox_SlipstreamBehavior.SelectedIndex = (int)CurrentEvent.RaceParameters.SlipstreamBehavior;
-            comboBox_LineGhostRecordType.SelectedIndex = (int)(CurrentEvent.RaceParameters.LineGhostRecordType ?? 0);
+            comboBox_LineGhostRecordType.SelectedIndex = (int)CurrentEvent.RaceParameters.LineGhostRecordType;
             numericUpDown_MaxGhostLines.Value = CurrentEvent.RaceParameters.LineGhostPlayMax;
             comboBox_Flagset.SelectedIndex = (int)CurrentEvent.RaceParameters.Flagset;
             comboBox_StartingType.SelectedIndex = (int)CurrentEvent.RaceParameters.StartType;
