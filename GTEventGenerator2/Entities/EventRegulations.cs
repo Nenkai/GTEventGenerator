@@ -183,6 +183,10 @@ namespace GTEventGenerator.Entities
                         ParseRaceAllowedVehicles(regulationNode);
                         break;
 
+                    case "countries":
+                        ParseAllowedCountries(regulationNode);
+                        break;
+
                     case "need_year":
                         YearMin = regulationNode.ReadValueInt(); break;
                     case "limit_year":
@@ -267,6 +271,13 @@ namespace GTEventGenerator.Entities
                 string vehicle = vehicleNode.Attributes["label"].Value;
                 RestrictedVehicles.Add(vehicle);
             }
+        }
+
+        private void ParseAllowedCountries(XmlNode node)
+        {
+            AllowedCountries = new List<string>();
+            foreach (XmlNode countryNode in node.SelectNodes("country"))
+                AllowedCountries.Add(countryNode.ReadValueString());
         }
     }
 
