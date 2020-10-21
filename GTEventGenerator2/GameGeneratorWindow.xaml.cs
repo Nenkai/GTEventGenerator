@@ -792,9 +792,13 @@ namespace GTEventGenerator
 
             string dir = Path.GetDirectoryName(filePath);
 
+            string eventListFile = Path.Combine(dir, $"r{gp.FolderId}.xml");
+            if (!File.Exists(eventListFile))
+                throw new FileNotFoundException($"Could not find file {gp.FolderId} referenced by the provided folder.");
+
             var settings = new XmlReaderSettings();
             settings.IgnoreComments = true;
-            var reader = XmlReader.Create(Path.Combine(dir, $"r{gp.FolderId}.xml"), settings);
+            var reader = XmlReader.Create(eventListFile, settings);
             var eventDoc = new XmlDocument();
             eventDoc.Load(reader);
 
