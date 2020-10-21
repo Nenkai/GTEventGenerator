@@ -26,11 +26,22 @@ namespace GTEventGenerator.Entities
             {
                 _gold = value;
 
-                if (value > _silver) // New Gold is higher than silver? set silver to it
-                    Silver = _gold;
+                if (ConditionType == EvalConditionType.TIME)
+                {
+                    if (value > _silver) // New Gold is higher than silver? set silver to it
+                        Silver = _gold;
 
-                if (value > _bronze) // New Gold is higher than bronze? set bronze to it
-                    Bronze = _gold;
+                    if (value > _bronze) // New Gold is higher than bronze? set bronze to it
+                        Bronze = _gold;
+                }
+                else
+                {
+                    if (value < _silver) // New Gold is lower than silver? set silver to it
+                        Silver = _gold;
+
+                    if (value < _bronze) // New Gold is higher than bronze? set bronze to it
+                        Bronze = _gold;
+                }
 
             }
         }
@@ -41,11 +52,22 @@ namespace GTEventGenerator.Entities
             get => _silver;
             set
             {
-                if (value < _gold) // Silver is lower than gold? set silver to gold
-                    value = _gold;
+                if (ConditionType == EvalConditionType.TIME)
+                {
+                    if (value < _gold) // Silver is lower than gold? set silver to gold
+                        value = _gold;
 
-                if (value > _bronze) // Silver is higher than bronze? set bronze to silver
-                    Bronze = value;
+                    if (value > _bronze) // Silver is higher than bronze? set bronze to silver
+                        Bronze = value;
+                }
+                else
+                {
+                    if (value > _gold) // Silver is higher than gold? set silver to gold
+                        value = _gold;
+
+                    if (value < _bronze) // Silver is lower than bronze? set bronze to silver
+                        Bronze = value;
+                }
 
                 _silver = value;
                 OnPropertyChanged("Silver");
@@ -58,11 +80,22 @@ namespace GTEventGenerator.Entities
             get => _bronze;
             set
             {
-                if (value < _gold) // Bronze lower than gold? set it to the same time as gold
-                    value = _gold;
+                if (ConditionType == EvalConditionType.TIME)
+                {
+                    if (value < _gold) // Bronze lower than gold? set it to the same time as gold
+                        value = _gold;
 
-                if (value < _silver) // Bronze lower than silver? set it to the same time as silver
-                    value = _silver;
+                    if (value < _silver) // Bronze lower than silver? set it to the same time as silver
+                        value = _silver;
+                }
+                else
+                {
+                    if (value > _gold) // Bronze lower than gold? set it to the same time as gold
+                        value = _gold;
+
+                    if (value > _silver) // Bronze lower than silver? set it to the same time as silver
+                        value = _silver;
+                }
 
                 _bronze = value;
                 OnPropertyChanged("Bronze");
@@ -81,8 +114,8 @@ namespace GTEventGenerator.Entities
                 if (ConditionType != EvalConditionType.NONE)
                     xml.WriteElementValue("type", ConditionType.ToString());
                 xml.WriteElementInt("gold", Gold);
-                xml.WriteElementInt("bronze", Silver);
-                xml.WriteElementInt("silver", Bronze);
+                xml.WriteElementInt("silver", Silver);
+                xml.WriteElementInt("bronze", Bronze);
 
                 if (!string.IsNullOrEmpty("ghost_data_path"))
                     xml.WriteElementValue("ghost_data_path", GhostDataPath);
