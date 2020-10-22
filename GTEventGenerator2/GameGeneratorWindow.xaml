@@ -878,7 +878,7 @@ The way they are picked from the pool depends on 'Random Entry Gen Type'."/>
                     <GroupBox Header="Rewards by Placement (GT6)" Canvas.Left="549" Height="168" Width="389" Canvas.Top="1">
                         <Canvas>
                             <Label Content="Given" Canvas.Left="10" Canvas.Top="12" />
-                            <ComboBox Name="cb_RewardPlacementType" Canvas.Left="55" Canvas.Top="14" Width="312" />
+                            <ComboBox Name="cb_RewardPlacementType" Canvas.Left="55" Canvas.Top="14" Width="312" SelectionChanged="cb_RewardPlacementType_SelectionChanged"/>
 
                             <Label Content="#1" Canvas.Left="10" Canvas.Top="42" />
                             <Button Name="btn_PresentOne" Click="btn_PresentOne_Clicked" Height="26" HorizontalContentAlignment="Center" Content="No Present Selected" Canvas.Left="39" Canvas.Top="42" Width="274"/>
@@ -897,7 +897,7 @@ The way they are picked from the pool depends on 'Random Entry Gen Type'."/>
                     <GroupBox Header="Other Reward (GT6)" Canvas.Left="549" Height="168" Width="389" Canvas.Top="174">
                         <Canvas>
                             <Label Content="Given" Canvas.Left="10" Canvas.Top="12" />
-                            <ComboBox Name="cb_RewardParticipationType" Canvas.Left="55" Canvas.Top="14" Width="312" />
+                            <ComboBox Name="cb_RewardParticipationType" Canvas.Left="55" Canvas.Top="14" Width="312" SelectionChanged="cb_RewardParticipationType_SelectionChanged"/>
 
                             <Label Content="#1" Canvas.Left="10" Canvas.Top="42" />
                             <Button Name="btn_PresentParticipationOne" Click="btn_PresentParticipationOne_Clicked" Height="26" HorizontalContentAlignment="Center" Content="No Present Selected" Canvas.Left="39" Canvas.Top="42" Width="274"/>

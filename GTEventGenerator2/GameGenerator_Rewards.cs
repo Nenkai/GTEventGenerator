@@ -21,6 +21,12 @@ namespace GTEventGenerator
 {
     public partial class GameGeneratorWindow
     {
+        private void cb_RewardParticipationType_SelectionChanged(object sender, RoutedEventArgs e)
+            => CurrentEvent.Rewards.ParticipationPresentType = (ParticipationPresentType)cb_RewardParticipationType.SelectedIndex;
+
+        private void cb_RewardPlacementType_SelectionChanged(object sender, RoutedEventArgs e)
+            => CurrentEvent.Rewards.PresentType = (PresentOrderType)cb_RewardPlacementType.SelectedIndex;
+
         private void btnCreditRewards_Click(object sender, RoutedEventArgs e)
         {
             var dlg = new CreditXPEditWindow(CurrentEvent.Rewards.MoneyPrizes);

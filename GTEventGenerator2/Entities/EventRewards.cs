@@ -150,6 +150,9 @@ namespace GTEventGenerator.Entities
                     case "present":
                         ParsePresentRewards(rewardNode); break;
 
+                    case "entry_present_type":
+                        ParticipationPresentType = rewardNode.ReadValueEnum<ParticipationPresentType>(); break;
+
                     case "entry_present":
                         ParseParticipateRewards(rewardNode); break;
 
