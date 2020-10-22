@@ -66,6 +66,17 @@ namespace GTEventGenerator
             }
         }
 
+        private int _roughness = -1;
+        public int Roughness
+        {
+            get => _roughness;
+            set
+            {
+                if (value <= 10 && value >= -1)
+                    _roughness = value;
+            }
+        }
+
         private int _delay
         {
             get => _delay;
@@ -146,7 +157,7 @@ namespace GTEventGenerator
                 xml.WriteElementInt("ai_skill_breaking", BrakingSkill);
                 xml.WriteElementInt("ai_skill_cornering", CorneringSkill);
                 xml.WriteElementInt("ai_skill_starting", StartingSkill);
-                xml.WriteElementInt("ai_roughness", -1);
+                xml.WriteElementInt("ai_roughness", Roughness);
             }
 
             if (TireFront != TireType.NONE_SPECIFIED)

@@ -613,14 +613,13 @@ Notes:&#10;
                                    ToolTip="When an AI is generated, the maximum base skill it will use to make a random one.">Max</Label>
                             <xctk:IntegerUpDown Name="numericUpDown_BaseSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="74" Value="80" Maximum="200" Minimum="0"/>
 
+                            <Label Name="label_AIRoughness" Height="30" Width="178" TabIndex="48" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="9" Canvas.Top="38" >AI Roughness</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_AIRoughness" Height="20" Width="148" Canvas.Left="192" Canvas.Top="41" Value="{Binding Path=Entries.AIRoughness}"  Maximum="10" Minimum="-1"/>
+
+
                             <Label Name="label_BaseSkill" Height="25" Width="78" TabIndex="48" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="9" Canvas.Top="68" >AI Base Skill</Label>
-                            <Label Name="label_AIGenRTyreComp" Height="25" Width="131" TabIndex="42" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="38" 
-                                   ToolTip="If selected, generated entries will use the selected rear tyres.">Rear Tires Compound</Label>
-                            <Label Name="label_AIGenFTyreComp" Height="25" Width="169" TabIndex="41" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="8" 
-                                   ToolTip="If selected, generated entries will use the selected front tyres.">Front Tires Compound</Label>
-                            <ComboBox Name="comboBox_AIGenRTyreComp" Height="21" Width="158" TabIndex="40" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="180" Canvas.Top="38" >
-                                <ComboBoxItem Content="Use Car Defaults" HorizontalAlignment="Left" Width="156"/>
-                            </ComboBox>
+                            <Label Name="label_AIGenTyreComp" Height="25" Width="165" TabIndex="41" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="8" 
+                                   ToolTip="If selected, generated entries will use the selected front tyres.">Tire Compound</Label>
                             <Separator Width="330" Canvas.Left="10" Margin="0" Canvas.Top="413"/>
 
                             <Label Name="label_EntryGenerateType" Height="25" Width="167" TabIndex="42" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="269" 
@@ -646,7 +645,7 @@ Notes:&#10;
                                     TickFrequency="1" AutoToolTipPrecision="1" AutoToolTipPlacement="BottomRight" TickPlacement="BottomRight" Maximum="16" IsSnapToTickEnabled="True" ValueChanged="slider_EntryCount_ValueChanged"/>
                             <Label Name="label_EntryCount" Height="25" Width="32" TabIndex="42" HorizontalAlignment="Right" HorizontalContentAlignment="Center" VerticalAlignment="Bottom" Canvas.Left="308" Canvas.Top="382" >1</Label>
 
-                            <ComboBox Name="comboBox_AIGenFTyreComp" Height="21" Width="158" TabIndex="39" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="180" Canvas.Top="9" >
+                            <ComboBox Name="comboBox_AIGenTyreComp" Height="21" Width="158" TabIndex="39" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="180" Canvas.Top="9" >
                                 <ComboBoxItem Content="Use Car Defaults" HorizontalAlignment="Left" Width="156"/>
                             </ComboBox>
 

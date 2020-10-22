@@ -18,8 +18,8 @@ namespace GTEventGenerator.Entities
         public int PlayerPos { get; set; } = 1;
         public int RollingStartV { get; set; }
         public int GapForRollingDistance { get; set; }
-        public int AIRoughness { get; set; }
 
+        public int AIRoughness { get; set; } = -1;
         public int AIBaseSkillStarting { get; set; } = 80;
         public int AICornerSkillStarting { get; set; } = 80;
         public int AIBrakingSkillStarting { get; set; } = 80;
@@ -53,7 +53,7 @@ namespace GTEventGenerator.Entities
                     xml.WriteElementInt("gap_for_rolling_start_distance", GapForRollingDistance);
                     xml.WriteElementBool("use_rolling_start_value", GapForRollingDistance != 0);
                     xml.WriteElementInt("ai_skill_starting", AIBases.Max(x => x.BaseSkill));
-                    xml.WriteElementInt("ai_roughness", 0);
+                    xml.WriteElementInt("ai_roughness", AIRoughness);
                     xml.WriteElementInt("ai_skill", AIBaseSkillStarting);
                     xml.WriteElementInt("ai_skill_breaking", AIBrakingSkillStarting);
                     xml.WriteElementInt("ai_skill_cornering", AICornerSkillStarting);

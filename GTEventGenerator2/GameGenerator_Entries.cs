@@ -83,19 +83,17 @@ namespace GTEventGenerator
                 UpdateAIEntriesCarList();
             }
 
-            if (comboBox_AIGenRTyreComp.Items.Count == 1)
+            if (comboBox_AIGenTyreComp.Items.Count == 1)
             {
                 var tires = (TireType[])Enum.GetValues(typeof(TireType));
                 for (int i = 0; i < tires.Length - 1; i++) // -1 as the combo boxes have a default "none" entry
                 {
                     var tire = (TireType)i;
                     string tireName = tire.Humanize();
-                    comboBox_AIGenRTyreComp.Items.Add(tireName);
-                    comboBox_AIGenFTyreComp.Items.Add(tireName);
+                    comboBox_AIGenTyreComp.Items.Add(tireName);
                 }
 
-                comboBox_AIGenRTyreComp.SelectedIndex = 0;
-                comboBox_AIGenFTyreComp.SelectedIndex = 0;
+                comboBox_AIGenTyreComp.SelectedIndex = 0;
             }
 
             if (comboBox_entryGenerateType.Items.Count == 0)
@@ -296,14 +294,15 @@ namespace GTEventGenerator
             raceEntry.DriverName = driverName;
             raceEntry.DriverRegion = driverRegion;
 
+            raceEntry.Roughness = numericUpDown_AIRoughness.Value.Value;
             raceEntry.BaseSkill = _random.Next(numericUpDown_BaseSkillMin.Value.Value, numericUpDown_BaseSkillMax.Value.Value + 1);
             raceEntry.AccelSkill = _random.Next(numericUpDown_AccelSkillMin.Value.Value, numericUpDown_AccelSkillMax.Value.Value + 1);
             raceEntry.BrakingSkill = _random.Next(numericUpDown_BrakeSkillMin.Value.Value, numericUpDown_AccelSkillMax.Value.Value + 1);
             raceEntry.CorneringSkill = _random.Next(numericUpDown_CornerSkillMin.Value.Value, numericUpDown_CornerSkillMax.Value.Value + 1);
             raceEntry.StartingSkill = _random.Next(numericUpDown_StartSkillMin.Value.Value, numericUpDown_StartSkillMax.Value.Value + 1);
 
-            raceEntry.TireFront = (TireType)comboBox_AIGenFTyreComp.SelectedIndex - 1;
-            raceEntry.TireRear = (TireType)comboBox_AIGenRTyreComp.SelectedIndex - 1;
+            raceEntry.TireFront = (TireType)comboBox_AIGenTyreComp.SelectedIndex - 1;
+            raceEntry.TireRear = (TireType)comboBox_AIGenTyreComp.SelectedIndex - 1;
 
             return raceEntry;
         }
