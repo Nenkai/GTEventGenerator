@@ -72,7 +72,8 @@ namespace GTEventGenerator.Entities
         }
 
         public void WriteToXml(XmlWriter xml)
-        { 
+        {
+            xml.WriteComment($"{EventID} - {Name}");
             xml.WriteStartElement("event");
             {
                 Constraints.WriteToXml(xml);

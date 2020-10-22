@@ -20,7 +20,7 @@ namespace GTEventGenerator.Entities
         public BehaviorDamageType BehaviorDamage { get; set; } = BehaviorDamageType.WEAK;
         public bool BoostFlag { get; set; }
         public CompleteType CompleteType { get; set; } = CompleteType.BYLAPS;
-        public DateTime Date { get; set; } = new DateTime(1970, 6, 1, 12, 00, 00);
+        public DateTime? Date { get; set; } = new DateTime(1970, 6, 1, 12, 00, 00);
         public DecisiveWeatherType DecisiveWeather { get; set; } = DecisiveWeatherType.NONE;
         public bool DisableRecordingReplay { get; set; }
         public bool DisableCollision { get; set; }
@@ -101,7 +101,14 @@ namespace GTEventGenerator.Entities
             xml.WriteElementValue("complete_type", CompleteType.ToString());
             xml.WriteElementInt("consume_fuel", FuelUseMultiplier);
             xml.WriteElementInt("consume_tire", TireUseMultiplier);
-            xml.WriteStartElement("datetime"); xml.WriteAttributeString("datetime", Date.ToString("yyyy/MM/dd HH:mm:ss")); xml.WriteEndElement();
+
+            xml.WriteStartElement("datetime");
+            if (Date is null)
+                xml.WriteAttributeString("datetime", "1970/00/00 00:00:00");
+            else
+                xml.WriteAttributeString("datetime", Date.Value.ToString("yyyy/MM/dd HH:mm:ss"));
+            xml.WriteEndElement();
+
             xml.WriteElementValue("decisive_weather", DecisiveWeather.ToString());
             xml.WriteElementBool("disable_collision", DisableCollision);
             xml.WriteElementBool("disable_recording_replay", DisableRecordingReplay);
@@ -197,13 +204,21 @@ namespace GTEventGenerator.Entities
                     case "consume_tire": 
                         TireUseMultiplier = raceNode.ReadValueInt(); break;
                     case "datetime":
-                        string date = raceNode.Attributes["datetime"].Value.Replace("/00", "/01");
-                        DateTime.TryParseExact(date, "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime time);
-                        Date = time; 
+                        var dateStr = raceNode.Attributes["datetime"].Value;
+                        if (dateStr.Equals("1970/00/00 00:00:00"))
+                            Date = null;
+                        else
+                        {
+                            string date = dateStr.Replace("/00", "/01");
+                            if (DateTime.TryParseExact(date, "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime time))
+                                Date = time;
+                            else
+                                Date = null;
+                        }
                         break;
-                    //case "decisive_weather":
-                    //  Date = DateTime.Parse(raceNode.ReadValueString());
-                    // break;
+                    case "decisive_weather":
+                        DecisiveWeather = raceNode.ReadValueEnum<DecisiveWeatherType>();
+                       break;
                     case "disable_collision":
                         DisableCollision = raceNode.ReadValueBool(); break;
                     case "disable_recording_replay":
@@ -479,13 +494,22 @@ namespace GTEventGenerator.Entities
 
     public enum DecisiveWeatherType
     {
+        [Description("None")]
         NONE,
+
+        [Description("Sunny")]
         SUNNY,
-        RAINY
+
+        [Description("Rainy")]
+        RAINY,
+
+        [Description("Snowy")]
+        SNOWY,
     }
 
     public enum FinishType
     {
+        [Description("None")]
         NONE,
 
         [Description("Target")]

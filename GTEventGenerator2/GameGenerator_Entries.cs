@@ -63,6 +63,15 @@ namespace GTEventGenerator
                 button_EditPlayerEntry.IsEnabled = true;
                 button_RemovePlayerEntry.IsEnabled = true;
             }
+            else
+            {
+                label_PlayerRentedCar.Content = "No custom player entry set - Player will not use a rented Car";
+
+                button_SetCarAsPlayer.IsEnabled = true;
+
+                button_EditPlayerEntry.IsEnabled = false;
+                button_RemovePlayerEntry.IsEnabled = false;
+            }
 
             sl_EntryCount.Value = CurrentEvent.Entries.EntryCount;
             sl_EntryPlayerPos.Maximum = CurrentEvent.Entries.EntryCount;

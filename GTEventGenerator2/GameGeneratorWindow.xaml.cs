@@ -820,6 +820,12 @@ namespace GTEventGenerator
             return gp;
         }
 
+        private void cb_StartTime_Checked(object sender, RoutedEventArgs e)
+        {
+            date_Date.IsEnabled = cb_StartTime.IsChecked == true;
+            if (!date_Date.IsEnabled)
+                CurrentEvent.RaceParameters.Date = null;
+        }
 
         public void RefreshFolderControls()
         {

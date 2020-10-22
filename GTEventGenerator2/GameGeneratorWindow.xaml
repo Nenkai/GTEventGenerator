@@ -34,7 +34,7 @@
                         </GroupBox.Header>
                         <Canvas>
                             <Button Name="btnChampionshipRewards" Height="44" Width="190" TabIndex="6" IsEnabled="False" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="61" >Set Championship Rewards</Button>
-                            <CheckBox Name="chkIsChampionship" Height="19" Width="106" TabIndex="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Checked="chkIsChampionship_CheckedChanged" Canvas.Left="10" Canvas.Top="25" >Championship</CheckBox>
+                            <CheckBox Name="chkIsChampionship" Height="19" Width="106" TabIndex="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Unchecked="chkIsChampionship_CheckedChanged" Checked="chkIsChampionship_CheckedChanged" Canvas.Left="10" Canvas.Top="25" >Championship</CheckBox>
                         </Canvas>
                     </GroupBox>
                     <Label Name="label6" Height="24" Width="91"  TabIndex="8" Margin="8,189,826,343" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
@@ -205,9 +205,16 @@ To enable 'Realtime Weather', disable this and enable weather_prec_rain/snow_onl
                                    ToolTip="Affects how fast water can dry (XML: race->weather_base_celsius)">Base Temperature (in °C)</Label>
                             <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherBaseCelsius}"  Height="20" Width="70" Canvas.Left="157" Canvas.Top="41" Maximum="100000" Minimum="-1"/>
 
-                            <Label Name="label_StartTime" Height="26" Width="69" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="4" Canvas.Top="8" 
-                                   ToolTip="Event Date, aka time of day. Date reflects seasons, e.g January would mean late sunrise (XML: race->date)">Event Date</Label>
-                            <xctk:DateTimeUpDown Value="{Binding Path=RaceParameters.Date}"  Height="22" Width="160" TabIndex="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="74" Canvas.Top="10" Format="FullDateTime"/>
+                            <CheckBox Name="cb_StartTime" Height="24" Width="83" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="4" Canvas.Top="8" 
+                                   ToolTip="Event Date, aka time of day. Uncheck for default. Date reflects seasons, e.g January would mean late sunrise (XML: race->date)" FlowDirection="RightToLeft" VerticalContentAlignment="Center" Unchecked="cb_StartTime_Checked" Checked="cb_StartTime_Checked"
+                                      Content="Event Date">
+                                <CheckBox.Resources>
+                                    <Style TargetType="{x:Type Path}">
+                                        <Setter Property="FlowDirection" Value="LeftToRight"/>
+                                    </Style>
+                                </CheckBox.Resources>
+                            </CheckBox>
+                            <xctk:DateTimeUpDown Name="date_Date" IsEnabled="False" Value="{Binding Path=RaceParameters.Date}"  Height="22" Width="142" TabIndex="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="92" Canvas.Top="10" Format="FullDateTime"/>
                         </Canvas>
                     </GroupBox>
                     <GroupBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="506" Width="677" Canvas.Top="1" >

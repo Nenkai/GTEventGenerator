@@ -275,9 +275,7 @@ namespace GTEventGenerator
         #region Pane 4
 
         private void comboBox_DecisiveWeather_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
+            => CurrentEvent.RaceParameters.DecisiveWeather = (DecisiveWeatherType)comboBox_DecisiveWeather.SelectedIndex;
 
         #endregion
 
@@ -309,6 +307,9 @@ namespace GTEventGenerator
             comboBox_Flagset.SelectedIndex = (int)CurrentEvent.RaceParameters.Flagset;
             comboBox_StartingType.SelectedIndex = (int)CurrentEvent.RaceParameters.StartType;
             comboBox_RaceType.SelectedIndex = (int)CurrentEvent.RaceParameters.RaceType;
+            comboBox_DecisiveWeather.SelectedIndex = (int)CurrentEvent.RaceParameters.DecisiveWeather;
+            cb_StartTime.IsChecked = CurrentEvent.RaceParameters.Date != null;
+
             CurrentEvent.RaceParameters.NeedsPopulating = false;
         }
 
@@ -418,6 +419,14 @@ namespace GTEventGenerator
                 var r = (RaceType)i;
                 string rName = r.Humanize();
                 comboBox_RaceType.Items.Add(rName);
+            }
+
+            var weatherTypes = (DecisiveWeatherType[])Enum.GetValues(typeof(DecisiveWeatherType));
+            for (int i = 0; i < weatherTypes.Length; i++)
+            {
+                var w = (DecisiveWeatherType)i;
+                string wName = w.Humanize();
+                comboBox_DecisiveWeather.Items.Add(wName);
             }
         }
     }
