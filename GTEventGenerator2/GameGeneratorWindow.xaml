@@ -441,13 +441,21 @@ Notes:&#10;
                                    ToolTip="Minimum car weight to enter the event (XML: regulations->need_weight)">Weight Min (kg):</Label>
                             <xctk:IntegerUpDown Name="numericUpDown_WeightMin" Height="20" Width="54" Canvas.Left="274" Canvas.Top="82" Value="{Binding Regulations.WeightMin}" Maximum="10000" Minimum="-1"/>
 
-                            <Label Name="label_PowerMax" Height="27" Width="92" TabIndex="9" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="14" Canvas.Top="110" 
+                            <Label Name="label_PowerMax" Height="27" Width="96" TabIndex="9" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="110" 
                                    ToolTip="Maximum car power to enter the event (XML: regulations->limit_power)">Power Max (ps):</Label>
                             <xctk:IntegerUpDown Name="numericUpDown_PowerMax" Height="20" Width="54" Canvas.Left="111" Canvas.Top="115" Value="{Binding Regulations.PowerMax}" Minimum="-1" Maximum="10000" />
 
-                            <Label Name="label_PowerMin" Height="27" Width="89" TabIndex="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="17" Canvas.Top="78" 
+                            <Label Name="label_PowerMin" Height="27" Width="96" TabIndex="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="78" 
                                     ToolTip="Minimum car power to enter the event (XML: regulations->need_power)">Power Min (ps):</Label>
                             <xctk:IntegerUpDown Name="numericUpDown_PowerMin" Height="20" Width="54" Canvas.Left="111" Canvas.Top="82" Value="{Binding Regulations.PowerMin}" Maximum="10000" Minimum="-1" />
+
+                            <Label Name="label_CarYearMin" Height="27" Width="69" TabIndex="9" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="46" Canvas.Top="199" 
+                                   ToolTip="Minimum car year to enter the event (XML: regulations->need_year)">Year Max:</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_CarYearMin" Height="20" Width="54" Canvas.Left="111" Canvas.Top="174" Value="{Binding Regulations.YearMin}" Minimum="-1" Maximum="3000" />
+
+                            <Label Name="label_CarYearMax" Height="27" Width="68" TabIndex="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="46" Canvas.Top="169" 
+                                    ToolTip="Maximum car year to enter the event (XML: regulations->limit_year)">Year Max:</Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_CarYearMax" Height="20" Width="54" Canvas.Left="111" Canvas.Top="204" Value="{Binding Regulations.YearMax}" Maximum="3000" Minimum="-1" />
 
                             <Label Name="label_TorqueMax" Height="27" Width="99" TabIndex="7" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="170" Canvas.Top="46" 
                                     ToolTip="Maximum car torque to enter the event (XML: regulations->limit_torque)">Torque Max (nm):</Label>
@@ -457,11 +465,11 @@ Notes:&#10;
                                     ToolTip="Minimum car power to enter the event (XML: regulations->need_torque)">Torque Min (nm):</Label>
                             <xctk:IntegerUpDown Name="numericUpDown_TorqueMin" Height="20" Width="54" Canvas.Left="274" Canvas.Top="19" Value="{Binding Regulations.TorqueMin}" Maximum="10000" Minimum="-1"/>
 
-                            <Label Name="label_PPMax" Height="27" Width="59" TabIndex="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="50" Canvas.Top="46" 
+                            <Label Name="label_PPMax" Height="27" Width="59" TabIndex="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="46" Canvas.Top="46" 
                                     ToolTip="Maximum car PP to enter the event (XML: regulations->limit_pp)">PP. Max:</Label>
                             <xctk:IntegerUpDown Name="numericUpDown_PPMax" Height="20" Width="54" Canvas.Left="111" Canvas.Top="51" Value="{Binding Regulations.PPMax}" Maximum="100000" Minimum="-1"/>
 
-                            <Label Name="label_PPMin" Height="27" Width="56" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="50" Canvas.Top="14" 
+                            <Label Name="label_PPMin" Height="27" Width="56" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="49" Canvas.Top="14" 
                                     ToolTip="Minimum car PP to enter the event (XML: regulations->need_pp)">PP. Min:</Label>
                             <xctk:IntegerUpDown Name="numericUpDown_PPMin" Height="20" Width="54" Canvas.Left="111" Canvas.Top="19" Maximum="10000" Minimum="-1" Value="{Binding Regulations.PPMin}"/>
                             <Label Name="label_NOS" Height="27" Width="99" TabIndex="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="170" Canvas.Top="142" 
