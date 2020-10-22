@@ -769,7 +769,7 @@ namespace GTEventGenerator
             string mainParamFile = Path.Combine(selectedPath);
             GameParameter.EventList.WriteToXML(GameParameter, mainParamFile, BaseEventID, cboEventCategory.SelectedItem.ToString());
 
-            using (var xml = XmlWriter.Create(Path.Combine(selectedPath, $"r{GameParameter.FolderId}.xml"), new XmlWriterSettings() { Indent = true }))
+            using (var xml = XmlWriter.Create(Path.Combine(selectedPath, $"r{GameParameter.FolderId}.xml"), new XmlWriterSettings() { Indent = true, IndentChars = "  " }))
             {
                 xml.WriteStartElement("xml");
                 GameParameter.WriteToXml(xml);
