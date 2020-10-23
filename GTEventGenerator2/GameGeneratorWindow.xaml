@@ -88,9 +88,9 @@ IMPORTANT: Be VERY aware when using this value especially with Custom Tracks. It
                                     <TextBlock Text="Event Stars"/>
                                 </GroupBox.Header>
                                 <Canvas >
-                                    <RadioButton Name="rdoStarsNone" Height="24" Width="133" TabIndex="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="10" >No Stars</RadioButton>
-                                    <RadioButton Name="rdoStarsOne" Height="24" Width="133" TabIndex="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="39" >1 Star (Winning)</RadioButton>
-                                    <RadioButton Name="rdoStarsThree" Height="24" Width="133" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="68" >3 Stars (1st/3rd/Any)</RadioButton>
+                                    <RadioButton Name="rdoStarsNone" Height="24" Width="133" TabIndex="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Checked="rdoStarsNone_CheckedChanged" Canvas.Left="10" Canvas.Top="10" >No Stars</RadioButton>
+                                    <RadioButton Name="rdoStarsOne" Height="24" Width="133" TabIndex="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Checked="rdoStarsOne_CheckedChanged" Canvas.Left="10" Canvas.Top="39" >1 Star (Winning)</RadioButton>
+                                    <RadioButton Name="rdoStarsThree" Height="24" Width="133" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Checked="rdoStarsThree_CheckedChanged" Canvas.Left="10" Canvas.Top="68" >3 Stars (1st/3rd/Any)</RadioButton>
                                 </Canvas>
                             </GroupBox>
                             <Label Name="lblRaceName" Height="24" Width="76" TabIndex="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="11" >Event Name</Label>
@@ -330,7 +330,7 @@ STANDING_CENTER">Starting Type</Label>
                             <Label Name="label_GhostType" Height="27" Width="77" TabIndex="25" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="335" 
                                    ToolTip="If ghosts are enabled, the type (XML: race->ghost_type)">Ghost Type</Label>
                             <ComboBox Name="comboBox_GhostType" Height="21" Width="169" TabIndex="24" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_GhostType_SelectedIndexChanged" Canvas.Left="80" Canvas.Top="339" />
-                            <ComboBox Name="comboBox_DamageBehavior" Height="21" Width="128" TabIndex="23" IsEnabled="False" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="120" Canvas.Top="310" />
+                            <ComboBox Name="comboBox_DamageBehavior" Height="21" Width="128" TabIndex="23" IsEnabled="False" HorizontalAlignment="Right" SelectionChanged="comboBox_DamageBehavior_SelectedIndexChanged" VerticalAlignment="Bottom" Canvas.Left="120" Canvas.Top="310" />
                             <Label Name="label_DamageBehavior" Height="25" Width="111" TabIndex="22" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="307" 
                                    ToolTip="How damage should manifest if enabled (XML: race->behavior_damage_type)&#10;
 Weak - Only visual damage (?)&#10;
@@ -453,7 +453,7 @@ Notes:&#10;
                                    ToolTip="Minimum car year to enter the event (XML: regulations->need_year)">Year Max:</Label>
                             <xctk:IntegerUpDown Name="numericUpDown_CarYearMin" Height="20" Width="54" Canvas.Left="111" Canvas.Top="174" Value="{Binding Regulations.YearMin}" Minimum="-1" Maximum="3000" />
 
-                            <Label Name="label_CarYearMax" Height="27" Width="68" TabIndex="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="46" Canvas.Top="169" 
+                            <Label Name="label_CarYearMax" Height="27" Width="68" TabIndex="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="46" Canvas.Top="170" 
                                     ToolTip="Maximum car year to enter the event (XML: regulations->limit_year)">Year Max:</Label>
                             <xctk:IntegerUpDown Name="numericUpDown_CarYearMax" Height="20" Width="54" Canvas.Left="111" Canvas.Top="204" Value="{Binding Regulations.YearMax}" Maximum="3000" Minimum="-1" />
 

@@ -333,6 +333,6 @@ namespace GTEventGenerator.Entities
         ORDER,
 
         [Description("Completing One Lap")]
-        RANDOM,
+        LAP,
     }
 }

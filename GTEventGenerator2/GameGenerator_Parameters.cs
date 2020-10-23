@@ -152,24 +152,19 @@ namespace GTEventGenerator
 
         #region Pane 2 
         private void comboBox_GridSortType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            CurrentEvent.RaceParameters.GridSortType = (GridSortType)comboBox_GridSortType.SelectedIndex;
-        }
+            => CurrentEvent.RaceParameters.GridSortType = (GridSortType)comboBox_GridSortType.SelectedIndex;
 
         private void comboBox_LightingMode_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            CurrentEvent.RaceParameters.LightingMode = (LightingMode)comboBox_LightingMode.SelectedIndex;
-        }
+            => CurrentEvent.RaceParameters.LightingMode = (LightingMode)comboBox_LightingMode.SelectedIndex;
 
         private void comboBox_PenaltyLevel_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            CurrentEvent.RaceParameters.PenaltyLevel = (PenaltyLevel)comboBox_PenaltyLevel.SelectedIndex;
-        }
+            => CurrentEvent.RaceParameters.PenaltyLevel = (PenaltyLevel)comboBox_PenaltyLevel.SelectedIndex-1;
 
         private void comboBox_SlipstreamBehavior_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            CurrentEvent.RaceParameters.SlipstreamBehavior = (SlipstreamBehavior)comboBox_SlipstreamBehavior.SelectedIndex;
-        }
+            => CurrentEvent.RaceParameters.SlipstreamBehavior = (SlipstreamBehavior)comboBox_SlipstreamBehavior.SelectedIndex;
+
+        private void comboBox_DamageBehavior_SelectedIndexChanged(object sender, EventArgs e)
+            => CurrentEvent.RaceParameters.BehaviorDamage = (BehaviorDamageType)comboBox_DamageBehavior.SelectedIndex;
 
         private void comboBox_RaceType_SelectedIndexChanged(object sender, EventArgs e)
             => CurrentEvent.RaceParameters.RaceType = (RaceType)comboBox_RaceType.SelectedIndex;
@@ -300,7 +295,7 @@ namespace GTEventGenerator
 
             comboBox_GridSortType.SelectedIndex = (int)CurrentEvent.RaceParameters.GridSortType;
             comboBox_LightingMode.SelectedIndex = (int)CurrentEvent.RaceParameters.LightingMode;
-            comboBox_PenaltyLevel.SelectedIndex = (int)CurrentEvent.RaceParameters.PenaltyLevel;
+            comboBox_PenaltyLevel.SelectedIndex = (int)CurrentEvent.RaceParameters.PenaltyLevel+1;
             comboBox_SlipstreamBehavior.SelectedIndex = (int)CurrentEvent.RaceParameters.SlipstreamBehavior;
             comboBox_LineGhostRecordType.SelectedIndex = (int)CurrentEvent.RaceParameters.LineGhostRecordType;
             numericUpDown_MaxGhostLines.Value = CurrentEvent.RaceParameters.LineGhostPlayMax;
@@ -375,7 +370,7 @@ namespace GTEventGenerator
             }
 
             var penalties = (PenaltyLevel[])Enum.GetValues(typeof(PenaltyLevel));
-            for (int i = 0; i < penalties.Length; i++)
+            for (int i = -1; i < penalties.Length-1; i++)
             {
                 var p = (PenaltyLevel)i;
                 string pName = p.Humanize();
