@@ -31,20 +31,23 @@ namespace GTEventGenerator
 
             _orderedEntries.Clear();
             listBox_AIEntries.Items.Clear();
+
+
             foreach (var entry in CurrentEvent.Entries.AIBases)
             {
+                if (string.IsNullOrEmpty(entry.ActualCarName))
+                    entry.ActualCarName = GameDatabase.GetCarNameByLabel(entry.CarLabel);
                 listBox_AIEntries.Items.Add($"{entry.DriverName} [{entry.DriverRegion}]: {entry.ActualCarName}");
                 _orderedEntries.Add(entry);
             }
 
             foreach (var entry in CurrentEvent.Entries.AI)
             {
+                if (string.IsNullOrEmpty(entry.ActualCarName))
+                    entry.ActualCarName = GameDatabase.GetCarNameByLabel(entry.CarLabel);
                 listBox_AIEntries.Items.Add($"{entry.DriverName} [{entry.DriverRegion}]: {entry.ActualCarName}");
                 _orderedEntries.Add(entry);
             }
-
-            foreach (var entry in _orderedEntries)
-                entry.ActualCarName = GameDatabase.GetCarNameByLabel(entry.CarLabel);
 
             if (_orderedEntries.Count != 0)
             {

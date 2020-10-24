@@ -26,7 +26,13 @@
             <Label DockPanel.Dock="Right" Width="100" Content="Current Event:" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalAlignment="Bottom"/>
         </DockPanel>
         <TabControl DockPanel.Dock="Bottom" Name="tabEvent" TabStripPlacement= "Top" IsTabStop="False" Margin="0,-2,0,0">
-            <TabItem Name="tabFolderInfo" Header="Folder Info" >
+            <TabItem Name="tabFolderInfo" >
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" >
+                        <Image Width="16" Source="Resources/UI/TabLogos/FolderInfo.png"/>
+                        <TextBlock Text="Folder Info" />
+                    </StackPanel>
+                </TabItem.Header>
                 <Canvas Name="cantabFolderInfo" >
                     <GroupBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="376" Width="221" Height="131" >
                         <GroupBox.Header>
@@ -55,7 +61,13 @@
                     <Button Name="btnOpenMenuDB" Height="43" Width="137" TabIndex="7" Click="btnOpenMenuDB_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="801" Canvas.Top="464" >Open MenuDB</Button>
                 </Canvas>
             </TabItem>
-            <TabItem Name="tabEvents" Header="Events" >
+            <TabItem Name="tabEvents">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" >
+                        <Image Width="16" Source="Resources/UI/TabLogos/Events.png"/>
+                        <TextBlock Text="Events" />
+                    </StackPanel>
+                </TabItem.Header>
                 <Canvas >
                     <GroupBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="517" Canvas.Left="325" Width="313" >
                         <GroupBox.Header>
@@ -114,7 +126,13 @@ IMPORTANT: Be VERY aware when using this value especially with Custom Tracks. It
                     </Border>
                 </Canvas>
             </TabItem>
-            <TabItem Name="tabEventInfo" Header="Event Info" IsEnabled="False" >
+            <TabItem Name="tabEventInfo" IsEnabled="False" >
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" >
+                        <Image Width="16" Source="Resources/UI/TabLogos/EventInfo.png"/>
+                        <TextBlock Text="Event Info" />
+                    </StackPanel>
+                </TabItem.Header>
                 <Canvas Name="cantabEventInfo" >
                     <Label Content="Title/Event Name" Canvas.Left="10" Canvas.Top="10" />
                     <TextBox Name="txt_EventTitle" Height="20" Width="469" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" TextWrapping="Wrap" Canvas.Left="116" Canvas.Top="16" TextChanged="txtEventName_TextChanged"/>
@@ -148,7 +166,13 @@ IMPORTANT: Be VERY aware when using this value especially with Custom Tracks. It
 
                 </Canvas>
             </TabItem>
-            <TabItem Name="tabEventParams" Header="Event Settings" IsEnabled="False" >
+            <TabItem Name="tabEventParams" IsEnabled="False" >
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" >
+                        <Image Width="16" Source="Resources/UI/TabLogos/EventSettings.png"/>
+                        <TextBlock Text="Event Settings" />
+                    </StackPanel>
+                </TabItem.Header>
                 <Canvas >
                     <GroupBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="507" Width="256" Canvas.Left="682" >
                         <GroupBox.Header>
@@ -400,7 +424,13 @@ Notes:&#10;
                     </GroupBox>
                 </Canvas>
             </TabItem>
-            <TabItem Name="tabEventRegulation" Header="Regulations" IsEnabled="False" >
+            <TabItem Name="tabEventRegulation" IsEnabled="False" >
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" >
+                        <Image Width="20" Source="Resources/UI/TabLogos/Regulations.png"/>
+                        <TextBlock Text="Regulations" />
+                    </StackPanel>
+                </TabItem.Header>
                 <Canvas Name="cantabEventRegulation"  >
                     <GroupBox Margin="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="168" Canvas.Left="298" Canvas.Top="347" Width="282" >
                         <GroupBox.Header>
@@ -562,7 +592,13 @@ Notes:&#10;
                     </GroupBox>
                 </Canvas>
             </TabItem>
-            <TabItem Name="tabEntries" Header="Event Entries" IsEnabled="False" >
+            <TabItem Name="tabEntries" IsEnabled="False" >
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" >
+                        <Image Width="20" Source="Resources/UI/TabLogos/EventEntries.png"/>
+                        <TextBlock Text="Event Entries" />
+                    </StackPanel>
+                </TabItem.Header>
                 <Canvas Name="cantabEntries" >
                     <GroupBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="576" Height="507" Width="362" >
                         <GroupBox.Header>
@@ -699,7 +735,13 @@ The way they are picked from the pool depends on 'Random Entry Gen Type'."/>
                     </GroupBox>
                 </Canvas>
             </TabItem>
-            <TabItem Name="tabEventConstraints" Header="Player Entry Constraints" IsEnabled="False" >
+            <TabItem Name="tabEventConstraints" IsEnabled="False" >
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" >
+                        <Image Width="20" Source="Resources/UI/TabLogos/DrivingSettings.png"/>
+                        <TextBlock Text="Driving Constraints" />
+                    </StackPanel>
+                </TabItem.Header>
                 <Canvas Name="cantabEventConstraints" Margin="0,0,9,-3" >
                     <GroupBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="274" Height="224" Width="292" >
                         <GroupBox.Header>
@@ -801,7 +843,13 @@ The way they are picked from the pool depends on 'Random Entry Gen Type'."/>
                     </GroupBox>
                 </Canvas>
             </TabItem>
-            <TabItem Name="tabEventCourse" Header="Course" IsEnabled="False" >
+            <TabItem Name="tabEventCourse" IsEnabled="False" >
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" >
+                        <Image Width="20" Source="Resources/UI/TabLogos/CourseSettings.png"/>
+                        <TextBlock Text="Course" />
+                    </StackPanel>
+                </TabItem.Header>
                 <Canvas Name="cantabEventCourse" >
 
                     <Border Background="DarkGray" Width="611" Canvas.Left="10" Canvas.Top="10" Height="497" BorderThickness="1" BorderBrush="LightGray">
@@ -859,7 +907,14 @@ The way they are picked from the pool depends on 'Random Entry Gen Type'."/>
                     </GroupBox>
                 </Canvas>
             </TabItem>
-            <TabItem Name="tabEventRewards" Header="Rewards" IsEnabled="False" >
+            <TabItem Name="tabEventRewards" IsEnabled="False" >
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" >
+                        <Image Width="18" Source="Resources/UI/TabLogos/Rewards.png"/>
+                        <TextBlock Text="Rewards" />
+                    </StackPanel>
+                </TabItem.Header>
+                
                 <Canvas Name="cantabEventRewards"  >
                     <GroupBox Height="517" Width="209" Canvas.Left="10">
                         <GroupBox.Header>
@@ -923,7 +978,13 @@ The way they are picked from the pool depends on 'Random Entry Gen Type'."/>
                     </GroupBox>
                 </Canvas>
             </TabItem>
-            <TabItem Name="tabEvalConditions" Header="Eval Conditions" IsEnabled="False">
+            <TabItem Name="tabEvalConditions" IsEnabled="False">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" >
+                        <Image Width="20" Source="Resources/UI/TabLogos/EvalConditions.png"/>
+                        <TextBlock Text="Eval Conditions" />
+                    </StackPanel>
+                </TabItem.Header>
                 <Canvas>
                     <GroupBox Header="GroupBox" Height="165" Canvas.Left="10" Canvas.Top="10" Width="278">
                         <Canvas>

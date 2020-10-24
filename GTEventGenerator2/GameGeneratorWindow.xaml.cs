@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Xml;
+using System.Windows.Input;
 
 using Microsoft.Win32;
 using Humanizer;
@@ -37,6 +38,9 @@ namespace GTEventGenerator
 
         public const int BaseEventID = 9900000;
         public const int BaseFolderID = 1000;
+
+        public static RoutedCommand EventSwitchUpCommand = new RoutedCommand();
+        public static RoutedCommand EventSwitchDownCommand = new RoutedCommand();
 
         private bool _processEventSwitch = true;
         public List<string> EventNames { get; set; }
@@ -123,6 +127,11 @@ namespace GTEventGenerator
             cb_gameModes.SelectedIndex = 0;
             cb_Spec.SelectedIndex = 0;
             cb_PlayType.SelectedIndex = 0;
+
+            EventSwitchUpCommand.InputGestures.Add(new KeyGesture(Key.Up, ModifierKeys.Control));
+            EventSwitchDownCommand.InputGestures.Add(new KeyGesture(Key.Down, ModifierKeys.Control));
+            CommandBindings.Add(new CommandBinding(EventSwitchUpCommand, EventSwitchUpCommand_Executed));
+            CommandBindings.Add(new CommandBinding(EventSwitchDownCommand, EventSwitchDownCommand_Executed));
         }
 
         private void tabEvent_Selecting(object sender, SelectionChangedEventArgs e)
@@ -148,6 +157,24 @@ namespace GTEventGenerator
         {
             if (lstRaces.SelectedIndex != -1 && _processEventSwitch)
                 OnNewEventSelected(lstRaces.SelectedIndex);
+        }
+
+        public void EventSwitchUpCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (!GameParameter.Events.Any())
+                return;
+
+            if (lstRaces.SelectedIndex > 0)
+                OnNewEventSelected(lstRaces.SelectedIndex - 1);
+        }
+
+        public void EventSwitchDownCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (!GameParameter.Events.Any())
+                return;
+
+            if (lstRaces.SelectedIndex < lstRaces.Items.Count - 1)
+                OnNewEventSelected(lstRaces.SelectedIndex + 1);
         }
 
         private void cb_QuickEventPicker_SelectionChanged(object sender, SelectionChangedEventArgs e)

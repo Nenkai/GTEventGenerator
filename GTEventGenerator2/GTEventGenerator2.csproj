@@ -52,6 +52,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>GTE_Icon3.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DeepCloner, Version=0.10.0.0, Culture=neutral, PublicKeyToken=dc0b95cf99bf4e99, processorArchitecture=MSIL">
       <HintPath>..\packages\DeepCloner.0.10.2\lib\net40\DeepCloner.dll</HintPath>
@@ -723,6 +726,33 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GTE_Icon3.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\UI\TabLogos\Events.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\UI\TabLogos\CourseSettings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\UI\TabLogos\EventEntries.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\UI\TabLogos\Regulations.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\UI\TabLogos\Rewards.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\UI\TabLogos\EvalConditions.png" />
+    <Resource Include="Resources\UI\TabLogos\EventInfo.png" />
+    <Resource Include="Resources\UI\TabLogos\EventSettings.png" />
+    <Resource Include="Resources\UI\TabLogos\FolderInfo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\UI\TabLogos\DrivingSettings.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
