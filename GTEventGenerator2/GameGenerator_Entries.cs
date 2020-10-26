@@ -9,6 +9,8 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Collections;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml;
@@ -182,7 +184,7 @@ namespace GTEventGenerator
                 return;
 
             var entry = _orderedEntries[listBox_AIEntries.SelectedIndex];
-            var entryEdit = new EventEntryEditWindow(entry);
+            var entryEdit = new EventEntryEditWindow(entry, GameDatabase.GetCarColorNumByLabel(entry.CarLabel));
             entryEdit.ShowDialog();
 
             ResortAIs();
@@ -220,11 +222,24 @@ namespace GTEventGenerator
             if (listBox_AIEntries.SelectedIndex == -1)
                 return;
 
-            var entry = _orderedEntries[listBox_AIEntries.SelectedIndex];
-            _orderedEntries.Remove(entry);
-            CurrentEvent.Entries.AI.Remove(entry);
-            CurrentEvent.Entries.AIBases.Remove(entry);
-            listBox_AIEntries.Items.Remove(listBox_AIEntries.SelectedItem);
+            // Build a list of entries to remove
+            List<RaceEntry> toRemove = new List<RaceEntry>();
+            foreach (var selected in listBox_AIEntries.SelectedItems)
+            {
+                int index = listBox_AIEntries.Items.IndexOf(selected);
+                toRemove.Add(_orderedEntries[index]);
+            }
+
+            foreach (RaceEntry entry in toRemove)
+            {
+                _orderedEntries.Remove(entry);
+                CurrentEvent.Entries.AI.Remove(entry);
+                CurrentEvent.Entries.AIBases.Remove(entry);
+            }
+
+            int count = listBox_AIEntries.SelectedItems.Count;
+            for (int i = count - 1; i >= 0; i--)
+                listBox_AIEntries.Items.Remove(listBox_AIEntries.SelectedItems[i]);
 
             if (listBox_AIEntries.Items.Count == 0)
             {
@@ -235,7 +250,7 @@ namespace GTEventGenerator
 
         private void button_EditPlayerEntry_Click(object sender, RoutedEventArgs e)
         {
-            var entryEdit = new EventEntryEditWindow(CurrentEvent.Entries.Player);
+            var entryEdit = new EventEntryEditWindow(CurrentEvent.Entries.Player, GameDatabase.GetCarColorNumByLabel(CurrentEvent.Entries.Player.CarLabel));
             entryEdit.ShowDialog();
         }
 
@@ -302,6 +317,9 @@ namespace GTEventGenerator
                     driverRegion = regionInfo.country;
                 }
             }
+
+            if (checkBox_RandomCarColor.IsEnabled == true)
+                raceEntry.ColorIndex = GameDatabase.GetCarColorNumByLabel(raceEntry.CarLabel) - 1;
 
             raceEntry.DriverName = driverName;
             raceEntry.DriverRegion = driverRegion;

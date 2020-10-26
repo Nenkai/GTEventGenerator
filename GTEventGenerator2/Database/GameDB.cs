@@ -128,6 +128,14 @@ namespace GTEventGenerator.Database
             return res.GetString(0);
         }
 
+        public int GetCarColorNumByLabel(string label)
+        {
+            var res = ExecuteQuery($"SELECT ValidColors FROM Vehicles WHERE VehicleInternalName = \"{label}\"");
+            res.Read();
+
+            return res.GetInt32(0);
+        }
+
         public (string DriverName, int InitialType) GetRandomDriverInfo()
         {
             var res = ExecuteQuery("SELECT * FROM DriverNames ORDER BY RANDOM() LIMIT 1");

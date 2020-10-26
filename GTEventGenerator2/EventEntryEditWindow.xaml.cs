@@ -26,18 +26,22 @@ namespace GTEventGenerator
     public partial class EventEntryEditWindow : Window
     {
         private RaceEntry _entry { get; set; }
-        public EventEntryEditWindow(RaceEntry entry)
+        private int _maxColors;
+        public EventEntryEditWindow(RaceEntry entry, int maxColors)
         {
             _entry = entry;
             this.DataContext = _entry;
             InitializeComponent();
 
+            _maxColors = maxColors;
             if (!entry.IsAI)
             {
                 iud_AccelSkill.IsEnabled = false;
                 iud_BaseSkill.IsEnabled = false;
                 iud_CorneringSkill.IsEnabled = false;
                 iud_BrakingSkill.IsEnabled = false;
+                iud_Roughness.IsEnabled = false;
+                iud_StartingSkill.IsEnabled = false;
 
                 tb_DriverName.IsEnabled = false;
                 tb_DriverCountry.IsEnabled = false;
@@ -54,6 +58,8 @@ namespace GTEventGenerator
 
             cb_EntryTireF.SelectedIndex = (int)_entry.TireFront + 1;
             cb_EntryTireR.SelectedIndex = (int)_entry.TireRear + 1;
+
+            iud_CarColorIndex.Value = entry.ColorIndex;
         }
 
         private void cb_EntryTireF_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -64,6 +70,16 @@ namespace GTEventGenerator
         private void cb_EntryTireR_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _entry.TireRear = (TireType)cb_EntryTireR.SelectedIndex - 1;
+        }
+
+        private void iud_CarColorIndex_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (iud_CarColorIndex.Value >= _maxColors)
+                iud_CarColorIndex.Value = _maxColors - 1;
+            else if (iud_CarColorIndex.Value < 0)
+                iud_CarColorIndex.Value = 0;
+
+            _entry.ColorIndex = (int)iud_CarColorIndex.Value;
         }
     }
 }

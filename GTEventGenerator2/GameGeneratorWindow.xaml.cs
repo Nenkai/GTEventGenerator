@@ -203,6 +203,10 @@ namespace GTEventGenerator
 
             ReloadEventLists();
             UpdateEventListing();
+
+            _processEventSwitch = false;
+            cb_QuickEventPicker.SelectedIndex = currentEventIndex;
+            _processEventSwitch = true;
         }
 
         private void btnRemoveRace_Click(object sender, EventArgs e)
@@ -683,6 +687,9 @@ namespace GTEventGenerator
             cb_QuickEventPicker.IsEnabled = isEnabled;
 
             iud_EventID.IsEnabled = isEnabled && GameParameter.Events.Any() && CurrentEvent == GameParameter.Events[0];
+
+            btnAddRace.IsEnabled = GameParameter?.Events?.Any() == true;
+            btnCopyRace.IsEnabled = GameParameter?.Events?.Any() == true;
         }
 
         void CheckMenuDB(string file)

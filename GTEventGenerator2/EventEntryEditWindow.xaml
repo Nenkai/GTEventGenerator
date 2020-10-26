@@ -24,9 +24,14 @@
                        ToolTip="Forced rear tyres that the entry will use (XML: entry->tire_f)"/>
                 <ComboBox Name="cb_EntryTireF" Margin="102,76,10,0" VerticalAlignment="Top" SelectionChanged="cb_EntryTireF_SelectionChanged">Use Car Defaults</ComboBox>
                 <ComboBox Name="cb_EntryTireR" Margin="102,108,10,0" VerticalAlignment="Top" SelectionChanged="cb_EntryTireR_SelectionChanged">Use Car Defaults</ComboBox>
-                <Label Content="Delay (in MS)" HorizontalAlignment="Left" Margin="10,134,0,0" VerticalAlignment="Top" Width="108"
+                <Label Content="Delay (in Seconds)" HorizontalAlignment="Left" Margin="10,134,0,0" VerticalAlignment="Top" Width="108"
                        ToolTip="How many seconds after '3, 2, 1' this entry will start (XML: entry->delay)"/>
                 <xctk:IntegerUpDown Name="iud_Delay" Value="{Binding Delay}" Margin="123,138,10,43" Minimum="-1" Maximum="999999" UpdateValueOnEnterKey="True"/>
+
+                <Label Content="Car Color Index" HorizontalAlignment="Left" Margin="10,165,0,0" VerticalAlignment="Top" Width="108"
+                       ToolTip="Index of the car's preset color (first in dealership = 0) (XML: entry->car->color)"/>
+                <xctk:IntegerUpDown Name="iud_CarColorIndex" Margin="123,170,10,11" Minimum="0" UpdateValueOnEnterKey="True" ValueChanged="iud_CarColorIndex_ValueChanged" />
+
             </Grid>
         </GroupBox>
         <GroupBox Header="AI Settings" Margin="10,240,394,10">
@@ -35,21 +40,21 @@
                 <xctk:IntegerUpDown Name="iud_BaseSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding BaseSkill}" Margin="123,10,0,0" Height="20" Width="107"
                        ToolTip="(XML: entry->ai_skill)"/>
 
-                <Label Content="Cornering Skill" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" Width="92"/>
-                <xctk:IntegerUpDown Name="iud_CorneringSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding CorneringSkill}" Margin="123,37,0,0" Height="20" Width="107"
+                <Label Content="Cornering Skill" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Width="92"/>
+                <xctk:IntegerUpDown Name="iud_CorneringSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding CorneringSkill}" Margin="123,38,0,0" Height="20" Width="107"
                        ToolTip="(XML: entry->ai_skill_cornering)"/>
 
                 <Label Content="Braking Skill" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" Width="92"/>
                 <xctk:IntegerUpDown Name="iud_BrakingSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding BrakingSkill}" Margin="123,67,0,0" Height="20" Width="107"
                        ToolTip="(XML: entry->ai_skill_breaking - yes, this typo is intentional)"/>
 
-                <Label Content="Acceleration Skill" HorizontalAlignment="Left" Margin="10,93,0,0" VerticalAlignment="Top" Width="108"
+                <Label Content="Acceleration Skill" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top" Width="108"
                        ToolTip="(XML: entry->ai_skill_accelerating)"/>
-                <xctk:IntegerUpDown Name="iud_AccelSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding AccelSkill}" Margin="123,96,0,0" Height="20" Width="107"/>
+                <xctk:IntegerUpDown Name="iud_AccelSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding AccelSkill}" Margin="123,95,0,0" Height="20" Width="107"/>
 
-                <Label Content="Starting Skill" HorizontalAlignment="Left" Margin="10,121,0,0" VerticalAlignment="Top" Width="108"
+                <Label Content="Starting Skill" HorizontalAlignment="Left" Margin="10,119,0,0" VerticalAlignment="Top" Width="108"
                        ToolTip="(XML: entry->ai_skill_starting)"/>
-                <xctk:IntegerUpDown Name="iud_StartingSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding StartingSkill}" Margin="122,124,0,0" Height="20" Width="107"/>
+                <xctk:IntegerUpDown Name="iud_StartingSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding StartingSkill}" Margin="122,122,0,0" Height="20" Width="107"/>
 
                 <Label Content="Roughness" HorizontalAlignment="Left" Margin="10,147,0,0" VerticalAlignment="Top" Width="107"
                        ToolTip="(XML: entry->ai_roughness)"/>
@@ -61,8 +66,9 @@
                 <Label Content="Driver Country" HorizontalAlignment="Left" Margin="10,200,0,0" VerticalAlignment="Top" Width="92"
                        ToolTip="If invalid, no flag will be displayed (XML: entry->driver_region)"/>
                 <TextBox Name="tb_DriverName" HorizontalAlignment="Left" Height="22" Margin="107,177,0,0" TextWrapping="Wrap" Text="{Binding DriverName}" VerticalAlignment="Top" Width="123"/>
-                <TextBox Name="tb_DriverCountry" HorizontalAlignment="Left" Height="22" Margin="106,205,0,0" TextWrapping="Wrap" Text="{Binding DriverRegion}" VerticalAlignment="Top" Width="123"/>
+                <TextBox Name="tb_DriverCountry" HorizontalAlignment="Left" Height="22" Margin="106,204,0,0" TextWrapping="Wrap" Text="{Binding DriverRegion}" VerticalAlignment="Top" Width="123"/>
             </Grid>
         </GroupBox>
+        <GroupBox Header="Car Settings" HorizontalAlignment="Left" Height="489" Margin="266,10,0,0" VerticalAlignment="Top" Width="379"/>
     </Grid>
 </Window>

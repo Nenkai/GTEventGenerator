@@ -135,13 +135,13 @@ IMPORTANT: Be VERY aware when using this value especially with Custom Tracks. It
                 </TabItem.Header>
                 <Canvas Name="cantabEventInfo" >
                     <Label Content="Title/Event Name" Canvas.Left="10" Canvas.Top="10" />
-                    <TextBox Name="txt_EventTitle" Height="20" Width="469" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" TextWrapping="Wrap" Canvas.Left="116" Canvas.Top="16" TextChanged="txtEventName_TextChanged"/>
+                    <TextBox Name="txt_EventTitle" Height="20" Width="469" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="116" Canvas.Top="16" TextChanged="txtEventName_TextChanged"/>
 
                     <Label Content="One Line Title" Canvas.Top="41" Canvas.Left="10"/>
-                    <TextBox Name="txt_OneLineTitle" Height="20" Width="469" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" TextWrapping="Wrap" Canvas.Left="116" Canvas.Top="44" TextChanged="txt_OneLineTitle_TextChanged" />
+                    <TextBox Name="txt_OneLineTitle" Height="20" Width="469" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="116" Canvas.Top="44" TextChanged="txt_OneLineTitle_TextChanged" />
 
                     <Label Content="Description" Canvas.Top="72" Canvas.Left="10"/>
-                    <TextBox Name="txt_Description" Height="287" Width="469" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" TextWrapping="Wrap" Canvas.Left="116" Canvas.Top="76" TextChanged="txt_Description_TextChanged" />
+                    <TextBox Name="txt_Description" Height="287" Width="469" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" TextWrapping="Wrap" AcceptsReturn="True" Canvas.Left="116" Canvas.Top="76" TextChanged="txt_Description_TextChanged" />
 
                     <GroupBox Header="Online Event Information (GT6 Seasonals)" Height="361" Width="348" Canvas.Left="590" Canvas.Top="2">
                         <Canvas>
@@ -682,7 +682,8 @@ Notes:&#10;
                             <ComboBox Name="comboBox_EntrySortType" Height="21" Width="186" TabIndex="39" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="302" SelectionChanged="comboBox_EntrySortType_SelectionChanged" />
 
                             <Label Name="label_GapForRolling" Height="29" Width="262" TabIndex="42" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="9" Canvas.Top="327" 
-                                   ToolTip="Used for Rolling Starts (XML: entry_generate->gap_for_rolling_start_distance)" >Dist. Between Cars for a Rolling Start (in Meters)</Label>
+                                   ToolTip="Used for Rolling Starts (XML: entry_generate->gap_for_start_rolling_distance)&#10;
+0 for default, game uses 50-100 depending on how fast cars are. Shouldn't be more than 300." >Dist. Between Cars for a Rolling Start (in Meters)</Label>
                             <xctk:IntegerUpDown Name="numericUpDown_GapForRollingDistance" Value="{Binding Path=Entries.GapForRollingDistance}" Height="20" Width="64" Canvas.Left="276" Canvas.Top="332" Maximum="2000" Minimum="0"/>
 
                             <Label Content="Player Position" Canvas.Left="10" Canvas.Top="354" Width="109"
@@ -717,7 +718,7 @@ The way they are picked from the pool depends on 'Random Entry Gen Type'."/>
                         <Canvas >
                             <Button Name="button_RemoveAI" IsEnabled="False" Height="24" Width="98" TabIndex="52" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="460" Click="button_EditAI_Clicked">Edit AI</Button>
                             <Button Name="button_EditAI" IsEnabled="False" Height="24" Width="98" TabIndex="51" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="133" Canvas.Top="460" Click="button_RemoveAI_Clicked">Remove AI(s)</Button>
-                            <ListBox Name="listBox_AIEntries" Height="445" Width="221" TabIndex="16" Margin="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="10" Canvas.Left="10" />
+                            <ListBox Name="listBox_AIEntries" Height="445" Width="221" TabIndex="16" Margin="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="10" Canvas.Left="10" SelectionMode="Multiple"/>
                         </Canvas>
                     </GroupBox>
                     <GroupBox Margin="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="507" Canvas.Left="3" Width="310" >
