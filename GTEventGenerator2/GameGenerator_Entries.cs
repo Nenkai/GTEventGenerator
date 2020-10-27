@@ -192,7 +192,7 @@ namespace GTEventGenerator
 
         private void button_SetCarAsPlayer_Click(object sender, RoutedEventArgs e)
         {
-            if (listBox_AIEntries.SelectedIndex == -1)
+            if (listBox_AICarList.SelectedIndex == -1)
                 return;
 
             var entry = new RaceEntry();
@@ -325,11 +325,31 @@ namespace GTEventGenerator
             raceEntry.DriverRegion = driverRegion;
 
             raceEntry.Roughness = numericUpDown_AIRoughness.Value.Value;
+
+            if (numericUpDown_BaseSkillMin.Value > numericUpDown_BaseSkillMax.Value)
+                numericUpDown_BaseSkillMax.Value = numericUpDown_BaseSkillMin.Value;
+
             raceEntry.BaseSkill = _random.Next(numericUpDown_BaseSkillMin.Value.Value, numericUpDown_BaseSkillMax.Value.Value + 1);
+
+            if (numericUpDown_AccelSkillMin.Value > numericUpDown_AccelSkillMax.Value)
+                numericUpDown_AccelSkillMax.Value = numericUpDown_AccelSkillMin.Value;
+
             raceEntry.AccelSkill = _random.Next(numericUpDown_AccelSkillMin.Value.Value, numericUpDown_AccelSkillMax.Value.Value + 1);
-            raceEntry.BrakingSkill = _random.Next(numericUpDown_BrakeSkillMin.Value.Value, numericUpDown_AccelSkillMax.Value.Value + 1);
+
+            if (numericUpDown_BrakeSkillMin.Value > numericUpDown_BrakeSkillMax.Value)
+                numericUpDown_BrakeSkillMax.Value = numericUpDown_BrakeSkillMin.Value;
+
+            raceEntry.BrakingSkill = _random.Next(numericUpDown_BrakeSkillMin.Value.Value, numericUpDown_BrakeSkillMax.Value.Value + 1);
+
+            if (numericUpDown_CornerSkillMin.Value > numericUpDown_CornerSkillMax.Value)
+                numericUpDown_CornerSkillMax.Value = numericUpDown_CornerSkillMin.Value;
+
             raceEntry.CorneringSkill = _random.Next(numericUpDown_CornerSkillMin.Value.Value, numericUpDown_CornerSkillMax.Value.Value + 1);
+
+            if (numericUpDown_StartSkillMin.Value > numericUpDown_StartSkillMax.Value)
+                numericUpDown_StartSkillMax.Value = numericUpDown_StartSkillMin.Value;
             raceEntry.StartingSkill = _random.Next(numericUpDown_StartSkillMin.Value.Value, numericUpDown_StartSkillMax.Value.Value + 1);
+
 
             raceEntry.TireFront = (TireType)comboBox_AIGenTyreComp.SelectedIndex - 1;
             raceEntry.TireRear = (TireType)comboBox_AIGenTyreComp.SelectedIndex - 1;

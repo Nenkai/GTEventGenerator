@@ -688,7 +688,8 @@ namespace GTEventGenerator
 
             iud_EventID.IsEnabled = isEnabled && GameParameter.Events.Any() && CurrentEvent == GameParameter.Events[0];
 
-            btnAddRace.IsEnabled = GameParameter?.Events?.Any() == true;
+            btnAddRace.IsEnabled = GameParameter?.Events.Count < 100;
+            btnRemoveRace.IsEnabled = GameParameter?.Events?.Any() == true;
             btnCopyRace.IsEnabled = GameParameter?.Events?.Any() == true;
         }
 
