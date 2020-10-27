@@ -19,5 +19,7 @@ It is not yet finished.
 - [ ] Custom Evaluation Conditions
 - [ ] Fail Conditions
 
+# Download
+https://github.com/Nenkai/GTEventGenerator/releases
 
 ![Preview](https://cdn.discordapp.com/attachments/615245340773187602/765037980493676594/unknown.png)
