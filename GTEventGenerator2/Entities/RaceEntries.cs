@@ -51,10 +51,11 @@ namespace GTEventGenerator.Entities
                     xml.WriteElementValue("enemy_sort_type", AISortType.ToString());
                     xml.WriteElementInt("rolling_start_v", RollingStartV);
                     xml.WriteElementInt("gap_for_start_rolling_distance", GapForRollingDistance);
-                    xml.WriteElementBool("use_rolling_start_value", GapForRollingDistance != 0);
+                    xml.WriteElementBool("use_rolling_start_param", GapForRollingDistance != 0 || RollingStartV != 0);
                     xml.WriteElementInt("ai_skill_starting", AIBases.Max(x => x.BaseSkill));
                     xml.WriteElementInt("ai_roughness", AIRoughness);
                     xml.WriteElementInt("ai_skill", AIBaseSkillStarting);
+           
                     xml.WriteElementInt("ai_skill_breaking", AIBrakingSkillStarting);
                     xml.WriteElementInt("ai_skill_cornering", AICornerSkillStarting);
                     xml.WriteElementInt("ai_skill_accelerating", AIAccelSkillStarting);

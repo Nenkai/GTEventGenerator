@@ -319,7 +319,7 @@ namespace GTEventGenerator
             }
 
             if (checkBox_RandomCarColor.IsEnabled == true)
-                raceEntry.ColorIndex = GameDatabase.GetCarColorNumByLabel(raceEntry.CarLabel) - 1;
+                raceEntry.ColorIndex = new Random().Next(GameDatabase.GetCarColorNumByLabel(raceEntry.CarLabel));
 
             raceEntry.DriverName = driverName;
             raceEntry.DriverRegion = driverRegion;

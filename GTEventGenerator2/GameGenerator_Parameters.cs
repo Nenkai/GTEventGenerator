@@ -423,6 +423,7 @@ namespace GTEventGenerator
                 string wName = w.Humanize();
                 comboBox_DecisiveWeather.Items.Add(wName);
             }
+            comboBox_DecisiveWeather.SelectedIndex = (int)DecisiveWeatherType.SUNNY;
         }
     }
 }

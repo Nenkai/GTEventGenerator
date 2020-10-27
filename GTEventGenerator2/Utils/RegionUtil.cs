@@ -32,7 +32,7 @@ namespace GTEventGenerator
                 new[] { "ES", "ES", "ES", "ES", "ES", "ES","BR","BR","BR","BR","MX","MX","MX","AR","AR","CO","CO","CO","PE" }) },
 
             {6, new Region("AEFHIJKLMNOPRSTUV", "DY", 2,
-                new[] { "FI", "FI", "FI", "FI"," NO" }) },
+                new[] { "FI", "FI", "FI", "FI", "NO" }) },
 
             {7, new Region("ABCDEFGHIJKLMNOPRSTUVWY", "UZ", 2,  // Copied from 0
                 new[] { "SE", "SE" }) },

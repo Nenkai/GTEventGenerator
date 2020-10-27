@@ -605,7 +605,7 @@ Notes:&#10;
                             <TextBlock Text="Entry Settings/Generate Options"/>
                         </GroupBox.Header>
                         <Canvas>
-                            <CheckBox Name="checkBox_RandomCarColor" Height="25" Width="128" TabIndex="68" HorizontalAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Canvas.Left="14" Canvas.Top="242" 
+                            <CheckBox Name="checkBox_RandomCarColor" Height="25" Width="128" TabIndex="68" HorizontalAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Canvas.Left="14" Canvas.Top="242" IsChecked="True"
                                       ToolTip="When an AI is generated, whether it has a random car color.">Random Car Color</CheckBox>
                             <CheckBox Name="checkBox_RandomDriverName" IsChecked="True" Height="25" Width="146" TabIndex="67" HorizontalAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Canvas.Top="214" Canvas.Left="13" 
                                       ToolTip="When an AI is generated, whether it has a random name.">Random Driver Name</CheckBox>
