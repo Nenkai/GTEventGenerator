@@ -179,53 +179,57 @@ IMPORTANT: Be VERY aware when using this value especially with Custom Tracks. It
                             <TextBlock Text="Weather Parameters"/>
                         </GroupBox.Header>
                         <Canvas Height="487" Width="237" >
-                            <ComboBox Name="comboBox_DecisiveWeather" Height="21" Width="102" TabIndex="37" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_DecisiveWeather_SelectedIndexChanged" Canvas.Left="123" Canvas.Top="399" />
-                            <Label Name="label_DecisiveWeather" Height="28" Width="104" TabIndex="24" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="7" Canvas.Top="394" >Decisive Weather</Label>
+                            <Label Name="label_TrackWetness" Height="27" Width="128" TabIndex="22" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="427" 
+                                   ToolTip="Initial Track Water %, 1 is 10%, 100 is 100% - 0/-1 is none (XML: initial_retention10)">Initial Track Wetness</Label>
+                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.TrackWetness}" Height="20" Width="51" Canvas.Left="174" Canvas.Top="431" Maximum="10" Minimum="-1"/>
 
-                            <Label Name="label_WeatherProgressionLength" Height="27" Width="162" TabIndex="22" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="7" Canvas.Top="361" 
+                            <ComboBox Name="comboBox_DecisiveWeather" Height="21" Width="102" TabIndex="37" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_DecisiveWeather_SelectedIndexChanged" Canvas.Left="123" Canvas.Top="399" />
+                            <Label Name="label_DecisiveWeather" Height="28" Width="101" TabIndex="24" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="395" >Decisive Weather</Label>
+
+                            <Label Name="label_WeatherProgressionLength" Height="27" Width="164" TabIndex="22" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="361" 
                                    ToolTip="Unknown - length of total weather progression? (XML: weather_total_sec)">Weather Progression Length</Label>
                             <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherTotalSec}" Height="20" Width="51" Canvas.Left="174" Canvas.Top="365" Maximum="100000" Minimum="-1"/>
 
-                            <Label Name="label_WeatherRandomSeed" Height="27" Width="131" TabIndex="20" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="295" Canvas.Left="6" 
+                            <Label Name="label_WeatherRandomSeed" Height="27" Width="140" TabIndex="20" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="295" Canvas.Left="10" 
                                    ToolTip="Seed if the weather is random(XML: weather_random_seed)">Weather Random Seed</Label>
                             <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherRandomSeed}" Height="20" Width="70" Canvas.Left="155" Canvas.Top="300" Maximum="100000" Minimum="-1"/>
 
-                            <Label Name="label_WeatherTimeProgressionSpeed" Height="29" Width="143" TabIndex="18" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="7" Canvas.Top="327" 
+                            <Label Name="label_WeatherTimeProgressionSpeed" Height="29" Width="140" TabIndex="18" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="327" 
                                    ToolTip="Multiplier of how fast time progresses (1.0 = real-time, 60.0 = 60x (i.e. 24 minute day)) (XML: time_progress_speed)">Time Progression Speed</Label>
                             <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.TimeProgressSpeed}" Height="20" Width="70" Canvas.Left="155" Canvas.Top="330" Maximum="100000" Minimum="-1"/>
 
-                            <CheckBox Name="checkBox_RandomWeather" Height="19" Width="226" TabIndex="17" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding Path=RaceParameters.WeatherRandom}" Canvas.Top="271" Canvas.Left="7"
+                            <CheckBox Name="checkBox_RandomWeather" Height="19" Width="223" TabIndex="17" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding Path=RaceParameters.WeatherRandom}" Canvas.Top="271" Canvas.Left="10"
                                       ToolTip="Forces the weather to be random or predetermined (XML: race->weather_random)">Random Weather</CheckBox>
                             <CheckBox Name="checkBox_WeatherPrecSnowOnly" Height="24" Width="81" TabIndex="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding Path=RaceParameters.WeatherPrecSnowOnly}" Canvas.Top="242" Canvas.Left="155"
                                       ToolTip="Forces any allowed precipitation to be either rain or snow (XML: race->weather_prec_rain_only)">Only Snow Precipitation</CheckBox>
-                            <CheckBox Name="checkBox_WeatherPrecRainOnly" Height="24" Width="149" TabIndex="15" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding Path=RaceParameters.WeatherPrecRainOnly}" Canvas.Top="242" Canvas.Left="6" 
+                            <CheckBox Name="checkBox_WeatherPrecRainOnly" Height="24" Width="145" TabIndex="15" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding Path=RaceParameters.WeatherPrecRainOnly}" Canvas.Top="242" Canvas.Left="10" 
                                       ToolTip="Forces any allowed precipitation to be either rain or snow (XML: race->weather_prec_snow_only)">Only Rain Precipitation</CheckBox>
 
-                            <Label Name="label_WeatherPointNum" Height="27" Width="131" TabIndex="13" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="7" Canvas.Top="210" 
+                            <Label Name="label_WeatherPointNum" Height="27" Width="128" TabIndex="13" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="210" 
                                    ToolTip="Undocumented (XML: weather_point_num)">Weather Point Num</Label>
                             <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherPointNum}" Height="20" Width="70" Canvas.Left="155" Canvas.Top="213" Maximum="100000" Minimum="-1"/>
 
-                            <Label Name="label_WeatherChangeRate" Height="26" Width="131" TabIndex="11" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="179" 
+                            <Label Name="label_WeatherChangeRate" Height="26" Width="127" TabIndex="11" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="179" 
                                    ToolTip="How fast weather and water can change (XML: weather_change_rate)">Weather Change Rate</Label>
                             <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherAccel}" Height="20" Width="70" Canvas.Left="155" Canvas.Top="182" Maximum="100000" Minimum="-1"/>
 
-                            <CheckBox Name="checkBox_WeatherNoWind" Height="19" Width="104" TabIndex="10" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding Path=RaceParameters.WeatherNoWind}" Canvas.Left="7" Canvas.Top="155" 
+                            <CheckBox Name="checkBox_WeatherNoWind" Height="19" Width="101" TabIndex="10" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding Path=RaceParameters.WeatherNoWind}" Canvas.Left="10" Canvas.Top="155" 
                                       ToolTip="Undocumented (XML: race->weather_no_wind)">No Wind</CheckBox>
-                            <CheckBox Name="checkBox_WeatherNoSchedule" Height="24" Width="104" TabIndex="9" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding Path=RaceParameters.WeatherNoSchedule}" Canvas.Left="7" Canvas.Top="126" 
+                            <CheckBox Name="checkBox_WeatherNoSchedule" Height="24" Width="101" TabIndex="9" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding Path=RaceParameters.WeatherNoSchedule}" Canvas.Left="10" Canvas.Top="126" 
                                       ToolTip="Whether or not the weather can vary (XML: race->weather_no_schedule)">No Schedule</CheckBox>
                             <CheckBox Name="checkBox_WeatherNoPrecipitation" Height="24" Width="113" TabIndex="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding Path=RaceParameters.WeatherNoPrecipitation}" Canvas.Left="123" Canvas.Top="126" 
                                       ToolTip="Whether or not the weather can progress to rain/snow (XML: race->weather_no_precipitation)&#10;
 To enable 'Realtime Weather', disable this and enable weather_prec_rain/snow_only">No Precipitation</CheckBox>
 
-                            <Label Name="label_MinTemp" Height="26" Width="149" TabIndex="6" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="7" Canvas.Top="95" 
+                            <Label Name="label_MinTemp" Height="26" Width="146" TabIndex="6" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="95" 
                                    ToolTip="Min temperature on the track (XML: race->weather_min_celsius)">Min Temperature (in °C)</Label>
                             <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherMinCelsius}"  Height="20" Width="70" Canvas.Left="157" Canvas.Top="100" Maximum="100000" Minimum="-1"/>
 
-                            <Label Name="label_MaxTemp" Height="23" Width="149" TabIndex="4" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="67" 
+                            <Label Name="label_MaxTemp" Height="23" Width="145" TabIndex="4" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="67" 
                                    ToolTip="Max temperature on the track (XML: race->weather_max_celsius)">Max Temperature (in °C)</Label>
                             <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherMaxCelsius}"  Height="20" Width="70" Canvas.Left="157" Canvas.Top="70" Maximum="100000" Minimum="-1"/>
 
-                            <Label Name="label_BaseTemp" Height="30" Width="148" TabIndex="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="37" Canvas.Left="6" 
+                            <Label Name="label_BaseTemp" Height="30" Width="144" TabIndex="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="37" Canvas.Left="10" 
                                    ToolTip="Affects how fast water can dry (XML: race->weather_base_celsius)">Base Temperature (in °C)</Label>
                             <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherBaseCelsius}"  Height="20" Width="70" Canvas.Left="157" Canvas.Top="41" Maximum="100000" Minimum="-1"/>
 
@@ -915,7 +919,7 @@ The way they are picked from the pool depends on 'Random Entry Gen Type'."/>
                         <TextBlock Text="Rewards" />
                     </StackPanel>
                 </TabItem.Header>
-                
+
                 <Canvas Name="cantabEventRewards"  >
                     <GroupBox Height="517" Width="209" Canvas.Left="10">
                         <GroupBox.Header>

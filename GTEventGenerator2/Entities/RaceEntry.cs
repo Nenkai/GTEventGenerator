@@ -77,7 +77,8 @@ namespace GTEventGenerator
             }
         }
 
-        private int _delay
+        private int _delay;
+        public int Delay
         {
             get => _delay;
             set
@@ -86,8 +87,6 @@ namespace GTEventGenerator
                     _delay = value;
             }
         }
-
-        public int Delay { get; set; }
         public int raceBucket { get; set; }
 
         private int _initialVelocity = -1;

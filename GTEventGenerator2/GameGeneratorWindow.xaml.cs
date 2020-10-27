@@ -16,7 +16,7 @@ using System.Windows.Input;
 
 using Microsoft.Win32;
 using Humanizer;
-using Force.DeepCloner;
+using FastDeepCloner;
 using GTEventGenerator.Entities;
 using GTEventGenerator.Utils;
 using GTEventGenerator.Database;
@@ -249,7 +249,7 @@ namespace GTEventGenerator
                 return;
             }
 
-            var copy = CurrentEvent.DeepClone();
+            var copy = CurrentEvent.Clone();
 
             copy.Index = GameParameter.Events.Count + 1;
             EventNames.Add($"{copy.Index} - {copy.Name}");

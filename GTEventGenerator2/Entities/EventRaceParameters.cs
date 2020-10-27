@@ -21,7 +21,7 @@ namespace GTEventGenerator.Entities
         public bool BoostFlag { get; set; }
         public CompleteType CompleteType { get; set; } = CompleteType.BYLAPS;
         public DateTime? Date { get; set; } = new DateTime(1970, 6, 1, 12, 00, 00);
-        public DecisiveWeatherType DecisiveWeather { get; set; } = DecisiveWeatherType.NONE;
+        public DecisiveWeatherType DecisiveWeather { get; set; } = DecisiveWeatherType.SUNNY;
         public bool DisableRecordingReplay { get; set; }
         public bool DisableCollision { get; set; }
         public bool EnableDamage { get; set; }
