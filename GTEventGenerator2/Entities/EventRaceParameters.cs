@@ -364,7 +364,7 @@ namespace GTEventGenerator.Entities
         [Description("Rolling (Same Accel. as Own Car)")]
         ROLLING2,
 
-        [Description("Rolling (Define Start Time")]
+        [Description("Rolling (Define Start Time)")]
         ROLLING3,
 
         [Description("Rolling (Define Start & Accel)")]
@@ -373,7 +373,10 @@ namespace GTEventGenerator.Entities
         [Description("Standing (Set Coordinates)")]
         STANDING,
 
+        [Description("Double-File Rolling (Left)")]
         ROLLING_L,
+
+        [Description("Double-File Rolling (Right)")]
         ROLLING_R,
         
         [Description("Pit Start")]

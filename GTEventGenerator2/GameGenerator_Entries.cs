@@ -10,7 +10,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Collections;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml;
@@ -23,35 +22,60 @@ namespace GTEventGenerator
 {
     public partial class GameGeneratorWindow
     {
-        private List<RaceEntry> _orderedEntries { get; set; } = new List<RaceEntry>();
+        private List<RaceEntry> _fixedEntries { get; set; } = new List<RaceEntry>();
+        private List<RaceEntry> _AIPoolEntries { get; set; } = new List<RaceEntry>();
+
         private void comboBox_AIManifacturerList_SelectionChanged(object sender, SelectionChangedEventArgs e)
             => UpdateAIEntriesCarList();
 
         public void PopulateEntries()
         {
+            sl_EntryCount.Maximum = CurrentEvent.GetFreeCarSlotsLeft();
+            if (CurrentEvent.Entries.AIsToPickFromPool > CurrentEvent.RaceParameters.RacersMax - 1)
+                CurrentEvent.Entries.AIsToPickFromPool = CurrentEvent.RaceParameters.RacersMax - 1;
+            sl_EntryCount.Value = CurrentEvent.Entries.AIsToPickFromPool;
+            sl_EntryPlayerPos.Maximum = CurrentEvent.RaceParameters.RacersMax;
+
+            if (CurrentEvent.Entries.PlayerPos > CurrentEvent.RaceParameters.RacersMax)
+                CurrentEvent.Entries.PlayerPos = CurrentEvent.RaceParameters.RacersMax;
+            sl_EntryPlayerPos.Value = CurrentEvent.Entries.PlayerPos;
+            label_EntryCount.Content = CurrentEvent.Entries.AIsToPickFromPool.ToString();
+            label_PlayerPos.Content = $"#{CurrentEvent.Entries.PlayerPos}";
+
+            if (!CurrentEvent.Entries.NeedsPopulating)
+                return;
+
             PopulateComboBoxesIfNeeded();
 
-            _orderedEntries.Clear();
-            listBox_AIEntries.Items.Clear();
+            _AIPoolEntries.Clear();
+            _fixedEntries.Clear();
 
+            listBox_AIEntries.Items.Clear();
+            listBox_AIFixedEntries.Items.Clear();
 
             foreach (var entry in CurrentEvent.Entries.AIBases)
             {
                 if (string.IsNullOrEmpty(entry.ActualCarName))
                     entry.ActualCarName = GameDatabase.GetCarNameByLabel(entry.CarLabel);
                 listBox_AIEntries.Items.Add($"{entry.DriverName} [{entry.DriverRegion}]: {entry.ActualCarName}");
-                _orderedEntries.Add(entry);
+                _AIPoolEntries.Add(entry);
             }
 
             foreach (var entry in CurrentEvent.Entries.AI)
             {
                 if (string.IsNullOrEmpty(entry.ActualCarName))
                     entry.ActualCarName = GameDatabase.GetCarNameByLabel(entry.CarLabel);
-                listBox_AIEntries.Items.Add($"{entry.DriverName} [{entry.DriverRegion}]: {entry.ActualCarName}");
-                _orderedEntries.Add(entry);
+                listBox_AIFixedEntries.Items.Add($"{entry.DriverName} [{entry.DriverRegion}]: {entry.ActualCarName}");
+                _fixedEntries.Add(entry);
             }
 
-            if (_orderedEntries.Count != 0)
+            if (_fixedEntries.Count != 0)
+            {
+                button_EditFixedAI.IsEnabled = true;
+                button_RemoveFixedAI.IsEnabled = true;
+            }
+
+            if (_AIPoolEntries.Count != 0)
             {
                 button_EditAI.IsEnabled = true;
                 button_RemoveAI.IsEnabled = true;
@@ -78,11 +102,7 @@ namespace GTEventGenerator
                 button_RemovePlayerEntry.IsEnabled = false;
             }
 
-            sl_EntryCount.Value = CurrentEvent.Entries.EntryCount;
-            sl_EntryPlayerPos.Maximum = CurrentEvent.Entries.EntryCount;
-            sl_EntryPlayerPos.Value = CurrentEvent.Entries.PlayerPos;
-            label_EntryCount.Content = CurrentEvent.Entries.EntryCount.ToString();
-            label_PlayerPos.Content = $"#{CurrentEvent.Entries.PlayerPos}";
+            UpdateEntryControls();
             CurrentEvent.Entries.NeedsPopulating = false;
         }
 
@@ -153,7 +173,6 @@ namespace GTEventGenerator
                 listBox_AICarList.Items.Add(results.GetString(0));
         }
 
-
         private void button_GenerateAI_Clicked(object sender, RoutedEventArgs e)
         {
             if (listBox_AICarList.SelectedIndex == -1)
@@ -162,20 +181,40 @@ namespace GTEventGenerator
                 return;
             }
 
-            bool isRandom = checkBox_AINotRandom.IsChecked != true;
-
             RaceEntry raceEntry = GenerateEntry();
 
-            if (isRandom)
-                CurrentEvent.Entries.AIBases.Add(raceEntry);
-            else
-                CurrentEvent.Entries.AI.Add(raceEntry);
-            _orderedEntries.Add(raceEntry);
-
+            _AIPoolEntries.Add(raceEntry);
+            CurrentEvent.Entries.AIBases.Add(raceEntry);
             listBox_AIEntries.Items.Add($"{raceEntry.DriverName} [{raceEntry.DriverRegion}]: {raceEntry.ActualCarName}");
 
             button_EditAI.IsEnabled = true;
             button_RemoveAI.IsEnabled = true;
+        }
+
+        private void button_GenerateFixedAI_Clicked(object sender, RoutedEventArgs e)
+        {
+            if (listBox_AICarList.SelectedIndex == -1)
+            {
+                MessageBox.Show("Select a car first.", "No car selected", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (CurrentEvent.GetFreeCarSlotsLeft() <= 0)
+            {
+                MessageBox.Show($"Fixed entry count exceeds the amount of allowed 'Max Cars' specified ({_fixedEntries.Count} fixed entries + Player >= {CurrentEvent.RaceParameters.RacersMax}).", "No car selected", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            RaceEntry raceEntry = GenerateEntry();
+
+            _fixedEntries.Add(raceEntry);
+            CurrentEvent.Entries.AI.Add(raceEntry);
+            listBox_AIFixedEntries.Items.Add($"{raceEntry.DriverName} [{raceEntry.DriverRegion}]: {raceEntry.ActualCarName}");
+
+            button_EditFixedAI.IsEnabled = true;
+            button_RemoveFixedAI.IsEnabled = true;
+
+            UpdateEntryControls();
         }
 
         private void button_EditAI_Clicked(object sender, RoutedEventArgs e)
@@ -183,11 +222,23 @@ namespace GTEventGenerator
             if (listBox_AIEntries.SelectedIndex == -1)
                 return;
 
-            var entry = _orderedEntries[listBox_AIEntries.SelectedIndex];
+            var entry = _AIPoolEntries[listBox_AIEntries.SelectedIndex];
             var entryEdit = new EventEntryEditWindow(entry, GameDatabase.GetCarColorNumByLabel(entry.CarLabel));
             entryEdit.ShowDialog();
 
             ResortAIs();
+        }
+
+        private void button_EditFixedAI_Clicked(object sender, RoutedEventArgs e)
+        {
+            if (listBox_AIFixedEntries.SelectedIndex == -1)
+                return;
+
+            var entry = _fixedEntries[listBox_AIFixedEntries.SelectedIndex];
+            var entryEdit = new EventEntryEditWindow(entry, GameDatabase.GetCarColorNumByLabel(entry.CarLabel));
+            entryEdit.ShowDialog();
+
+            ResortFixedAIs();
         }
 
         private void button_SetCarAsPlayer_Click(object sender, RoutedEventArgs e)
@@ -196,6 +247,8 @@ namespace GTEventGenerator
                 return;
 
             var entry = new RaceEntry();
+            entry.IsAI = false;
+
             entry.CarLabel = GameDatabase.GetCarLabelByActualName((string)listBox_AICarList.SelectedItem);
             CurrentEvent.Entries.Player = entry;
 
@@ -227,13 +280,12 @@ namespace GTEventGenerator
             foreach (var selected in listBox_AIEntries.SelectedItems)
             {
                 int index = listBox_AIEntries.Items.IndexOf(selected);
-                toRemove.Add(_orderedEntries[index]);
+                toRemove.Add(_AIPoolEntries[index]);
             }
 
             foreach (RaceEntry entry in toRemove)
             {
-                _orderedEntries.Remove(entry);
-                CurrentEvent.Entries.AI.Remove(entry);
+                _AIPoolEntries.Remove(entry);
                 CurrentEvent.Entries.AIBases.Remove(entry);
             }
 
@@ -254,20 +306,44 @@ namespace GTEventGenerator
             entryEdit.ShowDialog();
         }
 
+        private void button_RemoveFixedAI_Clicked(object sender, RoutedEventArgs e)
+        {
+            if (listBox_AIFixedEntries.SelectedIndex == -1)
+                return;
+
+            // Build a list of entries to remove
+            List<RaceEntry> toRemove = new List<RaceEntry>();
+            foreach (var selected in listBox_AIFixedEntries.SelectedItems)
+            {
+                int index = listBox_AIFixedEntries.Items.IndexOf(selected);
+                toRemove.Add(_fixedEntries[index]);
+            }
+
+            foreach (RaceEntry entry in toRemove)
+            {
+                _fixedEntries.Remove(entry);
+                CurrentEvent.Entries.AI.Remove(entry);
+            }
+
+            int count = listBox_AIFixedEntries.SelectedItems.Count;
+            for (int i = count - 1; i >= 0; i--)
+                listBox_AIFixedEntries.Items.Remove(listBox_AIFixedEntries.SelectedItems[i]);
+
+            if (listBox_AIFixedEntries.Items.Count == 0)
+            {
+                button_EditFixedAI.IsEnabled = false;
+                button_RemoveFixedAI.IsEnabled = false;
+            }
+
+            UpdateEntryControls();
+        }
+
         private void slider_EntryCount_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (CurrentEvent is null)
                 return;
 
-            if (CurrentEvent.Entries.PlayerPos > CurrentEvent.Entries.EntryCount)
-            {
-                CurrentEvent.Entries.PlayerPos = CurrentEvent.Entries.EntryCount;
-                sl_EntryPlayerPos.Value = CurrentEvent.Entries.PlayerPos;
-                label_PlayerPos.Content = $"#{CurrentEvent.Entries.PlayerPos}";
-            }
-
-            sl_EntryPlayerPos.Maximum = CurrentEvent.Entries.EntryCount;
-            label_EntryCount.Content = CurrentEvent.Entries.EntryCount.ToString();
+            label_EntryCount.Content = CurrentEvent.Entries.AIsToPickFromPool.ToString();
         }
 
         private void sl_EntryPlayerPos_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -288,6 +364,21 @@ namespace GTEventGenerator
             CurrentEvent.Entries.AISortType = (EnemySortType)(sender as ComboBox).SelectedIndex;
         }
 
+        public void UpdateEntryControls()
+        {
+            int slotsLeft = CurrentEvent.GetFreeCarSlotsLeft();
+            sl_EntryCount.Maximum = slotsLeft;
+
+            if (CurrentEvent.Entries.AIsToPickFromPool > slotsLeft)
+                CurrentEvent.Entries.AIsToPickFromPool = slotsLeft;
+
+            sl_EntryCount.Value = CurrentEvent.Entries.AIsToPickFromPool;
+            sl_EntryPlayerPos.Maximum = CurrentEvent.RaceParameters.RacersMax;
+            sl_EntryPlayerPos.Value = CurrentEvent.Entries.PlayerPos;
+            label_EntryCount.Content = CurrentEvent.Entries.AIsToPickFromPool.ToString();
+            label_PlayerPos.Content = $"#{CurrentEvent.Entries.PlayerPos}";
+        }
+
         private RaceEntry GenerateEntry()
         {
             var raceEntry = new RaceEntry();
@@ -301,10 +392,10 @@ namespace GTEventGenerator
 
             if (checkBox_RandomDriverName.IsChecked == true)
             {
-                var driverInfo = GenerateDriverInfo();
-                var regionInfo = RegionUtil.GetRandomInitial(_random, driverInfo.initialType);
+                var driverInfo = GameDatabase.GetRandomDriverInfo();
+                var regionInfo = RegionUtil.GetRandomInitial(_random, driverInfo.InitialType);
 
-                driverName = $"{regionInfo.initial}. {driverInfo.driverName}";
+                driverName = $"{regionInfo.initial}. {driverInfo.DriverName}";
                 if (checkBox_GenerateRandomFlag.IsChecked == true)
                     driverRegion = regionInfo.country;
             }
@@ -312,8 +403,8 @@ namespace GTEventGenerator
             {
                 if (checkBox_GenerateRandomFlag.IsChecked == true)
                 {
-                    var driverInfo = GenerateDriverInfo();
-                    var regionInfo = RegionUtil.GetRandomInitial(_random, driverInfo.initialType);
+                    var driverInfo = GameDatabase.GetRandomDriverInfo();
+                    var regionInfo = RegionUtil.GetRandomInitial(_random, driverInfo.InitialType);
                     driverRegion = regionInfo.country;
                 }
             }
@@ -359,16 +450,21 @@ namespace GTEventGenerator
 
         private void ResortAIs()
         {
-            for (int i = 0; i < _orderedEntries.Count; i++)
+            for (int i = 0; i < _AIPoolEntries.Count; i++)
             {
-                var entry = _orderedEntries[i];
+                var entry = _AIPoolEntries[i];
                 listBox_AIEntries.Items[i] = $"{entry.DriverName} [{entry.DriverRegion}]: {entry.ActualCarName}";
             }
         }
 
-        private (string driverName, int initialType) GenerateDriverInfo()
+        private void ResortFixedAIs()
         {
-            return GameDatabase.GetRandomDriverInfo();
+            for (int i = 0; i < _fixedEntries.Count; i++)
+            {
+                var entry = _fixedEntries[i];
+                listBox_AIFixedEntries.Items[i] = $"{entry.DriverName} [{entry.DriverRegion}]: {entry.ActualCarName}";
+            }
         }
+
     }
 }

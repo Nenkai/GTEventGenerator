@@ -14,7 +14,6 @@ namespace GTEventGenerator.Entities
     {
         public string Title { get; set; } = "Folder Title";
         public string Description { get; set; } = "Folder Description";
-        public string FileName { get; set; } = string.Empty;
         public int StarsNeeded { get; set; }
         public bool IsChampionship { get; set; }
 
@@ -30,9 +29,9 @@ namespace GTEventGenerator.Entities
             Category = new EventCategory("", 1000);
         }
 
-        public void WriteToXML(GameParameter parent, string dir, int eventRaceIDStart, string eventType)
+        public void WriteToXML(GameParameter parent, string dir, int eventRaceIDStart, string eventType, bool minify)
         {
-            using (var xml = XmlWriter.Create(Path.Combine(dir, FileName+".xml"), new XmlWriterSettings() { Indent = true }))
+            using (var xml = XmlWriter.Create(Path.Combine(dir, $"{parent.FolderFileName}.xml"), new XmlWriterSettings() { Indent = !minify }))
             {
                 xml.WriteStartDocument();
                 xml.WriteStartElement("event_list");

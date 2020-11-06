@@ -33,7 +33,8 @@ namespace GTEventGenerator
         public GameParameter GameParameter { get; set; }
         public Event CurrentEvent { get; set; }
 
-        bool menuDBValid = false, eventHasNoStars = false, validationErrors = false;
+        bool menuDBValid = false, validationErrors = false;
+        private bool _minify;
         string selectedPath = "";
 
         public const int BaseEventID = 9900000;
@@ -52,31 +53,6 @@ namespace GTEventGenerator
             EventNames = new List<string>();
             lstRaces.ItemsSource = EventNames;
             cb_QuickEventPicker.ItemsSource = EventNames;
-        }
-
-        private void btnAddEvent_Click(object sender, EventArgs e)
-        {
-            Event evnt = new Event();
-            evnt.Index = GameParameter.Events.Count + 1;
-            evnt.Name = $"Event {evnt.Index}";
-            evnt.Rewards.Stars = 3;
-
-            EventNames.Add($"{evnt.Index} - {evnt.Name}");
-            GameParameter.Events.Add(evnt);
-            GameParameter.OrderEventIDs();
-
-            this.DataContext = evnt;
-
-            _processEventSwitch = false;
-            UpdateEventListing();
-            SelectEvent(evnt.Index - 1);
-            rdoStarsThree.IsChecked = true;
-
-            ToggleEventControls(true);
-
-            btnRemoveRace.IsEnabled = GameParameter.Events.Count <= 100;
-            btnCopyRace.IsEnabled = GameParameter.Events.Count <= 100;
-            _processEventSwitch = true;
         }
 
         private void GameGenerator_Load(object sender, EventArgs e)
@@ -98,6 +74,7 @@ namespace GTEventGenerator
 
             txtGameParamName.Text = GameParameter.EventList.Title;
             txtGameParamDesc.Text = GameParameter.EventList.Description;
+            tb_FolderFileName.Text = GameParameter.FolderFileName;
 
             tabEvent.SelectionChanged += new SelectionChangedEventHandler(tabEvent_Selecting);
 
@@ -134,6 +111,202 @@ namespace GTEventGenerator
             CommandBindings.Add(new CommandBinding(EventSwitchDownCommand, EventSwitchDownCommand_Executed));
         }
 
+        #region Menu Bar
+        private void exportEventToolStripMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (GameParameter.Events == null || GameParameter.Events.Count == 0)
+            {
+                MessageBox.Show("Cannot generate a folder with no events. Please add at least one event to this folder and try again.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            for (int i = 0; i < GameParameter.Events.Count; i++)
+            {
+                Event evnt = GameParameter.Events[i];
+                if (evnt.RaceParameters.RacersMax - (evnt.Entries.AI.Count + 1) < 0)
+                {
+                    MessageBox.Show($"Event #{i + 1} has invalid fixed ai amounts - it is generating more entries than 'Max Cars' allows and would crash the game.\n" +
+                        $"Ensure that the total amount of Fixed entries + Player entries is inferior to the total of Max Cars in the event settings tab.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                else if ((evnt.Entries.AIEntryGenerateType == EntryGenerateType.ENTRY_BASE_SHUFFLE || evnt.Entries.AIEntryGenerateType == EntryGenerateType.ENTRY_BASE_ORDER)
+                        && evnt.Entries.AI.Any())
+                {
+                    MessageBox.Show($"Event #{i + 1} has fixed entries and 'AI Pool Generate Type' to '{evnt.Entries.AIEntryGenerateType.Humanize()}' - that will crash or softlock the game" +
+                        "as the game will try to pick from the AI pool while fixed entries exist. You cannot have both of each.\n" +
+                        "- If you want only fixed entries, set 'AI Pool Generate Type' to 'None'.\n" +
+                        "- If you want random entries, set it to Shuffle/Order, and remove your fixed entries.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+            }
+
+            var saveFile = new System.Windows.Forms.FolderBrowserDialog();
+
+            //saveFile.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            saveFile.ShowDialog();
+            if (string.IsNullOrEmpty(saveFile.SelectedPath))
+                return;
+
+            selectedPath = saveFile.SelectedPath;
+
+            GenerateGameParameter();
+
+        }
+
+        private void importEventListToolStripMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult importOverwrite = MessageBox.Show("This will overwrite the folder you are currently editing. Would you like to save your folder now?",
+                "Import Folder", MessageBoxButton.YesNoCancel, MessageBoxImage.Information);
+
+            if (importOverwrite == MessageBoxResult.Yes)
+                btnEventGenerate_Click(sender, e);
+            else if (importOverwrite == MessageBoxResult.Cancel)
+                return;
+
+            var openFile = new OpenFileDialog();
+            openFile.InitialDirectory = Directory.GetCurrentDirectory();
+            openFile.Filter = "Event List XML Files (r/l*.xml) (*.xml)|*.xml";
+            openFile.Title = "Import Events";
+            openFile.ShowDialog();
+
+            if (openFile.FileName.Contains(".xml"))
+            {
+                GameParameter = ImportFromEventList(openFile.FileName);
+
+                // Set names
+                for (int i = 0; i < GameParameter.Events.Count; i++)
+                {
+                    var evnt = GameParameter.Events[i];
+                    if (!string.IsNullOrEmpty(evnt.Information.Titles["GB"])) // Grab GB one if provided
+                    {
+                        GameParameter.Events[i].Name = evnt.Information.Titles["GB"];
+                    }
+                    else
+                    {
+                        GameParameter.Events[i].Name = $"Event {i + 1}";
+                        GameParameter.Events[i].Information.SetTitle($"Event {i + 1}");
+                    }
+                }
+
+                OnNewEventSelected(0);
+                ReloadEventLists();
+                UpdateEventListing();
+
+                if (GameParameter.Events != null && GameParameter.Events.Count > 0)
+                    ToggleEventControls(true);
+                else
+                    ToggleEventControls(false);
+
+                RefreshFolderControls();
+            }
+        }
+
+        private void newEventToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBoxResult newOverwrite = MessageBox.Show("This will delete the folder you are currently editing. Would you like to save your folder now?", "New Event", MessageBoxButton.YesNoCancel, MessageBoxImage.Information);
+
+            if (newOverwrite == MessageBoxResult.Yes)
+                btnEventGenerate_Click(sender, e);
+            else if (newOverwrite == MessageBoxResult.No)
+            {
+                GameParameter = new GameParameter();
+                CurrentEvent = null;
+
+                RefreshFolderControls();
+                txtEventName.Text = "";
+
+                tabEvent.SelectedIndex = 0;
+
+                ReloadEventLists();
+                UpdateEventListing();
+            }
+        }
+
+        private void importEventToolStripMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult importOverwrite = MessageBox.Show("This will overwrite the folder you are currently editing. Would you like to save your folder now?",
+                "Import Folder", MessageBoxButton.YesNoCancel, MessageBoxImage.Information);
+
+            if (importOverwrite == MessageBoxResult.Yes)
+                btnEventGenerate_Click(sender, e);
+            else if (importOverwrite == MessageBoxResult.Cancel)
+                return;
+
+            var openFile = new OpenFileDialog();
+            openFile.InitialDirectory = Directory.GetCurrentDirectory();
+            openFile.Filter = "Folder XML Files (i.e sundaycup.xml) (*.xml)|*.xml";
+            openFile.Title = "Import Folder";
+            openFile.ShowDialog();
+
+            if (openFile.FileName.Contains(".xml"))
+            {
+                try
+                {
+                    GameParameter = ImportFolder(openFile.FileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Could not import folder\nError: {ex.Message}",
+                        "Import failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                OnNewEventSelected(0);
+                ReloadEventLists();
+                UpdateEventListing();
+
+                if (GameParameter.Events != null && GameParameter.Events.Count > 0)
+                    ToggleEventControls(true);
+                else
+                    ToggleEventControls(false);
+
+                RefreshFolderControls();
+
+            }
+        }
+
+        private void exit_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void minimizeXMLToolStripMenuItem_Checked(object sender, RoutedEventArgs e)
+            => _minify = minimizeXMLToolStripMenuItem.IsChecked;
+
+        private void randomizeAINamesToolStripMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var entry in CurrentEvent.Entries.AI)
+            {
+                var driverInfo = GameDatabase.GetRandomDriverInfo();
+                var regionInfo = RegionUtil.GetRandomInitial(_random, driverInfo.InitialType);
+
+                entry.DriverName = $"{regionInfo.initial}. {driverInfo.DriverName}";
+                entry.DriverRegion = regionInfo.country;
+            }
+
+            foreach (var entry in CurrentEvent.Entries.AIBases)
+            {
+                var driverInfo = GameDatabase.GetRandomDriverInfo();
+                var regionInfo = RegionUtil.GetRandomInitial(_random, driverInfo.InitialType);
+
+                entry.DriverName = $"{regionInfo.initial}. {driverInfo.DriverName}";
+                entry.DriverRegion = regionInfo.country;
+            }
+
+            CurrentEvent.Entries.NeedsPopulating = true;
+            if ((tabEvent.SelectedItem as TabItem).Name.Equals("tabEntries"))
+                PopulateEntries();
+        }
+
+        private void cb_QuickEventPicker_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cb_QuickEventPicker.SelectedIndex != -1 && _processEventSwitch)
+                OnNewEventSelected(cb_QuickEventPicker.SelectedIndex);
+        }
+
+        #endregion
+
+        #region Event Select
         private void tabEvent_Selecting(object sender, SelectionChangedEventArgs e)
         {
             if (e.Source is TabControl tabControl)
@@ -177,10 +350,31 @@ namespace GTEventGenerator
                 OnNewEventSelected(lstRaces.SelectedIndex + 1);
         }
 
-        private void cb_QuickEventPicker_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        #endregion
+
+        private void btnAddEvent_Click(object sender, EventArgs e)
         {
-            if (cb_QuickEventPicker.SelectedIndex != -1 && _processEventSwitch)
-                OnNewEventSelected(cb_QuickEventPicker.SelectedIndex);
+            Event evnt = new Event();
+            evnt.Index = GameParameter.Events.Count + 1;
+            evnt.Name = $"Event {evnt.Index}";
+            evnt.Rewards.Stars = 3;
+
+            EventNames.Add($"{evnt.Index} - {evnt.Name}");
+            GameParameter.Events.Add(evnt);
+            GameParameter.OrderEventIDs();
+
+            this.DataContext = evnt;
+
+            _processEventSwitch = false;
+            UpdateEventListing();
+            SelectEvent(evnt.Index - 1);
+            rdoStarsThree.IsChecked = true;
+
+            ToggleEventControls(true);
+
+            btnRemoveRace.IsEnabled = GameParameter.Events.Count <= 100;
+            btnCopyRace.IsEnabled = GameParameter.Events.Count <= 100;
+            _processEventSwitch = true;
         }
 
         private void txtEventName_TextChanged(object sender, EventArgs e)
@@ -249,7 +443,7 @@ namespace GTEventGenerator
                 return;
             }
 
-            var copy = CurrentEvent.Clone();
+            var copy = DeepCloner.Clone(CurrentEvent);
 
             copy.Index = GameParameter.Events.Count + 1;
             EventNames.Add($"{copy.Index} - {copy.Name}");
@@ -290,148 +484,12 @@ namespace GTEventGenerator
                 GenerateGameParameter();
         }
 
-        private void newEventToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MessageBoxResult newOverwrite = MessageBox.Show("This will delete the folder you are currently editing. Would you like to save your folder now?", "New Event", MessageBoxButton.YesNoCancel, MessageBoxImage.Information);
-
-            if (newOverwrite == MessageBoxResult.Yes)
-                btnEventGenerate_Click(sender, e);
-            else if (newOverwrite == MessageBoxResult.No)
-            {
-                GameParameter = new GameParameter();
-                CurrentEvent = null;
-
-                GameParameter.EventList.Title = "New Folder";
-                GameParameter.EventList.Description = "Folder Description";
-
-                txtGameParamName.Text = GameParameter.EventList.Title;
-                txtGameParamDesc.Text = GameParameter.EventList.Description;
-
-                txtEventName.Text = "";
-
-                ReloadEventLists();
-                UpdateEventListing();
-            }
-        }
-
-        private void importEventToolStripMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBoxResult importOverwrite = MessageBox.Show("This will overwrite the folder you are currently editing. Would you like to save your folder now?",
-                "Import Folder", MessageBoxButton.YesNoCancel, MessageBoxImage.Information);
-
-            if (importOverwrite == MessageBoxResult.Yes)
-                btnEventGenerate_Click(sender, e);
-            else if (importOverwrite == MessageBoxResult.Cancel)
-                return;
-
-            var openFile = new OpenFileDialog();
-            openFile.InitialDirectory = Directory.GetCurrentDirectory();
-            openFile.Filter = "Folder XML Files (i.e sundaycup.xml) (*.xml)|*.xml";
-            openFile.Title = "Import Folder";
-            openFile.ShowDialog();
-
-            if (openFile.FileName.Contains(".xml"))
-            {
-                try
-                {
-                    GameParameter = ImportFolder(openFile.FileName);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Could not import folder\nError: {ex.Message}",
-                        "Import failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-
-                OnNewEventSelected(0);
-                ReloadEventLists();
-                UpdateEventListing();
-
-                if (GameParameter.Events != null && GameParameter.Events.Count > 0)
-                    ToggleEventControls(true);
-                else
-                    ToggleEventControls(false);
-
-                RefreshFolderControls();
-            }
-        }
-
-        private void exit_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
-        private void exportEventToolStripMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            if (GameParameter.Events == null || GameParameter.Events.Count == 0)
-            {
-                MessageBox.Show("Cannot generate a folder with no events. Please add at least one event to this folder and try again.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            var saveFile = new System.Windows.Forms.FolderBrowserDialog();
-
-            //saveFile.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-            saveFile.ShowDialog();
-            if (string.IsNullOrEmpty(saveFile.SelectedPath))
-                return;
-
-            selectedPath = saveFile.SelectedPath;
-
-            GenerateGameParameter();
-
-        }
-
-        private void importEventListToolStripMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBoxResult importOverwrite = MessageBox.Show("This will overwrite the folder you are currently editing. Would you like to save your folder now?",
-                "Import Folder", MessageBoxButton.YesNoCancel, MessageBoxImage.Information);
-
-            if (importOverwrite == MessageBoxResult.Yes)
-                btnEventGenerate_Click(sender, e);
-            else if (importOverwrite == MessageBoxResult.Cancel)
-                return;
-
-            var openFile = new OpenFileDialog();
-            openFile.InitialDirectory = Directory.GetCurrentDirectory();
-            openFile.Filter = "Event List XML Files (r/l*.xml) (*.xml)|*.xml";
-            openFile.Title = "Import Events";
-            openFile.ShowDialog();
-
-            if (openFile.FileName.Contains(".xml"))
-            {
-                GameParameter = ImportFromEventList(openFile.FileName);
-
-                // Set names
-                for (int i = 0; i < GameParameter.Events.Count; i++)
-                {
-                    var evnt = GameParameter.Events[i];
-                    if (!string.IsNullOrEmpty(evnt.Information.Titles["GB"])) // Grab GB one if provided
-                    {
-                        GameParameter.Events[i].Name = evnt.Information.Titles["GB"];
-                    }
-                    else
-                    {
-                        GameParameter.Events[i].Name = $"Event {i + 1}";
-                        GameParameter.Events[i].Information.SetTitle($"Event {i + 1}");
-                    }
-                }
-
-                OnNewEventSelected(0);
-                ReloadEventLists();
-                UpdateEventListing();
-
-                if (GameParameter.Events != null && GameParameter.Events.Count > 0)
-                    ToggleEventControls(true);
-                else
-                    ToggleEventControls(false);
-
-                RefreshFolderControls();
-            }
-        }
-
         private void cboEventCategory_SelectedIndexChanged(object sender, RoutedEventArgs e)
-            => GameParameter.EventList.Category = GameParameterEventList.EventCategories.Find(x => x.name == cboEventCategory.SelectedItem.ToString());
+        {
+            if (cboEventCategory.SelectedItem is null)
+                cboEventCategory.SelectedIndex = 0;
+            GameParameter.EventList.Category = GameParameterEventList.EventCategories.Find(x => x.name == cboEventCategory.SelectedItem.ToString());
+        }
 
         private void txtFolderName_TextChanged(object sender, EventArgs e)
         {
@@ -515,6 +573,15 @@ namespace GTEventGenerator
             GameParameter.EventList.IsChampionship = chkIsChampionship.IsChecked.Value;
         }
 
+        public void btnChampionshipRewards_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new CreditXPEditWindow(GameParameter.SeriesRewardCredits);
+            dlg.ShowDialog();
+
+            if (dlg.Saved)
+                GameParameter.SeriesRewardCredits = dlg.Values;
+        }
+
         private void btnPickImage_Click(object sender, EventArgs e)
         {
             var openImage = new OpenFileDialog();
@@ -542,20 +609,27 @@ namespace GTEventGenerator
 
         private void btnSaveImage_Click(object sender, EventArgs e)
         {
-            if (!File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "texconv.exe")))
+            string path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            if (!File.Exists(Path.Combine(path, "texconv.exe")))
             {
                 MessageBox.Show("TexConv not found. Please download TexConv from https://github.com/microsoft/DirectXTex/releases and place it in the program folder.",
                     "Save Image", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            else if (!File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "TXS3Converter.exe")))
+            else if (!File.Exists(Path.Combine(path, "TXS3Converter.exe")))
             {
                 MessageBox.Show("TexConv not found. Please download TexConv from https://github.com/microsoft/DirectXTex/releases and place it in the program folder.",
                     "Save Image", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            string imageFileName = Regex.Replace(GameParameter.EventList.Title.Replace(" ", "").Replace(".", ""), "[^a-zA-Z0-9_.]+", "", RegexOptions.Compiled).ToLower();
+            if (_eventImage is null)
+            {
+                MessageBox.Show("No image selected, pick one first.", "No image chosen", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            string imageFileName = $"{GameParameter.FolderFileName}_{CurrentEvent.Index.ToString("00")}";
             string imageFilePath = Path.Combine(Directory.GetCurrentDirectory(), imageFileName + ".png");
 
             _eventImage.Save(imageFilePath, ImageFormat.Png);
@@ -569,12 +643,49 @@ namespace GTEventGenerator
 
             string newPath = Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "output", "piece", "gt6", "event_flyer")).FullName;
 
-            string imgOutput = Path.Combine(Directory.GetCurrentDirectory(), imageFileName, ".img");
+            string imgOutput = Path.Combine(Directory.GetCurrentDirectory(), $"{imageFileName}.img");
             string finalPath = Path.Combine(newPath, imageFileName + ".img");
-            File.Move(imgOutput, finalPath);
+
+            try
+            {
+                File.Move(imgOutput, finalPath);
+            } 
+            catch (Exception ex)
+            {
+                MessageBox.Show("Could not convert file.",
+                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            File.Delete(Path.Combine(Directory.GetCurrentDirectory(), imageFileName + ".png"));
+
+            MessageBox.Show($"Imaged saved as: \n'{finalPath}'.\n\n When packing, move the entire \"piece\" folder to your mod folder.", "Image saved", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void cb_StartTime_Checked(object sender, RoutedEventArgs e)
+        {
+            date_Date.IsEnabled = cb_StartTime.IsChecked == true;
+            if (!date_Date.IsEnabled)
+                CurrentEvent.RaceParameters.Date = null;
+        }
+
+        private void tb_FolderFileName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(tb_FolderFileName.Text))
+            {
+                GameParameter.FolderFileName = Regex.Replace(GameParameter.EventList.Title.Replace(" ", "").Replace(".", ""), "[^a-zA-Z0-9_.]+", "", RegexOptions.Compiled).ToLower();
+                tb_FolderFileName.Text = GameParameter.FolderFileName;
+            }
+            else
+                GameParameter.FolderFileName = tb_FolderFileName.Text;
+        }
+
+        private void iud_RacerMax_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
 
         }
 
+        #region Non Generated
         // ------ Non-generated functions ------
 
         public void UpdateEventListing()
@@ -691,6 +802,8 @@ namespace GTEventGenerator
             btnAddRace.IsEnabled = GameParameter?.Events.Count < 100;
             btnRemoveRace.IsEnabled = GameParameter?.Events?.Any() == true;
             btnCopyRace.IsEnabled = GameParameter?.Events?.Any() == true;
+
+            randomizeAINamesToolStripMenuItem.IsEnabled = isEnabled;
         }
 
         void CheckMenuDB(string file)
@@ -720,9 +833,6 @@ namespace GTEventGenerator
 
         void GenerateGameParameter()
         {
-            foreach (Event @event in GameParameter.Events)
-                eventHasNoStars = @event.Rewards.Stars == 0;
-
             if (/*!eventHasNoStars && */!validationErrors)
             {
                 if (selectedPath == "")
@@ -759,7 +869,6 @@ namespace GTEventGenerator
 
         public void SerializeGameParameter(bool shouldEditDB)
         {
-            GameParameter.EventList.FileName = Regex.Replace(GameParameter.EventList.Title.Replace(" ", "").Replace(".", ""), "[^a-zA-Z0-9_.]+", "", RegexOptions.Compiled).ToLower();
             /*
             if (menuDBValid && shouldEditDB)
             {
@@ -802,19 +911,18 @@ namespace GTEventGenerator
                 selectedPath = Path.Combine(Directory.GetCurrentDirectory(), "output", "game_parameter", "gt6", "event");
 
             string mainParamFile = Path.Combine(selectedPath);
-            GameParameter.EventList.WriteToXML(GameParameter, mainParamFile, BaseEventID, cboEventCategory.SelectedItem.ToString());
+            GameParameter.EventList.WriteToXML(GameParameter, mainParamFile, BaseEventID, cboEventCategory.SelectedItem.ToString(), _minify);
 
-            using (var xml = XmlWriter.Create(Path.Combine(selectedPath, $"r{GameParameter.FolderId}.xml"), new XmlWriterSettings() { Indent = true, IndentChars = "  " }))
+            using (var xml = XmlWriter.Create(Path.Combine(selectedPath, $"r{GameParameter.FolderId}.xml"), new XmlWriterSettings() { Indent = !_minify, IndentChars = "  " }))
             {
                 xml.WriteStartElement("xml");
                 GameParameter.WriteToXml(xml);
                 xml.WriteEndElement();
             }
 
-            MessageBox.Show($"Event and races successfully written to {selectedPath}\\{GameParameter.EventList.FileName}.xml and {selectedPath}\\r{GameParameter.FolderId}.xml!", 
+            MessageBox.Show($"Event and races successfully written to {selectedPath}\\{GameParameter.FolderFileName}.xml and {selectedPath}\\r{GameParameter.FolderId}.xml!", 
                 "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
-
 
         public GameParameter ImportFolder(string filePath)
         {
@@ -824,12 +932,13 @@ namespace GTEventGenerator
             doc.Load(filePath);
 
             gp.EventList.ParseEventList(gp, doc);
+            gp.EventList.Category = GameParameterEventList.EventCategories.FirstOrDefault(e => e.typeID == gp.EventList.Category.typeID);
 
             string dir = Path.GetDirectoryName(filePath);
 
-            string eventListFile = Path.Combine(dir, $"r{gp.FolderId}.xml");
+            string eventListFile = Path.Combine(dir, $"r{gp.FolderId:000}.xml");
             if (!File.Exists(eventListFile))
-                throw new FileNotFoundException($"Could not find file {gp.FolderId} referenced by the provided folder.");
+                throw new FileNotFoundException($"Could not find file {eventListFile} referenced by the provided folder.");
 
             var settings = new XmlReaderSettings();
             settings.IgnoreComments = true;
@@ -839,6 +948,7 @@ namespace GTEventGenerator
 
             gp.ParseEventsFromFile(eventDoc);
 
+            gp.FolderFileName = Path.GetFileNameWithoutExtension(filePath);
             return gp;
         }
 
@@ -855,24 +965,27 @@ namespace GTEventGenerator
             return gp;
         }
 
-        private void cb_StartTime_Checked(object sender, RoutedEventArgs e)
-        {
-            date_Date.IsEnabled = cb_StartTime.IsChecked == true;
-            if (!date_Date.IsEnabled)
-                CurrentEvent.RaceParameters.Date = null;
-        }
-
         public void RefreshFolderControls()
         {
             txtGameParamName.Text = GameParameter.EventList.Title;
             txtGameParamDesc.Text = GameParameter.EventList.Description;
             iud_StarsNeeded.Value = GameParameter.EventList.StarsNeeded;
             iud_FolderID.Value = GameParameter.FolderId;
+            tb_FolderFileName.Text = GameParameter.FolderFileName;
+            cboEventCategory.SelectedIndex = GameParameterEventList.EventCategories.IndexOf(GameParameter.EventList.Category);
 
             if (GameParameter.Events != null)
                 ReloadEventLists(isQuickPick: false);
             else
                 ToggleEventControls(false);
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Credits: " +
+                "- Nenkai#9075 - Creator\n" +
+                "- TheAdmiester - Co-Creator/Made the original tool\n" +
+                "- Everyone who tested this tool and uses it - thank you!", "About", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         public void PopulateSelectedTab()
@@ -900,8 +1013,7 @@ namespace GTEventGenerator
             }
             else if (current.Name.Equals("tabEntries"))
             {
-                if (CurrentEvent.Entries.NeedsPopulating)
-                    PopulateEntries();
+                PopulateEntries();
             }
             else if (current.Name.Equals("tabEventCourse"))
             {
@@ -919,5 +1031,7 @@ namespace GTEventGenerator
                     PopulateRewards();
             }
         }
+
+        #endregion
     }
 }

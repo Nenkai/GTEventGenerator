@@ -6,69 +6,276 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:GTEventGenerator"
         mc:Ignorable="d"
-        Title="Editing Entry" Height="540" Width="663">
-    <Grid>
-        <GroupBox Header="Entry Settings" Height="225" Margin="10,10,394,0" VerticalAlignment="Top">
+        Title="Editing Entry" Height="571" Width="663">
+    <Grid Background="#262626">
+        <GroupBox Header="Common Entry Settings" Height="225" Margin="10,10,394,0" VerticalAlignment="Top">
             <Grid>
-                <Label Content="Initial V Coord" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"
-                       ToolTip="Position in meters in the track the entry will start (XML: entry->initial_position)"/>
-                <xctk:IntegerUpDown Name="iud_InitialVCoord" Value="{Binding InitialVCoord}" Margin="123,13,10,168" Minimum="-99999" Maximum="99999"/>
+                <Label Content="Initial V Coord" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Initial V Coord</TextBlock> <LineBreak />
+                           Position in meters in the track the entry will start.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->initial_position</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:IntegerUpDown Name="iud_InitialVCoord" Value="{Binding InitialVCoord}" Margin="123,10,10,148" Height="22" Minimum="-99999" Maximum="99999" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                <Label Content="Initial Velocity (km/h)" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="86"
-                       ToolTip="The speed in km/h the entry will start (XML: entry->initial_velocity)"/>
-                <xctk:IntegerUpDown Name="iud_InitialVelocity" Value="{Binding InitialVelocity}" Margin="123,46,10,135" Minimum="-1" Maximum="99999" UpdateValueOnEnterKey="True"/>
-                
-                <Label Content="Front Tyres" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" Width="77"
-                       ToolTip="Forced front tyres that the entry will use (XML: entry->tire_f)"/>
-                <Label Content="Rear Tyres" HorizontalAlignment="Left" Margin="10,104,0,0" VerticalAlignment="Top" Width="77"
-                       ToolTip="Forced rear tyres that the entry will use (XML: entry->tire_f)"/>
-                <ComboBox Name="cb_EntryTireF" Margin="102,76,10,0" VerticalAlignment="Top" SelectionChanged="cb_EntryTireF_SelectionChanged">Use Car Defaults</ComboBox>
-                <ComboBox Name="cb_EntryTireR" Margin="102,108,10,0" VerticalAlignment="Top" SelectionChanged="cb_EntryTireR_SelectionChanged">Use Car Defaults</ComboBox>
-                <Label Content="Delay (in Seconds)" HorizontalAlignment="Left" Margin="10,134,0,0" VerticalAlignment="Top" Width="108"
-                       ToolTip="How many seconds after '3, 2, 1' this entry will start (XML: entry->delay)"/>
-                <xctk:IntegerUpDown Name="iud_Delay" Value="{Binding Delay}" Margin="123,138,10,43" Minimum="-1" Maximum="999999" UpdateValueOnEnterKey="True"/>
+                <Label Content="Initial Velocity (km/h)" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="86">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Initial Velocity</TextBlock> <LineBreak />
+                           The speed in km/h the entry will start.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->initial_velocity</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:IntegerUpDown Name="iud_InitialVelocity" Value="{Binding InitialVelocity}" Margin="123,42,10,120" Height="22" Minimum="-1" Maximum="99999" UpdateValueOnEnterKey="True" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                <Label Content="Car Color Index" HorizontalAlignment="Left" Margin="10,165,0,0" VerticalAlignment="Top" Width="108"
-                       ToolTip="Index of the car's preset color (first in dealership = 0) (XML: entry->car->color)"/>
-                <xctk:IntegerUpDown Name="iud_CarColorIndex" Margin="123,170,10,11" Minimum="0" UpdateValueOnEnterKey="True" ValueChanged="iud_CarColorIndex_ValueChanged" />
+                <Label Content="Front Tyres" HorizontalAlignment="Left" Margin="10,69,0,0" VerticalAlignment="Top" Width="77">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Front Tyres</TextBlock> <LineBreak />
+                           Forced front tyres that the entry will use.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->tire_f</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <Label Content="Rear Tyres" HorizontalAlignment="Left" Margin="10,101,0,0" VerticalAlignment="Top" Width="77">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Rear Tyres</TextBlock> <LineBreak />
+                           Forced rear tyres that the entry will use.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->tire_r</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <ComboBox Name="cb_EntryTireF" Margin="102,71,10,0" VerticalAlignment="Top" SelectionChanged="cb_EntryTireF_SelectionChanged">Use Car Defaults</ComboBox>
+                <ComboBox Name="cb_EntryTireR" Margin="102,100,10,0" VerticalAlignment="Top" SelectionChanged="cb_EntryTireR_SelectionChanged">Use Car Defaults</ComboBox>
+                <Label Content="Delay (in Seconds)" HorizontalAlignment="Left" Margin="10,127,0,0" VerticalAlignment="Top" Width="108">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Delay</TextBlock> <LineBreak />
+                           How many seconds after '3, 2, 1' this entry will start.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->delay</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:IntegerUpDown Name="iud_Delay" Value="{Binding Delay}" Margin="123,128,10,34" Height="22" Minimum="-1" Maximum="999999" UpdateValueOnEnterKey="True" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Car Color Index" HorizontalAlignment="Left" Margin="10,154,0,0" VerticalAlignment="Top" Width="108">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Car Color Index</TextBlock> <LineBreak />
+                           Index of the car's preset color (first in dealership = 0).<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->car->color</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:IntegerUpDown Name="iud_CarColorIndex" Margin="123,157,10,5" Minimum="0" Height="22" UpdateValueOnEnterKey="True" ValueChanged="iud_CarColorIndex_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
             </Grid>
         </GroupBox>
-        <GroupBox Header="AI Settings" Margin="10,240,394,10">
+        <GroupBox Header="AI Parameters" Margin="10,240,394,10">
             <Grid>
-                <Label Content="Base Skill" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top" Width="92"/>
-                <xctk:IntegerUpDown Name="iud_BaseSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding BaseSkill}" Margin="123,10,0,0" Height="20" Width="107"
-                       ToolTip="(XML: entry->ai_skill)"/>
+                <Label Content="Base Skill" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top" Width="92">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Base Skill</TextBlock> <LineBreak />
+                           Base Skill of this AI entry.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->ai_skill</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:IntegerUpDown Name="iud_BaseSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding BaseSkill}" Margin="123,10,0,0" Height="20" Width="107" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                <Label Content="Cornering Skill" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Width="92"/>
-                <xctk:IntegerUpDown Name="iud_CorneringSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding CorneringSkill}" Margin="123,38,0,0" Height="20" Width="107"
-                       ToolTip="(XML: entry->ai_skill_cornering)"/>
+                <Label Content="Cornering Skill" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Width="92">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Cornering Skill</TextBlock> <LineBreak />
+                           Cornering Skill of this AI entry.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->ai_skill_cornering</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:IntegerUpDown Name="iud_CorneringSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding CorneringSkill}" Margin="123,38,0,0" Height="20" Width="107" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                <Label Content="Braking Skill" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" Width="92"/>
-                <xctk:IntegerUpDown Name="iud_BrakingSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding BrakingSkill}" Margin="123,67,0,0" Height="20" Width="107"
-                       ToolTip="(XML: entry->ai_skill_breaking - yes, this typo is intentional)"/>
+                <Label Content="Braking Skill" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" Width="92">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Cornering Skill</TextBlock> <LineBreak />
+                           Braking Skill of this AI entry.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->ai_skill_breaking - yes, this typo is intentional</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:IntegerUpDown Name="iud_BrakingSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding BrakingSkill}" Margin="123,67,0,0" Height="20" Width="107" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                <Label Content="Acceleration Skill" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top" Width="108"
-                       ToolTip="(XML: entry->ai_skill_accelerating)"/>
-                <xctk:IntegerUpDown Name="iud_AccelSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding AccelSkill}" Margin="123,95,0,0" Height="20" Width="107"/>
+                <Label Content="Acceleration Skill" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top" Width="108">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Accelerating Skill</TextBlock> <LineBreak />
+                           Acceleration Skill of this AI entry.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->ai_skill_accelerating</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:IntegerUpDown Name="iud_AccelSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding AccelSkill}" Margin="123,95,0,0" Height="20" Width="107" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                <Label Content="Starting Skill" HorizontalAlignment="Left" Margin="10,119,0,0" VerticalAlignment="Top" Width="108"
-                       ToolTip="(XML: entry->ai_skill_starting)"/>
-                <xctk:IntegerUpDown Name="iud_StartingSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding StartingSkill}" Margin="122,122,0,0" Height="20" Width="107"/>
+                <Label Content="Starting Skill" HorizontalAlignment="Left" Margin="10,119,0,0" VerticalAlignment="Top" Width="108">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Starting Skill</TextBlock> <LineBreak />
+                           Starting Skill of this AI entry.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->ai_skill_starting</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:IntegerUpDown Name="iud_StartingSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding StartingSkill}" Margin="122,122,0,0" Height="20" Width="107" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                <Label Content="Roughness" HorizontalAlignment="Left" Margin="10,147,0,0" VerticalAlignment="Top" Width="107"
-                       ToolTip="(XML: entry->ai_roughness)"/>
-                <xctk:IntegerUpDown Name="iud_Roughness" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding Roughness}" Margin="122,150,0,0" Height="20" Width="107"/>
+                <Label Content="Roughness" HorizontalAlignment="Left" Margin="10,147,0,0" VerticalAlignment="Top" Width="107">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Roughness</TextBlock> <LineBreak />
+                           Roughness of this AI entry.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->ai_roughness</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:IntegerUpDown Name="iud_Roughness" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding Roughness}" Margin="122,150,0,0" Height="20" Width="107" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                
-                <Label Content="Driver Name" HorizontalAlignment="Left" Margin="10,173,0,0" VerticalAlignment="Top" Width="92"
-                       ToolTip="(XML: entry->driver_name)"/>
-                <Label Content="Driver Country" HorizontalAlignment="Left" Margin="10,200,0,0" VerticalAlignment="Top" Width="92"
-                       ToolTip="If invalid, no flag will be displayed (XML: entry->driver_region)"/>
-                <TextBox Name="tb_DriverName" HorizontalAlignment="Left" Height="22" Margin="107,177,0,0" TextWrapping="Wrap" Text="{Binding DriverName}" VerticalAlignment="Top" Width="123"/>
-                <TextBox Name="tb_DriverCountry" HorizontalAlignment="Left" Height="22" Margin="106,204,0,0" TextWrapping="Wrap" Text="{Binding DriverRegion}" VerticalAlignment="Top" Width="123"/>
+                <Label Content="Driver Name" HorizontalAlignment="Left" Margin="10,175,0,0" VerticalAlignment="Top" Width="92">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Driver Name</TextBlock> <LineBreak />
+                           Name of this AI entry.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->driver_name</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <Label Content="Driver Country" HorizontalAlignment="Left" Margin="10,203,0,0" VerticalAlignment="Top" Width="92">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Driver Country</TextBlock> <LineBreak />
+                           Country of this AI entry.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->driver_region</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox Name="tb_DriverName" HorizontalAlignment="Left" Height="22" Margin="107,178,0,0" TextWrapping="Wrap" Text="{Binding DriverName}" VerticalAlignment="Top" Width="123"/>
+                <TextBox Name="tb_DriverCountry" HorizontalAlignment="Left" Height="22" Margin="106,207,0,0" TextWrapping="Wrap" Text="{Binding DriverRegion}" VerticalAlignment="Top" Width="123"/>
             </Grid>
         </GroupBox>
-        <GroupBox Header="Car Settings" HorizontalAlignment="Left" Height="489" Margin="266,10,0,0" VerticalAlignment="Top" Width="379"/>
+        <GroupBox Header="Car Settings (Advanced Users)" Margin="266,10,10,10">
+            <Grid>
+                <Label Content="Engine Tuning Stage" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <ComboBox Name="cb_EngineStage" HorizontalAlignment="Left" Margin="134,14,0,0" VerticalAlignment="Top" Width="223" SelectionChanged="cb_EngineStage_SelectionChanged"/>
+
+                <Label Content="Turbo" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <ComboBox Name="cb_Turbo" HorizontalAlignment="Left" Margin="134,44,0,0" VerticalAlignment="Top" Width="223" SelectionChanged="cb_Turbo_SelectionChanged"/>
+
+                <Label Content="Computer" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <ComboBox Name="cb_Computer" HorizontalAlignment="Left" Margin="134,76,0,0" VerticalAlignment="Top" Width="223" SelectionChanged="cb_Computer_SelectionChanged"/>
+
+                <Label Content="Suspension" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <ComboBox Name="cb_Suspension" HorizontalAlignment="Left" Margin="134,107,0,0" VerticalAlignment="Top" Width="223" SelectionChanged="cb_Suspension_SelectionChanged"/>
+
+                <Label Content="Transmission" HorizontalAlignment="Left" Margin="10,134,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <ComboBox Name="cb_Transmission" HorizontalAlignment="Left" Margin="134,138,0,0" VerticalAlignment="Top" Width="223" SelectionChanged="cb_Transmission_SelectionChanged"/>
+
+                <Label Content="Exhaust" HorizontalAlignment="Left" Margin="10,165,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <ComboBox Name="cb_Exhaust" HorizontalAlignment="Left" Margin="134,169,0,0" VerticalAlignment="Top" Width="223" SelectionChanged="cb_Exhaust_SelectionChanged"/>
+
+                <Label Content="Max Gear Speed" HorizontalAlignment="Left" Margin="10,196,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <xctk:IntegerUpDown Value="{Binding MaxGearSpeed}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="114,200,0,0" Height="20" Width="77" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Power Limiter (%)" HorizontalAlignment="Left" Margin="196,197,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <xctk:SingleUpDown Value="{Binding PowerLimiter}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="299,202,0,0" Height="20" Width="58" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Ballast Weight" HorizontalAlignment="Left" Margin="10,254,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <xctk:IntegerUpDown Value="{Binding BallastWeight}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="114,258,0,0" Height="20" Width="58" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Position" HorizontalAlignment="Left" Margin="177,255,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <Slider Value="{Binding BallastPosition}" HorizontalAlignment="Left" Margin="234,259,0,0" VerticalAlignment="Top" Width="123" Minimum="-200" Maximum="200"/>
+
+                <Label Content="Downforce Front" HorizontalAlignment="Left" Margin="10,227,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <xctk:IntegerUpDown Value="{Binding DownforceFront}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="114,231,0,0" Height="20" Width="58" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Downforce Rear" HorizontalAlignment="Left" Margin="177,228,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <xctk:IntegerUpDown Value="{Binding DownforceRear}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="299,233,0,0" Height="20" Width="58" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Body Paint ID" HorizontalAlignment="Left" Margin="9,282,0,0" VerticalAlignment="Top" Width="Auto">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Body Paint ID</TextBlock> <LineBreak />
+                           Custom paint ID, AllPaintID from SpecDB in the VARIATION table. overrides car color index.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->paint_id</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:IntegerUpDown Value="{Binding BodyPaintID}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="101,285,0,0" Height="20" Width="71" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Wheel Paint ID" HorizontalAlignment="Left" Margin="178,282,0,0" VerticalAlignment="Top" Width="Auto">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Wheel Paint ID</TextBlock> <LineBreak />
+                           Custom wheel paint ID, AllPaintID from SpecDB in the VARIATION table.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->wheel_color</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:IntegerUpDown Value="{Binding WheelPaintID}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="287,285,0,0" Height="20" Width="70" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Wheel ID" HorizontalAlignment="Left" Margin="10,310,0,0" VerticalAlignment="Top" Width="Auto">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Wheel ID</TextBlock> <LineBreak />
+                           Custom wheel ID, from WHEEL_EX table.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->wheel</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:IntegerUpDown Value="{Binding WheelID}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="101,314,0,0" Height="20" Width="71" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Wheel Inch" HorizontalAlignment="Left" Margin="177,311,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <xctk:IntegerUpDown Value="{Binding WheelInchUp}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="286,315,0,0" Height="20" Width="71" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Aero Kit" HorizontalAlignment="Left" Margin="10,336,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <xctk:IntegerUpDown Value="{Binding AeroKit}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="101,340,0,0" Height="20" Width="71" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Flat Floor" HorizontalAlignment="Left" Margin="9,363,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <xctk:IntegerUpDown Value="{Binding FlatFloor}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="101,367,0,0" Height="20" Width="71" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Other (Aero)" HorizontalAlignment="Left" Margin="10,389,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <xctk:IntegerUpDown Value="{Binding AeroOther}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="101,393,0,0" Height="20" Width="71" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Sticker Type" HorizontalAlignment="Left" Margin="177,337,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <ComboBox HorizontalAlignment="Left" IsEnabled="False" VerticalAlignment="Top" Margin="255,342,0,0" Height="20" Width="103" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Sticker Number Type" HorizontalAlignment="Left" Margin="177,364,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <ComboBox HorizontalAlignment="Left" IsEnabled="False" VerticalAlignment="Top" Margin="302,369,0,0" Height="20" Width="55" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Sticker Number" HorizontalAlignment="Left" Margin="177,390,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <xctk:IntegerUpDown HorizontalAlignment="Left" IsEnabled="False" VerticalAlignment="Top" Margin="286,395,0,0" Height="20" Width="71" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+            </Grid>
+        </GroupBox>
     </Grid>
 </Window>

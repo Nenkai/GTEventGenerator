@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Xml;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace GTEventGenerator.Entities
 {
@@ -12,10 +13,11 @@ namespace GTEventGenerator.Entities
 
         public int FolderId { get; set; } = BaseFolderID;
         public int FirstEventID { get; set; } = BaseEventID;
+        public string FolderFileName { get; set; }
 
         public List<Event> Events { get; set; }
 
-        public GameParameterEventList EventList { get; set; } = new GameParameterEventList();
+        public GameParameterEventList EventList { get; set; }
         public int[] SeriesRewardCredits { get; set; } = new int[16];
 
         public GameParameter()
@@ -30,6 +32,8 @@ namespace GTEventGenerator.Entities
                 SeriesRewardCredits[i] = -1;
 
             Events = new List<Event>();
+            EventList = new GameParameterEventList();
+            FolderFileName = Regex.Replace(EventList.Title.Replace(" ", "").Replace(".", ""), "[^a-zA-Z0-9_.]+", "", RegexOptions.Compiled).ToLower();
         }
 
         public void OrderEventIDs()
@@ -53,12 +57,15 @@ namespace GTEventGenerator.Entities
             {
                 xml.WriteStartElement("prize_table");
                 {
-                    foreach (var cr in SeriesRewardCredits)
+                    if (EventList.IsChampionship)
                     {
-                        if (cr != -1)
-                            xml.WriteElementInt("prize", cr);
-                        else
-                            xml.WriteElementInt("prize", 0);
+                        foreach (var cr in SeriesRewardCredits)
+                        {
+                            if (cr != -1)
+                                xml.WriteElementInt("prize", cr);
+                            else
+                                xml.WriteElementInt("prize", 0);
+                        }
                     }
                 }
                 xml.WriteEndElement();
@@ -81,10 +88,30 @@ namespace GTEventGenerator.Entities
                     {
                         var newEvent = new Event();
                         newEvent.ParseFromXml(eventNode);
+                        newEvent.FixInvalidNodesIfNeeded();
                         Events.Add(newEvent);
                     }
 
                     FirstEventID = Events.FirstOrDefault()?.EventID ?? BaseEventID;
+                }
+                else if (parentNode.Name == "championship")
+                    EventList.IsChampionship = parentNode.ReadValueBool();
+                else if (parentNode.Name == "series_reward")
+                {
+                    foreach (XmlNode rewardNode in parentNode.ChildNodes)
+                    {
+                        if (parentNode.Name == "prize_table")
+                        {
+                            int i = 0;
+                            foreach (XmlNode prizeNode in parentNode.SelectNodes("prize"))
+                            {
+                                if (i > 16)
+                                    break;
+                                SeriesRewardCredits[i++] = prizeNode.ReadValueInt();
+                            }
+                        }
+                    }
+                    
                 }
             }
         }

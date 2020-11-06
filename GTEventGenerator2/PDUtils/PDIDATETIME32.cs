@@ -22,7 +22,7 @@ namespace GTEventGenerator.PDUtils
 		public DateTime GetDateTime()
 			=> new DateTime(
 				(int)((_timeData >> 26 & 0x3F) + 1970), // Year
-				(int)(_timeData >> 22 & 0x1F), // Month
+				(int)(_timeData >> 22 & 0xF), // Month
 				(int)(_timeData >> 17 & 0x1F), // Day
 				(int)(_timeData >> 12 & 0x1F), // Hour
 				(int)(_timeData >> 6 & 0x3F), // Min

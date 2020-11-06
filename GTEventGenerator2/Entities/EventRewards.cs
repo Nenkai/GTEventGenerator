@@ -160,13 +160,21 @@ namespace GTEventGenerator.Entities
                         GivesAllTrophyRewards = rewardNode.ReadValueBool(); break;
 
                     case "point_table":
-                        foreach (XmlNode prizeNode in rewardNode.ChildNodes)
-                            PointTable[i++] = prizeNode.ReadValueInt();
+                        i = 0;
+                        foreach (XmlNode pointNode in rewardNode.SelectNodes("point"))
+                        {
+                            if (i < MoneyPrizes.Length)
+                                PointTable[i++] = pointNode.ReadValueInt();
+                        }
                         break;
 
                     case "prize_table":
-                        foreach (XmlNode prizeNode in rewardNode.ChildNodes)
-                            MoneyPrizes[i++] = prizeNode.ReadValueInt();
+                        i = 0;
+                        foreach (XmlNode prizeNode in rewardNode.SelectNodes("prize"))
+                        {
+                            if (i < MoneyPrizes.Length)
+                                MoneyPrizes[i++] = prizeNode.ReadValueInt();
+                        }
                         break;
 
                     case "star_table":

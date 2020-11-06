@@ -14,7 +14,19 @@ namespace GTEventGenerator.Entities
         public List<RaceEntry> AIBases { get; set; } = new List<RaceEntry>();
         public RaceEntry Player { get; set; }
 
-        public int EntryCount { get; set; } = 12;
+        private int aisToPickFromPool;
+        public int AIsToPickFromPool
+        {
+            get => aisToPickFromPool;
+            set
+            {
+                if (value > 16)
+                    value = 16;
+
+                aisToPickFromPool = value;
+            } 
+        }
+
         public int PlayerPos { get; set; } = 1;
         public int RollingStartV { get; set; }
         public int GapForRollingDistance { get; set; }
@@ -37,38 +49,58 @@ namespace GTEventGenerator.Entities
                 return;
 
             xml.WriteStartElement("entry_set");
-            if (Player != null)
-                Player.WriteToXml(xml);
-
-            if (AIBases.Count != 0)
+            bool hasGeneratedAI = AIBases.Count != 0 && AIsToPickFromPool != 0;
+            if (hasGeneratedAI || AI.Count != 0) // entry_generate is also present if using <entry>
             {
                 xml.WriteStartElement("entry_generate");
                 {
                     xml.WriteStartElement("delays"); xml.WriteEndElement();
-                    xml.WriteElementInt("entry_num", EntryCount);
+
+                    if (AIBases.Count < AIsToPickFromPool)
+                        AIsToPickFromPool = AIBases.Count;
+
+                    xml.WriteElementInt("entry_num", AI.Count + AIsToPickFromPool + 1); // + 1 as it includes player
                     xml.WriteElementInt("player_pos", PlayerPos - 1);
+
                     xml.WriteElementValue("generate_type", AIEntryGenerateType.ToString());
                     xml.WriteElementValue("enemy_sort_type", AISortType.ToString());
-                    xml.WriteElementInt("rolling_start_v", RollingStartV);
-                    xml.WriteElementInt("gap_for_start_rolling_distance", GapForRollingDistance);
-                    xml.WriteElementBool("use_rolling_start_param", GapForRollingDistance != 0 || RollingStartV != 0);
-                    xml.WriteElementInt("ai_skill_starting", AIBases.Max(x => x.BaseSkill));
-                    xml.WriteElementInt("ai_roughness", AIRoughness);
-                    xml.WriteElementInt("ai_skill", AIBaseSkillStarting);
-           
-                    xml.WriteElementInt("ai_skill_breaking", AIBrakingSkillStarting);
-                    xml.WriteElementInt("ai_skill_cornering", AICornerSkillStarting);
-                    xml.WriteElementInt("ai_skill_accelerating", AIAccelSkillStarting);
-                    xml.WriteElementInt("ai_skill_starting", AIStartSkillStarting);
+                    
 
-                    xml.WriteStartElement("entry_base_array");
+                    if (GapForRollingDistance != 0 || RollingStartV != 0)
                     {
-                        foreach (var ai in AIBases)
-                            ai.WriteToXml(xml);
+                        xml.WriteElementBool("use_rolling_start_param", GapForRollingDistance != 0 || RollingStartV != 0);
+                        xml.WriteElementInt("rolling_start_v", RollingStartV);
+                        xml.WriteElementInt("gap_for_start_rolling_distance", GapForRollingDistance);
                     }
-                    xml.WriteEndElement();
+
+                    if (hasGeneratedAI)
+                    {
+                        xml.WriteElementInt("ai_roughness", AIRoughness);
+                        xml.WriteElementInt("ai_skill_starting", AIBases.Max(x => x.BaseSkill));
+                        xml.WriteElementInt("ai_skill", AIBaseSkillStarting);
+                        xml.WriteElementInt("ai_skill_breaking", AIBrakingSkillStarting);
+                        xml.WriteElementInt("ai_skill_cornering", AICornerSkillStarting);
+                        xml.WriteElementInt("ai_skill_accelerating", AIAccelSkillStarting);
+                        xml.WriteElementInt("ai_skill_starting", AIStartSkillStarting);
+                    }
+
+                    if (AIBases.Count > 0)
+                    {
+                        xml.WriteStartElement("entry_base_array");
+                        {
+                            foreach (var ai in AIBases)
+                                ai.WriteToXml(xml, false);
+                        }
+                        xml.WriteEndElement();
+                    }
                 }
                 xml.WriteEndElement();
+
+                foreach (var fixedAI in AI)
+                    fixedAI.WriteToXml(xml, true);
+
+                if (Player != null)
+                    Player.WriteToXml(xml, true);
             }
 
             xml.WriteEndElement();
@@ -113,7 +145,7 @@ namespace GTEventGenerator.Entities
                                 break;
 
                             case "entry_num":
-                                EntryCount = entryGenerateNode.ReadValueInt();
+                                AIsToPickFromPool = entryGenerateNode.ReadValueInt();
                                 break;
                             case "player_pos":
                                 PlayerPos = entryGenerateNode.ReadValueInt() + 1;
@@ -135,7 +167,12 @@ namespace GTEventGenerator.Entities
                 {
                     var newEntry = ParseEntry(entrySetNode);
                     if (!newEntry.IsAI && !string.IsNullOrEmpty(newEntry.CarLabel))
-                        Player = newEntry;
+                    {
+                        if (!string.IsNullOrEmpty(newEntry.CarLabel))
+                            Player = newEntry;
+                    }
+                    else
+                        AI.Add(newEntry);
                 }
             }
         }
@@ -184,11 +221,50 @@ namespace GTEventGenerator.Entities
                         break;
 
                     case "initial_velocity":
-                        newEntry.InitialVelocity = entryDetailNode.ReadValueInt();
-                        break;
+                        newEntry.InitialVelocity = entryDetailNode.ReadValueInt(); break;
                     case "initial_position":
-                        newEntry.InitialVCoord = entryDetailNode.ReadValueInt();
-                        break;
+                        newEntry.InitialVCoord = entryDetailNode.ReadValueInt(); break;
+
+                    case "engine_na_tune_stage":
+                        newEntry.EngineStage = entryDetailNode.ReadValueEnum<EngineNATuneState>(); break;
+                    case "engine_turbo_kit":
+                        newEntry.TurboKit = entryDetailNode.ReadValueEnum<EngineTurboKit>(); break;
+                    case "engine_computer":
+                        newEntry.Computer = entryDetailNode.ReadValueEnum<EngineComputer>(); break;
+                    case "muffler":
+                        newEntry.Exhaust = entryDetailNode.ReadValueEnum<Muffler>(); break;
+                    case "suspension":
+                        newEntry.Suspension = entryDetailNode.ReadValueEnum<Suspension>(); break;
+                    case "transmission":
+                        newEntry.Transmission = entryDetailNode.ReadValueEnum<Transmission>(); break;
+
+                    case "power_limiter":
+                        newEntry.PowerLimiter = float.Parse(entryDetailNode.ReadValueString()); break;
+                    case "wheel":
+                        newEntry.WheelID = entryDetailNode.ReadValueInt(); break;
+                    case "wheel_color":
+                        newEntry.WheelPaintID = entryDetailNode.ReadValueInt(); break;
+                    case "wheel_inch_up":
+                        newEntry.WheelInchUp = entryDetailNode.ReadValueInt(); break;
+                    case "ballast_weight":
+                        newEntry.BallastWeight = entryDetailNode.ReadValueInt(); break;
+                    case "ballast_position":
+                        newEntry.BallastPosition = entryDetailNode.ReadValueInt(); break;
+                    case "downforce_f":
+                        newEntry.DownforceFront = entryDetailNode.ReadValueInt(); break;
+                    case "downforce_r":
+                        newEntry.DownforceRear = entryDetailNode.ReadValueInt(); break;
+                    case "paint_id":
+                        newEntry.DownforceRear = entryDetailNode.ReadValueInt(); break;
+                    case "aero_1":
+                        newEntry.AeroKit = entryDetailNode.ReadValueInt(); break;
+                    case "aero_2":
+                        newEntry.FlatFloor = entryDetailNode.ReadValueInt(); break;
+                    case "aero_3":
+                        newEntry.AeroOther = entryDetailNode.ReadValueInt(); break;
+                    case "gear_max_speed":
+                        newEntry.MaxGearSpeed = entryDetailNode.ReadValueInt(); break;
+
                     case "tire_f":
                         newEntry.TireFront = (TireType)Enum.Parse(typeof(TireType), entryDetailNode.ReadValueString());
                         break;
@@ -210,7 +286,7 @@ namespace GTEventGenerator.Entities
 
     public enum EntryGenerateType
     {
-        [Description("None")]
+        [Description("None (Pool Ignored)")]
         NONE,
 
         [Description("Shuffle and Randomly Pick")]

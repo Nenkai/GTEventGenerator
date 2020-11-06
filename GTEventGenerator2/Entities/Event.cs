@@ -17,7 +17,7 @@ namespace GTEventGenerator.Entities
         public EventCourse Course { get; set; }
         public EventEvalConditions EvalConditions { get; set; }
         public EventPlayStyle PlayStyle { get; set; }
-
+        public EventFailureConditions FailConditions { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public RankingDisplayType RankingDisplayType { get; set; } = RankingDisplayType.NONE;
@@ -60,6 +60,7 @@ namespace GTEventGenerator.Entities
             Course = new EventCourse();
             EvalConditions = new EventEvalConditions();
             PlayStyle = new EventPlayStyle();
+            FailConditions = new EventFailureConditions();
 
             MoneyPrizes[0] = 25_000;
             MoneyPrizes[1] = 12_750;
@@ -78,10 +79,7 @@ namespace GTEventGenerator.Entities
             {
                 Constraints.WriteToXml(xml);
                 Entries.WriteToXml(xml);
-                //sw.WriteLine(string.Format("                <failure_condition>"));
-                //sw.WriteLine(string.Format("                    <type_list />"));
-                //sw.WriteLine(string.Format("                    <no_failure_at_result value=\"1\" />"));
-                //sw.WriteLine(string.Format("                </failure_condition>"));
+                FailConditions.WriteToXml(xml);
                 xml.WriteElementInt("event_id", EventID);
                 xml.WriteElementValue("event_type", "RACE");
                 xml.WriteElementValue("game_mode", GameMode.ToString());
@@ -92,11 +90,7 @@ namespace GTEventGenerator.Entities
                 Course.WriteToXml(xml);
                 PlayStyle.WriteToXml(xml);
                 Regulations.WriteToXml(xml);
-                /*
-                sw.WriteLine(string.Format("                <play_style>"));
-                sw.WriteLine(string.Format("                    <bspec_type value=\"BOTH_A_AND_B\" />"));
-                sw.WriteLine(string.Format("                </play_style>"));
-                */
+                PlayStyle.WriteToXml(xml);
                 xml.WriteElementValue("penalty_script", PenaltyScriptName);
                 xml.WriteElementValue("ai_script", AIScriptName);
                 EvalConditions.WriteToXml(xml);
@@ -176,6 +170,10 @@ namespace GTEventGenerator.Entities
                         PlayStyle.ParsePlayStyle(node);
                         break;
 
+                    case "failure_condition":
+                        FailConditions.ParseFailConditions(node);
+                        break;
+
                     case "is_seasonal_event":
                         IsSeasonalEvent = node.ReadValueBool();
                         break;
@@ -196,6 +194,16 @@ namespace GTEventGenerator.Entities
                         break;
                 }
             }
+        }
+
+        /// <summary>
+        /// Update some invalid nodes that can only be fixed once the event is fully loaded.
+        /// </summary>
+        public void FixInvalidNodesIfNeeded()
+        {
+            int freeSlots = GetFreeCarSlotsLeft();
+            if (Entries.AIsToPickFromPool > freeSlots)
+                Entries.AIsToPickFromPool = freeSlots;
         }
 
         public void ParseRankingData(XmlNode node)
@@ -221,6 +229,15 @@ namespace GTEventGenerator.Entities
             }
         }
 
+        public int GetFreeCarSlotsLeft()
+        {
+            return RaceParameters.RacersMax - GetTotalEntries();
+        }
+
+        public int GetTotalEntries()
+        {
+            return Entries.AI.Count + 1;
+        }
 
         public void MarkUnpopulated()
         {
