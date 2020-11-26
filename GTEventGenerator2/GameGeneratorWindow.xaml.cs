@@ -129,14 +129,22 @@ namespace GTEventGenerator
                         $"Ensure that the total amount of Fixed entries + Player entries is inferior to the total of Max Cars in the event settings tab.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-                else if ((evnt.Entries.AIEntryGenerateType == EntryGenerateType.ENTRY_BASE_SHUFFLE || evnt.Entries.AIEntryGenerateType == EntryGenerateType.ENTRY_BASE_ORDER)
-                        && evnt.Entries.AI.Any())
+                else if (evnt.Entries.AI.Any())
                 {
-                    MessageBox.Show($"Event #{i + 1} has fixed entries and 'AI Pool Generate Type' to '{evnt.Entries.AIEntryGenerateType.Humanize()}' - that will crash or softlock the game" +
-                        "as the game will try to pick from the AI pool while fixed entries exist. You cannot have both of each.\n" +
-                        "- If you want only fixed entries, set 'AI Pool Generate Type' to 'None'.\n" +
-                        "- If you want random entries, set it to Shuffle/Order, and remove your fixed entries.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
+                    if (evnt.Entries.AIEntryGenerateType == EntryGenerateType.ENTRY_BASE_SHUFFLE || evnt.Entries.AIEntryGenerateType == EntryGenerateType.ENTRY_BASE_ORDER)
+                    {
+                        MessageBox.Show($"Event #{i + 1} has fixed entries and 'AI Pool Generate Type' to '{evnt.Entries.AIEntryGenerateType.Humanize()}' - that will crash or softlock the game" +
+                       "as the game will try to pick from the AI pool while fixed entries exist. You cannot have both of each.\n" +
+                       "- If you want only fixed entries, set 'AI Pool Generate Type' to 'None'.\n" +
+                       "- If you want random entries, set it to Shuffle/Order, and remove your fixed entries.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+                    else if (evnt.Entries.Player is null)
+                    {
+                        MessageBox.Show($"Event #{i + 1} has fixed entries but the player does not have a rented car. The player must be using a rented a car.", 
+                            "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
                 }
             }
 
@@ -444,8 +452,13 @@ namespace GTEventGenerator
             }
 
             var copy = DeepCloner.Clone(CurrentEvent);
-
             copy.Index = GameParameter.Events.Count + 1;
+            for (int i = 0; i < CurrentEvent.Rewards.MoneyPrizes.Length; i++)
+                copy.Rewards.MoneyPrizes[i] = CurrentEvent.Rewards.MoneyPrizes[i];
+
+            for (int i = 0; i < CurrentEvent.Rewards.MoneyPrizes.Length; i++)
+                copy.Rewards.PointTable[i] = CurrentEvent.Rewards.PointTable[i];
+            copy.RaceParameters.Date = CurrentEvent.RaceParameters.Date;
             EventNames.Add($"{copy.Index} - {copy.Name}");
             GameParameter.Events.Add(copy);
             GameParameter.OrderEventIDs();
@@ -972,6 +985,8 @@ namespace GTEventGenerator
             iud_StarsNeeded.Value = GameParameter.EventList.StarsNeeded;
             iud_FolderID.Value = GameParameter.FolderId;
             tb_FolderFileName.Text = GameParameter.FolderFileName;
+            chkIsChampionship.IsChecked = GameParameter.EventList.IsChampionship;
+            btnChampionshipRewards.IsEnabled = GameParameter.EventList.IsChampionship;
             cboEventCategory.SelectedIndex = GameParameterEventList.EventCategories.IndexOf(GameParameter.EventList.Category);
 
             if (GameParameter.Events != null)

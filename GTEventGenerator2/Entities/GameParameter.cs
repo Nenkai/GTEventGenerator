@@ -100,7 +100,7 @@ namespace GTEventGenerator.Entities
                 {
                     foreach (XmlNode rewardNode in parentNode.ChildNodes)
                     {
-                        if (parentNode.Name == "prize_table")
+                        if (rewardNode.Name == "prize_table")
                         {
                             int i = 0;
                             foreach (XmlNode prizeNode in parentNode.SelectNodes("prize"))

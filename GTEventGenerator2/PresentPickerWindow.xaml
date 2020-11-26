@@ -10,7 +10,8 @@
         <GroupBox Header="Car Present" HorizontalAlignment="Left" Margin="10,10,0,10" Width="254">
             <Canvas>
                 <ComboBox Name="cb_Manufacturers" SelectionChanged="cb_Manufacturers_SelectionChanged" Canvas.Left="10" Canvas.Top="10" Width="222"/>
-                <ListView Name="lv_CarList" Canvas.Left="10" Canvas.Top="37" Height="286" Width="222"/>
+                <ListBox Name="lv_CarList" Canvas.Left="10" Canvas.Top="37" Height="286" Width="222">
+                </ListBox>
                 <Button Name="btn_SelectCar" Content="Select Car" Canvas.Left="10" Canvas.Top="328" Width="222" Click="btn_SelectCar_Click"/>
             </Canvas>
         </GroupBox>
@@ -18,16 +19,16 @@
         <GroupBox Header="Paint Present" HorizontalAlignment="Left" Margin="269,10,0,10" Width="254">
             <Canvas>
                 <TextBox Name="tb_PaintSearcher" Canvas.Left="10" Canvas.Top="10" Width="163"/>
-                <ListView Name="lv_PaintList" Canvas.Left="10" Canvas.Top="37" Height="286" Width="222">
-                    <ListView.ItemTemplate>
+                <ListBox Name="lv_PaintList" Canvas.Left="10" Canvas.Top="37" Height="286" Width="222">
+                    <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
                                 <Rectangle Fill="{Binding Color}" Visibility="Visible" Width="16" Height="16" Stroke="Gray"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Stretch="UniformToFill"/>
                                 <TextBlock Text="{Binding Path=PaintName}" Padding="5 0 0 0"/>
                             </StackPanel>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    </ListBox.ItemTemplate>
+                </ListBox>
                 <Button Name="btn_PaintSearch" Content="Search" Canvas.Left="178" Canvas.Top="10" Width="54" Click="btn_PaintSearch_Click"/>
                 <Button Name="btn_SelectPaint" Content="Select Paint" Canvas.Left="10" Canvas.Top="328" Width="222" Click="btn_SelectPaint_Click"/>
             </Canvas>

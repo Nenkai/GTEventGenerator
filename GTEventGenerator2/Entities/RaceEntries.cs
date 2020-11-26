@@ -278,6 +278,7 @@ namespace GTEventGenerator.Entities
                         break;
                 }
             }
+
             return newEntry;
         }
 

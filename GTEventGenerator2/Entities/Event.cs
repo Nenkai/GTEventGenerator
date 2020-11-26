@@ -127,7 +127,7 @@ namespace GTEventGenerator.Entities
 
                     case "entry_set":
                         Entries.ParseRaceEntrySet(node);
-                        foreach (XmlNode entryNode in node.ChildNodes[0]) // entry_generate
+                        foreach (XmlNode entryNode in node.SelectNodes("entry_generate")) // entry_generate
                         {
                             if (entryNode.Name == "player_pos")
                             {

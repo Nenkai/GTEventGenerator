@@ -21,6 +21,7 @@ namespace GTEventGenerator
     public partial class PresentPickerWindow : Window
     {
         private GameDB _gameDB;
+        private List<string> CarList { get; set; } = new List<string>();
         private List<PaintInfo> PaintList { get; set; } = new List<PaintInfo>();
 
         public SelectionType SelectedType { get; set; }
@@ -33,6 +34,7 @@ namespace GTEventGenerator
             InitializeComponent();
 
             lv_PaintList.ItemsSource = PaintList;
+            lv_CarList.ItemsSource = CarList;
             Populate();
         }
 
@@ -76,7 +78,7 @@ namespace GTEventGenerator
 
         public void UpdateCarList()
         {
-            lv_CarList.Items.Clear();
+            CarList.Clear();
 
             var results = _gameDB.ExecuteQuery(
                 "SELECT " +
@@ -89,7 +91,10 @@ namespace GTEventGenerator
                 "ORDER BY VehicleName ");
 
             while (results.Read())
-                lv_CarList.Items.Add(results.GetString(0));
+                CarList.Add(results.GetString(0));
+
+            lv_CarList.ItemsSource = null;
+            lv_CarList.ItemsSource = CarList;
         }
 
         private void btn_PaintSearch_Click(object sender, RoutedEventArgs e)

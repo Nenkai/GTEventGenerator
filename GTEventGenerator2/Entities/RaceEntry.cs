@@ -244,10 +244,15 @@ namespace GTEventGenerator
                 xml.WriteElementValue("driver_region", DriverRegion);
 
             xml.WriteElementInt("delay", Delay);
-            xml.WriteStartElement("car");
-            xml.WriteAttributeString("color", ColorIndex.ToString());
-            xml.WriteAttributeString("label", CarLabel);
-            xml.WriteEndElement();
+
+            if (!string.IsNullOrEmpty(CarLabel))
+            {
+                xml.WriteStartElement("car");
+                xml.WriteAttributeString("color", ColorIndex.ToString());
+                xml.WriteAttributeString("label", CarLabel);
+                xml.WriteEndElement();
+            }
+
             xml.WriteElementInt("race_class_id", 0);
 
             if (IsAI)

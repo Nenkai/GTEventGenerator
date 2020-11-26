@@ -1737,8 +1737,9 @@ Strong - Mechanical damage">Damage Behavior</Label>
                                     <TextBlock FontWeight="Bold" FontSize="14">Fixed Entries</TextBlock> <LineBreak />
                                     AIs here will always appear in the event.<LineBreak/>
                                     Note: You cannot have both fixed and generated entries.<LineBreak/>
+                                    Note: Having fixed entries means the player must also use a rented car.<LineBreak/>
                                     <LineBreak/>
-                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry_generate->entry_base[]</TextBlock>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry_set->entry[]</TextBlock>
                                     </TextBlock>
                         </GroupBox.ToolTip>
                         <Canvas >

@@ -122,7 +122,10 @@ namespace GTEventGenerator.Database
 
         public string GetCarLabelByActualName(string name)
         {
-            var res = ExecuteQuery($"SELECT VehicleInternalName FROM Vehicles WHERE VehicleName = \"{name}\"");
+            var cmd = new SQLiteCommand($"SELECT VehicleInternalName FROM Vehicles WHERE VehicleName = @VehicleName");
+            cmd.Parameters.AddWithValue("VehicleName", name);
+            cmd.Connection = _sConn;
+            var res = cmd.ExecuteReader();
             res.Read();
 
             return res.GetString(0);
