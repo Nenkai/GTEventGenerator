@@ -89,7 +89,10 @@ namespace GTEventGenerator.Entities
                         xml.WriteStartElement("entry_base_array");
                         {
                             foreach (var ai in AIBases)
+                            {
+                                ai.IsAI = true; // Just to make sure
                                 ai.WriteToXml(xml, false);
+                            }
                         }
                         xml.WriteEndElement();
                     }
@@ -98,10 +101,10 @@ namespace GTEventGenerator.Entities
 
                 foreach (var fixedAI in AI)
                     fixedAI.WriteToXml(xml, true);
-
-                if (Player != null)
-                    Player.WriteToXml(xml, true);
             }
+
+            if (Player != null)
+                Player.WriteToXml(xml, true);
 
             xml.WriteEndElement();
         }

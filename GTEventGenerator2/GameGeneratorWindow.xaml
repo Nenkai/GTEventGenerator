@@ -1501,7 +1501,7 @@ Strong - Mechanical damage">Damage Behavior</Label>
                                 <CheckBox.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Generate Random Flag</TextBlock> <LineBreak />
-                                    When an AI is generated, whether it has a random flag, else defaults to PDI.<LineBreak/>
+                                    When an AI is generated, whether it has a random color, or defaults to the first one.<LineBreak/>
                                 </TextBlock>
                                 </CheckBox.ToolTip>
                             </CheckBox>
