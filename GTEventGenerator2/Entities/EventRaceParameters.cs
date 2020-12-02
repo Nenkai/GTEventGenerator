@@ -327,7 +327,7 @@ namespace GTEventGenerator.Entities
                         BoostFlag = raceNode.ReadValueBool(); break;
                     case "new_weather_data":
                         {
-                            foreach (var point in raceNode.SelectNodes("point"))
+                            foreach (XmlNode point in raceNode.SelectNodes("point"))
                             {
                                 var data = new WeatherData();
                                 foreach (XmlNode pointNode in point.ChildNodes)
