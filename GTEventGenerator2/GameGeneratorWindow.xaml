@@ -20,17 +20,17 @@
                 <MenuItem Header="Edit">
                     <MenuItem Header="Minify XML's while Exporting" Name="minimizeXMLToolStripMenuItem" IsCheckable="True" Checked="minimizeXMLToolStripMenuItem_Checked" Unchecked="minimizeXMLToolStripMenuItem_Checked" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
                     <Separator />
-                    <MenuItem Header="AI Generation" Template="{DynamicResource SingleDropDownMenuItem}">
-                        <MenuItem Header="Randomize all AIs Region/Names" Name="randomizeAINamesToolStripMenuItem" Click="randomizeAINamesToolStripMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
-                        <MenuItem Header="Regenerate all AIs Tire Compounds" Name="randomizeAITireCompoundToolStripMenuItem" Click="randomizeAITireCompoundToolStripMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
+                    <MenuItem Header="Regenerate ALL AI's..." Template="{DynamicResource SingleDropDownMenuItem}">
+                        <MenuItem Header="Region/Names" Name="randomizeAINamesToolStripMenuItem" Click="randomizeAINamesToolStripMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
+                        <MenuItem Header="Tire Compounds" Name="randomizeAITireCompoundToolStripMenuItem" Click="randomizeAITireCompoundToolStripMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
                         <Separator/>
-                        <MenuItem Header="Regenerate AIs Roughness" Name="randomizeAIRoughnessToolStripMenuItem" Click="randomizeAIRoughnessMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
-                        <MenuItem Header="Regenerate AIs Base Skill" Name="randomizeAIBaseSkillToolStripMenuItem" Click="randomizeAIBaseSkillMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
-                        <MenuItem Header="Regenerate AIs Corner Skill"  Name="randomizeAICornerSkillToolStripMenuItem" Click="randomizeAICornerSkillMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
-                        <MenuItem Header="Regenerate AIs Braking Skill"  Name="randomizeAIBrakingSkillToolStripMenuItem" Click="randomizeAIBrakingSkillMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
-                        <MenuItem Header="Regenerate AIs Accel Skill"  Name="randomizeAIAccelSkillToolStripMenuItem" Click="randomizeAIAccelSkillMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
-                        <MenuItem Header="Regenerate AIs Starting Skill"  Name="randomizeAIStartSkillToolStripMenuItem" Click="randomizeAIStartSkillMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
-                        <MenuItem Header="Regenerate ALL AIs Skills"  Name="randomizeAISkillsToolStripMenuItem" Click="randomizeAISkillsMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
+                        <MenuItem Header="Roughness" Name="randomizeAIRoughnessToolStripMenuItem" Click="randomizeAIRoughnessMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
+                        <MenuItem Header="Base Skill" Name="randomizeAIBaseSkillToolStripMenuItem" Click="randomizeAIBaseSkillMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
+                        <MenuItem Header="Corner Skill"  Name="randomizeAICornerSkillToolStripMenuItem" Click="randomizeAICornerSkillMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
+                        <MenuItem Header="Braking Skill"  Name="randomizeAIBrakingSkillToolStripMenuItem" Click="randomizeAIBrakingSkillMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
+                        <MenuItem Header="Accel Skill"  Name="randomizeAIAccelSkillToolStripMenuItem" Click="randomizeAIAccelSkillMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
+                        <MenuItem Header="Starting Skill"  Name="randomizeAIStartSkillToolStripMenuItem" Click="randomizeAIStartSkillMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
+                        <MenuItem Header="(All Skills)"  Name="randomizeAISkillsToolStripMenuItem" Click="randomizeAISkillsMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
                     </MenuItem>
 
                 </MenuItem>

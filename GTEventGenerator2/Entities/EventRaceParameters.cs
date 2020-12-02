@@ -330,7 +330,7 @@ namespace GTEventGenerator.Entities
                             foreach (var point in raceNode.SelectNodes("point"))
                             {
                                 var data = new WeatherData();
-                                foreach (XmlNode pointNode in node.ChildNodes)
+                                foreach (XmlNode pointNode in point.ChildNodes)
                                 {
                                     switch (pointNode.Name)
                                     {
@@ -342,6 +342,7 @@ namespace GTEventGenerator.Entities
                                             data.High = float.Parse(pointNode.ReadValueString()); break;
                                     }
                                 }
+                                NewWeatherData.Add(data);
                             }
                         }
                         break;
