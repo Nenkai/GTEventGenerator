@@ -7,7 +7,8 @@ It is not yet finished.
 # Roadmap
 
 - [x] Creating Events
-- [x] Selecting Track
+- [x] Selecting Tracks
+- [x] Creating Event Cards Images (GT6)
 - [x] Full Regulation Control (what car can enter an event)
 - [x] Full Constraint Control (what car settings are allowed)
 - [x] Rewards (Credits & XP)
@@ -16,8 +17,10 @@ It is not yet finished.
 - [x] Most track parameters
 - [x] Custom GT6 Tracks
 - [x] Custom GT6 Prizes (Paints & Cars)
+- [x] Fail Conditions
+- [x] Giving entries custom car parts
 - [ ] Custom Evaluation Conditions
-- [ ] Fail Conditions
+
 
 # Download
 https://github.com/Nenkai/GTEventGenerator/releases
