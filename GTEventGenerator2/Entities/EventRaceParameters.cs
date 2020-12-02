@@ -73,6 +73,7 @@ namespace GTEventGenerator.Entities
         public bool WithGhost { get; set; }
         public bool ReplaceAtCourseOut { get; set; }
         public int WeatherAccel { get; set; } 
+        public int WeatherAccelWaterRetention { get; set; }
         public int WeatherBaseCelsius { get; set; } = 24;
         public int WeatherMaxCelsius { get; set; } = 3;
         public int WeatherMinCelsius { get; set; } = 3;
@@ -85,6 +86,7 @@ namespace GTEventGenerator.Entities
         public float WeatherTotalSec { get; set; }
         public bool WeatherRandom { get; set; }
         public int WeatherRandomSeed { get; set; }
+        public List<WeatherData> NewWeatherData { get; set; } = new List<WeatherData>();
 
         public void WriteToXml(Event parent, XmlWriter xml)
         {
@@ -158,18 +160,23 @@ namespace GTEventGenerator.Entities
             xml.WriteElementBool("with_ghost", WithGhost);
             xml.WriteElementBool("replace_at_courseout", ReplaceAtCourseOut);
             xml.WriteElementInt("weather_accel10", WeatherAccel);
-            xml.WriteElementInt("weather_accel_water_retention10", 0);
+            xml.WriteElementInt("weather_accel_water_retention10", WeatherAccelWaterRetention);
             xml.WriteElementBool("boost_flag", BoostFlag);
 
-            /*
-            sw.WriteLine(string.Format("                    <new_weather_data>"));
-            sw.WriteLine(string.Format("                        <point>"));
-            sw.WriteLine(string.Format("                            <time_rate value=\"0\" />"));
-            sw.WriteLine(string.Format("                            <low value=\"1\" />"));
-            sw.WriteLine(string.Format("                            <high value=\"1\" />"));
-            sw.WriteLine(string.Format("                        </point>"));
-            sw.WriteLine(string.Format("                    </new_weather_data>"));
-            */
+            if (NewWeatherData.Count != 0)
+            {
+                xml.WriteStartElement("new_weather_data");
+                foreach (var data in NewWeatherData)
+                {
+                    xml.WriteStartElement("point");
+                    xml.WriteElementInt("time_rate", data.TimeRate);
+                    xml.WriteElementFloat("low", data.Low);
+                    xml.WriteElementFloat("high", data.High);
+                    xml.WriteEndElement();
+                }
+                xml.WriteEndElement();
+            }
+
             xml.WriteElementInt("entry_max", RacersMax);
             xml.WriteElementInt("racers_max", RacersMax);
             xml.WriteEmptyElement("boost_table_array");
@@ -308,6 +315,8 @@ namespace GTEventGenerator.Entities
                         WeatherRandom = raceNode.ReadValueBool(); break;
                     case "weather_random_seed":
                         WeatherRandomSeed = raceNode.ReadValueInt(); break;
+                    case "weather_accel_water_retention10":
+                        WeatherAccelWaterRetention = raceNode.ReadValueInt(); break;
                     case "weather_total_sec":
                         WeatherTotalSec = float.Parse(raceNode.ReadValueString()); break;
                     case "with_ghost":
@@ -316,6 +325,26 @@ namespace GTEventGenerator.Entities
                         WeatherAccel = raceNode.ReadValueInt(); break;
                     case "boost_flag":
                         BoostFlag = raceNode.ReadValueBool(); break;
+                    case "new_weather_data":
+                        {
+                            foreach (var point in raceNode.SelectNodes("point"))
+                            {
+                                var data = new WeatherData();
+                                foreach (XmlNode pointNode in node.ChildNodes)
+                                {
+                                    switch (pointNode.Name)
+                                    {
+                                        case "time_rate":
+                                            data.TimeRate = pointNode.ReadValueInt(); break;
+                                        case "low":
+                                            data.Low = float.Parse(pointNode.ReadValueString()); break;
+                                        case "high":
+                                            data.High = float.Parse(pointNode.ReadValueString()); break;
+                                    }
+                                }
+                            }
+                        }
+                        break;
                 }
             }
         }
@@ -323,13 +352,13 @@ namespace GTEventGenerator.Entities
 
     public enum BehaviorDamageType
     {
-        [Description("Visual only")]
+        [Description("None")]
         WEAK,
 
-        [Description("Repairable Mech Damage")]
+        [Description("Light")]
         MIDDLE,
 
-        [Description("Permanent Mech Damage")]
+        [Description("Heavy")]
         STRONG
     }
 

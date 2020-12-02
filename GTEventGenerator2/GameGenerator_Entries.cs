@@ -415,7 +415,10 @@ namespace GTEventGenerator
             raceEntry.DriverName = driverName;
             raceEntry.DriverRegion = driverRegion;
 
-            raceEntry.Roughness = numericUpDown_AIRoughness.Value.Value;
+            if (numericUpDown_AIRoughnessMin.Value > numericUpDown_AIRoughnessMax.Value)
+                numericUpDown_AIRoughnessMax.Value = numericUpDown_AIRoughnessMax.Value;
+
+            raceEntry.Roughness = _random.Next(numericUpDown_AIRoughnessMin.Value.Value, numericUpDown_AIRoughnessMax.Value.Value + 1);
 
             if (numericUpDown_BaseSkillMin.Value > numericUpDown_BaseSkillMax.Value)
                 numericUpDown_BaseSkillMax.Value = numericUpDown_BaseSkillMin.Value;

@@ -18,9 +18,21 @@
                     <MenuItem Header="Exit" Click="exit_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
                 </MenuItem>
                 <MenuItem Header="Edit">
-                    <MenuItem Header="Minify XML's while Exporting (Saves size, but XML is less readable)" Name="minimizeXMLToolStripMenuItem" IsCheckable="True" Checked="minimizeXMLToolStripMenuItem_Checked" Unchecked="minimizeXMLToolStripMenuItem_Checked" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
+                    <MenuItem Header="Minify XML's while Exporting" Name="minimizeXMLToolStripMenuItem" IsCheckable="True" Checked="minimizeXMLToolStripMenuItem_Checked" Unchecked="minimizeXMLToolStripMenuItem_Checked" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
                     <Separator />
-                    <MenuItem Header="Randomize all AIs Region/Names for the current Event" Name="randomizeAINamesToolStripMenuItem" Click="randomizeAINamesToolStripMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
+                    <MenuItem Header="AI Generation" Template="{DynamicResource SingleDropDownMenuItem}">
+                        <MenuItem Header="Randomize all AIs Region/Names" Name="randomizeAINamesToolStripMenuItem" Click="randomizeAINamesToolStripMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
+                        <MenuItem Header="Regenerate all AIs Tire Compounds" Name="randomizeAITireCompoundToolStripMenuItem" Click="randomizeAITireCompoundToolStripMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
+                        <Separator/>
+                        <MenuItem Header="Regenerate AIs Roughness" Name="randomizeAIRoughnessToolStripMenuItem" Click="randomizeAIRoughnessMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
+                        <MenuItem Header="Regenerate AIs Base Skill" Name="randomizeAIBaseSkillToolStripMenuItem" Click="randomizeAIBaseSkillMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
+                        <MenuItem Header="Regenerate AIs Corner Skill"  Name="randomizeAICornerSkillToolStripMenuItem" Click="randomizeAICornerSkillMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
+                        <MenuItem Header="Regenerate AIs Braking Skill"  Name="randomizeAIBrakingSkillToolStripMenuItem" Click="randomizeAIBrakingSkillMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
+                        <MenuItem Header="Regenerate AIs Accel Skill"  Name="randomizeAIAccelSkillToolStripMenuItem" Click="randomizeAIAccelSkillMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
+                        <MenuItem Header="Regenerate AIs Starting Skill"  Name="randomizeAIStartSkillToolStripMenuItem" Click="randomizeAIStartSkillMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
+                        <MenuItem Header="Regenerate ALL AIs Skills"  Name="randomizeAISkillsToolStripMenuItem" Click="randomizeAISkillsMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
+                    </MenuItem>
+
                 </MenuItem>
                 <MenuItem Header="Help">
                     <MenuItem Header="About" Template="{DynamicResource SingleDropDownMenuItem}" Click="MenuItem_Click"></MenuItem>
@@ -430,26 +442,43 @@
                         <GroupBox.Header>
                             <TextBlock Text="Weather Parameters"/>
                         </GroupBox.Header>
-                        <Canvas Height="487" Width="237" >
-                            <Label Name="label_TrackWetness" Content="Initial Track Wetness" Height="27" Width="128" TabIndex="22" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="427">
+                        <Canvas>
+                            <Button Content="Setup Weather Steps" Canvas.Left="10" Canvas.Top="441" Width="224" Click="NewWeatherData_Click" Height="27"/>
+                            <Label Name="label_WeatherAccelRetention" Content="Road Drying Speed" Height="27" Width="151" TabIndex="22" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="300">
                                 <Label.ToolTip>
                                     <TextBlock>
-                                    <TextBlock FontWeight="Bold" FontSize="14">Initial Track Wetness</TextBlock> <LineBreak />
+                                    <TextBlock FontWeight="Bold" FontSize="14">Road Drying Speed</TextBlock> <LineBreak />
+                                    How fast the road can dry if wet. <LineBreak/>
+                                    0 means it won't dry even if its sunny. 1000 means it will dry extremely quickly (Approx 7s).<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->weather_accel_water_retention10</TextBlock>
+                                    </TextBlock>
+                                </Label.ToolTip>
+                            </Label>
+                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherAccelWaterRetention}" Height="20" Width="68" Canvas.Left="166" Canvas.Top="303" Maximum="1000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                            <Label Name="label_TrackWetness" Content="Wetness at Race Start" Height="27" Width="151" TabIndex="22" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="328">
+                                <Label.ToolTip>
+                                    <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Wetness at Race Start</TextBlock> <LineBreak />
+                                    Adjusts how wet the track surface is at the start of the race. At 0%, the track is completely dry. <LineBreak/>
+                                    As the value increases, the more water is present on the track, and the more slippery it will become. <LineBreak/>
+                                    The road condition after the race starts will be dictated by factors such as the settings for "Wetness at Race Start" and "Road Wetting Speed." <LineBreak/>
                                     Initial Track Water in %, 1 is 10%, 100 is 100%. 0/-1 is no water on the track.<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->initial_retention10</TextBlock>
                                     </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.TrackWetness}" Height="20" Width="51" Canvas.Left="174" Canvas.Top="431" Maximum="10" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.TrackWetness}" Height="20" Width="68" Canvas.Left="166" Canvas.Top="332" Maximum="10" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                            <ComboBox Name="comboBox_DecisiveWeather" Height="21" Width="102" TabIndex="37" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_DecisiveWeather_SelectedIndexChanged" Canvas.Left="123" Canvas.Top="399" />
-                            <Label Name="label_DecisiveWeather" Content="Decisive Weather" Height="28" Width="101" TabIndex="24" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="395" >
+                            <ComboBox Name="comboBox_DecisiveWeather" Height="21" Width="102" TabIndex="37" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_DecisiveWeather_SelectedIndexChanged" Canvas.Left="132" Canvas.Top="361" />
+                            <Label Name="label_DecisiveWeather" Content="Decisive Weather" Height="28" Width="117" TabIndex="24" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="357" >
                                 <Label.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Decisive Weather</TextBlock> <LineBreak />
-                                    Overall weather on the track.<LineBreak/>
-                                    <TextBlock FontWeight="Bold">None</TextBlock>: Overcast.<LineBreak/>
+                                    Forced weather on the track which cannot change. If you want a variable weather, use None.<LineBreak/>
+                                    <TextBlock FontWeight="Bold">None</TextBlock>: Use for variable weather.<LineBreak/>
                                     <TextBlock FontWeight="Bold">Sunny</TextBlock>: Recommended default. Sunny event.<LineBreak/>
                                     <TextBlock FontWeight="Bold">Rainy</TextBlock>: Rainy event.<LineBreak/>
                                     <TextBlock FontWeight="Bold">Snowy</TextBlock>: Snowy event.<LineBreak/>
@@ -459,55 +488,61 @@
                                 </Label.ToolTip>
                             </Label>
 
-                            <Label Name="label_WeatherProgressionLength" Content="Weather Progression Length" Height="27" Width="164" TabIndex="22" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="361" >
+                            <Label Name="label_WeatherProgressionLength" Content="Weather Progress Length" Height="27" Width="153" TabIndex="22" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="386" >
                                 <Label.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Weather Progression Length</TextBlock> <LineBreak />
-                                    Unknown - length of total weather progression?<LineBreak/>
+                                    Total length in seconds of all weather steps.<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->weather_total_sec</TextBlock>
                                     </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherTotalSec}" Height="20" Width="51" Canvas.Left="174" Canvas.Top="365" Maximum="100000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherTotalSec}" Height="20" Width="66" Canvas.Left="168" Canvas.Top="390" Maximum="100000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                            <Label Name="label_WeatherRandomSeed" Content="Weather Random Seed" Height="27" Width="140" TabIndex="20" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="295" Canvas.Left="10">
+                            <Label Name="label_WeatherRandomSeed" Content="Seed" Height="27" Width="37" TabIndex="20" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="180" Canvas.Left="132">
                                 <Label.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Weather Random Seed</TextBlock> <LineBreak />
-                                    Seed if the weather is random?<LineBreak/>
+                                    Seed if the weather is random.<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->weather_random_seed</TextBlock>
                                     </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherRandomSeed}" Height="20" Width="70" Canvas.Left="155" Canvas.Top="300" Maximum="100000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherRandomSeed}" Height="20" Width="61" Canvas.Left="175" Canvas.Top="184" Maximum="100000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                            <Label Name="label_WeatherTimeProgressionSpeed" Content="Time Progression Speed" Height="29" Width="140" TabIndex="18" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="327" >
+                            <Label Name="label_WeatherTimeProgressionSpeed" Content="Clock Time Speed" Height="29" Width="140" TabIndex="18" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="240" >
                                 <Label.ToolTip>
                                     <TextBlock>
-                                    <TextBlock FontWeight="Bold" FontSize="14">Time Progression Speed</TextBlock> <LineBreak />
+                                    <TextBlock FontWeight="Bold" FontSize="14">Clock Time Speed</TextBlock> <LineBreak />
+                                    Choose how quickly time passes during a race. The greater this number is, the faster time passes during a race.<LineBreak/>
+                                    Note: This setting is only available for some courses.<LineBreak/>
+                                    <LineBreak/>
                                     Multiplier of how fast time progresses.<LineBreak/>
-                                    1.0 = real-time, 60.0 = 60x (i.e. 24 minute day)<LineBreak/>
+                                    - 1.0 = Real-Time, 60s/1min.<LineBreak/>
+                                    - 24 = 2.5s/1min<LineBreak/>
+                                    - 60 = 24 Minute day, 1s per minute.<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->time_progress_speed</TextBlock>
                                     </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.TimeProgressSpeed}" Height="20" Width="70" Canvas.Left="155" Canvas.Top="330" Maximum="100000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.TimeProgressSpeed}" Height="20" Width="70" Canvas.Left="166" Canvas.Top="244" Maximum="100000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                            <CheckBox Name="checkBox_RandomWeather" Content="Random Weather" Height="19" Width="223" TabIndex="17" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding Path=RaceParameters.WeatherRandom}" Canvas.Top="271" Canvas.Left="10">
+                            <CheckBox Name="checkBox_RandomWeather" Content="Random Weather" Height="19" Width="119" TabIndex="17" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding Path=RaceParameters.WeatherRandom}" Canvas.Top="183" Canvas.Left="10">
                                 <CheckBox.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Random Weather</TextBlock> <LineBreak />
                                     Forces the weather to be random or predetermined.<LineBreak/>
+                                    Can be used to make the game continue generating random weather after all preset weather steps are done.<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->weather_random</TextBlock>
                                     </TextBlock>
                                 </CheckBox.ToolTip>
                             </CheckBox>
-                            
-                            <CheckBox Name="checkBox_WeatherPrecSnowOnly" Content="Only Snow" Height="24" Width="78" TabIndex="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding Path=RaceParameters.WeatherPrecSnowOnly}" Canvas.Top="242" Canvas.Left="155">
+
+                            <CheckBox Name="checkBox_WeatherPrecSnowOnly" Content="Only Snow" Height="24" Width="79" TabIndex="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding Path=RaceParameters.WeatherPrecSnowOnly}" Canvas.Top="211" Canvas.Left="157">
                                 <CheckBox.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Only Snow Precipitation</TextBlock> <LineBreak />
@@ -517,8 +552,8 @@
                                     </TextBlock>
                                 </CheckBox.ToolTip>
                             </CheckBox>
-                            
-                            <CheckBox Name="checkBox_WeatherPrecRainOnly" Content="Only Rain Precipitation" Height="24" Width="140" TabIndex="15" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding Path=RaceParameters.WeatherPrecRainOnly}" Canvas.Top="242" Canvas.Left="10" >
+
+                            <CheckBox Name="checkBox_WeatherPrecRainOnly" Content="Only Rain Precipitation" Height="24" Width="141" TabIndex="15" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding Path=RaceParameters.WeatherPrecRainOnly}" Canvas.Top="211" Canvas.Left="10" >
                                 <CheckBox.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Only Rain Precipitation</TextBlock> <LineBreak />
@@ -529,29 +564,36 @@
                                 </CheckBox.ToolTip>
                             </CheckBox>
 
-                            <Label Name="label_WeatherPointNum" Content="Weather Point Num" Height="27" Width="128" TabIndex="13" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="210">
+                            <Label Name="label_WeatherPointNum" Content="Weather Step Count" Height="25" Width="153" TabIndex="13" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="414">
                                 <Label.ToolTip>
                                     <TextBlock>
-                                    <TextBlock FontWeight="Bold" FontSize="14">Weather Point Num</TextBlock> <LineBreak />
-                                    Undocumented/Unknown<LineBreak/>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Weather Step Count</TextBlock> <LineBreak />
+                                    How many predetermined weather steps are setup. You shouldn't need to use that, as it will be set by the weather steps.<LineBreak/>
+                                    Use "New Weather Data" to set them up, "Weather Progression Length" is the total length of all steps.<LineBreak/>
+                                    Unimplemented for GT5.<LineBreak/>
+                                    GT5 uses 4 max. GT6 is any amount.<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->weather_point_num</TextBlock>
                                     </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherPointNum}" Height="20" Width="70" Canvas.Left="155" Canvas.Top="213" Maximum="100000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:IntegerUpDown Name="iud_WeatherPointNum" Value="{Binding Path=RaceParameters.WeatherPointNum}" IsEnabled="False" Height="20" Width="66" Canvas.Left="168" Canvas.Top="417" Maximum="100000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                            <Label Name="label_WeatherChangeRate" Content="Weather Change Rate" Height="26" Width="127" TabIndex="11" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="179">
+                            <Label Name="label_WeatherChangeRate" Content="Road Wetting Speed" Height="26" Width="151" TabIndex="11" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="270">
                                 <Label.ToolTip>
                                     <TextBlock>
-                                    <TextBlock FontWeight="Bold" FontSize="14">Weather Change Rate</TextBlock> <LineBreak />
-                                    How fast weather and water can change.<LineBreak/>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Weather Changeability</TextBlock> <LineBreak />
+                                    Defines the speed at which weather changes during a race. <LineBreak/>
+                                    A value of "0" will mean that the weather does not change at all, while higher values will result in increasingly changeable weather.<LineBreak/>
                                     <LineBreak/>
-                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->weather_change_rate</TextBlock>
+                                    Note: To make it clear, above is the original description, but somewhat misleading. <LineBreak />
+                                    If this is set to 0, the track won't get wet even if its raining. 0 for no wet-ability, to 1000 for extremely fast.
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->weather_accel10</TextBlock>
                                     </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherAccel}" Height="20" Width="70" Canvas.Left="155" Canvas.Top="182" Maximum="100000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherAccel}" Height="20" Width="70" Canvas.Left="166" Canvas.Top="273" Maximum="100000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <CheckBox Name="checkBox_WeatherNoWind" Content="No Wind" Height="19" Width="101" TabIndex="10" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding Path=RaceParameters.WeatherNoWind}" Canvas.Left="10" Canvas.Top="155">
                                 <CheckBox.ToolTip>
@@ -595,7 +637,7 @@
                                     </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherMinCelsius}"  Height="20" Width="70" Canvas.Left="157" Canvas.Top="100" Maximum="100000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherMinCelsius}"  Height="20" Width="70" Canvas.Left="164" Canvas.Top="100" Maximum="100000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_MaxTemp" Content="Max Temperature (in °C)" Height="23" Width="145" TabIndex="4" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="67" >
                                 <Label.ToolTip>
@@ -607,7 +649,7 @@
                                     </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherMaxCelsius}"  Height="20" Width="70" Canvas.Left="157" Canvas.Top="70" Maximum="100000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherMaxCelsius}"  Height="20" Width="70" Canvas.Left="164" Canvas.Top="70" Maximum="100000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_BaseTemp" Content="Base Temperature (in °C)" Height="30" Width="144" TabIndex="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="37" Canvas.Left="10">
                                 <Label.ToolTip>
@@ -619,14 +661,15 @@
                                     </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherBaseCelsius}"  Height="20" Width="70" Canvas.Left="157" Canvas.Top="41" Maximum="100000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherBaseCelsius}"  Height="20" Width="70" Canvas.Left="166" Canvas.Top="41" Maximum="100000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                            <CheckBox Name="cb_StartTime" Height="24" Width="83" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="4" Canvas.Top="8" VerticalContentAlignment="Center" Unchecked="cb_StartTime_Checked" Checked="cb_StartTime_Checked"
+                            <CheckBox Name="cb_StartTime" Height="24" Width="77" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="8" VerticalContentAlignment="Center" Unchecked="cb_StartTime_Checked" Checked="cb_StartTime_Checked"
                                       Content="Event Date">
                                 <CheckBox.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Event Date</TextBlock> <LineBreak />
-                                    Event Date, aka time of day. Uncheck for default. Date reflects seasons.<LineBreak/>
+                                    Choose the time of day at which the race takes place (dawn, daytime, night, etc.). This setting can only be changed for some courses. <LineBreak/>
+                                    Uncheck for default. Date reflects seasons.<LineBreak/>
                                     Depending on where the track is located, January would have a very early sunset, or late sunrise.<LineBreak/>
                                     It is recommended to just set it to Summer, i.e June or better, use real dates if you are using real IRL events.<LineBreak/>
                                     Most tracks will be fully black if the date and time is incorrect.<LineBreak/>
@@ -750,7 +793,7 @@
                                     </TextBlock>
                                 </CheckBox.ToolTip>
                             </CheckBox>
-                                <CheckBox Name="checkBox_ImmediateFinish" Content="Immediate Finish" Height="24" Width="154" TabIndex="50" HorizontalAlignment="Right" 
+                            <CheckBox Name="checkBox_ImmediateFinish" Content="Immediate Finish" Height="24" Width="154" TabIndex="50" HorizontalAlignment="Right" 
                                           VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.ImmediateFinish}" Canvas.Left="501" Canvas.Top="184" >
                                 <CheckBox.ToolTip>
                                     <TextBlock>
@@ -820,13 +863,13 @@
                                 <Label.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Slipstream Behavior</TextBlock> <LineBreak />
-                                    How strong slipstream is.<LineBreak/>
+                                    Sets the strength of the slipstream generated by cars. Slipstream is a force that sucks a car closer to the car in front of it when traveling at high speeds - an effect caused by differences in air pressure. Select "Strong" for a strong slipstream effect, and "Weak" for a weaker effect. For an even weaker slipstream effect, select "Real." Selecting either "Weak" or "Real" will lessen the effects of slipstream, while at the same time replicating the loss of downforce on the slipstreaming car that occurs in real life.<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>:<TextBlock FontStyle="Italic">race->behavior_slipstream_type</TextBlock>
                                     </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            
+
                             <ComboBox Name="comboBox_PenaltyLevel" Height="21" Width="116" TabIndex="40" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_PenaltyLevel_SelectedIndexChanged" Canvas.Left="371" Canvas.Top="68" />
                             <Label Name="label_PenaltyLevel" Content="Penalty Level" Height="27" Width="88" TabIndex="39" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="260" Canvas.Top="64" >
                                 <Label.ToolTip>
@@ -855,13 +898,18 @@
                                 <Label.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Grid Sort Type</TextBlock> <LineBreak />
-                                    How to sort the grid, Most likely related to championships.<LineBreak/>
+                                    Decide on the order in which cars line up when starting from the grid. 
+                                    <!--
+                                    If you choose “Grid Based on Previous Race Results,” 
+                                    cars will line up in the order in which they finished in the previous race, from the fastest to the slowest, 
+                                        and if you select "Reverse Grid Based on Previous Race Results," they will line up in the reverse order.<LineBreak/>-->
+                                    <LineBreak/> 
                                     - <TextBlock FontWeight="Bold">None</TextBlock>: No Sorting.<LineBreak/>
                                     - <TextBlock FontWeight="Bold">Random</TextBlock>: Grid entries sorted randomly.<LineBreak/>
                                     - <TextBlock FontWeight="Bold">By Points</TextBlock>: Based on current championship points.<LineBreak/>
                                     - <TextBlock FontWeight="Bold">Reverse Points Grid</TextBlock>: Based on current championship points, but reverse.<LineBreak/> 
-                                    - <TextBlock FontWeight="Bold">Fastest First</TextBlock>: Fastest in the event.<LineBreak/>
-                                    - <TextBlock FontWeight="Bold">Fastest Last</TextBlock>: Fastest is last in the event.<LineBreak/>
+                                    - <TextBlock FontWeight="Bold">Fastest First</TextBlock>: Cars will line up in the order of their times in the pre-race practice run, from the fastest to the slowest.<LineBreak/>
+                                    - <TextBlock FontWeight="Bold">Fastest Last</TextBlock>: Same as above, line up in the reverse order.<LineBreak/>
                                     - <TextBlock FontWeight="Bold">Based on Ranks</TextBlock>: Undocumented (?)<LineBreak/>
                                     - <TextBlock FontWeight="Bold">Reverse Ranks</TextBlock>: Undocumented (?)<LineBreak/>
                                     <LineBreak/>
@@ -903,16 +951,17 @@
                                 <Label.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Starting Type</TextBlock> <LineBreak />
-                                    How the entrants start the event<LineBreak/>
-                                    - <TextBlock FontWeight="Bold">Grid</TextBlock>: Traditional Grid Start (GRID)<LineBreak/>
+                                    Choose how the race will start. A grid start takes place from a standstill. <LineBreak/>
+                                    <LineBreak />
+                                    - <TextBlock FontWeight="Bold">Grid</TextBlock>: Traditional Grid Standstill Start (GRID)<LineBreak/>
                                     - <TextBlock FontWeight="Bold">For Time Trial</TextBlock>: Starts behind the start line (automatically sets the position for you unless custom via Initial V Coord) (ATTACK)<LineBreak/>
-                                    - <TextBlock FontWeight="Bold">Rolling Start (Start Line)</TextBlock>: Rolling Start, Starts after crossing the Start Line (ROLLING)<LineBreak/>
+                                    - <TextBlock FontWeight="Bold">Rolling Start (Start Line)</TextBlock>: Starts while the cars are moving, Starts after crossing the Start Line (ROLLING)<LineBreak/>
                                     - <TextBlock FontWeight="Bold">Rolling (Same Accel. as Own Car)</TextBlock>: Rolling with custom vstart with rolling_start_v (ROLLING2) <LineBreak/>
                                     - <TextBlock FontWeight="Bold">Rolling (Define Start Time)</TextBlock>: Rolling with custom time to start (ROLLING3)<LineBreak/>
                                     - <TextBlock FontWeight="Bold">Rolling (Define Start and Accel)</TextBlock>: Rolling with custom Entry Start Time and Entry Acceleration (ROLLING_NOLIMIT)<LineBreak/>
                                     - <TextBlock FontWeight="Bold">Standing (Set Coordinates)</TextBlock>: Standing Start, with custom entry start coordinates (STANDING)<LineBreak/>
-                                    - <TextBlock FontWeight="Bold">Double-File Rolling (Left)</TextBlock>: Double-File, Cars on the Left (ROLLING_L)<LineBreak/>
-                                    - <TextBlock FontWeight="Bold">Double-File Rolling (Right)</TextBlock>: Double-File, Cars on the Right (ROLLING_R)<LineBreak/>
+                                    - <TextBlock FontWeight="Bold">Double-File Rolling (Left)</TextBlock>: Rolling start takes place while the cars are moving in two columns, Cars on the Left (ROLLING_L)<LineBreak/>
+                                    - <TextBlock FontWeight="Bold">Double-File Rolling (Right)</TextBlock>: Same as above, Cars on the Right (ROLLING_R)<LineBreak/>
                                     - <TextBlock FontWeight="Bold">Pit Start</TextBlock>: Starting at Pits (PIT)<LineBreak/>
                                     - <TextBlock FontWeight="Bold">PITWORK</TextBlock>: Undocumented (Unused?)<LineBreak/>
                                     - <TextBlock FontWeight="Bold">Same Grid (collisions OFF)</TextBlock>: No info (SAME_GRID)<LineBreak/>
@@ -958,11 +1007,26 @@
                             </Label>
                             <ComboBox Name="comboBox_GhostType" Height="21" Width="169" TabIndex="24" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_GhostType_SelectedIndexChanged" Canvas.Left="80" Canvas.Top="339" />
                             <ComboBox Name="comboBox_DamageBehavior" Height="21" Width="128" TabIndex="23" IsEnabled="False" HorizontalAlignment="Right" SelectionChanged="comboBox_DamageBehavior_SelectedIndexChanged" VerticalAlignment="Bottom" Canvas.Left="120" Canvas.Top="310" />
-                            <Label Name="label_DamageBehavior" Height="25" Width="111" TabIndex="22" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="307" 
-                                   ToolTip="How damage should manifest if enabled (XML: race->behavior_damage_type)&#10;
-Weak - Only visual damage (?)&#10;
-Middle - Mechanical damage, may repair itself over time (?)&#10;
-Strong - Mechanical damage">Damage Behavior</Label>
+                            <Label Name="label_DamageBehavior" Content="Damage Behavior" Height="28" Width="111" TabIndex="22" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="307">
+                                <Label.ToolTip>
+                                    <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Damage Behavior</TextBlock> <LineBreak />
+                                    Set the amount of damage that will be inflicted on engine, wheels etc. by collisions and crashes from one of the three settings described below. <LineBreak/>
+                                    May cause wheels to wobble and rattle, prevent the car from traveling in a straight line, or stop the engine from working properly. <LineBreak/>
+                                    Parts that have been damaged will be displayed on the on-screen damage indicator. <LineBreak/>
+                                    <LineBreak/>
+                                    - <TextBlock FontWeight="Bold">None</TextBlock>: Only external damage will be inflicted.<LineBreak/>
+                                        Mechanical damage will not be inflicted, but external damage may still disrupt the car's aerodynamics, <LineBreak/>
+                                        preventing the car from traveling in a straight line, and reducing top speed.<LineBreak/>
+                                    - <TextBlock FontWeight="Bold">Light</TextBlock>: External damage and mechanical damage will both be inflicted. <LineBreak/>
+                                        Mechanical damage will be automatically repaired after a short amount of time.<LineBreak/>
+                                    - <TextBlock FontWeight="Bold">Heavy</TextBlock>: External damage and mechanical damage will both be inflicted, even after a mild impact.<LineBreak/>
+                                        Damage will only be repaired if you perform a pit stop.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->behavior_damage_type</TextBlock>
+                                    </TextBlock>
+                                </Label.ToolTip>
+                            </Label>
                             <CheckBox Name="checkBox_Endless" Content="Endless" Height="24" Width="108" TabIndex="21" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" IsChecked="{Binding RaceParameters.Endless}" Canvas.Top="280" >
                                 <CheckBox.ToolTip>
                                     <TextBlock>
@@ -977,7 +1041,9 @@ Strong - Mechanical damage">Damage Behavior</Label>
                                 <CheckBox.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Disable Collisions</TextBlock> <LineBreak />
-                                    If enabled, cars will be able to traverse which each other.<LineBreak/>
+                                    Disable collisions between cars. <LineBreak />
+                                    When set to ON, other cars will become transparent and you will not be able to collide with them. <LineBreak />
+                                    The slipstream effect will also be disabled.<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->disable_collision</TextBlock>
                                     </TextBlock>
@@ -1047,6 +1113,7 @@ Strong - Mechanical damage">Damage Behavior</Label>
                                 <Label.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Time To Finish</TextBlock> <LineBreak />
+                                    Sets the amount of race time given after the player in first place crosses the finish line. If this time is too short, players in 2nd place and lower may not reach the finish line before the race ends. <LineBreak/>
                                     How long the vehicles behind 1st place are given to finish before showing the result/reward screen.<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->time_to_finish</TextBlock>
@@ -1213,7 +1280,7 @@ Strong - Mechanical damage">Damage Behavior</Label>
                                 <Label.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Power Max</TextBlock> <LineBreak />
-                                    Maximum car power to enter the event.<LineBreak/>
+                                    Place power restrictions on the race. Cars participating will not be able to exceed the HP limit set here.<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">regulations->limit_power</TextBlock>
                                 </TextBlock>
@@ -1285,7 +1352,7 @@ Strong - Mechanical damage">Damage Behavior</Label>
                                 <Label.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Performance Points Max</TextBlock> <LineBreak />
-                                    Maximum car PP to enter the event.<LineBreak/>
+                                    Set a Performance Point limit. Cars that exceed this limit will not be able to participate.<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">regulations->limit_pp</TextBlock>
                                 </TextBlock>
@@ -1506,7 +1573,7 @@ Strong - Mechanical damage">Damage Behavior</Label>
                                 </CheckBox.ToolTip>
                             </CheckBox>
 
-                            <Label Name="label_AccelSkillMax" Height="25" Width="36" TabIndex="65" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="158" 
+                            <Label Name="label_AccelSkillMax" Height="25" Width="36" TabIndex="65" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="159" 
                                    ToolTip="When an AI is generated, the maximum acceleration skill it will use to make a random one.">Max</Label>
                             <xctk:IntegerUpDown Name="numericUpDown_AccelSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="162" Value="80" Maximum="200" Minimum="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
@@ -1514,9 +1581,9 @@ Strong - Mechanical damage">Damage Behavior</Label>
                                    ToolTip="When an AI is generated, the maximum starting skill it will use to make a random one.">Max</Label>
                             <xctk:IntegerUpDown Name="numericUpDown_StartSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="191" Value="80" Maximum="200" Minimum="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                            <Label Name="label_BrakeSkillMax" Height="25" Width="36" TabIndex="64" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="130" 
+                            <Label Name="label_BrakeSkillMax" Height="25" Width="36" TabIndex="64" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="129" 
                                    ToolTip="When an AI is generated, the minimum brake skill it will use to make a random one.">Max</Label>
-                            <xctk:IntegerUpDown Name="numericUpDown_BrakeSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="132" Value="80" Maximum="200" Minimum="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:IntegerUpDown Name="numericUpDown_BrakeSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="131" Value="80" Maximum="200" Minimum="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_AccelSkillMin" Height="25" Width="33" TabIndex="63" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="158" 
                                    ToolTip="When an AI is generated, the minimum acceleration skill it will use to make a random one.">Min</Label>
@@ -1549,9 +1616,9 @@ Strong - Mechanical damage">Damage Behavior</Label>
                                 </Label.ToolTip>
                             </Label>
 
-                            <Label Name="label_CornerSkillMax" Height="25" Width="36" TabIndex="59" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="100" 
+                            <Label Name="label_CornerSkillMax" Height="25" Width="36" TabIndex="59" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="99" 
                                    ToolTip="When an AI is generated, the maximum corner skill it will use to make a random one.">Max</Label>
-                            <xctk:IntegerUpDown Name="numericUpDown_CornerSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="102" Maximum="200" Value="80" Minimum="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:IntegerUpDown Name="numericUpDown_CornerSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="101" Maximum="200" Value="80" Minimum="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_BrakeSkillMin" Height="25" Width="33" TabIndex="58" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="128" 
                                    ToolTip="When an AI is generated, the minimum brake skill it will use to make a random one.">Min</Label>
@@ -1591,22 +1658,28 @@ Strong - Mechanical damage">Damage Behavior</Label>
 
                             <Label Name="label_BaseSkillMax" Height="25" Width="36" TabIndex="49" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="71" 
                                    ToolTip="When an AI is generated, the maximum base skill it will use to make a random one.">Max</Label>
-                            <xctk:IntegerUpDown Name="numericUpDown_BaseSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="74" Value="80" Maximum="200" Minimum="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:IntegerUpDown Name="numericUpDown_BaseSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="73" Value="80" Maximum="200" Minimum="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                            <Label Name="label_AIRoughness" Content="AI Roughness" Height="30" Width="178" TabIndex="48" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="9" Canvas.Top="38" >
+                            <Label Name="label_RoughnessMin" Content="Min" Height="25" Width="33" TabIndex="50" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="40"
+                                   ToolTip="When an AI is generated, the minimum roughness it will use to make a random one."/>
+                            <Label Name="label_RoughnessMax" Content="Max" Height="25" Width="33" TabIndex="50" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="41"
+                                   ToolTip="When an AI is generated, the maximum roughness it will use to make a random one."/>
+
+                            <Label Name="label_AIRoughness" Content="AI Roughness" Height="30" Width="140" TabIndex="48" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="9" Canvas.Top="39" >
                                 <Label.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">AI Roughness</TextBlock> <LineBreak />
                                     If set, upon generation entries will have the specified AI Roughness.<LineBreak/>
                                     Affects how AI reacts to other cars. A higher roughness will pretty much ignore cars stopping in front of them. Original events use 0-10.<LineBreak/>
+                                    Recommended is something between 0-6. 10 makes AI extremely prone to mistakes when driving near them.
                                     <LineBreak/>
-                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry_generate->suggest_tire_r</TextBlock>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry_generate->ai_roughness</TextBlock>
                                 </TextBlock>
                                 </Label.ToolTip>
                             </Label>
 
-                            <xctk:IntegerUpDown Name="numericUpDown_AIRoughness" Height="20" Width="148" Canvas.Left="192" Canvas.Top="41" Value="{Binding Path=Entries.AIRoughness}"  Maximum="10" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
-
+                            <xctk:IntegerUpDown Name="numericUpDown_AIRoughnessMin" Height="20" Width="50" Canvas.Left="192" Canvas.Top="43" Value="{Binding Path=Entries.AIRoughness}"  Maximum="10" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:IntegerUpDown Name="numericUpDown_AIRoughnessMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="44" Maximum="10" Value="5" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_BaseSkill" Content="AI Base Skill" Height="25" Width="78" TabIndex="48" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="9" Canvas.Top="68" >
                                 <Label.ToolTip>
@@ -1615,7 +1688,7 @@ Strong - Mechanical damage">Damage Behavior</Label>
                                     If set, upon generation entries will have the specified AI Skill.<LineBreak/>
                                     General Skill, not much info about<LineBreak/>
                                     <LineBreak/>
-                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry_generate->ai_skill</TextBlock>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry_generate->ai_roughness</TextBlock>
                                 </TextBlock>
                                 </Label.ToolTip>
                             </Label>
@@ -1871,7 +1944,7 @@ Strong - Mechanical damage">Damage Behavior</Label>
                                 <Label.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Power Limit</TextBlock> <LineBreak />
-                                    Whether a Power Limit is enforced (in %).<LineBreak/>
+                                    If this is set to "Prohibited," only cars without power restrictors fitted will be allowed to enter. (in %).<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">constraint->restrictor_limit</TextBlock>
                                     </TextBlock>
@@ -1910,7 +1983,7 @@ Strong - Mechanical damage">Damage Behavior</Label>
                                 <Label.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Driving Line</TextBlock> <LineBreak />
-                                    Whether Driving Line is forced ON or OFF.<LineBreak/>
+                                    Set this option to "Prohibited" if you want to disallow use of the driving line display. Disabling this will require drivers to judge the ideal driving line for themselves.<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">constraint->driving_line</TextBlock>
                                     </TextBlock>
@@ -1936,6 +2009,7 @@ Strong - Mechanical damage">Damage Behavior</Label>
                                 <Label.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">TCS</TextBlock> <LineBreak />
+                                    Set this option to "Prohibited" if you want to disallow use of the TCS (Traction Control System) function. When this function is disabled, it will be more difficult to control your car at full throttle and when exiting from corners.
                                     Whether TCS is forced ON or OFF.<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">constraint->tcs</TextBlock>
@@ -1949,7 +2023,7 @@ Strong - Mechanical damage">Damage Behavior</Label>
                                 <Label.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Skid Recovery Force</TextBlock> <LineBreak />
-                                    Whether Skid Recovery Force is forced ON or OFF.<LineBreak/>
+                                    Set this option to "Prohibited" if you want to disallow use of the Skid Recovery Force function. When this function is disabled, it will be more difficult to control your car when the wheels slide.<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">constraint->simulation</TextBlock>
                                     </TextBlock>
@@ -1962,6 +2036,7 @@ Strong - Mechanical damage">Damage Behavior</Label>
                                 <Label.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">ASM</TextBlock> <LineBreak />
+                                    Set this option to "Prohibited" if you want to disallow use of the ASM (Active Stability Management) function. When this function is disabled, cars will be more prone to spinning out of control.
                                     Whether ASM is forced ON or OFF.<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">constraint->asm</TextBlock>
@@ -1975,7 +2050,7 @@ Strong - Mechanical damage">Damage Behavior</Label>
                                 <Label.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Active Steering</TextBlock> <LineBreak />
-                                    Whether Active Steering is forced ON or OFF.<LineBreak/>
+                                    Set this option to "Prohibited" if you want to disallow use of the active steering function. When this function is disabled, steering control will become more severe when oversteer occurs..<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">constraint->active_steering</TextBlock>
                                     </TextBlock>
@@ -1988,6 +2063,7 @@ Strong - Mechanical damage">Damage Behavior</Label>
                                 <Label.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">ABS</TextBlock> <LineBreak />
+                                    Set this option to "Prohibited" if you want to disallow use of the ABS (anti-lock braking system). When this function is disabled, the wheels will lock more easily when braking, making your car harder to control.
                                     Whether ABS is forced ON or OFF.<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">constraint->abs</TextBlock>

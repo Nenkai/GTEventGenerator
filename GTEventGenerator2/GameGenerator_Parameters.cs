@@ -10,11 +10,14 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml;
+using System.Windows;
 using System.Windows.Controls;
 using Xceed.Wpf.Toolkit;
 using GTEventGenerator.Entities;
 using GTEventGenerator.Utils;
 using Humanizer;
+
+using Microsoft.Win32;
 
 namespace GTEventGenerator
 {
@@ -271,6 +274,27 @@ namespace GTEventGenerator
 
         private void comboBox_DecisiveWeather_SelectedIndexChanged(object sender, EventArgs e)
             => CurrentEvent.RaceParameters.DecisiveWeather = (DecisiveWeatherType)comboBox_DecisiveWeather.SelectedIndex;
+
+        private void NewWeatherData_Click(object sender, EventArgs e)
+        {
+            if (CurrentEvent.RaceParameters.WeatherTotalSec <= 0)
+            {
+                System.Windows.MessageBox.Show("Weather Progress Length is not set, so there is no weather steps to set.", "Warning", MessageBoxButton.OK);
+                return;
+            }
+            else if (CurrentEvent.RaceParameters.DecisiveWeather != DecisiveWeatherType.NONE)
+            {
+                System.Windows.MessageBox.Show("Decisive Weather is set to a fixed weather. Weather cannot change this way. Set it to 'None' if you want it to be variable and editable.",
+                    "Warning", MessageBoxButton.OK);
+                return;
+            }
+
+            var window = new NewWeatherDataSettingsWindow(CurrentEvent.RaceParameters.NewWeatherData
+                , TimeSpan.FromSeconds(CurrentEvent.RaceParameters.WeatherTotalSec));
+           window.ShowDialog();
+           iud_WeatherPointNum.Value = CurrentEvent.RaceParameters.NewWeatherData.Count;
+           CurrentEvent.RaceParameters.WeatherPointNum = CurrentEvent.RaceParameters.NewWeatherData.Count;
+        }
 
         #endregion
 

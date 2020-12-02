@@ -1,0 +1,86 @@
+﻿<Window x:Class="GTEventGenerator.NewWeatherDataSettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:GTEventGenerator"
+        mc:Ignorable="d"
+        Title="Weather Steps Control Panel" Height="341.844" Width="518.586"
+        ResizeMode="NoResize"
+        Closing="Window_Closing">
+    <Grid Background="#262626">
+        <GroupBox Margin="10,10,263,38" Height="254" >
+
+            <GroupBox.Header>
+                <TextBlock Text="Weather Steps Listing"/>
+            </GroupBox.Header>
+            <Canvas>
+                <ListBox Name="lb_WeatherParamList" Height="178" Width="208" SelectionChanged="lb_WeatherParamList_SelectionChanged" Canvas.Left="10" Canvas.Top="10"/>
+                <Button Name="btn_AddNew" Content="Add New" Click="btn_AddNew_Click" Height="23" Width="86" Canvas.Left="10" Canvas.Top="190"/>
+                <Button Name="btn_Delete" Content="Delete" Height="23"  Width="86" Canvas.Left="132" Canvas.Top="190" Click="btn_Delete_Click"/>
+            </Canvas>
+        </GroupBox>
+        <GroupBox Margin="255,10,10,38" Name="gb_Params" IsEnabled="False" Height="254" >
+            <GroupBox.Header>
+                <TextBlock Text="Step Settings"/>
+            </GroupBox.Header>
+            <Canvas>
+                <Label Content="Step Start (in Time %)" HorizontalAlignment="Right" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="12" Width="148">
+                    <Label.ToolTip>
+                        <TextBlock>
+                            <TextBlock FontWeight="Bold" FontSize="14">Step Start</TextBlock> <LineBreak />
+                            Time relative to the total weather length. 0 would be at the start. 50 would be 50%, so 1 minute if the total length is set to 120 seconds.<LineBreak/>
+                            <LineBreak/>
+                            <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">new_weather_data->point[]->time_rate</TextBlock>
+                            </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:IntegerUpDown Name="iud_TimeRate" Value="{Binding TimeRate}" Height="20" Canvas.Left="163" Canvas.Top="16" Minimum="0" Maximum="100" 
+                                    BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" ValueChanged="pointTime_ValueChanged" Width="63"/>
+
+                <Label Content="Low" HorizontalAlignment="Right" VerticalAlignment="Top" Width="35" Canvas.Left="10" Canvas.Top="41">
+                    <Label.ToolTip>
+                        <TextBlock>
+                            <TextBlock FontWeight="Bold" FontSize="14">Low</TextBlock> <LineBreak />
+                            Minimum weather probabilty range from -1 to 1.<LineBreak/>
+                            Under -0.5 = Rain<LineBreak/>
+                            0 = Cloudy<LineBreak/>
+                            Above 0.5 = Semi-Sunny<LineBreak/>
+                            Having Low as 0.5 and High as 1 means it will generate a step between the two.<LineBreak/>
+                            <LineBreak/>
+                            <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">new_weather_data->point[]->low</TextBlock>
+                            </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <Slider Name="iud_Low" Value="{Binding Low}" Height="20" Canvas.Left="50" Canvas.Top="45" Minimum="-1" Maximum="1" BorderBrush="#323232" 
+                        Background="#272727" Foreground="#FFFFFF" Width="176" ValueChanged="low_ValueChanged" TickFrequency="0.05"  />
+
+                <Label Content="High" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="72">
+                    <Label.ToolTip>
+                        <TextBlock>
+                            <TextBlock FontWeight="Bold" FontSize="14">Low</TextBlock> <LineBreak />
+                            Maximum weather probabilty range. -1 is full rain, 1 is full sunny.<LineBreak/>
+                            Having Low as 0.5 and High as 1 means it will generate a step between the two.<LineBreak/>
+                            <LineBreak/>
+                            <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">new_weather_data->point[]->low</TextBlock>
+                            </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <Slider Name="iud_High"  Value="{Binding High}" Height="20" Canvas.Left="50" Canvas.Top="76" TickFrequency="0.05"  
+                        Minimum="-1" Maximum="1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Width="176" ValueChanged="high_ValueChanged"/>
+                <TextBlock Text="N/A" TextAlignment="Center" Name="lbl_CurrentPointDesc" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="168" Width="216" Height="46"/>
+            </Canvas>
+        </GroupBox>
+        <Label Name="lbl_TotalTimeProgression" Content="N/A" HorizontalContentAlignment="Center" Height="28" VerticalAlignment="Bottom">
+            <Label.ToolTip>
+                <TextBlock>
+                    <TextBlock FontWeight="Bold" FontSize="14">Weather Progression Length</TextBlock> <LineBreak />
+                    Total length in seconds of all weather steps.<LineBreak/>
+                    <LineBreak/>
+                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->weather_total_sec</TextBlock>
+                    </TextBlock>
+            </Label.ToolTip>
+        </Label>
+    </Grid>
+</Window>

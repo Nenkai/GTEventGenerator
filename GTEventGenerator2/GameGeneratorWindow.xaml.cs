@@ -48,6 +48,10 @@ namespace GTEventGenerator
         public GameGeneratorWindow()
         {
             InitializeComponent();
+
+            ToolTipService.ShowDurationProperty.OverrideMetadata(
+                typeof(DependencyObject), new FrameworkPropertyMetadata(int.MaxValue));
+
             GameParameter = new GameParameter();
             this.DataContext = new Event();
             EventNames = new List<string>();
@@ -304,6 +308,107 @@ namespace GTEventGenerator
             CurrentEvent.Entries.NeedsPopulating = true;
             if ((tabEvent.SelectedItem as TabItem).Name.Equals("tabEntries"))
                 PopulateEntries();
+        }
+
+        private void randomizeAIRoughnessMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (numericUpDown_AIRoughnessMin.Value > numericUpDown_AIRoughnessMax.Value)
+                numericUpDown_AIRoughnessMax.Value = numericUpDown_AIRoughnessMax.Value;
+
+            foreach (var entry in CurrentEvent.Entries.AI)
+                entry.Roughness = _random.Next(numericUpDown_AIRoughnessMin.Value.Value, numericUpDown_AIRoughnessMax.Value.Value + 1);
+
+            foreach (var entry in CurrentEvent.Entries.AIBases)
+                entry.Roughness = _random.Next(numericUpDown_AIRoughnessMin.Value.Value, numericUpDown_AIRoughnessMax.Value.Value + 1);
+        }
+
+        private void randomizeAIBaseSkillMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (numericUpDown_BaseSkillMin.Value > numericUpDown_BaseSkillMax.Value)
+                numericUpDown_BaseSkillMax.Value = numericUpDown_BaseSkillMin.Value;
+
+            foreach (var entry in CurrentEvent.Entries.AI)
+                entry.BaseSkill = _random.Next(numericUpDown_BaseSkillMin.Value.Value, numericUpDown_BaseSkillMax.Value.Value + 1);
+
+            foreach (var entry in CurrentEvent.Entries.AIBases)
+                entry.BaseSkill = _random.Next(numericUpDown_BaseSkillMin.Value.Value, numericUpDown_BaseSkillMax.Value.Value + 1);
+        }
+
+        private void randomizeAICornerSkillMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (numericUpDown_CornerSkillMin.Value > numericUpDown_CornerSkillMax.Value)
+                numericUpDown_CornerSkillMax.Value = numericUpDown_CornerSkillMin.Value;
+
+            foreach (var entry in CurrentEvent.Entries.AI)
+                entry.CorneringSkill = _random.Next(numericUpDown_CornerSkillMin.Value.Value, numericUpDown_CornerSkillMax.Value.Value + 1);
+
+            foreach (var entry in CurrentEvent.Entries.AIBases)
+                entry.CorneringSkill = _random.Next(numericUpDown_CornerSkillMin.Value.Value, numericUpDown_CornerSkillMax.Value.Value + 1);
+        }
+
+        private void randomizeAIBrakingSkillMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (numericUpDown_BrakeSkillMin.Value > numericUpDown_BrakeSkillMax.Value)
+                numericUpDown_BrakeSkillMax.Value = numericUpDown_BrakeSkillMin.Value;
+
+            foreach (var entry in CurrentEvent.Entries.AI)
+                entry.BrakingSkill = _random.Next(numericUpDown_BrakeSkillMin.Value.Value, numericUpDown_BrakeSkillMax.Value.Value + 1);
+
+            foreach (var entry in CurrentEvent.Entries.AIBases)
+                entry.BrakingSkill = _random.Next(numericUpDown_BrakeSkillMin.Value.Value, numericUpDown_BrakeSkillMax.Value.Value + 1);
+        }
+
+        private void randomizeAIAccelSkillMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (numericUpDown_AccelSkillMin.Value > numericUpDown_AccelSkillMax.Value)
+                numericUpDown_AccelSkillMax.Value = numericUpDown_AccelSkillMin.Value;
+
+            foreach (var entry in CurrentEvent.Entries.AI)
+                entry.AccelSkill = _random.Next(numericUpDown_AccelSkillMin.Value.Value, numericUpDown_AccelSkillMax.Value.Value + 1);
+
+            foreach (var entry in CurrentEvent.Entries.AIBases)
+                entry.AccelSkill = _random.Next(numericUpDown_AccelSkillMin.Value.Value, numericUpDown_AccelSkillMax.Value.Value + 1);
+        }
+
+        private void randomizeAIStartSkillMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (numericUpDown_StartSkillMin.Value > numericUpDown_StartSkillMax.Value)
+                numericUpDown_StartSkillMax.Value = numericUpDown_StartSkillMin.Value;
+
+            foreach (var entry in CurrentEvent.Entries.AI)
+                entry.StartingSkill = _random.Next(numericUpDown_StartSkillMin.Value.Value, numericUpDown_StartSkillMax.Value.Value + 1);
+
+            foreach (var entry in CurrentEvent.Entries.AIBases)
+                entry.StartingSkill = _random.Next(numericUpDown_StartSkillMin.Value.Value, numericUpDown_StartSkillMax.Value.Value + 1);
+        }
+
+        private void randomizeAISkillsMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("This will regenerate ALL AI skills for the current event. Continue?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Information)
+                == MessageBoxResult.Yes)
+            {
+                randomizeAIRoughnessMenuItem_Click(sender, e);
+                randomizeAIBaseSkillMenuItem_Click(sender, e);
+                randomizeAICornerSkillMenuItem_Click(sender, e);
+                randomizeAIBrakingSkillMenuItem_Click(sender, e);
+                randomizeAIAccelSkillMenuItem_Click(sender, e);
+                randomizeAIStartSkillMenuItem_Click(sender, e);
+            }
+        }
+
+        private void randomizeAITireCompoundToolStripMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var entry in CurrentEvent.Entries.AI)
+            {
+                entry.TireFront = (TireType)comboBox_AIGenTyreComp.SelectedIndex - 1;
+                entry.TireRear = (TireType)comboBox_AIGenTyreComp.SelectedIndex - 1;
+            }
+
+            foreach (var entry in CurrentEvent.Entries.AIBases)
+            {
+                entry.TireFront = (TireType)comboBox_AIGenTyreComp.SelectedIndex - 1;
+                entry.TireRear = (TireType)comboBox_AIGenTyreComp.SelectedIndex - 1;
+            }
         }
 
         private void cb_QuickEventPicker_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -817,6 +922,16 @@ namespace GTEventGenerator
             btnCopyRace.IsEnabled = GameParameter?.Events?.Any() == true;
 
             randomizeAINamesToolStripMenuItem.IsEnabled = isEnabled;
+
+            randomizeAIRoughnessToolStripMenuItem.IsEnabled = isEnabled;
+            randomizeAIBaseSkillToolStripMenuItem.IsEnabled = isEnabled;
+            randomizeAICornerSkillToolStripMenuItem.IsEnabled = isEnabled;
+            randomizeAIBrakingSkillToolStripMenuItem.IsEnabled = isEnabled;
+            randomizeAIAccelSkillToolStripMenuItem.IsEnabled = isEnabled;
+            randomizeAIStartSkillToolStripMenuItem.IsEnabled = isEnabled;
+
+            randomizeAISkillsToolStripMenuItem.IsEnabled = isEnabled;
+            randomizeAITireCompoundToolStripMenuItem.IsEnabled = isEnabled;
         }
 
         void CheckMenuDB(string file)

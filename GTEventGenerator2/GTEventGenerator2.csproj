@@ -147,6 +147,7 @@
     <Compile Include="Entities\GameParameterEventList.cs" />
     <Compile Include="Entities\Event.cs" />
     <Compile Include="Entities\EventPlayStyle.cs" />
+    <Compile Include="Entities\WeatherData.cs" />
     <Compile Include="EventCategory.cs" />
     <Compile Include="EventEntryEditWindow.xaml.cs">
       <DependentUpon>EventEntryEditWindow.xaml</DependentUpon>
@@ -157,6 +158,9 @@
     <Compile Include="Database\MenuDB.cs" />
     <Compile Include="Database\GameDB.cs" />
     <Compile Include="Entities\GameParameter.cs" />
+    <Compile Include="NewWeatherDataSettingsWindow.xaml.cs">
+      <DependentUpon>NewWeatherDataSettingsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PDUtils\PDIDATETIME32.cs" />
     <Compile Include="PresentPickerWindow.xaml.cs">
       <DependentUpon>PresentPickerWindow.xaml</DependentUpon>
@@ -197,6 +201,10 @@
     <Compile Include="GameGenerator_Entries.cs" />
     <Compile Include="GameGenerator_Parameters.cs" />
     <Compile Include="GameGenerator_Regulations.cs" />
+    <Page Include="NewWeatherDataSettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PresentPickerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
