@@ -337,9 +337,9 @@ namespace GTEventGenerator.Entities
                                         case "time_rate":
                                             data.TimeRate = pointNode.ReadValueInt(); break;
                                         case "low":
-                                            data.Low = float.Parse(pointNode.ReadValueString()); break;
+                                            data.Low = float.Parse(pointNode.ReadValueString(), CultureInfo.InvariantCulture.NumberFormat); break;
                                         case "high":
-                                            data.High = float.Parse(pointNode.ReadValueString()); break;
+                                            data.High = float.Parse(pointNode.ReadValueString(), CultureInfo.InvariantCulture.NumberFormat); break;
                                     }
                                 }
                                 NewWeatherData.Add(data);
