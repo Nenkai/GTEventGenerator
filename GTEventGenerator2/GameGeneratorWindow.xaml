@@ -4,7 +4,8 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
 	    Title="Gran Turismo 5/6 Event Editor" Width="960" Height="621"
         ResizeMode="CanMinimize"
-        Loaded="GameGenerator_Load">
+        Loaded="GameGenerator_Load"
+        Closing="Window_Closing">
     <DockPanel Background="#262626">
         <DockPanel DockPanel.Dock="Top">
             <Menu Name="menuStrip1" Height="22" HorizontalAlignment="Stretch" >
@@ -36,6 +37,8 @@
                 </MenuItem>
                 <MenuItem Header="Help">
                     <MenuItem Header="About" Template="{DynamicResource SingleDropDownMenuItem}" Click="MenuItem_Click"></MenuItem>
+                    <Separator />
+                    <MenuItem Header="Enable Discord Rich Presence" Name="DiscordRichPresenceMenuItem" Template="{DynamicResource SingleDropDownMenuItem}" Checked="DiscordRichPresenceMenuItem_Click" Unchecked="DiscordRichPresenceMenuItem_Click"></MenuItem>
                 </MenuItem>
             </Menu>
             <ComboBox Name="cb_QuickEventPicker" SelectedIndex="0" DockPanel.Dock="Right" Width="340" Height="20" Margin="0,4,4,4" SelectionChanged="cb_QuickEventPicker_SelectionChanged"/>

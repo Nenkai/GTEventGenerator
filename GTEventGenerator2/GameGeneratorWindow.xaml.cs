@@ -15,8 +15,11 @@ using System.Xml;
 using System.Windows.Input;
 
 using Microsoft.Win32;
+
 using Humanizer;
 using FastDeepCloner;
+using DiscordRPC;
+
 using GTEventGenerator.Entities;
 using GTEventGenerator.Utils;
 using GTEventGenerator.Database;
@@ -33,8 +36,10 @@ namespace GTEventGenerator
         public GameParameter GameParameter { get; set; }
         public Event CurrentEvent { get; set; }
 
+        public LocalSettings Settings { get; set; }
+        public DiscordRpcClient Client { get; private set; }
+
         bool menuDBValid = false, validationErrors = false;
-        private bool _minify;
         string selectedPath = "";
 
         public const int BaseEventID = 9900000;
@@ -57,6 +62,21 @@ namespace GTEventGenerator
             EventNames = new List<string>();
             lstRaces.ItemsSource = EventNames;
             cb_QuickEventPicker.ItemsSource = EventNames;
+
+            Settings = new LocalSettings();
+        }
+
+        ~GameGeneratorWindow()
+        {
+            if (Client != null && !Client.IsDisposed)
+                Client.Dispose();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Settings.Save(".settings");
+            if (Client != null && !Client.IsDisposed)
+                Client.Dispose();
         }
 
         private void GameGenerator_Load(object sender, EventArgs e)
@@ -74,6 +94,21 @@ namespace GTEventGenerator
             {
                 MessageBox.Show("Could not connect to local database (data.db).");
                 Environment.Exit(0);
+            }
+
+            // Load Settings
+            if (File.Exists(".settings"))
+                Settings.ReadFromFile(".settings");
+            else
+                Settings.CreateDefault();
+
+            // Discord Presence 
+            Client = new DiscordRpcClient("784198457220005899");
+            if (Settings.HasEnabledSetting("Discord_Presence_Enabled"))
+            {
+                Client.Initialize();
+                UpdateDiscordPresence();
+                DiscordRichPresenceMenuItem.IsChecked = true;
             }
 
             txtGameParamName.Text = GameParameter.EventList.Title;
@@ -113,6 +148,7 @@ namespace GTEventGenerator
             EventSwitchDownCommand.InputGestures.Add(new KeyGesture(Key.Down, ModifierKeys.Control));
             CommandBindings.Add(new CommandBinding(EventSwitchUpCommand, EventSwitchUpCommand_Executed));
             CommandBindings.Add(new CommandBinding(EventSwitchDownCommand, EventSwitchDownCommand_Executed));
+
         }
 
         #region Menu Bar
@@ -273,7 +309,6 @@ namespace GTEventGenerator
                     ToggleEventControls(false);
 
                 RefreshFolderControls();
-
             }
         }
 
@@ -283,7 +318,7 @@ namespace GTEventGenerator
         }
 
         private void minimizeXMLToolStripMenuItem_Checked(object sender, RoutedEventArgs e)
-            => _minify = minimizeXMLToolStripMenuItem.IsChecked;
+            => Settings.SetSettingValue("Minify_XML", minimizeXMLToolStripMenuItem.IsChecked);
 
         private void randomizeAINamesToolStripMenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -436,6 +471,8 @@ namespace GTEventGenerator
                     UpdateEventListing();
                 else
                     PopulateSelectedTab();
+
+                UpdateDiscordPresence();
             }
         }
 
@@ -833,6 +870,7 @@ namespace GTEventGenerator
             PopulateSelectedTab();
             PopulateEventDetails();
             _processEventSwitch = true;
+            UpdateDiscordPresence();
         }
 
         /// <summary>
@@ -1039,9 +1077,11 @@ namespace GTEventGenerator
                 selectedPath = Path.Combine(Directory.GetCurrentDirectory(), "output", "game_parameter", "gt6", "event");
 
             string mainParamFile = Path.Combine(selectedPath);
-            GameParameter.EventList.WriteToXML(GameParameter, mainParamFile, BaseEventID, cboEventCategory.SelectedItem.ToString(), _minify);
 
-            using (var xml = XmlWriter.Create(Path.Combine(selectedPath, $"r{GameParameter.FolderId}.xml"), new XmlWriterSettings() { Indent = !_minify, IndentChars = "  " }))
+            bool minify = Settings.HasEnabledSetting("Minify_XML");
+            GameParameter.EventList.WriteToXML(GameParameter, mainParamFile, BaseEventID, cboEventCategory.SelectedItem.ToString(), minify);
+
+            using (var xml = XmlWriter.Create(Path.Combine(selectedPath, $"r{GameParameter.FolderId}.xml"), new XmlWriterSettings() { Indent = !minify, IndentChars = "  " }))
             {
                 xml.WriteStartElement("xml");
                 GameParameter.WriteToXml(xml);
@@ -1163,5 +1203,49 @@ namespace GTEventGenerator
         }
 
         #endregion
+
+
+        public void UpdateDiscordPresence()
+        {
+            if (Settings.HasEnabledSetting("Discord_Presence_Enabled") && Client?.IsInitialized == true)
+            {
+                var presence = new RichPresence();
+                if (CurrentEvent is null)
+                {
+                    presence.Details = "No Folder.";
+                }
+                else
+                {
+                    string name = CurrentEvent.Name.Length > 100 ? CurrentEvent.Name.Substring(0, 100) + "..." : CurrentEvent.Name;
+                    presence.Details = $"{GameParameter.EventList.Title}";
+                    presence.State = $"Event: {name}";
+                    presence.Timestamps = Timestamps.Now;
+                }
+
+                presence.Assets = new Assets()
+                {
+                    LargeImageText = "Gran Turismo 5/6 Event Generator",
+                    LargeImageKey = "icon",
+                };
+
+                Client.SetPresence(presence);
+            }
+        }
+
+        public void DiscordRichPresenceMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.SetSettingValue("Discord_Presence_Enabled", DiscordRichPresenceMenuItem.IsChecked);
+            if (DiscordRichPresenceMenuItem.IsChecked)
+            {
+                if (!Client.IsInitialized)
+                    Client.Initialize();
+                UpdateDiscordPresence();
+            }
+            else
+            {
+                if (Client.IsInitialized)
+                    Client.Deinitialize();
+            }
+        }
     }
 }
