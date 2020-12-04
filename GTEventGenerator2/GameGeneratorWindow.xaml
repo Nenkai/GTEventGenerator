@@ -38,7 +38,7 @@
                 <MenuItem Header="Help">
                     <MenuItem Header="About" Template="{DynamicResource SingleDropDownMenuItem}" Click="MenuItem_Click"></MenuItem>
                     <Separator />
-                    <MenuItem Header="Enable Discord Rich Presence" Name="DiscordRichPresenceMenuItem" Template="{DynamicResource SingleDropDownMenuItem}" Checked="DiscordRichPresenceMenuItem_Click" Unchecked="DiscordRichPresenceMenuItem_Click"></MenuItem>
+                    <MenuItem Header="Enable Discord Rich Presence" Name="DiscordRichPresenceMenuItem" Template="{DynamicResource SingleDropDownMenuItem}" IsCheckable="True" Checked="DiscordRichPresenceMenuItem_Click" Unchecked="DiscordRichPresenceMenuItem_Click"></MenuItem>
                 </MenuItem>
             </Menu>
             <ComboBox Name="cb_QuickEventPicker" SelectedIndex="0" DockPanel.Dock="Right" Width="340" Height="20" Margin="0,4,4,4" SelectionChanged="cb_QuickEventPicker_SelectionChanged"/>
