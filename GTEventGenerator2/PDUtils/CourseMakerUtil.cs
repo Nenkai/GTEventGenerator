@@ -21,7 +21,7 @@ namespace GTEventGenerator.PDUtils
             0x34, 0x57, 0x47, 0x32, 0x46, 0x6E, 0x7A, 0x61, 0x63, 0x4D, 0x71, 0x72, 0x75
         };
 
-        public static void Decrypt(string path)
+        public static bool Decrypt(string path)
         {
             byte[] src = File.ReadAllBytes(path);
 
