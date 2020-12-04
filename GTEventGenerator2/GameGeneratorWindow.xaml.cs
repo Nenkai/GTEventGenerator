@@ -23,6 +23,7 @@ using DiscordRPC;
 using GTEventGenerator.Entities;
 using GTEventGenerator.Utils;
 using GTEventGenerator.Database;
+using GTEventGenerator.PDUtils;
 
 namespace GTEventGenerator
 {
@@ -110,6 +111,7 @@ namespace GTEventGenerator
                 UpdateDiscordPresence();
                 DiscordRichPresenceMenuItem.IsChecked = true;
             }
+            minimizeXMLToolStripMenuItem.IsChecked = Settings.HasEnabledSetting("Minify_XML");
 
             txtGameParamName.Text = GameParameter.EventList.Title;
             txtGameParamDesc.Text = GameParameter.EventList.Description;
@@ -1229,6 +1231,46 @@ namespace GTEventGenerator
                 };
 
                 Client.SetPresence(presence);
+            }
+        }
+
+        private void decryptTedMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var openFile = new OpenFileDialog();
+            openFile.Filter = "Course Maker File (*.ted)|*.ted";
+            openFile.Title = "Import Course Maker File to decrypt";
+            if (openFile.ShowDialog() == true)
+            {
+                if (!CourseMakerUtil.Decrypt(openFile.FileName))
+                {
+                    MessageBox.Show("Could not decrypt TED file - File is already decrypted or not a valid TED Custom track.", "Error", 
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    MessageBox.Show("File successfully decrypted.", "Completed",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+        }
+
+        private void encryptTedMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var openFile = new OpenFileDialog();
+            openFile.Filter = "Course Maker File (*.ted)|*.ted";
+            openFile.Title = "Import Course Maker File to encrypt";
+            if (openFile.ShowDialog() == true)
+            {
+                if (!CourseMakerUtil.Encrypt(openFile.FileName))
+                {
+                    MessageBox.Show("Could not encrypt TED file - File is already encrypted or not a valid TED Custom track.", "Error",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    MessageBox.Show("File successfully encrypted.", "Completed",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                }
             }
         }
 

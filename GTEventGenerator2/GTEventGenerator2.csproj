@@ -168,6 +168,7 @@
     <Compile Include="NewWeatherDataSettingsWindow.xaml.cs">
       <DependentUpon>NewWeatherDataSettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PDUtils\CourseMakerUtil.cs" />
     <Compile Include="PDUtils\PDIDATETIME32.cs" />
     <Compile Include="PresentPickerWindow.xaml.cs">
       <DependentUpon>PresentPickerWindow.xaml</DependentUpon>

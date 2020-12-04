@@ -35,6 +35,11 @@
                     </MenuItem>
 
                 </MenuItem>
+                <MenuItem Header="Tools">
+                    <MenuItem Header="Decrypt TED.." Name="decryptTedMenuItem" Click="decryptTedMenuItem_Click"  Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
+                    <MenuItem Header="Encrypt TED.." Name="encryptTedMenuItem" Click="encryptTedMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
+
+                </MenuItem>
                 <MenuItem Header="Help">
                     <MenuItem Header="About" Template="{DynamicResource SingleDropDownMenuItem}" Click="MenuItem_Click"></MenuItem>
                     <Separator />

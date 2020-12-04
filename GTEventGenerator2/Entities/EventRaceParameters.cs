@@ -63,7 +63,7 @@ namespace GTEventGenerator.Entities
         public float TimeProgressSpeed
         {
             get => _timeProgressSpeed;
-            set => _timeProgressSpeed = value > 3f ? 3f : value;
+            set => _timeProgressSpeed = value > 300f ? 300f : value;
         }
 
         public TimeSpan TimeToStart { get; set; } = TimeSpan.FromSeconds(6);
