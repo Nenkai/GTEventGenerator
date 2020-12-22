@@ -19,7 +19,7 @@
                     <Button.ToolTip>
                         <TextBlock>
                            <TextBlock FontWeight="Bold" FontSize="14">Select Car (Installed Parts)</TextBlock> <LineBreak />
-                           Rewards a car with installed parts. Only one max is allowed across the entire event (limitation).<LineBreak/>
+                           [GT6 Only] Rewards a car with installed parts. Only one max is allowed across the entire event (limitation).<LineBreak/>
                         </TextBlock>
                     </Button.ToolTip>
                 </Button>
