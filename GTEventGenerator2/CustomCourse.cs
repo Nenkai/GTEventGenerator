@@ -30,17 +30,18 @@ namespace GTEventGenerator
 
         public static CustomCourse FromBase64File(string path)
         {
-            byte[] bytes = File.ReadAllBytes(path);
+            string bytes = File.ReadAllText(path);
             return FromBase64(bytes);
         }
 
-        public static CustomCourse FromBase64(byte[] bytes)
+        public static CustomCourse FromBase64(string b64)
         {
-            int magicIsh = BinaryPrimitives.ReadInt32LittleEndian(bytes);
+            /*
+            int magicIsh = BinaryPrimitives.ReadInt32LittleEndian(b64);
             if (magicIsh != 0x33376578)
                 throw new FileFormatException("Not a valid compressed Base64 file.");
-
-            byte[] decoded = Convert.FromBase64String(Encoding.ASCII.GetString(bytes));
+            */
+            byte[] decoded = Convert.FromBase64String(b64);
 
             return Read(decoded);
         }
@@ -52,7 +53,7 @@ namespace GTEventGenerator
         }
 
 
-        private static CustomCourse Read(byte[] bytes)
+        public static CustomCourse Read(byte[] bytes)
         {
             var course = new CustomCourse();
 

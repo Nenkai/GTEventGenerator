@@ -12,7 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+using GTEventGenerator.CarParameter;
+using GTEventGenerator.PDUtils;
 using GTEventGenerator.Database;
+
 namespace GTEventGenerator
 {
     /// <summary>
@@ -25,10 +28,12 @@ namespace GTEventGenerator
         private List<PaintInfo> PaintList { get; set; } = new List<PaintInfo>();
 
         public SelectionType SelectedType { get; set; }
+        public EventEntry TunedEntrySelected { get; set; }
+        //public MCarParameter CarParameterSelected { get; set; }
         public string CarLabelSelected { get; set; }
         public int PaintIDSelected { get; set; }
 
-        public PresentPickerWindow(GameDB gameDB)
+        public PresentPickerWindow(GameDB gameDB, bool canSelectTunedCar)
         {
             _gameDB = gameDB;
             InitializeComponent();
@@ -36,6 +41,17 @@ namespace GTEventGenerator
             lv_PaintList.ItemsSource = PaintList;
             lv_CarList.ItemsSource = CarList;
             Populate();
+
+            if (!canSelectTunedCar)
+            {
+                btn_SelectPresentCarParameter.IsEnabled = false;
+                btn_SelectPresentCarParameter.Content = "(Max - 1 Tuned Car Reward)";
+            }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            btn_EditPresentCarParameter.IsEnabled = TunedEntrySelected != null;
         }
 
         public void cb_Manufacturers_SelectionChanged(object sender, RoutedEventArgs e)
@@ -63,6 +79,31 @@ namespace GTEventGenerator
 
             CarLabelSelected = _gameDB.GetCarLabelByActualName((string)lv_CarList.SelectedItem);
             SelectedType = SelectionType.Car;
+            Close();
+        }
+
+        private void btn_SelectPresentCarParameter_Click(object sender, RoutedEventArgs e)
+        {
+            if (lv_CarList.SelectedIndex == -1)
+                return;
+
+            var tunedEntry = new EventEntry();
+            tunedEntry.IsPresentEntry = true;
+            var window = new EventEntryTuningWindow(tunedEntry);
+            window.ShowDialog();
+
+            CarLabelSelected = _gameDB.GetCarLabelByActualName((string)lv_CarList.SelectedItem);
+            SelectedType = SelectionType.CarWithParts;
+            TunedEntrySelected = tunedEntry;
+            TunedEntrySelected.CarLabel = CarLabelSelected;
+            Close();
+        }
+
+        private void btn_EditPresentCarParameter_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new EventEntryTuningWindow(TunedEntrySelected);
+            window.ShowDialog();
+            SelectedType = SelectionType.CarWithParts;
             Close();
         }
 
@@ -120,6 +161,7 @@ namespace GTEventGenerator
         {
             None,
             Car,
+            CarWithParts,
             Paint,
             Suit
         }

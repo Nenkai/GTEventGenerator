@@ -144,6 +144,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CarParameter\CarParameterMainWindow.xaml.cs">
+      <DependentUpon>CarParameterMainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CarParameter\PurchasedPartsWindow.xaml.cs">
+      <DependentUpon>PurchasedPartsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CreditXPEditWindow.xaml.cs">
       <DependentUpon>CreditXPEditWindow.xaml</DependentUpon>
     </Compile>
@@ -158,6 +164,9 @@
     <Compile Include="EventEntryEditWindow.xaml.cs">
       <DependentUpon>EventEntryEditWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EventEntryTuningWindow.xaml.cs">
+      <DependentUpon>EventEntryTuningWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GameGenerator_EvalConditions.cs" />
     <Compile Include="GameGenerator_EventInfo.cs" />
     <Compile Include="GameGenerator_Rewards.cs" />
@@ -169,6 +178,8 @@
       <DependentUpon>NewWeatherDataSettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="PDUtils\CourseMakerUtil.cs" />
+    <Compile Include="PDUtils\MCarParameter.cs" />
+    <Compile Include="PDUtils\Enums\Enums.cs" />
     <Compile Include="PDUtils\PDIDATETIME32.cs" />
     <Compile Include="PresentPickerWindow.xaml.cs">
       <DependentUpon>PresentPickerWindow.xaml</DependentUpon>
@@ -179,11 +190,23 @@
     <Compile Include="Utils\RegionUtil.cs" />
     <Compile Include="Utils\MiscUtils.cs" />
     <Compile Include="Utils\XmlUtils.cs" />
+    <Page Include="CarParameter\CarParameterMainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CarParameter\PurchasedPartsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CreditXPEditWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="EventEntryEditWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EventEntryTuningWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -202,7 +225,7 @@
     <Compile Include="Entities\EventRewards.cs" />
     <Compile Include="Entities\RaceCourse.cs" />
     <Compile Include="Entities\RaceEntries.cs" />
-    <Compile Include="Entities\RaceEntry.cs" />
+    <Compile Include="Entities\EventEntry.cs" />
     <Compile Include="GameGeneratorWindow.xaml.cs" />
     <Compile Include="GameGenerator_Constraints.cs" />
     <Compile Include="GameGenerator_Courses.cs" />
@@ -779,6 +802,7 @@
   <ItemGroup>
     <Resource Include="Resources\UI\TabLogos\DrivingSettings.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

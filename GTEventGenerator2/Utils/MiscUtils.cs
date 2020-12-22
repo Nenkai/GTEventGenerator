@@ -83,7 +83,7 @@ namespace GTEventGenerator.Utils
                 byte[] deflatedData = new byte[outSize];
                 using (var ds = new DeflateStream(bs, CompressionMode.Decompress))
                     ds.Read(deflatedData, 0, deflatedData.Length);
-
+                
                 return deflatedData;   
             }
         }

@@ -22,8 +22,8 @@ namespace GTEventGenerator
 {
     public partial class GameGeneratorWindow
     {
-        private List<RaceEntry> _fixedEntries { get; set; } = new List<RaceEntry>();
-        private List<RaceEntry> _AIPoolEntries { get; set; } = new List<RaceEntry>();
+        private List<EventEntry> _fixedEntries { get; set; } = new List<EventEntry>();
+        private List<EventEntry> _AIPoolEntries { get; set; } = new List<EventEntry>();
 
         private void comboBox_AIManifacturerList_SelectionChanged(object sender, SelectionChangedEventArgs e)
             => UpdateAIEntriesCarList();
@@ -181,7 +181,7 @@ namespace GTEventGenerator
                 return;
             }
 
-            RaceEntry raceEntry = GenerateEntry();
+            EventEntry raceEntry = GenerateEntry();
 
             _AIPoolEntries.Add(raceEntry);
             CurrentEvent.Entries.AIBases.Add(raceEntry);
@@ -205,7 +205,7 @@ namespace GTEventGenerator
                 return;
             }
 
-            RaceEntry raceEntry = GenerateEntry();
+            EventEntry raceEntry = GenerateEntry();
 
             _fixedEntries.Add(raceEntry);
             CurrentEvent.Entries.AI.Add(raceEntry);
@@ -246,7 +246,7 @@ namespace GTEventGenerator
             if (listBox_AICarList.SelectedIndex == -1)
                 return;
 
-            var entry = new RaceEntry();
+            var entry = new EventEntry();
             entry.IsAI = false;
 
             entry.CarLabel = GameDatabase.GetCarLabelByActualName((string)listBox_AICarList.SelectedItem);
@@ -276,14 +276,14 @@ namespace GTEventGenerator
                 return;
 
             // Build a list of entries to remove
-            List<RaceEntry> toRemove = new List<RaceEntry>();
+            List<EventEntry> toRemove = new List<EventEntry>();
             foreach (var selected in listBox_AIEntries.SelectedItems)
             {
                 int index = listBox_AIEntries.Items.IndexOf(selected);
                 toRemove.Add(_AIPoolEntries[index]);
             }
 
-            foreach (RaceEntry entry in toRemove)
+            foreach (EventEntry entry in toRemove)
             {
                 _AIPoolEntries.Remove(entry);
                 CurrentEvent.Entries.AIBases.Remove(entry);
@@ -312,14 +312,14 @@ namespace GTEventGenerator
                 return;
 
             // Build a list of entries to remove
-            List<RaceEntry> toRemove = new List<RaceEntry>();
+            List<EventEntry> toRemove = new List<EventEntry>();
             foreach (var selected in listBox_AIFixedEntries.SelectedItems)
             {
                 int index = listBox_AIFixedEntries.Items.IndexOf(selected);
                 toRemove.Add(_fixedEntries[index]);
             }
 
-            foreach (RaceEntry entry in toRemove)
+            foreach (EventEntry entry in toRemove)
             {
                 _fixedEntries.Remove(entry);
                 CurrentEvent.Entries.AI.Remove(entry);
@@ -379,9 +379,9 @@ namespace GTEventGenerator
             label_PlayerPos.Content = $"#{CurrentEvent.Entries.PlayerPos}";
         }
 
-        private RaceEntry GenerateEntry()
+        private EventEntry GenerateEntry()
         {
-            var raceEntry = new RaceEntry();
+            var raceEntry = new EventEntry();
             raceEntry.IsAI = true;
 
             string driverName = $"AI #{listBox_AIEntries.Items.Count + 1}";

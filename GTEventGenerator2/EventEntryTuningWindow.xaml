@@ -1,0 +1,131 @@
+﻿<Window x:Class="GTEventGenerator.EventEntryTuningWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GTEventGenerator"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="Car/Entry Tuning Window" Height="602.494" Width="465.073">
+    <Grid Background="#262626">
+        <GroupBox Header="Car Settings (Advanced Users)" Margin="10,10,0,10" HorizontalAlignment="Left" Width="437">
+            <Grid>
+                <Label Content="Engine Tuning Stage" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <ComboBox Name="cb_EngineStage" HorizontalAlignment="Left" Margin="134,14,0,0" VerticalAlignment="Top" Width="281" SelectionChanged="cb_EngineStage_SelectionChanged"/>
+
+                <Label Content="Turbo" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <ComboBox Name="cb_Turbo" HorizontalAlignment="Left" Margin="134,44,0,0" VerticalAlignment="Top" Width="281" SelectionChanged="cb_Turbo_SelectionChanged"/>
+
+                <Label Content="Computer" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <ComboBox Name="cb_Computer" HorizontalAlignment="Left" Margin="134,76,0,0" VerticalAlignment="Top" Width="281" SelectionChanged="cb_Computer_SelectionChanged"/>
+
+                <Label Content="Suspension" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <ComboBox Name="cb_Suspension" HorizontalAlignment="Left" Margin="134,107,0,0" VerticalAlignment="Top" Width="281" SelectionChanged="cb_Suspension_SelectionChanged"/>
+
+                <Label Content="Transmission" HorizontalAlignment="Left" Margin="10,134,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <ComboBox Name="cb_Transmission" HorizontalAlignment="Left" Margin="134,138,0,0" VerticalAlignment="Top" Width="281" SelectionChanged="cb_Transmission_SelectionChanged"/>
+
+                <Label Content="Exhaust" HorizontalAlignment="Left" Margin="10,165,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <ComboBox Name="cb_Exhaust" HorizontalAlignment="Left" Margin="134,169,0,0" VerticalAlignment="Top" Width="281" SelectionChanged="cb_Exhaust_SelectionChanged"/>
+
+                <Label Content="Max Gear Speed" HorizontalAlignment="Left" Margin="10,196,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <xctk:IntegerUpDown Value="{Binding MaxGearSpeed}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="114,200,0,0" Height="20" Width="77" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Power Limiter (%)" HorizontalAlignment="Left" Margin="234,200,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <xctk:SingleUpDown Value="{Binding PowerLimiter}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="346,203,0,0" Height="20" Width="69" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Ballast Weight" HorizontalAlignment="Left" Margin="11,262,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <xctk:IntegerUpDown Value="{Binding BallastWeight}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="114,265,0,0" Height="20" Width="77" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Position" HorizontalAlignment="Left" Margin="234,262,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <Slider Value="{Binding BallastPosition}" HorizontalAlignment="Left" Margin="292,265,0,0" VerticalAlignment="Top" Width="123" Minimum="-200" Maximum="200"/>
+
+                <Label Content="Downforce Front" HorizontalAlignment="Left" Margin="10,227,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <xctk:IntegerUpDown Value="{Binding DownforceFront}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="114,231,0,0" Height="20" Width="77" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Downforce Rear" HorizontalAlignment="Left" Margin="234,231,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <xctk:IntegerUpDown Value="{Binding DownforceRear}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="346,234,0,0" Height="20" Width="69" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Body Paint ID" HorizontalAlignment="Left" Margin="9,295,0,0" VerticalAlignment="Top" Width="Auto">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Body Paint ID</TextBlock> <LineBreak />
+                           Custom paint ID, AllPaintID from SpecDB in the VARIATION table. overrides car color index.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->paint_id</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:IntegerUpDown Value="{Binding BodyPaintID}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="114,295,0,0" Height="20" Width="77" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Wheel Paint ID" HorizontalAlignment="Left" Margin="234,293,0,0" VerticalAlignment="Top" Width="Auto">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Wheel Paint ID</TextBlock> <LineBreak />
+                           Custom wheel paint ID, AllPaintID from SpecDB in the VARIATION table.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->wheel_color</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:IntegerUpDown Value="{Binding WheelPaintID}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="345,295,0,0" Height="20" Width="70" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Wheel ID" HorizontalAlignment="Left" Margin="11,321,0,0" VerticalAlignment="Top" Width="Auto">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Wheel ID</TextBlock> <LineBreak />
+                           Custom wheel ID, from WHEEL_EX table.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->wheel</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:IntegerUpDown Value="{Binding WheelID}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="114,324,0,0" Height="20" Width="77" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Wheel Inch" HorizontalAlignment="Left" Margin="234,321,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <xctk:IntegerUpDown Value="{Binding WheelInchUp}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="344,324,0,0" Height="20" Width="71" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Aero Kit" HorizontalAlignment="Left" Margin="11,352,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <xctk:IntegerUpDown Value="{Binding AeroKit}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="114,355,0,0" Height="20" Width="77" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Flat Floor" HorizontalAlignment="Left" Margin="10,383,0,0" VerticalAlignment="Top" Width="63"/>
+                <xctk:IntegerUpDown Value="{Binding FlatFloor}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="114,386,0,0" Height="20" Width="77" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Other (Aero)" HorizontalAlignment="Left" Margin="11,414,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <xctk:IntegerUpDown Value="{Binding AeroOther}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="114,418,0,0" Height="20" Width="77" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Sticker Type" HorizontalAlignment="Left" Margin="234,352,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <ComboBox HorizontalAlignment="Left" IsEnabled="False" VerticalAlignment="Top" Margin="312,355,0,0" Height="20" Width="103" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Sticker Number Type" HorizontalAlignment="Left" Margin="232,383,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <ComboBox HorizontalAlignment="Left" IsEnabled="False" VerticalAlignment="Top" Margin="357,386,0,0" Height="20" Width="55" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Sticker Number" HorizontalAlignment="Left" Margin="234,414,0,0" VerticalAlignment="Top" Width="94"/>
+                <xctk:IntegerUpDown HorizontalAlignment="Left" IsEnabled="False" VerticalAlignment="Top" Margin="341,418,0,0" Height="20" Width="71" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                <Label Content="Front Tyres" HorizontalAlignment="Left" Margin="10,445,0,0" VerticalAlignment="Top" Width="84">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Front Tyres</TextBlock> <LineBreak />
+                           Forced front tyres that the entry will use.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->tire_f</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <Label Content="Rear Tyres" HorizontalAlignment="Left" Margin="10,476,0,0" VerticalAlignment="Top" Width="84">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Rear Tyres</TextBlock> <LineBreak />
+                           Forced rear tyres that the entry will use.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->tire_r</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <ComboBox Name="cb_EntryTireF" Margin="99,449,13,0" VerticalAlignment="Top" SelectionChanged="cb_EntryTireF_SelectionChanged">Use Car Defaults</ComboBox>
+                <ComboBox Name="cb_EntryTireR" Margin="99,480,13,0" VerticalAlignment="Top" SelectionChanged="cb_EntryTireR_SelectionChanged">Use Car Defaults</ComboBox>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</Window>

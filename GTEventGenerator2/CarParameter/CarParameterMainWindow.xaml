@@ -1,0 +1,27 @@
+﻿<Window x:Class="GTEventGenerator.CarParameter.CarParameterMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GTEventGenerator.CarParameter"
+        mc:Ignorable="d"
+        Title="CarParameterMainWindow" Height="296.57" Width="590.174">
+    <Grid Background="#262626">
+        <GroupBox Header="Main Settings" Margin="10,10,0,10" HorizontalAlignment="Left" Width="352">
+            <Grid>
+                <Label Content="Car:" Margin="10,10,230,165" />
+                <Label Name="lbl_CarName" Content="- No Car Parameter Selected -" HorizontalContentAlignment="Right" Margin="49,10,10,165" />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Car Specific Settings" Margin="0,10,10,10" HorizontalAlignment="Right" Width="205">
+            <Grid>
+                <Button Content="Installed Car Parts" IsEnabled="False" Margin="10,10,10,0" Height="28" VerticalAlignment="Top"/>
+                <Button Content="Car Settings" IsEnabled="False" Margin="10,43,10,0" Height="28" VerticalAlignment="Top"/>
+                <Button Name="btn_PurchasedParts" IsEnabled="False" Content="Purchased Parts" Margin="10,76,10,0" Click="btn_PurchasedParts_Click" Height="28" VerticalAlignment="Top"/>
+
+                <Button Name="btn_Import" Content="Import From Blob" Margin="10,0,10,10" Click="btn_Import_Click" Height="28" VerticalAlignment="Bottom"/>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</Window>

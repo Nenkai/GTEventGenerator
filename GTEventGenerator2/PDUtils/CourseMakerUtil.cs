@@ -30,7 +30,7 @@ namespace GTEventGenerator.PDUtils
             else if (src.AsSpan(0, 4).SequenceEqual(new byte[] { 0xC5, 0xEE, 0xF7, 0xFF }))
             {
                 src = MiscUtils.Deflate(src);
-                File.WriteAllBytes(path, MiscUtils.Deflate(src));
+                File.WriteAllBytes(path, src);
                 return true;
             }
             else

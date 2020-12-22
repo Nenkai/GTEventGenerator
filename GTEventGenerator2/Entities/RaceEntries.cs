@@ -10,9 +10,9 @@ namespace GTEventGenerator.Entities
 {
     public class EventEntries
     {
-        public List<RaceEntry> AI { get; set; } = new List<RaceEntry>();
-        public List<RaceEntry> AIBases { get; set; } = new List<RaceEntry>();
-        public RaceEntry Player { get; set; }
+        public List<EventEntry> AI { get; set; } = new List<EventEntry>();
+        public List<EventEntry> AIBases { get; set; } = new List<EventEntry>();
+        public EventEntry Player { get; set; }
 
         private int aisToPickFromPool;
         public int AIsToPickFromPool
@@ -111,7 +111,7 @@ namespace GTEventGenerator.Entities
 
         public void ParseRaceEntrySet(XmlNode node)
         {
-            AIBases = new List<RaceEntry>();
+            AIBases = new List<EventEntry>();
             foreach (XmlNode entrySetNode in node.ChildNodes)
             {
                 if (entrySetNode.Name == "entry_generate")
@@ -180,9 +180,9 @@ namespace GTEventGenerator.Entities
             }
         }
 
-        public RaceEntry ParseEntry(XmlNode entryNode)
+        public EventEntry ParseEntry(XmlNode entryNode)
         {
-            var newEntry = new RaceEntry();
+            var newEntry = new EventEntry();
             foreach (XmlNode entryDetailNode in entryNode)
             {
                 switch (entryDetailNode.Name)

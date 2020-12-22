@@ -292,6 +292,9 @@ namespace GTEventGenerator.Entities
 
         [Description("Overtake Mission (GT6)")]
         ARCADE_STYLE_RACE,
+
+        [Description("Drag Race (GT6, 2P only)")]
+        DRAG_RACE,
     }
 
     public enum RankingDisplayType

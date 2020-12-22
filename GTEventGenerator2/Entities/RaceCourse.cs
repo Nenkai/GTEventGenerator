@@ -59,14 +59,10 @@ namespace GTEventGenerator.Entities
             foreach (XmlNode trackNode in node.ChildNodes)
             {
                 if (trackNode.Name == "course_code")
-                {
                     CourseLabel = trackNode.Attributes["label"].Value;
-                }
 
                 if (trackNode.Name == "edit_data")
-                {
-                    CustomCourse = CustomCourse.FromBase64(Encoding.ASCII.GetBytes(trackNode.ReadValueString()));
-                }
+                    CustomCourse = CustomCourse.Read(Convert.FromBase64String(trackNode.ReadValueString()));
             }
         }
     }

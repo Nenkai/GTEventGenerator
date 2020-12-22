@@ -1,0 +1,234 @@
+﻿<Window x:Class="GTEventGenerator.CarParameter.PurchasedPartsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GTEventGenerator.CarParameter"
+        mc:Ignorable="d"
+        Title="Purchased Car Parts" Height="585" Width="1054">
+    <Grid Background="#262626">
+        <GroupBox Header="Brakes" HorizontalAlignment="Left" Height="201" Margin="10,10,0,0" VerticalAlignment="Top" Width="120">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left">
+                <CheckBox Name="cb_Brake1" Click="cb_Brake1_Click" Content="Stock" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox Name="cb_Brake2" Click="cb_Brake2_Click" Content="4 Piston" Margin="10,35,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Brake3" Click="cb_Brake3_Click" Content="6 Piston" Margin="10,60,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox Name="cb_Brake4" Click="cb_Brake4_Click" Content="8 Piston" Margin="10,85,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Brake5" Click="cb_Brake5_Click" Content="Racing" Margin="10,110,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Suspension" HorizontalAlignment="Left" Height="243" Margin="10,216,0,0" VerticalAlignment="Top" Width="120">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <CheckBox Name="cb_Susp1" Click="cb_Susp1_Click" Content="Stock" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox Name="cb_Susp2" Click="cb_Susp2_Click" Content="Normal1" Margin="10,35,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Susp3" Click="cb_Susp3_Click" Content="Normal2" Margin="10,60,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox Name="cb_Susp4" Click="cb_Susp4_Click" Content="Normal3" Margin="10,85,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Susp5" Click="cb_Susp5_Click" Content="Racing" Margin="10,110,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Susp6" Click="cb_Susp6_Click" Content="FullActive" Margin="10,135,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Natune" HorizontalAlignment="Left" Height="201" Margin="135,10,0,0" VerticalAlignment="Top" Width="120">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <CheckBox Name="cb_Natune1" Click="cb_Natune1_Click" Content="Level 1" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox Name="cb_Natune2" Click="cb_Natune2_Click" Content="Level 2" Margin="10,35,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Natune3" Click="cb_Natune3_Click" Content="Level 3" Margin="10,60,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox Name="cb_Natune4" Click="cb_Natune4_Click" Content="Level 4" Margin="10,85,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Natune5" Click="cb_Natune5_Click" Content="Level 5" Margin="10,110,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Turbine Kit" HorizontalAlignment="Left" Height="243" Margin="135,216,0,0" VerticalAlignment="Top" Width="120">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <CheckBox Name="cb_Turbo1" Click="cb_Turbo1_Click" Content="NO" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox Name="cb_Turbo2" Click="cb_Turbo2_Click" Content="Stage 1" Margin="10,35,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Turbo3" Click="cb_Turbo3_Click" Content="Stage 2" Margin="10,60,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox Name="cb_Turbo4" Click="cb_Turbo4_Click" Content="Stage 3" Margin="10,85,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Turbo5" Click="cb_Turbo5_Click" Content="Stage 4" Margin="10,110,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Turbo6" Click="cb_Turbo6_Click" Content="Stage 5" Margin="10,135,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Clutch" HorizontalAlignment="Left" Height="201" Margin="260,10,0,0" VerticalAlignment="Top" Width="120">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <CheckBox Name="cb_Clutch1" Click="cb_Clutch1_Click" Content="Normal" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox Name="cb_Clutch2" Click="cb_Clutch2_Click" Content="High Capacity" Margin="10,35,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Clutch3" Click="cb_Clutch3_Click" Content="Twin" Margin="10,60,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox Name="cb_Clutch4" Click="cb_Clutch4_Click" Content="Triple" Margin="10,85,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Flywheel" HorizontalAlignment="Left" Height="152" Margin="510,10,0,0" VerticalAlignment="Top" Width="120">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <CheckBox Name="cb_Flywheel1" Click="cb_Flywheel1_Click" Content="Light" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox Name="cb_Flywheel2" Click="cb_Flywheel2_Click" Content="Cr Mo" Margin="10,35,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Flywheel3" Click="cb_Flywheel3_Click" Content="Light Cr Mo" Margin="10,60,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="LSD/Differential" HorizontalAlignment="Left" Height="125" Margin="510,167,0,0" VerticalAlignment="Top" Width="120">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <CheckBox Name="cb_LSD1" Click="cb_LSD1_Click" Content="Stock" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox Name="cb_LSD2" Click="cb_LSD2_Click" Content="Variable" Margin="10,35,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_LSD3" Click="cb_LSD3_Click" Content="AYCC" Margin="10,60,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Displacement" HorizontalAlignment="Left" Height="162" Margin="385,297,0,0" VerticalAlignment="Top" Width="120">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <CheckBox Name="cb_Disp1" Click="cb_Disp1_Click" Content="Level 1" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox Name="cb_Disp2" Click="cb_Disp2_Click" Content="Level 2" Margin="10,35,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Disp3" Click="cb_Disp3_Click" Content="Level 3" Margin="10,60,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Drivetrain" HorizontalAlignment="Left" Height="125" Margin="760,167,0,0" VerticalAlignment="Top" Width="120">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <CheckBox Name="cb_Drivetrain1" Click="cb_Drivetrain1_Click" Content="Normal" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox Name="cb_Drivetrain2" Click="cb_Drivetrain2_Click" Content="Var. Center" Margin="10,35,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Drivetrain3" Click="cb_Drivetrain3_Click" Content="Active Center" Margin="10,60,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Muffler" HorizontalAlignment="Left" Height="142" Margin="260,216,0,0" VerticalAlignment="Top" Width="120">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <CheckBox Name="cb_Muffler1" Click="cb_Muffler1_Click" Content="Sports" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox Name="cb_Muffler2" Click="cb_Muffler2_Click" Content="Semi-Racing" Margin="10,35,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Muffler3" Click="cb_Muffler3_Click" Content="Racing" Margin="10,60,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Intercooler" HorizontalAlignment="Left" Height="162" Margin="510,297,0,0" VerticalAlignment="Top" Width="120">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <CheckBox Name="cb_Intercooler1" Click="cb_Intercooler1_Click" Content="S" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox Name="cb_Intercooler2" Click="cb_Intercooler2_Click" Content="M" Margin="10,35,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Intercooler3" Click="cb_Intercooler3_Click" Content="L" Margin="10,60,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox Name="cb_Intercooler4" Click="cb_Intercooler4_Click" Content="LL" Margin="10,85,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Weight Reduction" HorizontalAlignment="Left" Height="282" Margin="385,10,0,0" VerticalAlignment="Top" Width="120">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <CheckBox Name="cb_Lightweight1" Click="cb_Lightweight1_Click" Content="Stage 1" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox Name="cb_Lightweight2" Click="cb_Lightweight2_Click" Content="Stage 2" Margin="10,35,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox Name="cb_Lightweight3" Click="cb_Lightweight3_Click" Content="Stage 3" Margin="10,60,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Lightweight4" Click="cb_Lightweight4_Click" Content="Stage 4" Margin="10,85,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Lightweight5" Click="cb_Lightweight5_Click" Content="Stage 5" Margin="10,110,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Lightweight6" Click="cb_Lightweight6_Click" Content="Stage 6" Margin="10,135,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Lightweight7" Click="cb_Lightweight7_Click" Content="Stage 7" Margin="10,160,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Lightweight8" Click="cb_Lightweight8_Click" Content="Stage 8" Margin="10,185,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Computer/ECU" HorizontalAlignment="Left" Height="152" Margin="635,10,0,0" VerticalAlignment="Top" Width="120">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <CheckBox Name="cb_Computer1" Click="cb_Computer1_Click" Content="Level 1" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox Name="cb_Computer2" Click="cb_Computer2_Click" Content="Level 2" Margin="10,35,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Transmission/Gear" HorizontalAlignment="Left" Height="154" Margin="760,8,0,0" VerticalAlignment="Top" Width="120">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <CheckBox Name="cb_Gear1" Click="cb_Gear1_Click" Content="Stock" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox Name="cb_Gear2" Click="cb_Gear2_Click" Content="5-Speed" Margin="10,35,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox Name="cb_Gear3" Click="cb_Gear3_Click" Content="6-Speed" Margin="10,60,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Gear4" Click="cb_Gear4_Click" Content="Variable" Margin="10,85,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Catalyst" HorizontalAlignment="Left" Height="126" Margin="635,167,0,0" VerticalAlignment="Top" Width="120">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <CheckBox Name="cb_Catalyst1" Click="cb_Catalyst1_Click" Content="Sports" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox Name="cb_Catalyst2" Click="cb_Catalyst2_Click" Content="Racing" Margin="10,35,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Air Cleaner" HorizontalAlignment="Left" Height="162" Margin="635,297,0,0" VerticalAlignment="Top" Width="120">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <CheckBox Name="cb_AirCleaner1" Click="cb_AirCleaner1_Click" Content="Sports" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox Name="cb_AirCleaner2" Click="cb_AirCleaner2_Click" Content="Racing" Margin="10,35,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Bonnet" HorizontalAlignment="Left" Height="162" Margin="760,297,0,0" VerticalAlignment="Top" Width="120">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <CheckBox Name="cb_Bonnet1" Click="cb_Bonnet1_Click" Content="Carbon" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox Name="cb_Bonnet2" Click="cb_Bonnet2_Click" Content="Paint Carbon" Margin="10,35,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Tires" HorizontalAlignment="Left" Height="449" Margin="885,10,0,0" VerticalAlignment="Top" Width="151">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <CheckBox Name="cb_Tire1"  Click="cb_Tire1_Click" Content="Comfort: Hard" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Tire2"  Click="cb_Tire2_Click" Content="Comfort: Medium" Margin="10,35,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <CheckBox Name="cb_Tire3"  Click="cb_Tire3_Click" Content="Comfort: Soft" Margin="10,60,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Tire4"  Click="cb_Tire4_Click" Content="Sports: Hard" Margin="10,85,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Tire5"  Click="cb_Tire5_Click" Content="Sports: Medium" Margin="10,110,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Tire6"  Click="cb_Tire6_Click" Content="Sports: Soft" Margin="10,135,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Tire7"  Click="cb_Tire7_Click" Content="Sports: Super Soft" Margin="10,160,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Tire8"  Click="cb_Tire8_Click" Content="Racing: Hard" Margin="10,185,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Tire9" Click="cb_Tire9_Click" Content="Racing: Medium" Margin="10,210,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Tire10" Click="cb_Tire10_Click" Content="Racing: Soft" Margin="10,235,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Tire11" Click="cb_Tire11_Click" Content="Racing: Super Soft" Margin="10,260,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Tire12" Click="cb_Tire12_Click" Content="Rain Intermediate" Margin="10,285,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Tire13" Click="cb_Tire13_Click" Content="Heavy Wet" Margin="10,310,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Tire14" Click="cb_Tire14_Click" Content="Dirt" Margin="10,335,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                <CheckBox Name="cb_Tire15" Click="cb_Tire15_Click" Content="Snow" Margin="10,360,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="NOS" HorizontalAlignment="Left" Height="80" Margin="10,464,0,0" VerticalAlignment="Top" Width="120">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <CheckBox Name="cb_NOS" Click="cb_NOS_Click" Content="Purchased" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Supercharger" HorizontalAlignment="Left" Height="80" Margin="135,464,0,0" VerticalAlignment="Top" Width="120">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <CheckBox Name="cb_Supercharger" Click="cb_Supercharger_Click" Content="Purchased" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Intake Manifold" HorizontalAlignment="Left" Height="80" Margin="260,464,0,0" VerticalAlignment="Top" Width="120">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <CheckBox Name="cb_IntakeManifold" Click="cb_IntakeManifold_Click" Content="Purchased" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Exhaust Manifold" HorizontalAlignment="Left" Height="80" Margin="385,464,0,0" VerticalAlignment="Top" Width="120">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <CheckBox Name="cb_ExhaustManifold" Click="cb_ExhaustManifold_Click" Content="Purchased" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="L. Weight Window" HorizontalAlignment="Left" Height="80" Margin="510,464,0,0" VerticalAlignment="Top" Width="120">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <CheckBox Name="cb_LightweightWindow" Click="cb_LightweightWindow_Click" Content="Purchased" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Propeller Shaft" HorizontalAlignment="Left" Height="96" Margin="260,363,0,0" VerticalAlignment="Top" Width="120">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <CheckBox Name="cb_PropellerShaft" Click="cb_PropellerShaft_Click" Content="Purchased" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="ASCC" HorizontalAlignment="Left" Height="80" Margin="635,464,0,0" VerticalAlignment="Top" Width="120">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <CheckBox Name="cb_ASCC" Click="cb_ASCC_Click" Content="Purchased" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="TCSC" HorizontalAlignment="Left" Height="80" Margin="760,464,0,0" VerticalAlignment="Top" Width="120">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <CheckBox Name="cb_TCSC" Click="cb_TCSC_Click" Content="Purchased" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Brake Controller" HorizontalAlignment="Left" Height="80" Margin="885,464,0,0" VerticalAlignment="Top" Width="151">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left" >
+                <CheckBox Name="cb_BrakeController" Click="cb_BrakeController_Click" Content="Purchased" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+            </Grid>
+        </GroupBox>
+    </Grid>
+</Window>

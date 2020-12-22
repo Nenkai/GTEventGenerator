@@ -1090,6 +1090,7 @@ namespace GTEventGenerator
                 xml.WriteEndElement();
             }
 
+
             MessageBox.Show($"Event and races successfully written to {selectedPath}\\{GameParameter.FolderFileName}.xml and {selectedPath}\\r{GameParameter.FolderId}.xml!", 
                 "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
@@ -1112,11 +1113,12 @@ namespace GTEventGenerator
 
             var settings = new XmlReaderSettings();
             settings.IgnoreComments = true;
-            var reader = XmlReader.Create(eventListFile, settings);
-            var eventDoc = new XmlDocument();
-            eventDoc.Load(reader);
-
-            gp.ParseEventsFromFile(eventDoc);
+            using (var reader = XmlReader.Create(eventListFile, settings))
+            {
+                var eventDoc = new XmlDocument();
+                eventDoc.Load(reader);
+                gp.ParseEventsFromFile(eventDoc);
+            }
 
             gp.FolderFileName = Path.GetFileNameWithoutExtension(filePath);
             return gp;
@@ -1127,12 +1129,14 @@ namespace GTEventGenerator
             XmlDocument eventDoc = new XmlDocument();
             var settings = new XmlReaderSettings();
             settings.IgnoreComments = true;
-            var reader = XmlReader.Create(filePath, settings);
-            var gp = new GameParameter();
-            eventDoc.Load(reader);
+            using (var reader = XmlReader.Create(filePath, settings))
+            {
+                var gp = new GameParameter();
+                eventDoc.Load(reader);
 
-            gp.ParseEventsFromFile(eventDoc);
-            return gp;
+                gp.ParseEventsFromFile(eventDoc);
+                return gp;
+            }
         }
 
         public void RefreshFolderControls()

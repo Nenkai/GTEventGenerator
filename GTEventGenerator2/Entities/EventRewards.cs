@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 using System.Xml;
 
 using System.ComponentModel;
+
+using GTEventGenerator.PDUtils;
+using GTEventGenerator.Utils;
+
 namespace GTEventGenerator.Entities
 {
     public class EventRewards
@@ -28,6 +32,8 @@ namespace GTEventGenerator.Entities
 
         public EventPresent[] RewardPresents = new EventPresent[3];
         public EventPresent[] ParticipatePresents = new EventPresent[3];
+
+        public EventEntry TunedEntryPresent { get; set; }
 
         public EventRewards()
         {
@@ -124,6 +130,10 @@ namespace GTEventGenerator.Entities
                     }
                     xml.WriteEndElement();
                 }
+
+                if ((RewardPresents.Any(e => e?.PresentType == Entities.PresentType.CAR_PARAMETER) || RewardPresents.Any(e => e?.PresentType == Entities.PresentType.CAR_PARAMETER))
+                    && TunedEntryPresent != null)
+                    TunedEntryPresent.WriteToXml(xml, false);
             }
             xml.WriteEndElement();
         }
@@ -185,7 +195,27 @@ namespace GTEventGenerator.Entities
                         else
                             Stars = 0;
                         break;
+
+                    case "entry_base":
+                        TunedEntryPresent = evnt.Entries.ParseEntry(rewardNode);
+                        TunedEntryPresent.IsPresentEntry = true;
+                        break;
                 }
+            }
+
+            // Parse them now
+            if (TunedEntryPresent != null)
+            {
+                var tunedCarReward = RewardPresents.FirstOrDefault(e => e?.PresentType == Entities.PresentType.CAR_PARAMETER);
+                if (tunedCarReward != null)
+                    tunedCarReward.TunedEntry = TunedEntryPresent;
+
+                var participatedTunedCarReward = ParticipatePresents.FirstOrDefault(e => e?.PresentType == Entities.PresentType.CAR_PARAMETER);
+                if (participatedTunedCarReward != null)
+                    participatedTunedCarReward.TunedEntry = TunedEntryPresent;
+
+                if (tunedCarReward is null || participatedTunedCarReward is null)
+                    TunedEntryPresent = null;
             }
         }
 
@@ -208,6 +238,14 @@ namespace GTEventGenerator.Entities
                 {
                     case Entities.PresentType.CAR:
                         RewardPresents[i] = EventPresent.FromCar(itemNode.Attributes["f_name"].Value);
+                        break;
+                    case Entities.PresentType.CAR_PARAMETER:
+                        RewardPresents[i] = EventPresent.FromTunedCar(itemNode.Attributes["f_name"].Value, null); // Will be filled in post-processing due to being in a seperate node
+                        /*
+                        var blob = MiscUtils.Deflate(Convert.FromBase64String(itemNode.Attributes["f_name"].Value));
+                        var carParam = MCarParameter.ImportFromBlob(blob);
+                        RewardPresents[i] = EventPresent.FromCarParameter(carParam);
+                        */
                         break;
                     case Entities.PresentType.PAINT:
                         RewardPresents[i] = EventPresent.FromPaint(int.Parse(itemNode.Attributes["argument1"].Value));
@@ -238,6 +276,14 @@ namespace GTEventGenerator.Entities
                     case Entities.PresentType.CAR:
                         ParticipatePresents[i] = EventPresent.FromCar(itemNode.Attributes["f_name"].Value);
                         break;
+                    case Entities.PresentType.CAR_PARAMETER:
+                        RewardPresents[i] = EventPresent.FromTunedCar(itemNode.Attributes["f_name"].Value, null); // Will be filled in post-processing due to being in a seperate node
+                        /*
+                        var blob = MiscUtils.Deflate(Convert.FromBase64String(itemNode.Attributes["f_name"].Value));
+                        var carParam = MCarParameter.ImportFromBlob(blob);
+                        RewardPresents[i] = EventPresent.FromCarParameter(carParam);
+                        */
+                        break;
                     case Entities.PresentType.PAINT:
                         ParticipatePresents[i] = EventPresent.FromPaint(int.Parse(itemNode.Attributes["argument1"].Value));
                         break;
@@ -246,6 +292,19 @@ namespace GTEventGenerator.Entities
                 i++;
             }
         }
+
+        public EventPresent TryGetTunedCarPresent()
+        {
+            var tunedCarReward = RewardPresents.FirstOrDefault(e => e?.PresentType == Entities.PresentType.CAR_PARAMETER);
+            if (tunedCarReward != null)
+                return tunedCarReward;
+
+            var participatedTunedCarReward = ParticipatePresents.FirstOrDefault(e => e?.PresentType == Entities.PresentType.CAR_PARAMETER);
+            if (participatedTunedCarReward != null)
+                return participatedTunedCarReward;
+
+            return null;
+        }
     }
 
     public class EventPresent
@@ -253,6 +312,8 @@ namespace GTEventGenerator.Entities
         public PresentType PresentType { get; set; }
         public int PaintID { get; set; }
         public string CarLabel { get; set; }
+        public EventEntry TunedEntry { get; set; }
+        public MCarParameter CarParameter { get; set; }
         public int SuitID { get; set; }
 
         public static EventPresent FromCar(string carLabel)
@@ -260,6 +321,23 @@ namespace GTEventGenerator.Entities
             var present = new EventPresent();
             present.PresentType = PresentType.CAR;
             present.CarLabel = carLabel;
+            return present;
+        }
+
+        public static EventPresent FromTunedCar(string carLabel, EventEntry tunedEntry)
+        {
+            var present = new EventPresent();
+            present.PresentType = PresentType.CAR_PARAMETER;
+            present.TunedEntry = tunedEntry;
+            present.CarLabel = carLabel;
+            return present;
+        }
+
+        public static EventPresent FromCarParameter(MCarParameter carParameter)
+        {
+            var present = new EventPresent();
+            present.PresentType = PresentType.CAR_PARAMETER;
+            present.CarParameter = carParameter;
             return present;
         }
 
@@ -298,11 +376,20 @@ namespace GTEventGenerator.Entities
                  xml.WriteAttributeString("argument4", "");
 
             xml.WriteAttributeString("category_id", ((int)PresentType).ToString());
-            if (PresentType == PresentType.CAR)
+            if (PresentType == PresentType.CAR || PresentType == PresentType.CAR_PARAMETER)
             {
                 xml.WriteAttributeString("f_name", CarLabel);
                 xml.WriteAttributeString("type_id", "9");
             }
+            /* Only parsed in the actual seasonal root, useless in any other game modes
+            else if (PresentType == PresentType.CAR_PARAMETER)
+            {
+                var data = CarParameter.ExportToBlob();
+                var blob = Convert.ToBase64String(MiscUtils.ZlibCompress(data));
+                xml.WriteAttributeString("f_name", blob);
+                xml.WriteAttributeString("type_id", "9");
+            }
+            */
             else if (PresentType == PresentType.PAINT)
             {
                 xml.WriteAttributeString("f_name", "");
@@ -321,6 +408,7 @@ namespace GTEventGenerator.Entities
         SUIT = 302,
         PAINT = 601,
         CAR = 901,
+        CAR_PARAMETER = 902,
     }
 
     public enum PresentOrderType

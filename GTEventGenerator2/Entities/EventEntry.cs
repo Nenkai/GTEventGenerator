@@ -6,9 +6,10 @@ using GTEventGenerator.Entities;
 
 namespace GTEventGenerator
 {
-    public class RaceEntry
+    public class EventEntry
     {
-        public bool IsAI { get; set; } = false;
+        public bool IsAI { get; set; }
+        public bool IsPresentEntry { get; set; }
 
         public string DriverName { get; set; } = "Unnamed";
         public string DriverRegion { get; set; } = "PDI";
@@ -219,7 +220,7 @@ namespace GTEventGenerator
         public Suspension Suspension { get; set; }
         public Transmission Transmission { get; set; }
 
-        public RaceEntry()
+        public EventEntry()
         {
             this.Delay = 0;
             this.raceBucket = 0;
@@ -234,17 +235,6 @@ namespace GTEventGenerator
             else
                 xml.WriteStartElement("entry_base");
 
-            xml.WriteElementFloat("initial_position", InitialVCoord);
-            xml.WriteElementInt("initial_velocity", InitialVelocity);
-
-            xml.WriteElementValue("driver_name", IsAI ? DriverName : "Player");
-            xml.WriteElementInt("player_no", IsAI ? -1 : 0);
-
-            if (IsAI)
-                xml.WriteElementValue("driver_region", DriverRegion);
-
-            xml.WriteElementInt("delay", Delay);
-
             if (!string.IsNullOrEmpty(CarLabel))
             {
                 xml.WriteStartElement("car");
@@ -253,16 +243,29 @@ namespace GTEventGenerator
                 xml.WriteEndElement();
             }
 
-            xml.WriteElementInt("race_class_id", 0);
-
-            if (IsAI)
+            if (!IsPresentEntry)
             {
-                xml.WriteElementInt("ai_skill", BaseSkill);
-                xml.WriteElementInt("ai_skill_accelerating", AccelSkill);
-                xml.WriteElementInt("ai_skill_breaking", BrakingSkill);
-                xml.WriteElementInt("ai_skill_cornering", CorneringSkill);
-                xml.WriteElementInt("ai_skill_starting", StartingSkill);
-                xml.WriteElementInt("ai_roughness", Roughness);
+                xml.WriteElementFloat("initial_position", InitialVCoord);
+                xml.WriteElementInt("initial_velocity", InitialVelocity);
+
+                xml.WriteElementValue("driver_name", IsAI ? DriverName : "Player");
+                xml.WriteElementInt("player_no", IsAI ? -1 : 0);
+
+                if (IsAI)
+                    xml.WriteElementValue("driver_region", DriverRegion);
+
+                xml.WriteElementInt("delay", Delay);
+                xml.WriteElementInt("race_class_id", 0);
+
+                if (IsAI)
+                {
+                    xml.WriteElementInt("ai_skill", BaseSkill);
+                    xml.WriteElementInt("ai_skill_accelerating", AccelSkill);
+                    xml.WriteElementInt("ai_skill_breaking", BrakingSkill);
+                    xml.WriteElementInt("ai_skill_cornering", CorneringSkill);
+                    xml.WriteElementInt("ai_skill_starting", StartingSkill);
+                    xml.WriteElementInt("ai_roughness", Roughness);
+                }
             }
 
             if (EngineStage != EngineNATuneState.NONE)
