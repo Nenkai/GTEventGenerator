@@ -70,7 +70,7 @@ namespace GTEventGenerator.Database
 
         public List<string> GetAllCourseNamesSorted()
         {
-            var res = ExecuteQuery("SELECT * FROM Courses");
+            var res = ExecuteQuery("SELECT * FROM Courses ORDER BY CourseName");
 
             List<string> list = new List<string>();
             while (res.Read())
