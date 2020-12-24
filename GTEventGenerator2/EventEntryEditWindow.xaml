@@ -20,7 +20,7 @@
                         </TextBlock>
                     </Label.ToolTip>
                 </Label>
-                <xctk:IntegerUpDown Name="iud_InitialVCoord" Value="{Binding InitialVCoord}" Margin="123,12,10,0" Height="22" Minimum="-99999" Maximum="99999" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" VerticalAlignment="Top"/>
+                <xctk:IntegerUpDown Name="iud_InitialVCoord" Value="{Binding InitialVCoord}" Margin="123,12,10,0" Height="22" Minimum="-1" Maximum="99999" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" VerticalAlignment="Top"/>
 
                 <Label Content="Initial Velocity (km/h)" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="86">
                     <Label.ToolTip>
@@ -32,7 +32,7 @@
                         </TextBlock>
                     </Label.ToolTip>
                 </Label>
-                <xctk:IntegerUpDown Name="iud_InitialVelocity" Value="{Binding InitialVelocity}" Margin="123,42,10,0" Height="22" Minimum="-1" Maximum="99999" UpdateValueOnEnterKey="True" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" VerticalAlignment="Top"/>
+                <xctk:IntegerUpDown Name="iud_InitialVelocity" Value="{Binding InitialVelocity}" Margin="123,42,10,0" Height="22" Minimum="-1" Maximum="1000" UpdateValueOnEnterKey="True" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" VerticalAlignment="Top"/>
 
                 <Label Content="Delay (in Seconds)" HorizontalAlignment="Left" Margin="10,69,0,0" VerticalAlignment="Top" Width="108">
                     <Label.ToolTip>
@@ -66,10 +66,40 @@
                     </Button.ToolTip>
                 </Button>
 
+                <Label Name="label_StartingType" Content="Starting Type" Height="28" Width="102" TabIndex="29" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="396" Margin="0,0,231,90" >
+                    <Label.ToolTip>
+                        <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Starting Type</TextBlock> <LineBreak />
+                                    Choose how the race will start. A grid start takes place from a standstill. <LineBreak/>
+                                    <LineBreak />
+                                    - <TextBlock FontWeight="Bold">Grid</TextBlock>: Traditional Grid Standstill Start (GRID)<LineBreak/>
+                                    - <TextBlock FontWeight="Bold">For Time Trial</TextBlock>: Starts behind the start line (automatically sets the position for you unless custom via Initial V Coord) (ATTACK)<LineBreak/>
+                                    - <TextBlock FontWeight="Bold">Rolling Start (Start Line)</TextBlock>: Starts while the cars are moving, Starts after crossing the Start Line (ROLLING)<LineBreak/>
+                                    - <TextBlock FontWeight="Bold">Rolling (Same Accel. as Own Car)</TextBlock>: Rolling with custom vstart with rolling_start_v (ROLLING2) <LineBreak/>
+                                    - <TextBlock FontWeight="Bold">Rolling (Define Start Time)</TextBlock>: Rolling with custom time to start (ROLLING3)<LineBreak/>
+                                    - <TextBlock FontWeight="Bold">Rolling (Define Start and Accel)</TextBlock>: Rolling with custom Entry Start Time and Entry Acceleration (ROLLING_NOLIMIT)<LineBreak/>
+                                    - <TextBlock FontWeight="Bold">Standing (Set Coordinates)</TextBlock>: Standing Start, with custom entry start coordinates (STANDING)<LineBreak/>
+                                    - <TextBlock FontWeight="Bold">Double-File Rolling (Left)</TextBlock>: Rolling start takes place while the cars are moving in two columns, Cars on the Left (ROLLING_L)<LineBreak/>
+                                    - <TextBlock FontWeight="Bold">Double-File Rolling (Right)</TextBlock>: Same as above, Cars on the Right (ROLLING_R)<LineBreak/>
+                                    - <TextBlock FontWeight="Bold">Pit Start</TextBlock>: Starting at Pits (PIT)<LineBreak/>
+                                    - <TextBlock FontWeight="Bold">PITWORK</TextBlock>: Undocumented (Unused?)<LineBreak/>
+                                    - <TextBlock FontWeight="Bold">Same Grid (collisions OFF)</TextBlock>: No info (SAME_GRID)<LineBreak/>
+                                    - <TextBlock FontWeight="Bold">Dispersed</TextBlock>: No info<LineBreak/>
+                                    - <TextBlock FontWeight="Bold">Drift Position (Standing)</TextBlock>: Take drift sector information from .cinf/menudb (COURSEINFO)<LineBreak/>
+                                    - <TextBlock FontWeight="Bold">Drift Position (Rolling)</TextBlock>: Same as above but rolling (COURSEINFO_ROLLING)<LineBreak/>
+                                    - <TextBlock FontWeight="Bold">Rolling Start - Dbl. File, Left Ahead</TextBlock>: No info (ROLLING_DL)<LineBreak/>
+                                    - <TextBlock FontWeight="Bold">Rolling Start - Dbl. File, Right Ahead</TextBlock>: No info (ROLLING_DR)<LineBreak/>
+                                    - <TextBlock FontWeight="Bold">FREE</TextBlock>: No info<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>:<TextBlock FontStyle="Italic">race->start_type</TextBlock>
+                                    </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <ComboBox Name="comboBox_StartingType" Height="21" Width="234" TabIndex="28" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_StartingType_SelectedIndexChanged" Canvas.Left="95" Canvas.Top="401" Margin="0,0,10,93" />
 
             </Grid>
         </GroupBox>
-        <GroupBox Header="AI Parameters" Margin="10,10,370,0" Height="290" VerticalAlignment="Top">
+        <GroupBox Name="grp_AIParameters" Header="AI Parameters" Margin="10,10,370,0" Height="290" VerticalAlignment="Top">
             <Grid>
                 <Label Content="Base Skill" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top" Width="92">
                     <Label.ToolTip>

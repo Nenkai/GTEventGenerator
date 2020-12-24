@@ -34,20 +34,19 @@ namespace GTEventGenerator
             InitializeComponent();
 
             _maxColors = maxColors;
-            if (!entry.IsAI)
-            {
-                iud_AccelSkill.IsEnabled = false;
-                iud_BaseSkill.IsEnabled = false;
-                iud_CorneringSkill.IsEnabled = false;
-                iud_BrakingSkill.IsEnabled = false;
-                iud_Roughness.IsEnabled = false;
-                iud_StartingSkill.IsEnabled = false;
-
-                tb_DriverName.IsEnabled = false;
-                tb_DriverCountry.IsEnabled = false;
-            }
+            grp_AIParameters.IsEnabled = entry.IsAI;
 
             iud_CarColorIndex.Value = entry.ColorIndex;
+
+            var startTypes = (StartType[])Enum.GetValues(typeof(StartType));
+            for (int i = 0; i < startTypes.Length; i++)
+            {
+                var s = (StartType)i;
+                string sName = s.Humanize();
+                comboBox_StartingType.Items.Add(sName);
+            }
+
+            comboBox_StartingType.SelectedIndex = (int)_entry.StartType;
         }
 
         private void iud_CarColorIndex_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -59,6 +58,9 @@ namespace GTEventGenerator
 
             _entry.ColorIndex = (int)iud_CarColorIndex.Value;
         }
+
+        private void comboBox_StartingType_SelectedIndexChanged(object sender, EventArgs e)
+            => _entry.StartType = (StartType)comboBox_StartingType.SelectedIndex;
 
         private void btn_CarSettings_Click(object sender, RoutedEventArgs e)
         {

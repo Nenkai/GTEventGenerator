@@ -23,7 +23,7 @@ namespace GTEventGenerator.Entities
                 {
                     var values = Enum.GetValues(typeof(FailCondition))
                         .Cast<int>()
-                        .Where(f => (f & (int)FailConditions) == f)
+                        .Where(f => f != (int)FailCondition.NONE && (f & (int)FailConditions) == f)
                         .ToList();
 
                     foreach (var value in values)
@@ -52,17 +52,18 @@ namespace GTEventGenerator.Entities
         }
     }
 
+    [Flags]
     public enum FailCondition
     {
         NONE,
-        WRONGWAY,
-        COURSE_OUT,
-        HIT_CAR,
-        HIT_CAR_HARD,
-        PYLON,
-        HIT_WALL,
-        HIT_WALL_HARD,
-        WRONGWAY_LOOSE,
+        WRONGWAY = 0x01,
+        COURSE_OUT = 0x02,
+        HIT_CAR = 0x04,
+        HIT_CAR_HARD = 0x08,
+        PYLON = 0x10,
+        HIT_WALL = 0x20,
+        HIT_WALL_HARD = 0x40,
+        WRONGWAY_LOOSE = 0x80,
     }
 }
 

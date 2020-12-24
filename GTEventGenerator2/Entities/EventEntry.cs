@@ -98,7 +98,7 @@ namespace GTEventGenerator
             get => _initialVelocity;
             set
             {
-                if (value <= 200 && value >= -1)
+                if (value <= 1000 && value >= -1)
                     _initialVelocity = value;
             }
         }
@@ -109,7 +109,7 @@ namespace GTEventGenerator
             get => _initialVCoord;
             set
             {
-                if (value <= 200)
+                if (value <= 99999 && value >= -1)
                     _initialVCoord = value;
             }
         }
@@ -208,6 +208,7 @@ namespace GTEventGenerator
         #endregion
         public string CarLabel { get; set; }
         public string ActualCarName { get; set; }
+        public StartType StartType { get; set; } = StartType.NONE;
 
         public int ColorIndex { get; set; }
         public TireType TireFront { get; set; } = TireType.NONE_SPECIFIED;
@@ -266,6 +267,9 @@ namespace GTEventGenerator
                     xml.WriteElementInt("ai_skill_starting", StartingSkill);
                     xml.WriteElementInt("ai_roughness", Roughness);
                 }
+
+                if (StartType != StartType.NONE)
+                    xml.WriteElementValue("start_type", StartType.ToString());
             }
 
             if (EngineStage != EngineNATuneState.NONE)

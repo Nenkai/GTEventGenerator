@@ -268,10 +268,10 @@ namespace GTEventGenerator.Entities
         RACING_SUPER_SOFT,
 
         [Description("Racing - Rain Intermediate")]
-        RACING_RAIN_INTERMEDIATE,
+        RAIN_INTERMEDIATE,
 
         [Description("Racing - Heavy Wet")]
-        RACING_HEAVY_WET,
+        RAIN_HEAVY_WET,
 
         [Description("Dirt Tyres")]
         DIRT,

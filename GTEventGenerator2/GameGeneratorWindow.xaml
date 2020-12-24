@@ -758,11 +758,12 @@
                                     </TextBlock>
                                 </CheckBox.ToolTip>
                             </CheckBox>
-                            <CheckBox Name="checkBox_ReplaceAtCourseout" Content="Replace At Course-Out" Height="24" Width="154" TabIndex="55" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.ReplaceAtCourseOut}" Canvas.Left="501" Canvas.Top="330">
+                            <CheckBox Name="checkBox_ReplaceAtCourseout" Content="Reset Car on Offtrack" Height="24" Width="154" TabIndex="55" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.ReplaceAtCourseOut}" Canvas.Left="501" Canvas.Top="330">
                                 <CheckBox.ToolTip>
                                     <TextBlock>
-                                    <TextBlock FontWeight="Bold" FontSize="14">Replace At Course-Out</TextBlock> <LineBreak />
-                                    Unknown/Undocumented<LineBreak/>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Reset Car on Offtrack</TextBlock> <LineBreak />
+                                    Whether the car gets reset after being offtrack for a certain amount of time.<LineBreak/>
+                                    Useful for lower difficulties events, where a crash would not respawn you on the track, causing more time loss.<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->replace_at_courseout</TextBlock>
                                     </TextBlock>
@@ -933,7 +934,8 @@
                                     <TextBlock FontWeight="Bold" FontSize="14">Fuel Consumption Multiplier</TextBlock> <LineBreak />
                                     Whether or not, and how quickly, fuel is consumed.<LineBreak/>
                                     In GT5 appears to be a bit - 1 = yes, 0 = no<LineBreak/>
-                                    In GT6 appears to be a bit - most likely a multiplier (e.g. 5 = 5x faster), 0 = off<LineBreak/> 
+                                    GT6 is a multiplier, 0 = off<LineBreak/>
+                                    - Based on tests (GT500), 40 = 1/4 of total fuel<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->consume_fuel</TextBlock>
                                     </TextBlock>
@@ -947,7 +949,9 @@
                                     <TextBlock FontWeight="Bold" FontSize="14">Tire Consumption Multiplier</TextBlock> <LineBreak />
                                     Whether or not, and how quickly, tires are consumed.<LineBreak/>
                                     In GT5 appears to be a bit - 1 = yes, 0 = no<LineBreak/>
-                                    In GT6 appears to be a bit - most likely a multiplier (e.g. 5 = 5x faster), 0 = off<LineBreak/> 
+                                    GT6 is a multiplier, 0 = off<LineBreak/>
+                                    - Based on tests (GT500), 100 = 1/5 of total tire wear after 2 laps, 200 = 2/5, etc<LineBreak/>
+
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->consume_tire</TextBlock>
                                     </TextBlock>
