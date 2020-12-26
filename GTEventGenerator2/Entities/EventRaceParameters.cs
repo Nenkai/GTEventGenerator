@@ -27,6 +27,7 @@ namespace GTEventGenerator.Entities
         public bool EnableDamage { get; set; }
         public bool EnablePit { get; set; }
         public bool Endless { get; set; }
+        public int? EventStartV { get; set; }
         public float? EventGoalV { get; set; }
         public float? EventGoalWidth { get; set; }
         public FinishType FinishType { get; set; } = FinishType.TARGET;
@@ -117,6 +118,7 @@ namespace GTEventGenerator.Entities
             xml.WriteElementBool("enable_damage", EnableDamage);
             xml.WriteElementBool("enable_pit", EnablePit);
             xml.WriteElementBool("endless", Endless);
+            xml.WriteElementIntIfSet("event_start_v", EventStartV);
             xml.WriteElementFloatOrNull("event_goal_v", EventGoalV);
             xml.WriteElementFloatOrNull("event_goal_width", EventGoalWidth);
             xml.WriteElementValue("finish_type", FinishType.ToString());

@@ -33,13 +33,24 @@ namespace GTEventGenerator
         private void comboBox_FinishType_SelectedIndexChanged(object sender, EventArgs e)
             => CurrentEvent.RaceParameters.FinishType = (FinishType)comboBox_FinishType.SelectedIndex;
 
+        private void numericUpDown_StartVCoord_ValueChanged(object sender, EventArgs e)
+        {
+            if (CurrentEvent is null)
+                return;
+
+            if (numericUpDown_StartVCoord.Value is null)
+                numericUpDown_StartVCoord.Value = -1;
+
+            CurrentEvent.RaceParameters.EventStartV = (int)numericUpDown_StartVCoord.Value;
+        }
+
         private void numericUpDown_FinishVCoord_ValueChanged(object sender, EventArgs e)
         {
             if (CurrentEvent is null)
                 return;
 
             if (numericUpDown_FinishVCoord.Value is null)
-                numericUpDown_FinishVCoord.Value = 0;
+                numericUpDown_FinishVCoord.Value = -1;
 
             CurrentEvent.RaceParameters.EventGoalV = (int)numericUpDown_FinishVCoord.Value;
         }
@@ -50,7 +61,7 @@ namespace GTEventGenerator
                 return;
 
             if (numericUpDown_FinishWidth.Value is null)
-                numericUpDown_FinishWidth.Value = 0;
+                numericUpDown_FinishWidth.Value = -1;
 
             CurrentEvent.RaceParameters.EventGoalWidth = (int)numericUpDown_FinishWidth.Value;
         }

@@ -950,7 +950,7 @@
                                     Whether or not, and how quickly, tires are consumed.<LineBreak/>
                                     In GT5 appears to be a bit - 1 = yes, 0 = no<LineBreak/>
                                     GT6 is a multiplier, 0 = off<LineBreak/>
-                                    - Based on tests (GT500), 100 = 1/5 of total tire wear after 2 laps, 200 = 2/5, etc<LineBreak/>
+                                    - Based on tests (GT500), 80 = 1/5 of total tire wear after 2 laps, 150 = 2/5, etc<LineBreak/>
 
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->consume_tire</TextBlock>
@@ -1149,7 +1149,21 @@
 
                             <xctk:IntegerUpDown Name="numericUpDown_FinishWidth" Height="20" Width="70" ValueChanged="numericUpDown_FinishWidth_ValueChanged" Canvas.Top="99" Canvas.Left="178" Minimum="-1" Maximum="100000" Value="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                            <Label Name="label_FinishVCoord" Content="Finish Coordinates (in M)" Height="28" Width="167" TabIndex="7" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="63" >
+                            <Label Name="label_StartVCoord" Content="Start Coord" Height="28" Width="84" TabIndex="7" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="63" >
+                                <Label.ToolTip>
+                                    <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Start VCoord</TextBlock> <LineBreak />
+                                    Custom start location.<LineBreak/>
+                                    Meters are relative to the track. 1000 means 1km after the start line. <LineBreak/>
+                                    Set to -1 for none.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->event_start_v</TextBlock>
+                                    </TextBlock>
+                                </Label.ToolTip>
+                            </Label>
+                            <xctk:IntegerUpDown Name="numericUpDown_StartVCoord" Height="20" Width="53" ValueChanged="numericUpDown_FinishVCoord_ValueChanged" Canvas.Left="95" Canvas.Top="66" Value="-1" Maximum="100000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                            <Label Name="label_FinishVCoord" Content="Finish" Height="28" Width="43" TabIndex="7" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="153" Canvas.Top="63" >
                                 <Label.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Finish VCoord</TextBlock> <LineBreak />
@@ -1161,7 +1175,7 @@
                                     </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            <xctk:IntegerUpDown Name="numericUpDown_FinishVCoord" Height="20" Width="70" ValueChanged="numericUpDown_FinishVCoord_ValueChanged" Canvas.Left="178" Canvas.Top="66" Value="-1" Maximum="100000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:IntegerUpDown Name="numericUpDown_FinishVCoord" Height="20" Width="52" ValueChanged="numericUpDown_FinishVCoord_ValueChanged" Canvas.Left="196" Canvas.Top="66" Value="-1" Maximum="100000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <ComboBox Name="comboBox_FinishType" Height="22" Width="154" TabIndex="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_FinishType_SelectedIndexChanged" Canvas.Left="95" Canvas.Top="36" />
                             <Label Name="label_FinishType" Content="Finish Type" Height="27" Width="74" TabIndex="4" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="7" Canvas.Top="32" >
