@@ -5,7 +5,9 @@
 	    Title="Gran Turismo 5/6 Event Editor" Width="960" Height="621"
         ResizeMode="CanMinimize"
         Loaded="GameGenerator_Load"
-        Closing="Window_Closing">
+        Closing="Window_Closing"
+        AllowDrop="True" 
+        Drop="Window_Drop" >
     <DockPanel Background="#262626">
         <DockPanel DockPanel.Dock="Top">
             <Menu Name="menuStrip1" Height="22" HorizontalAlignment="Stretch" >

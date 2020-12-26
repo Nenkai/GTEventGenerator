@@ -205,13 +205,16 @@ namespace GTEventGenerator
 
         private void importEventListToolStripMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult importOverwrite = MessageBox.Show("This will overwrite the folder you are currently editing. Would you like to save your folder now?",
-                "Import Folder", MessageBoxButton.YesNoCancel, MessageBoxImage.Information);
+            if (GameParameter.Events.Any())
+            {
+                MessageBoxResult importOverwrite = MessageBox.Show("This will overwrite the folder you are currently editing. Would you like to save your folder now?",
+                    "Import Folder", MessageBoxButton.YesNoCancel, MessageBoxImage.Information);
 
-            if (importOverwrite == MessageBoxResult.Yes)
-                btnEventGenerate_Click(sender, e);
-            else if (importOverwrite == MessageBoxResult.Cancel)
-                return;
+                if (importOverwrite == MessageBoxResult.Yes)
+                    btnEventGenerate_Click(sender, e);
+                else if (importOverwrite == MessageBoxResult.Cancel)
+                    return;
+            }
 
             var openFile = new OpenFileDialog();
             openFile.InitialDirectory = Directory.GetCurrentDirectory();
@@ -220,35 +223,7 @@ namespace GTEventGenerator
             openFile.ShowDialog();
 
             if (openFile.FileName.Contains(".xml"))
-            {
-                GameParameter = ImportFromEventList(openFile.FileName);
-
-                // Set names
-                for (int i = 0; i < GameParameter.Events.Count; i++)
-                {
-                    var evnt = GameParameter.Events[i];
-                    if (!string.IsNullOrEmpty(evnt.Information.Titles["GB"])) // Grab GB one if provided
-                    {
-                        GameParameter.Events[i].Name = evnt.Information.Titles["GB"];
-                    }
-                    else
-                    {
-                        GameParameter.Events[i].Name = $"Event {i + 1}";
-                        GameParameter.Events[i].Information.SetTitle($"Event {i + 1}");
-                    }
-                }
-
-                OnNewEventSelected(0);
-                ReloadEventLists();
-                UpdateEventListing();
-
-                if (GameParameter.Events != null && GameParameter.Events.Count > 0)
-                    ToggleEventControls(true);
-                else
-                    ToggleEventControls(false);
-
-                RefreshFolderControls();
-            }
+                HandleNewEventList(openFile.FileName);
         }
 
         private void newEventToolStripMenuItem_Click(object sender, EventArgs e)
@@ -274,13 +249,16 @@ namespace GTEventGenerator
 
         private void importEventToolStripMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult importOverwrite = MessageBox.Show("This will overwrite the folder you are currently editing. Would you like to save your folder now?",
-                "Import Folder", MessageBoxButton.YesNoCancel, MessageBoxImage.Information);
+            if (GameParameter.Events.Any())
+            {
+                MessageBoxResult importOverwrite = MessageBox.Show("This will overwrite the folder you are currently editing. Would you like to save your folder now?",
+                    "Import Folder", MessageBoxButton.YesNoCancel, MessageBoxImage.Information);
 
-            if (importOverwrite == MessageBoxResult.Yes)
-                btnEventGenerate_Click(sender, e);
-            else if (importOverwrite == MessageBoxResult.Cancel)
-                return;
+                if (importOverwrite == MessageBoxResult.Yes)
+                    btnEventGenerate_Click(sender, e);
+                else if (importOverwrite == MessageBoxResult.Cancel)
+                    return;
+            }
 
             var openFile = new OpenFileDialog();
             openFile.InitialDirectory = Directory.GetCurrentDirectory();
@@ -289,34 +267,90 @@ namespace GTEventGenerator
             openFile.ShowDialog();
 
             if (openFile.FileName.Contains(".xml"))
-            {
-                try
-                {
-                    GameParameter = ImportFolder(openFile.FileName);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Could not import folder\nError: {ex.Message}",
-                        "Import failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-
-                OnNewEventSelected(0);
-                ReloadEventLists();
-                UpdateEventListing();
-
-                if (GameParameter.Events != null && GameParameter.Events.Count > 0)
-                    ToggleEventControls(true);
-                else
-                    ToggleEventControls(false);
-
-                RefreshFolderControls();
-            }
+                HandleImportFolder(openFile.FileName);
         }
 
         private void exit_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void decryptTedMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var openFile = new OpenFileDialog();
+            openFile.Filter = "Course Maker File (*.ted)|*.ted";
+            openFile.Title = "Import Course Maker File to decrypt";
+            if (openFile.ShowDialog() == true)
+            {
+                if (!CourseMakerUtil.Decrypt(openFile.FileName))
+                {
+                    MessageBox.Show("Could not decrypt TED file - File is already decrypted or not a valid TED Custom track.", "Error",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    MessageBox.Show("File successfully decrypted.", "Completed",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+        }
+
+        private void encryptTedMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var openFile = new OpenFileDialog();
+            openFile.Filter = "Course Maker File (*.ted)|*.ted";
+            openFile.Title = "Import Course Maker File to encrypt";
+            if (openFile.ShowDialog() == true)
+            {
+                if (!CourseMakerUtil.Encrypt(openFile.FileName))
+                {
+                    MessageBox.Show("Could not encrypt TED file - File is already encrypted or not a valid TED Custom track.", "Error",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    MessageBox.Show("File successfully encrypted.", "Completed",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+        }
+
+        public void DiscordRichPresenceMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.SetSettingValue("Discord_Presence_Enabled", DiscordRichPresenceMenuItem.IsChecked);
+            if (DiscordRichPresenceMenuItem.IsChecked)
+            {
+                if (!Client.IsInitialized)
+                    Client.Initialize();
+                UpdateDiscordPresence();
+            }
+            else
+            {
+                if (Client.IsInitialized)
+                    Client.Deinitialize();
+            }
+        }
+
+        private void Window_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                if (files.Length > 1 || !files[0].EndsWith(".xml"))
+                    return;
+
+                // Quickly check the file, not the most efficient
+                var txt = File.ReadAllText(files[0]);
+                if (txt.Contains("<event_list>"))
+                    HandleImportFolder(files[0]);
+                else if (txt.Contains("<GameParameter version="))
+                    HandleNewEventList(files[0]);
+                else
+                {
+                    MessageBox.Show("Not a recognized folder or event list", "Could not load XML file",
+                       MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
         }
 
         private void minimizeXMLToolStripMenuItem_Checked(object sender, RoutedEventArgs e)
@@ -1208,8 +1242,6 @@ namespace GTEventGenerator
             }
         }
 
-        #endregion
-
 
         public void UpdateDiscordPresence()
         {
@@ -1238,60 +1270,62 @@ namespace GTEventGenerator
             }
         }
 
-        private void decryptTedMenuItem_Click(object sender, RoutedEventArgs e)
+        public void HandleImportFolder(string fileName)
         {
-            var openFile = new OpenFileDialog();
-            openFile.Filter = "Course Maker File (*.ted)|*.ted";
-            openFile.Title = "Import Course Maker File to decrypt";
-            if (openFile.ShowDialog() == true)
+            try
             {
-                if (!CourseMakerUtil.Decrypt(openFile.FileName))
-                {
-                    MessageBox.Show("Could not decrypt TED file - File is already decrypted or not a valid TED Custom track.", "Error", 
-                        MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-                else
-                {
-                    MessageBox.Show("File successfully decrypted.", "Completed",
-                        MessageBoxButton.OK, MessageBoxImage.Information);
-                }
+                GameParameter = ImportFolder(fileName);
             }
-        }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Could not import folder\nError: {ex.Message}",
+                    "Import failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
-        private void encryptTedMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            var openFile = new OpenFileDialog();
-            openFile.Filter = "Course Maker File (*.ted)|*.ted";
-            openFile.Title = "Import Course Maker File to encrypt";
-            if (openFile.ShowDialog() == true)
-            {
-                if (!CourseMakerUtil.Encrypt(openFile.FileName))
-                {
-                    MessageBox.Show("Could not encrypt TED file - File is already encrypted or not a valid TED Custom track.", "Error",
-                        MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-                else
-                {
-                    MessageBox.Show("File successfully encrypted.", "Completed",
-                        MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-            }
-        }
+            OnNewEventSelected(0);
+            ReloadEventLists();
+            UpdateEventListing();
 
-        public void DiscordRichPresenceMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            Settings.SetSettingValue("Discord_Presence_Enabled", DiscordRichPresenceMenuItem.IsChecked);
-            if (DiscordRichPresenceMenuItem.IsChecked)
-            {
-                if (!Client.IsInitialized)
-                    Client.Initialize();
-                UpdateDiscordPresence();
-            }
+            if (GameParameter.Events != null && GameParameter.Events.Count > 0)
+                ToggleEventControls(true);
             else
-            {
-                if (Client.IsInitialized)
-                    Client.Deinitialize();
-            }
+                ToggleEventControls(false);
+
+            RefreshFolderControls();
         }
+
+        private void HandleNewEventList(string fileName)
+        {
+            GameParameter = ImportFromEventList(fileName);
+
+            // Set names
+            for (int i = 0; i < GameParameter.Events.Count; i++)
+            {
+                var evnt = GameParameter.Events[i];
+                if (!string.IsNullOrEmpty(evnt.Information.Titles["GB"])) // Grab GB one if provided
+                {
+                    GameParameter.Events[i].Name = evnt.Information.Titles["GB"];
+                }
+                else
+                {
+                    GameParameter.Events[i].Name = $"Event {i + 1}";
+                    GameParameter.Events[i].Information.SetTitle($"Event {i + 1}");
+                }
+            }
+
+            OnNewEventSelected(0);
+            ReloadEventLists();
+            UpdateEventListing();
+
+            if (GameParameter.Events != null && GameParameter.Events.Count > 0)
+                ToggleEventControls(true);
+            else
+                ToggleEventControls(false);
+
+            RefreshFolderControls();
+        }
+
+        #endregion
     }
 }
