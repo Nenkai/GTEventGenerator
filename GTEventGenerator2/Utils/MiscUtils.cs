@@ -66,8 +66,9 @@ namespace GTEventGenerator.Utils
                 d.SetInput(input);
                 d.Finish();
 
-                int count = d.Deflate(input);
-                bs.Write(input, 0, count);
+                byte[] output = new byte[input.Length];
+                int count = d.Deflate(output);
+                bs.Write(output, 0, count);
                 return ms.ToArray();
             }
         }
