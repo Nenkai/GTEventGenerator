@@ -1155,7 +1155,7 @@
                                 <Label.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Start VCoord</TextBlock> <LineBreak />
-                                    Custom start location.<LineBreak/>
+                                    Custom start location. <TextBlock FontWeight="Bold">GT6 only, this seems unused/unimplemented (?) - Prefer using entry specific start VCoord instead.</TextBlock><LineBreak/>
                                     Meters are relative to the track. 1000 means 1km after the start line. <LineBreak/>
                                     Set to -1 for none.<LineBreak/>
                                     <LineBreak/>
