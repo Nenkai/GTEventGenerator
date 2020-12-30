@@ -10,40 +10,148 @@
     <Grid Background="#262626">
         <GroupBox Header="Car Settings (Advanced Users)" Margin="10,10,0,10" HorizontalAlignment="Left" Width="437">
             <Grid>
-                <Label Content="Engine Tuning Stage" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <Label Content="Engine Tuning Stage" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="Auto">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Engine Tuning Stage</TextBlock> <LineBreak />
+                           Sets the car's engine stage.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->engine_na_tune_stage</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
                 <ComboBox Name="cb_EngineStage" HorizontalAlignment="Left" Margin="134,14,0,0" VerticalAlignment="Top" Width="281" SelectionChanged="cb_EngineStage_SelectionChanged"/>
 
-                <Label Content="Turbo" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <Label Content="Turbo" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="Auto">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Turbo</TextBlock> <LineBreak />
+                           Sets the car's turbo stage.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->engine_turbo_kit</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
                 <ComboBox Name="cb_Turbo" HorizontalAlignment="Left" Margin="134,44,0,0" VerticalAlignment="Top" Width="281" SelectionChanged="cb_Turbo_SelectionChanged"/>
 
-                <Label Content="Computer" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <Label Content="Computer" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" Width="Auto">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Computer</TextBlock> <LineBreak />
+                           Sets the car's computer.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->engine_computer</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
                 <ComboBox Name="cb_Computer" HorizontalAlignment="Left" Margin="134,76,0,0" VerticalAlignment="Top" Width="281" SelectionChanged="cb_Computer_SelectionChanged"/>
 
-                <Label Content="Suspension" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <Label Content="Suspension" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top" Width="Auto">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Suspension</TextBlock> <LineBreak />
+                           Sets the car's suspension.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->suspension</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
                 <ComboBox Name="cb_Suspension" HorizontalAlignment="Left" Margin="134,107,0,0" VerticalAlignment="Top" Width="281" SelectionChanged="cb_Suspension_SelectionChanged"/>
 
-                <Label Content="Transmission" HorizontalAlignment="Left" Margin="10,134,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <Label Content="Transmission" HorizontalAlignment="Left" Margin="10,134,0,0" VerticalAlignment="Top" Width="Auto">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Transmission</TextBlock> <LineBreak />
+                           Sets the car's transmission.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->transmission</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
                 <ComboBox Name="cb_Transmission" HorizontalAlignment="Left" Margin="134,138,0,0" VerticalAlignment="Top" Width="281" SelectionChanged="cb_Transmission_SelectionChanged"/>
 
-                <Label Content="Exhaust" HorizontalAlignment="Left" Margin="10,165,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <Label Content="Exhaust" HorizontalAlignment="Left" Margin="10,165,0,0" VerticalAlignment="Top" Width="Auto">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Exhaust</TextBlock> <LineBreak />
+                           Sets the car's exhaust.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->muffler</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
                 <ComboBox Name="cb_Exhaust" HorizontalAlignment="Left" Margin="134,169,0,0" VerticalAlignment="Top" Width="281" SelectionChanged="cb_Exhaust_SelectionChanged"/>
 
-                <Label Content="Max Gear Speed" HorizontalAlignment="Left" Margin="10,196,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <Label Content="Max Gear Speed" HorizontalAlignment="Left" Margin="10,196,0,0" VerticalAlignment="Top" Width="Auto">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Max Gear Speed</TextBlock> <LineBreak />
+                           Set the max speed (in km/h) for the gears. May be limited depending on the car.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->gear_max_speed</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
                 <xctk:IntegerUpDown Value="{Binding MaxGearSpeed}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="114,200,0,0" Height="20" Width="77" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                <Label Content="Power Limiter (%)" HorizontalAlignment="Left" Margin="234,200,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <Label Content="Power Limiter (%)" HorizontalAlignment="Left" Margin="234,200,0,0" VerticalAlignment="Top" Width="Auto">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Power Limiter</TextBlock> <LineBreak />
+                           Sets the car's power limiter restriction. May conflict or override max gear speed.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->power_limiter</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
                 <xctk:SingleUpDown Value="{Binding PowerLimiter}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="346,203,0,0" Height="20" Width="69" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                <Label Content="Ballast Weight" HorizontalAlignment="Left" Margin="11,262,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <Label Content="Ballast Weight" HorizontalAlignment="Left" Margin="11,262,0,0" VerticalAlignment="Top" Width="Auto">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Ballast Weight</TextBlock> <LineBreak />
+                           Sets the car's ballast weight. (Normally 0-200).<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->ballast_weight</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
                 <xctk:IntegerUpDown Value="{Binding BallastWeight}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="114,265,0,0" Height="20" Width="77" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                <Label Content="Position" HorizontalAlignment="Left" Margin="234,262,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <Label Content="Position" HorizontalAlignment="Left" Margin="234,262,0,0" VerticalAlignment="Top" Width="Auto">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Ballast Position</TextBlock> <LineBreak />
+                           Sets the car's ballast position. (Normally -50-50).<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->ballast_position</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
                 <Slider Value="{Binding BallastPosition}" HorizontalAlignment="Left" Margin="292,265,0,0" VerticalAlignment="Top" Width="123" Minimum="-200" Maximum="200"/>
 
-                <Label Content="Downforce Front" HorizontalAlignment="Left" Margin="10,227,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <Label Content="Downforce Front" HorizontalAlignment="Left" Margin="10,227,0,0" VerticalAlignment="Top" Width="Auto">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Downforce Front</TextBlock> <LineBreak />
+                           Sets the car's front downforce.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->downforce_f</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
                 <xctk:IntegerUpDown Value="{Binding DownforceFront}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="114,231,0,0" Height="20" Width="77" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                <Label Content="Downforce Rear" HorizontalAlignment="Left" Margin="234,231,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <Label Content="Downforce Rear" HorizontalAlignment="Left" Margin="234,231,0,0" VerticalAlignment="Top" Width="Auto">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Downforce Front</TextBlock> <LineBreak />
+                           Sets the car's front downforce.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->downforce_r</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
                 <xctk:IntegerUpDown Value="{Binding DownforceRear}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="346,234,0,0" Height="20" Width="69" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                 <Label Content="Body Paint ID" HorizontalAlignment="Left" Margin="9,295,0,0" VerticalAlignment="Top" Width="Auto">
@@ -82,16 +190,52 @@
                 </Label>
                 <xctk:IntegerUpDown Value="{Binding WheelID}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="114,324,0,0" Height="20" Width="77" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                <Label Content="Wheel Inch" HorizontalAlignment="Left" Margin="234,321,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <Label Content="Wheel Inch" HorizontalAlignment="Left" Margin="234,321,0,0" VerticalAlignment="Top" Width="Auto">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Wheel Inch</TextBlock> <LineBreak />
+                           Undocumented<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->wheel_inch_up</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
                 <xctk:IntegerUpDown Value="{Binding WheelInchUp}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="344,324,0,0" Height="20" Width="71" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                <Label Content="Aero Kit" HorizontalAlignment="Left" Margin="11,352,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <Label Content="Aero Kit" HorizontalAlignment="Left" Margin="11,352,0,0" VerticalAlignment="Top" Width="Auto">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Aero Kit</TextBlock> <LineBreak />
+                           Undocumented<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->aero_1</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
                 <xctk:IntegerUpDown Value="{Binding AeroKit}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="114,355,0,0" Height="20" Width="77" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                <Label Content="Flat Floor" HorizontalAlignment="Left" Margin="10,383,0,0" VerticalAlignment="Top" Width="63"/>
+                <Label Content="Flat Floor" HorizontalAlignment="Left" Margin="10,383,0,0" VerticalAlignment="Top" Width="63">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Flat Floor</TextBlock> <LineBreak />
+                           Undocumented<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->aero_2</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
                 <xctk:IntegerUpDown Value="{Binding FlatFloor}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="114,386,0,0" Height="20" Width="77" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                <Label Content="Other (Aero)" HorizontalAlignment="Left" Margin="11,414,0,0" VerticalAlignment="Top" Width="Auto"/>
+                <Label Content="Other (Aero)" HorizontalAlignment="Left" Margin="11,414,0,0" VerticalAlignment="Top" Width="Auto">
+                    <Label.ToolTip>
+                        <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Other (Aero)</TextBlock> <LineBreak />
+                           Undocumented<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->aero_3</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
                 <xctk:IntegerUpDown Value="{Binding AeroOther}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="114,418,0,0" Height="20" Width="77" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                 <Label Content="Sticker Type" HorizontalAlignment="Left" Margin="234,352,0,0" VerticalAlignment="Top" Width="Auto"/>
