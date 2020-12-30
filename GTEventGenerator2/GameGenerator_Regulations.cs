@@ -286,7 +286,8 @@ namespace GTEventGenerator
 
             lb_AllowedCategories.Items.Add(cb_CarCategories.SelectedItem);
 
-            CurrentEvent.Regulations.AllowedCategories.Add((CarCategoryRestriction)cb_CarCategories.SelectedIndex - 1);
+            CurrentEvent.Regulations.AllowedCategories.Add(
+                EventRegulations.CategoryDefinitions.FirstOrDefault(c => c.Value == (string)cb_CarCategories.SelectedItem).Key);
 
             cb_CarCategories.Items.Remove(cb_CarCategories.SelectedItem);
             cb_CarCategories.SelectedIndex = 0;

@@ -33,6 +33,14 @@ namespace GTEventGenerator.Entities
             {"NZ", "New Zealand" },
         };
 
+        public static Dictionary<CarCategoryRestriction, string> CategoryDefinitions = new Dictionary<CarCategoryRestriction, string>()
+        {
+            {CarCategoryRestriction.NORMAL, "Normal Cars" },
+            {CarCategoryRestriction.RACING, "Racing Cars"},
+            {CarCategoryRestriction.TUNING, "Tuned Cars"},
+            {CarCategoryRestriction.CONCEPT, "Concept Cars"},
+        };
+
         public bool NeedsPopulating { get; set; } = true;
 
         public List<string> AllowedManufacturers { get; set; }
