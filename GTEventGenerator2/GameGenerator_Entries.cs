@@ -263,6 +263,7 @@ namespace GTEventGenerator
         public void button_RemovePlayerEntry_Click(object sender, RoutedEventArgs e)
         {
             label_PlayerRentedCar.Content = "No custom player entry set - Player will not use a rented Car";
+            CurrentEvent.Entries.Player = null;
 
             button_EditPlayerEntry.IsEnabled = false;
             button_RemovePlayerEntry.IsEnabled = false;
