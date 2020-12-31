@@ -750,7 +750,7 @@
                             <ComboBox Name="comboBox_LineGhostRecordType" Height="21" Width="86" TabIndex="58" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_LineGhostRecordType_SelectedIndexChanged" Canvas.Left="401" Canvas.Top="122" />
                             <Label Name="label_LineGhostRecordType" Height="26" Width="136" TabIndex="57" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="260" Canvas.Top="119" 
                                    ToolTip="The way ghost lines will show, if enabled. (XML: race->line_ghost_record_type)">Line Ghost Record Type</Label>
-                            <CheckBox Name="checkBox_GhostEnabled" Content="Ghost On/Off" Height="24" Width="154" TabIndex="55" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.WithGhost}" Canvas.Left="501" Canvas.Top="300" >
+                            <CheckBox Name="checkBox_GhostEnabled" Content="Ghost On/Off" Height="24" Width="154" TabIndex="55" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.WithGhost}" Canvas.Left="501" Canvas.Top="271" >
                                 <CheckBox.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Ghost On/Off</TextBlock> <LineBreak />
@@ -760,7 +760,7 @@
                                     </TextBlock>
                                 </CheckBox.ToolTip>
                             </CheckBox>
-                            <CheckBox Name="checkBox_ReplaceAtCourseout" Content="Reset Car on Offtrack" Height="24" Width="154" TabIndex="55" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.ReplaceAtCourseOut}" Canvas.Left="501" Canvas.Top="330">
+                            <CheckBox Name="checkBox_ReplaceAtCourseout" Content="Reset Car on Offtrack" Height="24" Width="154" TabIndex="55" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.ReplaceAtCourseOut}" Canvas.Left="501" Canvas.Top="300">
                                 <CheckBox.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Reset Car on Offtrack</TextBlock> <LineBreak />
@@ -772,7 +772,7 @@
                                 </CheckBox.ToolTip>
                             </CheckBox>
 
-                            <CheckBox Name="checkBox_OnlineOn" Content="Online On" Height="24" Width="154" TabIndex="54" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.OnlineOn}" Canvas.Left="501" Canvas.Top="271" >
+                            <CheckBox Name="checkBox_OnlineOn" Content="Online On" Height="24" Width="154" TabIndex="54" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.OnlineOn}" Canvas.Left="501" Canvas.Top="242" >
                                 <CheckBox.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Online On</TextBlock> <LineBreak />
@@ -783,7 +783,7 @@
                                 </CheckBox.ToolTip>
                             </CheckBox>
 
-                            <CheckBox Name="checkBox_PenaltyNoReset" Content="Penalty No Level" Height="24" Width="154" TabIndex="52" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.PenaltyNoLevel}" Canvas.Left="501" Canvas.Top="242" >
+                            <CheckBox Name="checkBox_PenaltyNoReset" Content="Penalty No Level" Height="24" Width="154" TabIndex="52" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.PenaltyNoLevel}" Canvas.Left="501" Canvas.Top="213" >
                                 <CheckBox.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Penalty No Level</TextBlock> <LineBreak />
@@ -794,7 +794,7 @@
                                 </CheckBox.ToolTip>
                             </CheckBox>
 
-                            <CheckBox Name="checkBox_BoostFlag" Content="Boost Flag" Height="24" Width="154" TabIndex="51" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.BoostFlag}" Canvas.Left="501" Canvas.Top="213" >
+                            <CheckBox Name="checkBox_BoostFlag" Content="Boost Flag" Height="24" Width="154" TabIndex="51" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.BoostFlag}" Canvas.Left="501" Canvas.Top="184" >
                                 <CheckBox.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Boost Flag</TextBlock> <LineBreak />
@@ -804,12 +804,13 @@
                                     </TextBlock>
                                 </CheckBox.ToolTip>
                             </CheckBox>
-                            <CheckBox Name="checkBox_ImmediateFinish" Content="Immediate Finish" Height="24" Width="154" TabIndex="50" HorizontalAlignment="Right" 
-                                          VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.ImmediateFinish}" Canvas.Left="501" Canvas.Top="184" >
+                            <CheckBox Name="checkBox_ImmediateFinish" Content="Immediate" Height="24" Width="79" TabIndex="50" HorizontalAlignment="Right" 
+                                          VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.ImmediateFinish}" Canvas.Left="170" Canvas.Top="223" >
                                 <CheckBox.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Immediate Finish</TextBlock> <LineBreak />
-                                    Undocumented/Unknown<LineBreak/>
+                                    Whether an event that is set to complete by time will complete immediately once the timer reaches 0<LineBreak/>
+                                    Or the "final" lap has to be completed.<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->immediate_finish</TextBlock>
                                     </TextBlock>
@@ -1090,12 +1091,13 @@
                                     <TextBlock FontWeight="Bold" FontSize="14">Minutes to Finish</TextBlock> <LineBreak />
                                     Amount of minutes before the event ends (excluding last lap), if the Complete Type is set to 'By Time'.<LineBreak/>
                                     If you are not using 'By Time', set to 0.<LineBreak/>
+                                    An event is considered to be endurance (save feature) if the minutes are above 60 (1 hour).<LineBreak/>
                                     <LineBreak/>
-                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->race_limit_minutes</TextBlock>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->race_limit_minute</TextBlock>
                                     </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            <xctk:IntegerUpDown Name="numericUpDown_MinutesToFinish" Height="20" Width="129" Canvas.Left="119" Canvas.Top="225" ValueChanged="numericUpDown_MinutesToFinish_ValueChanged" Value="0" Maximum="3000" Minimum="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:IntegerUpDown Name="numericUpDown_MinutesToFinish" Height="20" Width="46" Canvas.Left="119" Canvas.Top="225" ValueChanged="numericUpDown_MinutesToFinish_ValueChanged" Value="0" Maximum="3000" Minimum="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_LapsToFinish" Content="No. of Laps" Height="27" Width="122" TabIndex="14" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="7" Canvas.Top="188">
                                 <Label.ToolTip>
@@ -1103,6 +1105,7 @@
                                     <TextBlock FontWeight="Bold" FontSize="14">No. of Laps</TextBlock> <LineBreak />
                                     Amount of laps before the event ends, if the Complete Type is set to 'By Laps'.<LineBreak/>
                                     If you are not using 'By Laps', set to 0.<LineBreak/>
+                                    An event is considered to be endurance (save feature) if the laps are above 50.<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->race_limit_laps</TextBlock>
                                     </TextBlock>

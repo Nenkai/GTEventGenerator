@@ -140,7 +140,7 @@ namespace GTEventGenerator.Entities
             xml.WriteElementInt("penalty_level", (int)PenaltyLevel);
             xml.WriteElementBool("penalty_no_level", PenaltyNoLevel);
             xml.WriteElementInt("race_limit_laps", LapCount);
-            xml.WriteElementInt("race_limit_minutes", MinutesCount);
+            xml.WriteElementInt("race_limit_minute", MinutesCount);
             xml.WriteElementValue("race_type", RaceType.ToString());
             xml.WriteElementValue("start_type", StartType.ToString());
             xml.WriteElementFloat("time_progress_speed", TimeProgressSpeed);
@@ -278,7 +278,7 @@ namespace GTEventGenerator.Entities
                         PenaltyNoLevel = raceNode.ReadValueBool(); break;
                     case "race_limit_laps": 
                         LapCount = raceNode.ReadValueInt(); break;
-                    case "race_limit_minutes": 
+                    case "race_limit_minute": 
                         MinutesCount = raceNode.ReadValueInt(); break;
                     case "race_type":
                         RaceType = raceNode.ReadValueEnum<RaceType>(); break;
