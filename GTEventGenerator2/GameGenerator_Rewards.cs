@@ -25,7 +25,7 @@ namespace GTEventGenerator
             => CurrentEvent.Rewards.ParticipationPresentType = (ParticipationPresentType)cb_RewardParticipationType.SelectedIndex;
 
         private void cb_RewardPlacementType_SelectionChanged(object sender, RoutedEventArgs e)
-            => CurrentEvent.Rewards.PresentType = (PresentOrderType)cb_RewardPlacementType.SelectedIndex;
+            => CurrentEvent.Rewards.PresentType = (RewardPresentType)cb_RewardPlacementType.SelectedIndex;
 
         private void btnCreditRewards_Click(object sender, RoutedEventArgs e)
         {
@@ -231,10 +231,10 @@ namespace GTEventGenerator
         {
             if (cb_RewardPlacementType.Items.Count == 0)
             {
-                var types = (PresentOrderType[])Enum.GetValues(typeof(PresentOrderType));
+                var types = (RewardPresentType[])Enum.GetValues(typeof(RewardPresentType));
                 for (int i = 0; i < types.Length; i++)
                 {
-                    var t = (PresentOrderType)i;
+                    var t = (RewardPresentType)i;
                     string tName = t.Humanize();
                     cb_RewardPlacementType.Items.Add(tName);
                 }

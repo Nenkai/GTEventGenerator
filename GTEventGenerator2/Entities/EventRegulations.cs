@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.ComponentModel;
 
+using GTEventGenerator.Database;
+using PDTools.Utils;
+
 namespace GTEventGenerator.Entities
 {
     public class EventRegulations
@@ -79,10 +82,37 @@ namespace GTEventGenerator.Entities
         private int _carLengthMax = -1;
         public int CarLengthMax { get => _carLengthMax; set => _carLengthMax = value > -1 ? value : -1; }
 
-        public bool? KartPermitted { get; set; }
+        private int _carLengthMin = -1;
+        public int CarLengthMin { get => _carLengthMin; set => _carLengthMin = value > -1 ? value : -1; }
 
+        private int _aspecLevelMax = -1;
+        public int ASpecLevelMax { get => _aspecLevelMax; set => _aspecLevelMax = value > -1 ? value : -1; }
+
+        private int _aspecLevelMin = -1;
+        public int ASpecLevelMin { get => _aspecLevelMin; set => _aspecLevelMin = value > -1 ? value : -1; }
+
+        private int _bspecLevelMax = -1;
+        public int BSpecLevelMax { get => _bspecLevelMax; set => _bspecLevelMax = value > -1 ? value : -1; }
+
+        private int _bspecLevelMin = -1;
+        public int BSpecLevelMin { get => _bspecLevelMin; set => _bspecLevelMin = value > -1 ? value : -1; }
+
+        private int _bspecDriverCountMax = -1;
+        public int BSpecDriverCountMax { get => _bspecDriverCountMax; set => _bspecDriverCountMax = value > -1 ? value : -1; }
+
+        private int _bspecDriverCountMin = -1;
+        public int BSpecDriverCountMin { get => _bspecDriverCountMin; set => _bspecDriverCountMin = value > -1 ? value : -1; }
+
+        private int _restrictorLimit = -1;
+        public int RestrictorLimit { get => _restrictorLimit; set => _restrictorLimit = value > -1 ? value : -1; }
+
+        public bool? KartPermitted { get; set; }
+        public bool? NeedLicense { get; set; }
+        public bool? Tuning { get; set; }
         public bool NOSRegulated { get; set; }
         private bool? _nosNeeded;
+
+        public sbyte CarTagID { get; set; } = -1;
         public bool? NOSNeeded
         {
             get => NOSRegulated ? _nosNeeded : null;
@@ -147,7 +177,17 @@ namespace GTEventGenerator.Entities
             xml.WriteElementInt("need_drivetrain", DrivetrainNeeded > 0 ? (int)DrivetrainNeeded : -1 );
             xml.WriteElementInt("need_license", -1);
             xml.WriteElementInt("limit_length", CarLengthMax);
+            xml.WriteElementInt("need_length", CarLengthMin);
+
+            xml.WriteElementIntIfSet("limit_aspec_level", ASpecLevelMax);
+            xml.WriteElementIntIfSet("need_aspec_level", ASpecLevelMin);
+            xml.WriteElementIntIfSet("limit_bspec_level", BSpecLevelMax);
+            xml.WriteElementIntIfSet("need_bspec_level", BSpecLevelMin);
+            xml.WriteElementIntIfSet("limit_bspec_driver_count", BSpecDriverCountMax);
+            xml.WriteElementIntIfSet("need_bspec_driver_count", BSpecDriverCountMin);
+
             xml.WriteElementBoolOrNull("kart_permitted", KartPermitted);
+            xml.WriteElementBoolOrNull("tuning", Tuning);
             xml.WriteElementInt("restrictor_limit", -1);
             xml.WriteElementBoolIfSet("NOS", NOSNeeded);
 
@@ -201,6 +241,9 @@ namespace GTEventGenerator.Entities
                     case "limit_length":
                         CarLengthMax = regulationNode.ReadValueInt();
                         break;
+                    case "need_length":
+                        CarLengthMin = regulationNode.ReadValueInt();
+                        break;
 
                     case "need_year":
                         YearMin = regulationNode.ReadValueInt(); break;
@@ -248,6 +291,23 @@ namespace GTEventGenerator.Entities
                     case "need_drivetrain":
                         int val2 = regulationNode.ReadValueInt();
                         DrivetrainNeeded = (DrivetrainBits)(val2 == -1 ? 0 : val2);
+                        break;
+
+                    case "limit_aspec_level":
+                        ASpecLevelMax = regulationNode.ReadValueInt(); break;
+                    case "need_aspec_level":
+                        ASpecLevelMin = regulationNode.ReadValueInt(); break;
+                    case "limit_bspec_level":
+                        BSpecLevelMax = regulationNode.ReadValueInt(); break;
+                    case "need_bspec_level":
+                        BSpecLevelMin = regulationNode.ReadValueInt(); break;
+                    case "limit_bspec_driver_count":
+                        BSpecDriverCountMax = regulationNode.ReadValueInt(); break;
+                    case "need_bspec_driver_count":
+                        BSpecDriverCountMin = regulationNode.ReadValueInt(); break;
+
+                    case "tuning":
+                        Tuning = regulationNode.ReadValueBoolNull();
                         break;
 
                     case "NOS":
@@ -304,6 +364,153 @@ namespace GTEventGenerator.Entities
                     AllowedCategories.Add(category);
             }
         }
+
+        public void ReadFromCache(ref BitStream reader)
+        {
+            uint magic = reader.ReadUInt32();
+            if (magic != 0xE5E561AB && magic != 0xE6E661AB)
+                ;
+
+            uint regulationVersion = reader.ReadUInt32();
+            PPMax = reader.ReadInt32();
+            PPMin = reader.ReadInt32();
+            TireCompoundMaxFront = (TireType)reader.ReadInt32();
+            TireCompoundMinFront = (TireType)reader.ReadInt32();
+            TireCompoundMaxRear = (TireType)reader.ReadInt32();
+            TireCompoundMinRear = (TireType)reader.ReadInt32();
+
+            int carCategoryCount = reader.ReadInt32();
+            for (int i = 0; i < carCategoryCount; i++)
+                AllowedCategories.Add((CarCategoryRestriction)reader.ReadInt32());
+
+            int carCount = reader.ReadInt32();
+            for (int i = 0; i < carCount; i++)
+                reader.ReadInt32();
+
+            NeedLicense = reader.ReadBool4();
+            PowerMax = reader.ReadInt32();
+            PowerMin = reader.ReadInt32();
+            if (regulationVersion < 101)
+            {
+                reader.ReadInt16();
+                reader.ReadInt16();
+            }
+
+            WeightMax = reader.ReadInt32();
+            WeightMin = reader.ReadInt32();
+            CarLengthMax = reader.ReadInt32();
+            CarLengthMin = reader.ReadInt32();
+            DrivetrainNeeded = (DrivetrainBits)reader.ReadInt32();
+            AspirationNeeded = (AspirationBits)reader.ReadInt32();
+            YearMax = reader.ReadInt32();
+            YearMin = reader.ReadInt32();
+
+            ASpecLevelMax = reader.ReadInt32();
+            ASpecLevelMin = reader.ReadInt32();
+            BSpecLevelMax = reader.ReadInt32();
+            BSpecLevelMin = reader.ReadInt32();
+            BSpecDriverCountMax = reader.ReadInt32();
+            BSpecDriverCountMin = reader.ReadInt32();
+
+            int tunersCount = reader.ReadInt32();
+            for (int i = 0; i < tunersCount; i++)
+                reader.ReadInt32();
+
+            int countriesCount = reader.ReadInt32();
+            for (int i = 0; i < countriesCount; i++)
+                reader.ReadInt32();
+
+            reader.ReadString4(); // need_entitlement
+            Tuning = reader.ReadBool4();
+
+            if (regulationVersion >= 101)
+                NOSNeeded = reader.ReadBool4();
+
+            if (regulationVersion >= 102)
+                KartPermitted = reader.ReadBool4();
+
+            int banCars = reader.ReadInt32();
+            for (int i = 0; i < banCars; i++)
+                reader.ReadInt32();
+
+            reader.ReadInt32(); // car_tag_id
+            reader.ReadInt32(); // restrictor_limit
+        }
+
+        public void WriteToCache(ref BitStream bs, GameDB db)
+        {
+            bs.WriteUInt32(0xE6_E6_61_AB);
+            bs.WriteUInt32(1_03); // Version
+
+            bs.WriteInt32(PPMax);
+            bs.WriteInt32(PPMin);
+
+            bs.WriteInt32((int)TireCompoundMaxFront);
+            bs.WriteInt32((int)TireCompoundMinFront);
+            bs.WriteInt32((int)TireCompoundMaxRear);
+            bs.WriteInt32((int)TireCompoundMinRear);
+
+            bs.WriteInt32(AllowedCategories.Count);
+            foreach (var cat in AllowedCategories)
+                bs.WriteInt32((int)cat);
+
+            bs.WriteInt32(AllowedVehicles.Count);
+            foreach (var car in AllowedVehicles)
+            {
+                // CarThin
+                bs.WriteInt32(db.GetCarCodeByLabel(car)); // Code
+                bs.WriteInt16(0); // Paint
+                bs.WriteInt16(0); // Is Tuned Car
+                bs.WriteInt32(-1);
+            }
+
+            bs.WriteBool4OrNull(NeedLicense);
+            bs.WriteInt32(PowerMax);
+            bs.WriteInt32(PowerMin);
+            bs.WriteInt32(WeightMax);
+            bs.WriteInt32(WeightMin);
+            bs.WriteInt32(CarLengthMax);
+            bs.WriteInt32(CarLengthMin);
+            bs.WriteInt32((int)DrivetrainNeeded);
+            bs.WriteInt32((int)AspirationNeeded);
+            bs.WriteInt32(YearMax);
+            bs.WriteInt32(YearMin);
+            bs.WriteInt32(ASpecLevelMax);
+            bs.WriteInt32(ASpecLevelMin);
+            bs.WriteInt32(BSpecLevelMax);
+            bs.WriteInt32(BSpecLevelMin);
+            bs.WriteInt32(BSpecDriverCountMax);
+            bs.WriteInt32(BSpecDriverCountMin);
+
+            bs.WriteInt32(AllowedManufacturers.Count);
+            foreach (var tuner in AllowedManufacturers)
+                bs.WriteInt32(db.GetManufacturerCodeByLabel(tuner));
+
+            bs.WriteInt32(AllowedCountries.Count);
+            foreach (var country in AllowedCountries)
+            {
+                if (Enum.TryParse(country, out Country countryEnum))
+                    bs.WriteInt32((int)countryEnum);
+            }
+
+            bs.WriteNullStringAligned4(string.Empty); // Entitlement
+            bs.WriteBool4OrNull(Tuning);
+            bs.WriteBool4OrNull(NOSNeeded);
+            bs.WriteBool4OrNull(KartPermitted);
+
+            bs.WriteInt32(RestrictedVehicles.Count);
+            foreach (var banCar in RestrictedVehicles)
+            {
+                // CarThin
+                bs.WriteInt32(db.GetCarCodeByLabel(banCar)); // Code
+                bs.WriteInt16(0); // Paint
+                bs.WriteInt16(0); // Is Tuned Car
+                bs.WriteInt32(-1);
+            }
+
+            bs.WriteInt32(CarTagID);
+            bs.WriteInt32(RestrictorLimit);
+        }
     }
 
     public enum CarCategoryRestriction
@@ -343,5 +550,24 @@ namespace GTEventGenerator.Entities
         RR = 0x20,
 
         All = FR | FF | AWD | MR | RR,
+    }
+
+    public enum Country
+    {
+        PDI,
+        JP = 2,
+        US,
+        GB,
+        DE,
+        FR,
+        IT,
+        AU,
+        KR,
+        BE,
+        NL,
+        SE,
+        ES,
+        CA,
+        AT,
     }
 }

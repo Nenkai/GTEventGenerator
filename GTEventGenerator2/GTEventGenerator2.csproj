@@ -42,6 +42,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -51,6 +52,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>GTE_Icon3.ico</ApplicationIcon>
@@ -154,11 +156,22 @@
       <DependentUpon>CreditXPEditWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomCourse.cs" />
+    <Compile Include="Entities\BoostTable.cs" />
+    <Compile Include="Entities\EditorInfo.cs" />
+    <Compile Include="Entities\EventAchieveCondition.cs" />
+    <Compile Include="Entities\EventArcadeStyleSetting.cs" />
+    <Compile Include="Entities\EventDriftCondition.cs" />
     <Compile Include="Entities\EventEvalConditions.cs" />
     <Compile Include="Entities\EventFailureConditions.cs" />
+    <Compile Include="Entities\EventLicenseCondition.cs" />
+    <Compile Include="Entities\EventReplay.cs" />
+    <Compile Include="Entities\EventStageData.cs" />
+    <Compile Include="Entities\Gadget.cs" />
     <Compile Include="Entities\GameParameterEventList.cs" />
     <Compile Include="Entities\Event.cs" />
     <Compile Include="Entities\EventPlayStyle.cs" />
+    <Compile Include="Entities\OnlineRoomParameter.cs" />
+    <Compile Include="Entities\PenaltyParameter.cs" />
     <Compile Include="Entities\WeatherData.cs" />
     <Compile Include="EventCategory.cs" />
     <Compile Include="EventEntryEditWindow.xaml.cs">
@@ -177,6 +190,7 @@
     <Compile Include="NewWeatherDataSettingsWindow.xaml.cs">
       <DependentUpon>NewWeatherDataSettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PDUtils\BitStream.cs" />
     <Compile Include="PDUtils\CourseMakerUtil.cs" />
     <Compile Include="PDUtils\MCarParameter.cs" />
     <Compile Include="PDUtils\Enums\Enums.cs" />
@@ -223,8 +237,8 @@
     <Compile Include="Entities\EventRaceParameters.cs" />
     <Compile Include="Entities\EventRegulations.cs" />
     <Compile Include="Entities\EventRewards.cs" />
-    <Compile Include="Entities\RaceCourse.cs" />
-    <Compile Include="Entities\RaceEntries.cs" />
+    <Compile Include="Entities\EventCourse.cs" />
+    <Compile Include="Entities\EventEntries.cs" />
     <Compile Include="Entities\EventEntry.cs" />
     <Compile Include="GameGeneratorWindow.xaml.cs" />
     <Compile Include="GameGenerator_Constraints.cs" />

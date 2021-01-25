@@ -63,7 +63,7 @@ namespace GTEventGenerator
             if (numericUpDown_FinishWidth.Value is null)
                 numericUpDown_FinishWidth.Value = -1;
 
-            CurrentEvent.RaceParameters.EventGoalWidth = (int)numericUpDown_FinishWidth.Value;
+            CurrentEvent.RaceParameters.EventGoalWidth = (sbyte)numericUpDown_FinishWidth.Value;
         }
 
         private void numericUpDown_TimeToFinish_ValueChanged(object sender, EventArgs e)
@@ -96,7 +96,7 @@ namespace GTEventGenerator
             if (numericUpDown_LapsToFinish.Value is null)
                 numericUpDown_LapsToFinish.Value = 0;
 
-            CurrentEvent.RaceParameters.LapCount = (int)numericUpDown_LapsToFinish.Value;
+            CurrentEvent.RaceParameters.LapCount = (short)numericUpDown_LapsToFinish.Value;
         }
 
         private void numericUpDown_MinutesToFinish_ValueChanged(object sender, EventArgs e)
@@ -107,7 +107,7 @@ namespace GTEventGenerator
             if (numericUpDown_MinutesToFinish.Value is null)
                 numericUpDown_MinutesToFinish.Value = 0;
 
-            CurrentEvent.RaceParameters.MinutesCount = (int)numericUpDown_MinutesToFinish.Value;
+            CurrentEvent.RaceParameters.MinutesCount = (short)numericUpDown_MinutesToFinish.Value;
         }
 
         private void comboBox_GhostPresence_SelectedIndexChanged(object sender, EventArgs e)
@@ -124,7 +124,7 @@ namespace GTEventGenerator
             if (numericUpDown_TireConsumptionMultiplier.Value is null)
                 numericUpDown_TireConsumptionMultiplier.Value = 0;
 
-            CurrentEvent.RaceParameters.TireUseMultiplier = (int)numericUpDown_TireConsumptionMultiplier.Value;
+            CurrentEvent.RaceParameters.TireUseMultiplier = (byte)numericUpDown_TireConsumptionMultiplier.Value;
         }
 
         private void numericUpDown_FuelConsumptionMultiplier_ValueChanged(object sender, EventArgs e)
@@ -135,7 +135,7 @@ namespace GTEventGenerator
             if (numericUpDown_FuelConsumptionMultiplier.Value is null)
                 numericUpDown_FuelConsumptionMultiplier.Value = 0;
 
-            CurrentEvent.RaceParameters.FuelUseMultiplier = (int)numericUpDown_FuelConsumptionMultiplier.Value;
+            CurrentEvent.RaceParameters.FuelUseMultiplier = (byte)numericUpDown_FuelConsumptionMultiplier.Value;
         }
 
         private void checkBox_EnableDamage_CheckedChanged(object sender, EventArgs e)
@@ -265,7 +265,7 @@ namespace GTEventGenerator
         private void checkBox_PenaltyNoReset_CheckedChanged(object sender, EventArgs e)
         {
             var chk = sender as CheckBox;
-            CurrentEvent.RaceParameters.PenaltyNoLevel = chk.IsChecked.Value;
+            CurrentEvent.RaceParameters.PenaltyNoReset = chk.IsChecked.Value;
         }
 
         private void checkBox_OnlineOn_CheckedChanged(object sender, EventArgs e)
@@ -304,7 +304,7 @@ namespace GTEventGenerator
                 , TimeSpan.FromSeconds(CurrentEvent.RaceParameters.WeatherTotalSec));
            window.ShowDialog();
            iud_WeatherPointNum.Value = CurrentEvent.RaceParameters.NewWeatherData.Count;
-           CurrentEvent.RaceParameters.WeatherPointNum = CurrentEvent.RaceParameters.NewWeatherData.Count;
+           CurrentEvent.RaceParameters.WeatherPointNum = (byte)CurrentEvent.RaceParameters.NewWeatherData.Count;
         }
 
         #endregion
@@ -314,7 +314,7 @@ namespace GTEventGenerator
             PrePopulateComboBoxes();
 
             numericUpDown_FinishVCoord.Value = CurrentEvent.RaceParameters.EventGoalV != null ? (int)CurrentEvent.RaceParameters.EventGoalV.Value : -1;
-            numericUpDown_FinishWidth.Value = CurrentEvent.RaceParameters.EventGoalWidth != null ? (int)CurrentEvent.RaceParameters.EventGoalWidth.Value : -1;
+            numericUpDown_FinishWidth.Value = CurrentEvent.RaceParameters.EventGoalWidth != null ? (sbyte)CurrentEvent.RaceParameters.EventGoalWidth.Value : (sbyte)-1;
             numericUpDown_TimeToFinish.Value = (int)CurrentEvent.RaceParameters.TimeToFinish.TotalMilliseconds;
             numericUpDown_TimeToStart.Value = (int)CurrentEvent.RaceParameters.TimeToStart.TotalMilliseconds;
             numericUpDown_LapsToFinish.Value = CurrentEvent.RaceParameters.LapCount;

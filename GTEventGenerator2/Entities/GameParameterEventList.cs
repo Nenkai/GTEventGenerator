@@ -140,7 +140,7 @@ namespace GTEventGenerator.Entities
                 switch (node.Name)
                 {
                     case "id":
-                        parent.FolderId = int.Parse(node.InnerText);
+                        parent.FolderId = ulong.Parse(node.InnerText);
                         break;
 
                     case "event_type":

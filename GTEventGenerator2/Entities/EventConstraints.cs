@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.ComponentModel;
 
+using PDTools.Utils;
+
 namespace GTEventGenerator.Entities
 {
     public class EventConstraints
@@ -60,7 +62,13 @@ namespace GTEventGenerator.Entities
             }
         }
 
-        public bool DriftType { get; set; }
+        public int DriftType { get; set; }
+        public int InCarView { get; set; }
+
+        /// <summary>
+        /// Tire used for ai pitting
+        /// </summary>
+        public TireType EnemyTire { get; set; } = TireType.NONE_SPECIFIED;
 
         public bool DrivingLineConstrained { get; set; }
         private bool? _drivingLineEnabled;
@@ -74,7 +82,6 @@ namespace GTEventGenerator.Entities
             }
         }
 
-        public int EnemyTire { get; set; }
         public TireType FrontTireLimit { get; set; } = TireType.NONE_SPECIFIED;
         public TireType RearTireLimit { get; set; } = TireType.NONE_SPECIFIED;
         public TireType NeededFrontTire { get; set; } = TireType.NONE_SPECIFIED;
@@ -142,6 +149,74 @@ namespace GTEventGenerator.Entities
             }
         }
 
+        public void ReadFromCache(ref BitStream reader)
+        {
+            uint magic = reader.ReadUInt32();
+            if (magic != 0xE5E5F33D && magic != 0xE6E6F33D)
+                ;
+
+            uint contraintVersion = reader.ReadUInt32();
+            TransmissionEnabled = reader.ReadBool4();
+            DrivingLineEnabled = reader.ReadBool4();
+            ASMEnabled = reader.ReadBool4();
+            TCSEnabled = reader.ReadBool4();
+            reader.ReadBool4();
+            ABSEnabled = reader.ReadBool4();
+            FrontTireLimit = (TireType)reader.ReadInt32();
+            NeededFrontTire = (TireType)reader.ReadInt32();
+            SuggestedFrontTire = (TireType)reader.ReadInt32();
+            RearTireLimit = (TireType)reader.ReadInt32();
+            NeededRearTire = (TireType)reader.ReadInt32();
+            SuggestedRearTire = (TireType)reader.ReadInt32();
+            SkidRecoveryForceEnabled = reader.ReadBool4();
+            ActiveSteeringEnabled = reader.ReadBool4();
+            int cars = reader.ReadInt32();
+            for (int i = 0; i < cars; i++)
+            {
+                // Car Thin
+                reader.ReadInt32();
+                reader.ReadInt16();
+                reader.ReadInt16();
+                reader.ReadInt32();
+            }
+            reader.ReadInt32(); // drift_type
+            SuggestedGearEnabled = reader.ReadBool4();
+            reader.ReadInt32(); // in_car_view
+            reader.ReadInt32(); // enemy_tire
+            
+            if (contraintVersion >= 101)
+                PowerLimit = reader.ReadSingle();
+        }
+
+        public void WriteToCache(ref BitStream bs)
+        {
+            bs.WriteUInt32(0xE6_E6_F3_3D);
+            bs.WriteUInt32(1_01);
+            bs.WriteBool4OrNull(TransmissionEnabled);
+            bs.WriteBool4OrNull(DrivingLineEnabled);
+            bs.WriteBool4OrNull(ASMEnabled);
+            bs.WriteBool4OrNull(TCSEnabled);
+            bs.WriteInt32(-1); // Unk - Unused
+            bs.WriteBool4OrNull(ABSEnabled);
+            bs.WriteInt32((int)FrontTireLimit);
+            bs.WriteInt32((int)NeededFrontTire);
+            bs.WriteInt32((int)SuggestedFrontTire);
+            bs.WriteInt32((int)RearTireLimit);
+            bs.WriteInt32((int)NeededRearTire);
+            bs.WriteInt32((int)SuggestedRearTire);
+            bs.WriteBool4OrNull(SkidRecoveryForceEnabled);
+            bs.WriteBool4OrNull(ActiveSteeringEnabled);
+
+            bs.WriteInt32(0); // Cars
+
+            bs.WriteInt32(DriftType); // drift_type;
+            bs.WriteBool4OrNull(SuggestedGearEnabled);
+            bs.WriteInt32(-1); // in_car_view
+            bs.WriteInt32((int)EnemyTire);
+            bs.WriteInt32(PowerLimit is null ? -1 : (int)(PowerLimit.Value * 10));
+
+        }
+
         public void WriteToXml(XmlWriter xml)
         {
             xml.WriteStartElement("constraint");
@@ -185,13 +260,13 @@ namespace GTEventGenerator.Entities
                         ASMEnabled = constraintNode.ReadValueBoolNull();
                         break;
                     case "drift_type":
-                        DriftType = constraintNode.ReadValueBool();
+                        DriftType = constraintNode.ReadValueInt();
                         break;
                     case "driving_line":
                         DrivingLineEnabled = constraintNode.ReadValueBoolNull();
                         break;
                     case "enemy_tire":
-                        EnemyTire = constraintNode.ReadValueInt();
+                        EnemyTire = constraintNode.ReadValueEnum<TireType>();
                         break;
                     case "limit_tire_f":
                         FrontTireLimit = constraintNode.ReadValueEnum<TireType>();
@@ -204,6 +279,9 @@ namespace GTEventGenerator.Entities
                         break;
                     case "need_tire_r":
                         NeededRearTire = constraintNode.ReadValueEnum<TireType>();
+                        break;
+                    case "restrictor_limit":
+                        PowerLimit = constraintNode.ReadValueInt() / 10f;
                         break;
                     case "simulation":
                         SkidRecoveryForceEnabled = constraintNode.ReadValueBoolNull();

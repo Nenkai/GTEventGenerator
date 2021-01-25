@@ -48,6 +48,14 @@ namespace GTEventGenerator.Database
             return res.GetString(0);
         }
 
+        public int GetManufacturerCodeByLabel(string label)
+        {
+            var res = ExecuteQuery($"SELECT ManufacturerID FROM Manufacturers WHERE ManufacturerInternalName = \"{label}\"");
+            res.Read();
+
+            return res.GetInt32(0);
+        }
+
         public List<string> GetLocalizedLanguagesSorted()
         {
             var res = ExecuteQuery("SELECT LocaliseLanguage, SortOrder FROM LocaliseLanguages ORDER BY SortOrder");
@@ -104,6 +112,14 @@ namespace GTEventGenerator.Database
             return res.GetInt32(0);
         }
 
+        public int GetCourseCodeByLabel(string label)
+        {
+            var res = ExecuteQuery($"SELECT CourseCode FROM Courses WHERE CourseInternalName = '{label}'");
+            res.Read();
+
+            return res.GetInt32(0);
+        }
+
         public string GetCourseLogoByLabel(string label)
         {
             var res = ExecuteQuery($"SELECT CourseLogo FROM Courses WHERE CourseInternalName = '{label}'");
@@ -129,6 +145,17 @@ namespace GTEventGenerator.Database
             res.Read();
 
             return res.GetString(0);
+        }
+
+        public int GetCarCodeByLabel(string label)
+        {
+            var cmd = new SQLiteCommand($"SELECT VehicleCode FROM Vehicles WHERE VehicleInternalName = @VehicleInternalName");
+            cmd.Parameters.AddWithValue("VehicleName", label);
+            cmd.Connection = _sConn;
+            var res = cmd.ExecuteReader();
+            res.Read();
+
+            return res.GetInt32(0);
         }
 
         public int GetCarColorNumByLabel(string label)

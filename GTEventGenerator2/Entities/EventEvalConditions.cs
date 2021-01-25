@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Xml;
 
 using System.ComponentModel;
+using PDTools.Utils;
 
 namespace GTEventGenerator.Entities
 {
@@ -121,6 +122,30 @@ namespace GTEventGenerator.Entities
                     xml.WriteElementValue("ghost_data_path", GhostDataPath);
             }
             xml.WriteEndElement();
+        }
+
+        public void ReadFromCache(ref BitStream reader)
+        {
+            if (reader.ReadUInt32() != 0xE6_E6_A1_00)
+                throw new Exception("Eval Condition did not match expected magic (E6 E6 A1 00)");
+
+            var version = reader.ReadUInt32();
+            ConditionType = (EvalConditionType)reader.ReadInt32();
+            Gold = reader.ReadInt32();
+            Silver = reader.ReadInt32();
+            Bronze = reader.ReadInt32();
+            GhostDataPath = reader.ReadString4();
+        }
+
+        public void WriteToCache(ref BitStream bs)
+        {
+            bs.WriteUInt32(0xE6_E6_A1_00);
+            bs.WriteUInt32(1_00);
+            bs.WriteInt32((int)ConditionType);
+            bs.WriteInt32(Gold);
+            bs.WriteInt32(Silver);
+            bs.WriteInt32(Bronze);
+            bs.WriteNullStringAligned4(GhostDataPath);
         }
 
         public void ParseEvalConditionData(XmlNode node)

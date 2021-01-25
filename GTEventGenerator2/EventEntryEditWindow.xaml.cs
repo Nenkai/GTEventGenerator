@@ -56,7 +56,7 @@ namespace GTEventGenerator
             else if (iud_CarColorIndex.Value < 0)
                 iud_CarColorIndex.Value = 0;
 
-            _entry.ColorIndex = (int)iud_CarColorIndex.Value;
+            _entry.ColorIndex = (short)iud_CarColorIndex.Value;
         }
 
         private void comboBox_StartingType_SelectedIndexChanged(object sender, EventArgs e)

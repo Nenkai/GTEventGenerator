@@ -7,8 +7,10 @@ using System.Xml;
 
 using System.ComponentModel;
 
+using GTEventGenerator.Database;
 using GTEventGenerator.PDUtils;
 using GTEventGenerator.Utils;
+using PDTools.Utils;
 
 namespace GTEventGenerator.Entities
 {
@@ -18,10 +20,10 @@ namespace GTEventGenerator.Entities
         /// Rewards can only be obtained once.
         /// </summary>
         public bool IsOnce { get; set; }
-        public int PercentAtPP100 { get; set; }
-        public int PPBase { get; set; }
+        public short PercentAtPP100 { get; set; }
+        public short PPBase { get; set; }
         public bool GivesAllTrophyRewards { get; set; }
-        public PresentOrderType PresentType { get; set; } = PresentOrderType.ORDER;
+        public RewardPresentType PresentType { get; set; } = RewardPresentType.ORDER;
         public ParticipationPresentType ParticipationPresentType { get; set; }
 
         public int[] MoneyPrizes = new int[16];
@@ -151,12 +153,12 @@ namespace GTEventGenerator.Entities
                     case "is_once":
                         IsOnce = rewardNode.ReadValueBool(); break;
                     case "percent_at_pp100":
-                        PercentAtPP100 = rewardNode.ReadValueInt(); break;
+                        PercentAtPP100 = rewardNode.ReadValueShort(); break;
                     case "pp_base":
-                        PPBase = rewardNode.ReadValueInt(); break;
+                        PPBase = rewardNode.ReadValueShort(); break;
 
                     case "present_type":
-                        PresentType = rewardNode.ReadValueEnum<PresentOrderType>(); break;
+                        PresentType = rewardNode.ReadValueEnum<RewardPresentType>(); break;
                     case "present":
                         ParsePresentRewards(rewardNode); break;
 
@@ -293,6 +295,43 @@ namespace GTEventGenerator.Entities
             }
         }
 
+        public void WriteToCache(ref BitStream bs, GameDB db)
+        {
+            bs.WriteUInt32(0xE6_E6_A1_07);
+            bs.WriteUInt32(1_03);
+
+            bs.WriteInt32(MoneyPrizes.Length);
+            for (int i = 0; i < MoneyPrizes.Length; i++)
+                bs.WriteInt32(MoneyPrizes[i]);
+
+            bs.WriteInt32(PointTable.Length);
+            for (int i = 0; i < PointTable.Length; i++)
+                bs.WriteInt32(PointTable[i]);
+
+            bs.WriteInt32(Stars);
+            if (Stars >= 1)
+            {
+                bs.WriteSByte((sbyte)FinishResult.RANK_1);
+                if (Stars == 3)
+                {
+                    bs.WriteSByte((sbyte)FinishResult.RANK_3);
+                    bs.WriteSByte((sbyte)FinishResult.COMPLETE);
+                }
+            }
+
+            bs.WriteInt32(0 /* RewardPresents.Length */); // TODO
+            bs.WriteInt32(0); // special_reward_code - GT5 only so meh
+            bs.WriteInt16((short)PresentType);
+            bs.WriteInt16(PPBase); // pp_base
+            bs.WriteInt16(PercentAtPP100);
+            bs.WriteBool(IsOnce);
+            bs.WriteBool(false); // unk field_0x4b
+            bs.WriteInt32(0 /* RewardParticipationPresents.Length */); // TODO
+            bs.WriteByte((byte)ParticipationPresentType);
+
+            EventEntry entryBaseReward = TunedEntryPresent ?? new EventEntry();
+            entryBaseReward.WriteEntryBaseToBuffer(ref bs, db);
+        }
         public EventPresent TryGetTunedCarPresent()
         {
             var tunedCarReward = RewardPresents.FirstOrDefault(e => e?.PresentType == Entities.PresentType.CAR_PARAMETER);
@@ -411,7 +450,51 @@ namespace GTEventGenerator.Entities
         CAR_PARAMETER = 902,
     }
 
-    public enum PresentOrderType
+    public enum FinishResult
+    {
+        NONE = -1,
+        RANK_1,
+        RANK_2,
+        RANK_3,
+        RANK_4,
+        RANK_5,
+        RANK_6,
+        RANK_7,
+        RANK_8,
+        RANK_9,
+        RANK_10,
+        RANK_11,
+        RANK_12,
+        RANK_13,
+        RANK_14,
+        RANK_15,
+        RANK_16,
+        RANK_17,
+        RANK_18,
+        RANK_19,
+        RANK_20,
+        RANK_21,
+        RANK_22,
+        RANK_23,
+        RANK_24,
+        RANK_25,
+        RANK_26,
+        RANK_27,
+        RANK_28,
+        RANK_29,
+        RANK_30,
+        RANK_31,
+        RANK_32,
+        WIN,
+        LOSE,
+        DSQ,
+        GOLD,
+        SILVER,
+        BRONZE,
+        COMPLETE,
+    }
+
+    public enum RewardPresentType
     {
         [Description("By Placement Order (1st/2nd/3rd)")]
         ORDER,
@@ -426,7 +509,7 @@ namespace GTEventGenerator.Entities
         FINISH,
 
         [Description("All (?)")]
-        ORDER,
+        ALL,
 
         [Description("Completing One Lap")]
         LAP,

@@ -226,6 +226,27 @@ namespace GTEventGenerator
                 HandleNewEventList(openFile.FileName);
         }
 
+        private void importCacheToolStripMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (GameParameter.Events.Any())
+            {
+                MessageBoxResult importOverwrite = MessageBox.Show("This will overwrite the folder you are currently editing. Would you like to save your folder now?",
+                    "Import Folder", MessageBoxButton.YesNoCancel, MessageBoxImage.Information);
+
+                if (importOverwrite == MessageBoxResult.Yes)
+                    btnEventGenerate_Click(sender, e);
+                else if (importOverwrite == MessageBoxResult.Cancel)
+                    return;
+            }
+
+            var openFile = new OpenFileDialog();
+            openFile.InitialDirectory = Directory.GetCurrentDirectory();
+            openFile.Title = "Import Events";
+            openFile.ShowDialog();
+
+            new GameParameter().ReadFromCache(openFile.FileName);
+        }
+
         private void newEventToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBoxResult newOverwrite = MessageBox.Show("This will delete the folder you are currently editing. Would you like to save your folder now?", "New Event", MessageBoxButton.YesNoCancel, MessageBoxImage.Information);
@@ -387,10 +408,10 @@ namespace GTEventGenerator
                 numericUpDown_AIRoughnessMax.Value = numericUpDown_AIRoughnessMax.Value;
 
             foreach (var entry in CurrentEvent.Entries.AI)
-                entry.Roughness = _random.Next(numericUpDown_AIRoughnessMin.Value.Value, numericUpDown_AIRoughnessMax.Value.Value + 1);
+                entry.Roughness = (sbyte)_random.Next((int)numericUpDown_AIRoughnessMin.Value.Value, numericUpDown_AIRoughnessMax.Value.Value + 1);
 
             foreach (var entry in CurrentEvent.Entries.AIBases)
-                entry.Roughness = _random.Next(numericUpDown_AIRoughnessMin.Value.Value, numericUpDown_AIRoughnessMax.Value.Value + 1);
+                entry.Roughness = (sbyte)_random.Next((int)numericUpDown_AIRoughnessMin.Value.Value, numericUpDown_AIRoughnessMax.Value.Value + 1);
         }
 
         private void randomizeAIBaseSkillMenuItem_Click(object sender, RoutedEventArgs e)
@@ -411,10 +432,10 @@ namespace GTEventGenerator
                 numericUpDown_CornerSkillMax.Value = numericUpDown_CornerSkillMin.Value;
 
             foreach (var entry in CurrentEvent.Entries.AI)
-                entry.CorneringSkill = _random.Next(numericUpDown_CornerSkillMin.Value.Value, numericUpDown_CornerSkillMax.Value.Value + 1);
+                entry.CorneringSkill = (short)_random.Next(numericUpDown_CornerSkillMin.Value.Value, numericUpDown_CornerSkillMax.Value.Value + 1);
 
             foreach (var entry in CurrentEvent.Entries.AIBases)
-                entry.CorneringSkill = _random.Next(numericUpDown_CornerSkillMin.Value.Value, numericUpDown_CornerSkillMax.Value.Value + 1);
+                entry.CorneringSkill = (short)_random.Next(numericUpDown_CornerSkillMin.Value.Value, numericUpDown_CornerSkillMax.Value.Value + 1);
         }
 
         private void randomizeAIBrakingSkillMenuItem_Click(object sender, RoutedEventArgs e)
@@ -423,10 +444,10 @@ namespace GTEventGenerator
                 numericUpDown_BrakeSkillMax.Value = numericUpDown_BrakeSkillMin.Value;
 
             foreach (var entry in CurrentEvent.Entries.AI)
-                entry.BrakingSkill = _random.Next(numericUpDown_BrakeSkillMin.Value.Value, numericUpDown_BrakeSkillMax.Value.Value + 1);
+                entry.BrakingSkill = (short)_random.Next(numericUpDown_BrakeSkillMin.Value.Value, numericUpDown_BrakeSkillMax.Value.Value + 1);
 
             foreach (var entry in CurrentEvent.Entries.AIBases)
-                entry.BrakingSkill = _random.Next(numericUpDown_BrakeSkillMin.Value.Value, numericUpDown_BrakeSkillMax.Value.Value + 1);
+                entry.BrakingSkill = (short)_random.Next(numericUpDown_BrakeSkillMin.Value.Value, numericUpDown_BrakeSkillMax.Value.Value + 1);
         }
 
         private void randomizeAIAccelSkillMenuItem_Click(object sender, RoutedEventArgs e)
@@ -435,10 +456,10 @@ namespace GTEventGenerator
                 numericUpDown_AccelSkillMax.Value = numericUpDown_AccelSkillMin.Value;
 
             foreach (var entry in CurrentEvent.Entries.AI)
-                entry.AccelSkill = _random.Next(numericUpDown_AccelSkillMin.Value.Value, numericUpDown_AccelSkillMax.Value.Value + 1);
+                entry.AccelSkill = (sbyte)_random.Next(numericUpDown_AccelSkillMin.Value.Value, numericUpDown_AccelSkillMax.Value.Value + 1);
 
             foreach (var entry in CurrentEvent.Entries.AIBases)
-                entry.AccelSkill = _random.Next(numericUpDown_AccelSkillMin.Value.Value, numericUpDown_AccelSkillMax.Value.Value + 1);
+                entry.AccelSkill = (sbyte)_random.Next(numericUpDown_AccelSkillMin.Value.Value, numericUpDown_AccelSkillMax.Value.Value + 1);
         }
 
         private void randomizeAIStartSkillMenuItem_Click(object sender, RoutedEventArgs e)
@@ -447,10 +468,10 @@ namespace GTEventGenerator
                 numericUpDown_StartSkillMax.Value = numericUpDown_StartSkillMin.Value;
 
             foreach (var entry in CurrentEvent.Entries.AI)
-                entry.StartingSkill = _random.Next(numericUpDown_StartSkillMin.Value.Value, numericUpDown_StartSkillMax.Value.Value + 1);
+                entry.StartingSkill = (sbyte)_random.Next(numericUpDown_StartSkillMin.Value.Value, numericUpDown_StartSkillMax.Value.Value + 1);
 
             foreach (var entry in CurrentEvent.Entries.AIBases)
-                entry.StartingSkill = _random.Next(numericUpDown_StartSkillMin.Value.Value, numericUpDown_StartSkillMax.Value.Value + 1);
+                entry.StartingSkill = (sbyte)_random.Next(numericUpDown_StartSkillMin.Value.Value, numericUpDown_StartSkillMax.Value.Value + 1);
         }
 
         private void randomizeAISkillsMenuItem_Click(object sender, RoutedEventArgs e)
@@ -603,7 +624,7 @@ namespace GTEventGenerator
                 GameParameter.Events.Remove(GameParameter.Events.Find(x => x.Index == CurrentEvent.Index));
                 CurrentEvent = GameParameter.Events.Count > 0 ? GameParameter.Events.Last() : null;
 
-                int eventID = GameParameter.Events.FirstOrDefault()?.EventID ?? GameParameter.BaseEventID;
+                ulong eventID = GameParameter.Events.FirstOrDefault()?.EventID ?? GameParameter.BaseEventID;
                 GameParameter.FirstEventID = eventID;
                 GameParameter.OrderEventIDs();
 
@@ -709,9 +730,9 @@ namespace GTEventGenerator
             if (GameParameter is null)
                 return;
 
-            var iud = ((Xceed.Wpf.Toolkit.IntegerUpDown)sender);
+            var iud = ((Xceed.Wpf.Toolkit.ULongUpDown)sender);
             if (iud.Value is null)
-                iud.Value = (int)e.OldValue;
+                iud.Value = (ulong)e.OldValue;
 
             GameParameter.FolderId = iud.Value.Value;
         }
@@ -747,7 +768,7 @@ namespace GTEventGenerator
             if (CurrentEvent is null)
                 return;
 
-            CurrentEvent.PlayStyle.SpecType = (SpecType)(sender as ComboBox).SelectedIndex;
+            CurrentEvent.PlayStyle.BSpecType = (SpecType)(sender as ComboBox).SelectedIndex;
         }
 
         private void cb_PlayType_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -766,11 +787,11 @@ namespace GTEventGenerator
 
         public void btnChampionshipRewards_Click(object sender, RoutedEventArgs e)
         {
-            var dlg = new CreditXPEditWindow(GameParameter.SeriesRewardCredits);
+            var dlg = new CreditXPEditWindow(GameParameter.SeriesRewards.MoneyPrizes);
             dlg.ShowDialog();
 
             if (dlg.Saved)
-                GameParameter.SeriesRewardCredits = dlg.Values;
+                GameParameter.SeriesRewards.MoneyPrizes = dlg.Values;
         }
 
         private void btnPickImage_Click(object sender, EventArgs e)
@@ -925,7 +946,7 @@ namespace GTEventGenerator
         private void PopulateEventDetails()
         {
             cb_gameModes.SelectedIndex = (int)CurrentEvent.GameMode;
-            cb_Spec.SelectedIndex = (int)CurrentEvent.PlayStyle.SpecType;
+            cb_Spec.SelectedIndex = (int)CurrentEvent.PlayStyle.BSpecType;
             cb_PlayType.SelectedIndex = (int)CurrentEvent.PlayStyle.PlayType;
 
             if (CurrentEvent.Rewards.Stars == 0)
@@ -1071,44 +1092,6 @@ namespace GTEventGenerator
 
         public void SerializeGameParameter(bool shouldEditDB)
         {
-            /*
-            if (menuDBValid && shouldEditDB)
-            {
-                
-
-                int lastID = MenuDB.GetLastFolderID();
-               
-                    // If we can read the menudb then we can increment based on what's already in it to avoid a clash
-                    firstSafeFolderID = lastID + 1;
-
-                    // If not already input - probably from saved file
-                    if (string.IsNullOrEmpty(GameParameter.EventList.FolderID))
-                        GameParameter.EventList.FolderID = firstSafeFolderID.ToString();
-
-                    if (GameParameter.FolderId == -1)
-                        GameParameter.FolderId = firstSafeFolderID;
-                
-
-                firstSafeTitleID = MenuDB.GetLastFolderLocalizeID() + 1;
-
-                results = MenuDB.ExecuteQuery(string.Format("SELECT COALESCE(MAX(FolderOrder), 0) FROM t_event_folder WHERE Type = {0}", GameParameter.EventList.Category.typeID));
-                while (results.Read())
-                    firstSafeSortOrderInCategory = results.GetInt32(0) + 1;
-
-                MenuDB.AddNewFolderID(GameParameter, firstSafeTitleID, firstSafeFolderID, firstSafeSortOrderInCategory);
-
-                // To give it a shorter name and escape any 's
-                string s = GameParameter.EventList.Title.Replace("'", "''");
-
-                MenuDB.AddNewFolderLocalization(firstSafeTitleID, s);
-                MenuDB.CloseConnection();
-            }
-            else
-            {
-                GameParameter.FolderId = BaseFolderID.ToString();
-            }
-            */
-
             if (selectedPath == "")
                 selectedPath = Path.Combine(Directory.GetCurrentDirectory(), "output", "game_parameter", "gt6", "event");
 
@@ -1124,7 +1107,7 @@ namespace GTEventGenerator
                 xml.WriteEndElement();
             }
 
-
+            GameParameter.WriteToCache(GameDatabase);
             MessageBox.Show($"Event and races successfully written to {selectedPath}\\{GameParameter.FolderFileName}.xml and {selectedPath}\\r{GameParameter.FolderId}.xml!", 
                 "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }

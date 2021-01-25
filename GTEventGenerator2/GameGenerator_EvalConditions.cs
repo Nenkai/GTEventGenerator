@@ -40,65 +40,65 @@ namespace GTEventGenerator
         private void OffTrack_Checked(object sender, EventArgs e)
         {
             if ((sender as CheckBox).IsChecked == true)
-                CurrentEvent.FailConditions.FailConditions |= FailCondition.COURSE_OUT;
+                CurrentEvent.FailConditions.FailConditions.Add(FailCondition.COURSE_OUT);
             else
-                CurrentEvent.FailConditions.FailConditions &= ~FailCondition.COURSE_OUT;
+                CurrentEvent.FailConditions.FailConditions.Remove(FailCondition.COURSE_OUT);
         }
 
         private void CarCollision_Checked(object sender, EventArgs e)
         {
             if ((sender as CheckBox).IsChecked == true)
-                CurrentEvent.FailConditions.FailConditions |= FailCondition.HIT_CAR;
+                CurrentEvent.FailConditions.FailConditions.Add(FailCondition.HIT_CAR);
             else
-                CurrentEvent.FailConditions.FailConditions &= ~FailCondition.HIT_CAR;
+                CurrentEvent.FailConditions.FailConditions.Remove(FailCondition.HIT_CAR);
         }
 
         private void HardCarCollision_Checked(object sender, EventArgs e)
         {
             if ((sender as CheckBox).IsChecked == true)
-                CurrentEvent.FailConditions.FailConditions |= FailCondition.HIT_CAR_HARD;
+                CurrentEvent.FailConditions.FailConditions.Add(FailCondition.HIT_CAR_HARD);
             else
-                CurrentEvent.FailConditions.FailConditions &= ~FailCondition.HIT_CAR_HARD;
+                CurrentEvent.FailConditions.FailConditions.Remove(FailCondition.HIT_CAR_HARD);
         }
 
         private void Barrier_Checked(object sender, EventArgs e)
         {
             if ((sender as CheckBox).IsChecked == true)
-                CurrentEvent.FailConditions.FailConditions |= FailCondition.HIT_WALL;
+                CurrentEvent.FailConditions.FailConditions.Add(FailCondition.HIT_WALL);
             else
-                CurrentEvent.FailConditions.FailConditions &= ~FailCondition.HIT_WALL;
+                CurrentEvent.FailConditions.FailConditions.Remove(FailCondition.HIT_WALL);
         }
 
         private void HardBarrierCollision_Checked(object sender, EventArgs e)
         {
             if ((sender as CheckBox).IsChecked == true)
-                CurrentEvent.FailConditions.FailConditions |= FailCondition.PYLON;
+                CurrentEvent.FailConditions.FailConditions.Add(FailCondition.PYLON);
             else
-                CurrentEvent.FailConditions.FailConditions &= ~FailCondition.PYLON;
+                CurrentEvent.FailConditions.FailConditions.Remove(FailCondition.PYLON);
         }
 
         private void ObstacleCollision_Checked(object sender, EventArgs e)
         {
             if ((sender as CheckBox).IsChecked == true)
-                CurrentEvent.FailConditions.FailConditions |= FailCondition.PYLON;
+                CurrentEvent.FailConditions.FailConditions.Add(FailCondition.PYLON);
             else
-                CurrentEvent.FailConditions.FailConditions &= ~FailCondition.PYLON;
+                CurrentEvent.FailConditions.FailConditions.Remove(FailCondition.PYLON);
         }
 
         private void WrongWay_Checked(object sender, EventArgs e)
         {
             if ((sender as CheckBox).IsChecked == true)
-                CurrentEvent.FailConditions.FailConditions |= FailCondition.WRONGWAY;
+                CurrentEvent.FailConditions.FailConditions.Add(FailCondition.WRONGWAY);
             else
-                CurrentEvent.FailConditions.FailConditions &= ~FailCondition.WRONGWAY;
+                CurrentEvent.FailConditions.FailConditions.Remove(~FailCondition.WRONGWAY);
         }
 
         private void InstantWrongWay_Checked(object sender, EventArgs e)
         {
             if ((sender as CheckBox).IsChecked == true)
-                CurrentEvent.FailConditions.FailConditions |= FailCondition.WRONGWAY_LOOSE;
+                CurrentEvent.FailConditions.FailConditions.Add(FailCondition.WRONGWAY_LOOSE);
             else
-                CurrentEvent.FailConditions.FailConditions &= ~FailCondition.WRONGWAY_LOOSE;
+                CurrentEvent.FailConditions.FailConditions.Remove(FailCondition.WRONGWAY_LOOSE);
         }
 
         public void PrePopulateEvalConditions()
@@ -106,14 +106,14 @@ namespace GTEventGenerator
             PopulateOneTimeEvalConditionControls();
             cb_EvalType.SelectedIndex = (int)CurrentEvent.EvalConditions.ConditionType;
 
-            chk_OffTrack.IsChecked = CurrentEvent.FailConditions.FailConditions.HasFlag(FailCondition.COURSE_OUT);
-            chk_CarCollision.IsChecked = CurrentEvent.FailConditions.FailConditions.HasFlag(FailCondition.HIT_CAR);
-            chk_HardCarCollision.IsChecked = CurrentEvent.FailConditions.FailConditions.HasFlag(FailCondition.HIT_CAR_HARD);
-            chk_BarrierCollision.IsChecked = CurrentEvent.FailConditions.FailConditions.HasFlag(FailCondition.HIT_WALL);
-            chk_HardBarrierCollision.IsChecked = CurrentEvent.FailConditions.FailConditions.HasFlag(FailCondition.HIT_WALL_HARD);
-            chk_ObstacleCollision.IsChecked = CurrentEvent.FailConditions.FailConditions.HasFlag(FailCondition.PYLON);
-            chk_WrongWay.IsChecked = CurrentEvent.FailConditions.FailConditions.HasFlag(FailCondition.WRONGWAY);
-            chk_InstantWrongWay.IsChecked = CurrentEvent.FailConditions.FailConditions.HasFlag(FailCondition.WRONGWAY_LOOSE);
+            chk_OffTrack.IsChecked = CurrentEvent.FailConditions.FailConditions.Contains(FailCondition.COURSE_OUT);
+            chk_CarCollision.IsChecked = CurrentEvent.FailConditions.FailConditions.Contains(FailCondition.HIT_CAR);
+            chk_HardCarCollision.IsChecked = CurrentEvent.FailConditions.FailConditions.Contains(FailCondition.HIT_CAR_HARD);
+            chk_BarrierCollision.IsChecked = CurrentEvent.FailConditions.FailConditions.Contains(FailCondition.HIT_WALL);
+            chk_HardBarrierCollision.IsChecked = CurrentEvent.FailConditions.FailConditions.Contains(FailCondition.HIT_WALL_HARD);
+            chk_ObstacleCollision.IsChecked = CurrentEvent.FailConditions.FailConditions.Contains(FailCondition.PYLON);
+            chk_WrongWay.IsChecked = CurrentEvent.FailConditions.FailConditions.Contains(FailCondition.WRONGWAY);
+            chk_InstantWrongWay.IsChecked = CurrentEvent.FailConditions.FailConditions.Contains(FailCondition.WRONGWAY_LOOSE);
 
         }
 

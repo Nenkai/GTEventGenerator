@@ -14,6 +14,7 @@
                 <MenuItem Name="toolStripMenuItem1" Header="File">
                     <MenuItem Header="New Folder" Name="newEventToolStripMenuItem" Click="newEventToolStripMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
                     <MenuItem Header="Import Folder (GT6)..." Name="importEventToolStripMenuItem" Click="importEventToolStripMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
+                    <MenuItem Header="Import Cache (GT6)..." Name="importCacheToolStripMenuItem" Click="importCacheToolStripMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
                     <MenuItem Header="Export Folder (GT6)..." Name="exportEventToolStripMenuItem" Click="exportEventToolStripMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
                     <Separator />
                     <MenuItem Header="Import Event List (GT5)..." Click="importEventListToolStripMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
@@ -91,7 +92,7 @@
                             </TextBlock>
                         </Label.ToolTip>
                     </Label>
-                    <xctk:IntegerUpDown Name="iud_FolderID" ValueChanged="iud_FolderID_ValueChanged" Height="20" Width="232" Canvas.Left="121" Canvas.Top="213" Value="1000" Minimum="0" Maximum="10000" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                    <xctk:ULongUpDown Name="iud_FolderID" ValueChanged="iud_FolderID_ValueChanged" Height="20" Width="232" Canvas.Left="121" Canvas.Top="213" Value="1000" Minimum="0" Maximum="10000" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                     <Label Name="label_folderFileName" Content="Intl. Folder Name" Height="24" Width="108" TabIndex="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="240">
                         <Label.ToolTip>
@@ -252,7 +253,7 @@
                                     </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            <xctk:IntegerUpDown Name="iud_EventID" ValueChanged="iud_EventID_ValueChanged" IsEnabled="False" Canvas.Left="91" Canvas.Top="165" Width="200" Minimum="1" Value="{Binding EventID}" Maximum="9900000" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:ULongUpDown Name="iud_EventID" ValueChanged="iud_EventID_ValueChanged" IsEnabled="False" Canvas.Left="91" Canvas.Top="165" Width="200" Minimum="1" Value="{Binding EventID}" Maximum="9900000" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <GroupBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="318" Height="143" Width="281" >
                                 <GroupBox.Header>
@@ -637,29 +638,29 @@
                                 </CheckBox.ToolTip>
                             </CheckBox>
 
-                            <Label Name="label_MinTemp" Content="Min Temperature (in °C)" Height="26" Width="146" TabIndex="6" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="95" >
+                            <Label Name="label_MinTemp" Content="Min Temp Diff (in °C)" Height="26" Width="146" TabIndex="6" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="95" >
                                 <Label.ToolTip>
                                     <TextBlock>
-                                    <TextBlock FontWeight="Bold" FontSize="14">Min Temperature</TextBlock> <LineBreak />
-                                    Min temperature, affects how fast water can dry.<LineBreak/>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Min Temp Diff</TextBlock> <LineBreak />
+                                    Min temperature difference to the base, affects how fast water can dry.<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->weather_min_celsius</TextBlock>
                                     </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherMinCelsius}"  Height="20" Width="70" Canvas.Left="164" Canvas.Top="100" Maximum="100000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:SByteUpDown Value="{Binding Path=RaceParameters.WeatherMinCelsius}"  Height="20" Width="70" Canvas.Left="164" Canvas.Top="100" Maximum="8" Minimum="-7" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                            <Label Name="label_MaxTemp" Content="Max Temperature (in °C)" Height="23" Width="145" TabIndex="4" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="67" >
+                            <Label Name="label_MaxTemp" Content="Max Temp Diff (in °C)" Height="28" Width="145" TabIndex="4" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="67" >
                                 <Label.ToolTip>
                                     <TextBlock>
-                                    <TextBlock FontWeight="Bold" FontSize="14">Max Temperature</TextBlock> <LineBreak />
-                                    Max temperature, affects how fast water can dry.<LineBreak/>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Max Temp Diff</TextBlock> <LineBreak />
+                                    Max temperature difference to the base, affects how fast water can dry.<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->weather_max_celsius</TextBlock>
                                     </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherMaxCelsius}"  Height="20" Width="70" Canvas.Left="164" Canvas.Top="70" Maximum="100000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:SByteUpDown Value="{Binding Path=RaceParameters.WeatherMaxCelsius}"  Height="20" Width="70" Canvas.Left="164" Canvas.Top="70" Maximum="8" Minimum="-7" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_BaseTemp" Content="Base Temperature (in °C)" Height="30" Width="144" TabIndex="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="37" Canvas.Left="10">
                                 <Label.ToolTip>
@@ -671,7 +672,7 @@
                                     </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            <xctk:IntegerUpDown Value="{Binding Path=RaceParameters.WeatherBaseCelsius}"  Height="20" Width="70" Canvas.Left="166" Canvas.Top="41" Maximum="100000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:SByteUpDown Value="{Binding Path=RaceParameters.WeatherBaseCelsius}"  Height="20" Width="70" Canvas.Left="166" Canvas.Top="41" Maximum="63" Minimum="-63" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <CheckBox Name="cb_StartTime" Height="24" Width="77" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="8" VerticalContentAlignment="Center" Unchecked="cb_StartTime_Checked" Checked="cb_StartTime_Checked"
                                       Content="Event Date">
@@ -945,7 +946,7 @@
                                 </Label.ToolTip>
                             </Label>
 
-                            <xctk:IntegerUpDown Name="numericUpDown_FuelConsumptionMultiplier" Height="20" Width="70" Canvas.Top="453" ValueChanged="numericUpDown_FuelConsumptionMultiplier_ValueChanged" Canvas.Left="178" Value="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:ByteUpDown Name="numericUpDown_FuelConsumptionMultiplier" Height="20" Width="70" Canvas.Top="453" ValueChanged="numericUpDown_FuelConsumptionMultiplier_ValueChanged" Canvas.Left="178" Value="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
                             <Label Name="label_TireConsumptionMultiplier" Content="Tire Consumption Multiplier" Height="29" Width="167" TabIndex="31" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="424">
                                 <Label.ToolTip>
                                     <TextBlock>
@@ -960,7 +961,7 @@
                                     </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            <xctk:IntegerUpDown Name="numericUpDown_TireConsumptionMultiplier" Height="20" Width="70" ValueChanged="numericUpDown_TireConsumptionMultiplier_ValueChanged" Canvas.Left="178" Canvas.Top="428" Value="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:ByteUpDown Name="numericUpDown_TireConsumptionMultiplier" Height="20" Width="70" ValueChanged="numericUpDown_TireConsumptionMultiplier_ValueChanged" Canvas.Left="178" Canvas.Top="428" Value="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_StartingType" Content="Starting Type" Height="28" Width="102" TabIndex="29" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="396" >
                                 <Label.ToolTip>
@@ -1111,7 +1112,7 @@
                                     </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            <xctk:IntegerUpDown Name="numericUpDown_LapsToFinish" Height="20" Width="128" Canvas.Top="195" ValueChanged="numericUpDown_LapsToFinish_ValueChanged" Canvas.Left="120" Maximum="1000" Minimum="0" Value="1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:ShortUpDown Name="numericUpDown_LapsToFinish" Height="20" Width="128" Canvas.Top="195" ValueChanged="numericUpDown_LapsToFinish_ValueChanged" Canvas.Left="120" Maximum="1000" Minimum="0" Value="1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_TimeToStart" Content="Pre-Start Countdown (in MS)" Height="27" Width="167" TabIndex="12" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="156" >
                                 <Label.ToolTip>
@@ -1152,7 +1153,7 @@
                                 </Label.ToolTip>
                             </Label>
 
-                            <xctk:IntegerUpDown Name="numericUpDown_FinishWidth" Height="20" Width="70" ValueChanged="numericUpDown_FinishWidth_ValueChanged" Canvas.Top="99" Canvas.Left="178" Minimum="-1" Maximum="100000" Value="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:SByteUpDown Name="numericUpDown_FinishWidth" Height="20" Width="70" ValueChanged="numericUpDown_FinishWidth_ValueChanged" Canvas.Top="99" Canvas.Left="178" Minimum="-1" Value="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_StartVCoord" Content="Start Coord" Height="28" Width="84" TabIndex="7" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="63" >
                                 <Label.ToolTip>
@@ -1606,19 +1607,19 @@
 
                             <Label Name="label_AccelSkillMax" Height="25" Width="36" TabIndex="65" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="159" 
                                    ToolTip="When an AI is generated, the maximum acceleration skill it will use to make a random one.">Max</Label>
-                            <xctk:IntegerUpDown Name="numericUpDown_AccelSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="162" Value="80" Maximum="200" Minimum="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:SByteUpDown Name="numericUpDown_AccelSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="162" Value="80" Maximum="100" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_StartSkillMax" Height="25" Width="36" TabIndex="65" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="187" 
                                    ToolTip="When an AI is generated, the maximum starting skill it will use to make a random one.">Max</Label>
-                            <xctk:IntegerUpDown Name="numericUpDown_StartSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="191" Value="80" Maximum="200" Minimum="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:SByteUpDown Name="numericUpDown_StartSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="191" Value="80" Maximum="100" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_BrakeSkillMax" Height="25" Width="36" TabIndex="64" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="129" 
                                    ToolTip="When an AI is generated, the minimum brake skill it will use to make a random one.">Max</Label>
-                            <xctk:IntegerUpDown Name="numericUpDown_BrakeSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="131" Value="80" Maximum="200" Minimum="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:ShortUpDown Name="numericUpDown_BrakeSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="131" Value="80" Maximum="200" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_AccelSkillMin" Height="25" Width="33" TabIndex="63" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="158" 
                                    ToolTip="When an AI is generated, the minimum acceleration skill it will use to make a random one.">Min</Label>
-                            <xctk:IntegerUpDown Name="numericUpDown_AccelSkillMin" Value="{Binding Path=Entries.AIAccelSkillStarting}" Height="20" Width="50" Canvas.Left="192" Canvas.Top="162" Maximum="200" Minimum="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:SByteUpDown Name="numericUpDown_AccelSkillMin" Value="{Binding Path=Entries.AIAccelSkillStarting}" Height="20" Width="50" Canvas.Left="192" Canvas.Top="162" Maximum="100" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_AccelSkill" Content="AI Acceleration Skill" Height="24" Width="140" TabIndex="62" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="9" Canvas.Top="158" >
                                 <Label.ToolTip>
@@ -1634,7 +1635,7 @@
 
                             <Label Name="label_StartSkillMin" Height="25" Width="33" TabIndex="63" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="188" 
                                    ToolTip="When an AI is generated, the minimum starting skill it will use to make a random one.">Min</Label>
-                            <xctk:IntegerUpDown Name="numericUpDown_StartSkillMin" Value="{Binding Path=Entries.AIStartSkillStarting}" Height="20" Width="50" Canvas.Left="192" Canvas.Top="191" Maximum="200" Minimum="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:SByteUpDown Name="numericUpDown_StartSkillMin" Value="{Binding Path=Entries.AIStartSkillStarting}" Height="20" Width="50" Canvas.Left="192" Canvas.Top="191" Maximum="100" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
                             <Label Name="label_StartSkill" Content="AI Skill Starting" Height="26" Width="136" TabIndex="62" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="187" >
                                 <Label.ToolTip>
                                     <TextBlock>
@@ -1649,15 +1650,15 @@
 
                             <Label Name="label_CornerSkillMax" Height="25" Width="36" TabIndex="59" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="99" 
                                    ToolTip="When an AI is generated, the maximum corner skill it will use to make a random one.">Max</Label>
-                            <xctk:IntegerUpDown Name="numericUpDown_CornerSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="101" Maximum="200" Value="80" Minimum="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:ShortUpDown Name="numericUpDown_CornerSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="101" Maximum="200" Value="80" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_BrakeSkillMin" Height="25" Width="33" TabIndex="58" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="128" 
                                    ToolTip="When an AI is generated, the minimum brake skill it will use to make a random one.">Min</Label>
-                            <xctk:IntegerUpDown Name="numericUpDown_BrakeSkillMin" Value="{Binding Path=Entries.AIBrakingSkillStarting}" Height="20" Width="50" Canvas.Left="192" Canvas.Top="131" Maximum="200" Minimum="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:ShortUpDown Name="numericUpDown_BrakeSkillMin" Value="{Binding Path=Entries.AIBrakingSkillStarting}" Height="20" Width="50" Canvas.Left="192" Canvas.Top="131" Maximum="200" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_CornerSkillMin" Height="25" Width="33" TabIndex="57" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="98" 
                                    ToolTip="When an AI is generated, the minimum corner skill it will use to make a random one.">Min</Label>
-                            <xctk:IntegerUpDown Name="numericUpDown_CornerSkillMin" Value="{Binding Path=Entries.AICornerSkillStarting}" Height="20" Width="50" Canvas.Left="192" Canvas.Top="101"  Maximum="200" Minimum="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:ShortUpDown Name="numericUpDown_CornerSkillMin" Value="{Binding Path=Entries.AICornerSkillStarting}" Height="20" Width="50" Canvas.Left="192" Canvas.Top="101"  Maximum="200" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_BrakeSkill" Content="AI Braking Skill" Height="30" Width="128" TabIndex="56" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="9" Canvas.Top="128">
                                 <Label.ToolTip>
@@ -1709,8 +1710,8 @@
                                 </Label.ToolTip>
                             </Label>
 
-                            <xctk:IntegerUpDown Name="numericUpDown_AIRoughnessMin" Height="20" Width="50" Canvas.Left="192" Canvas.Top="43" Value="{Binding Path=Entries.AIRoughness}"  Maximum="10" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
-                            <xctk:IntegerUpDown Name="numericUpDown_AIRoughnessMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="44" Maximum="10" Value="5" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:SByteUpDown Name="numericUpDown_AIRoughnessMin" Height="20" Width="50" Canvas.Left="192" Canvas.Top="43" Value="{Binding Path=Entries.AIRoughness}"  Maximum="10" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:SByteUpDown Name="numericUpDown_AIRoughnessMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="44" Maximum="10" Value="5" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_BaseSkill" Content="AI Base Skill" Height="25" Width="78" TabIndex="48" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="9" Canvas.Top="68" >
                                 <Label.ToolTip>

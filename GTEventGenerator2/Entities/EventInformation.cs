@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+
+using PDTools.Utils;
+
 namespace GTEventGenerator.Entities
 {
     public class EventInformation
@@ -95,6 +98,50 @@ namespace GTEventGenerator.Entities
                 xml.WriteEndElement();
             } 
             xml.WriteEndElement();
+        }
+
+        public void WriteToCache(ref BitStream bs)
+        {
+            bs.WriteUInt32(0xE6_E6_9F_40);
+            bs.WriteUInt32(1_02); // Version
+
+            WriteLocaleListToCache(ref bs, Titles);
+            WriteLocaleListToCache(ref bs, OneLineTitles);
+            WriteLocaleListToCache(ref bs, Descriptions);
+            WriteLocaleListToCache(ref bs, null); // advanced_notice
+            WriteLocaleListToCache(ref bs, null); // registration_notice
+
+            bs.WriteInt16(0); // narration_id
+            bs.WriteInt16(0); // race_info_minute
+
+            bs.WriteNullStringAligned4(string.Empty); // logo_image_path
+            bs.WriteByte(0); // logo_image_layout
+            bs.WriteInt32(0); // logo_image_buffer size
+            bs.WriteNullStringAligned4(string.Empty); // logo_other_info
+
+            bs.WriteNullStringAligned4(string.Empty); // flier_image_path
+            bs.WriteInt32(0); // flier_image_buffer
+            bs.WriteNullStringAligned4(string.Empty); // flier_other_info
+
+            bs.WriteNullStringAligned4(string.Empty); // race_label
+        }
+
+        private void WriteLocaleListToCache(ref BitStream bs, Dictionary<string, string> list)
+        {
+            bs.WriteUInt32(1_00);
+            bs.WriteByte(24); // Count
+            bs.WriteSByte(-1); // Unk
+
+            if (list is null)
+            {
+                for (int i = 0; i < 24; i++)
+                    bs.WriteNullStringAligned4(string.Empty);
+            }
+            else
+            {
+                for (int i = 0; i < 24; i++)
+                    bs.WriteNullStringAligned4(list["GB"]);
+            }
         }
 
         public void ParseRaceInformation(Event evnt, XmlNode node)

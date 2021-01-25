@@ -49,6 +49,12 @@ namespace GTEventGenerator
         public static void WriteElementInt(this XmlWriter xml, string localName, int value)
             => WriteElementValue(xml, localName, value.ToString());
 
+        public static void WriteElementUInt(this XmlWriter xml, string localName, uint value)
+            => WriteElementValue(xml, localName, value.ToString());
+
+        public static void WriteElementULong(this XmlWriter xml, string localName, ulong value)
+            => WriteElementValue(xml, localName, value.ToString());
+
         public static void WriteElementIntIfSet(this XmlWriter xml, string localName, int? value)
         {
             if (value != 0)
@@ -90,29 +96,98 @@ namespace GTEventGenerator
             return (T)Enum.Parse(typeof(T), node.Attributes["value"].Value);
         }
 
-        public static string ReadValueString(this XmlNode node)
+        private static bool TryGetValueAttribute(XmlNode node, out XmlAttribute attr)
         {
+            attr = null;
             if (node.Attributes.Count > 0)
             {
-                var attr = node.Attributes["value"];
-                if (attr != null)
-                   return attr.Value;
+                attr = node.Attributes["value"];
+                return attr != null;
             }
+
+            return false;
+        }
+
+        public static string ReadValueString(this XmlNode node)
+        {
+            if (TryGetValueAttribute(node, out XmlAttribute attr))
+                return attr.Value;
 
             return null;
         }
 
+        public static uint ReadValueUInt(this XmlNode node)
+        {
+            if (TryGetValueAttribute(node, out XmlAttribute attr))
+            {
+                if (uint.TryParse(attr.Value, out uint value))
+                    return value;
+            }
+
+            return 0;
+        }
+
         public static int ReadValueInt(this XmlNode node)
         {
-            if (node.Attributes.Count > 0)
+            if (TryGetValueAttribute(node, out XmlAttribute attr))
             {
-                var attr = node.Attributes["value"];
-                if (attr != null)
-                {
-                    if (int.TryParse(attr.Value, out int value))
-                        return value;
+                if (int.TryParse(attr.Value, out int value))
+                    return value;
+            }
 
-                }
+            return 0;
+        }
+
+        public static byte ReadValueByte(this XmlNode node)
+        {
+            if (TryGetValueAttribute(node, out XmlAttribute attr))
+            {
+                if (byte.TryParse(attr.Value, out byte value))
+                    return value;
+            }
+
+            return 0;
+        }
+
+        public static sbyte ReadValueSByte(this XmlNode node)
+        {
+            if (TryGetValueAttribute(node, out XmlAttribute attr))
+            {
+                if (sbyte.TryParse(attr.Value, out sbyte value))
+                    return value;
+            }
+
+            return 0;
+        }
+
+        public static float ReadValueSingle(this XmlNode node)
+        {
+            if (TryGetValueAttribute(node, out XmlAttribute attr))
+            {
+                if (float.TryParse(attr.Value, out float value))
+                    return value;
+            }
+
+            return 0;
+        }
+
+        public static short ReadValueShort(this XmlNode node)
+        {
+            if (TryGetValueAttribute(node, out XmlAttribute attr))
+            {
+                if (short.TryParse(attr.Value, out short value))
+                    return value;
+            }
+
+            return 0;
+        }
+
+        public static ulong ReadValueULong(this XmlNode node)
+        {
+            if (TryGetValueAttribute(node, out XmlAttribute attr))
+            {
+                if (ulong.TryParse(attr.Value, out ulong value))
+                    return value;
             }
 
             return 0;

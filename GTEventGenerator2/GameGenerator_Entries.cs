@@ -411,7 +411,7 @@ namespace GTEventGenerator
             }
 
             if (checkBox_RandomCarColor.IsEnabled == true)
-                raceEntry.ColorIndex = new Random().Next(GameDatabase.GetCarColorNumByLabel(raceEntry.CarLabel));
+                raceEntry.ColorIndex = (short)_random.Next(GameDatabase.GetCarColorNumByLabel(raceEntry.CarLabel));
 
             raceEntry.DriverName = driverName;
             raceEntry.DriverRegion = driverRegion;
@@ -419,7 +419,7 @@ namespace GTEventGenerator
             if (numericUpDown_AIRoughnessMin.Value > numericUpDown_AIRoughnessMax.Value)
                 numericUpDown_AIRoughnessMax.Value = numericUpDown_AIRoughnessMax.Value;
 
-            raceEntry.Roughness = _random.Next(numericUpDown_AIRoughnessMin.Value.Value, numericUpDown_AIRoughnessMax.Value.Value + 1);
+            raceEntry.Roughness = (sbyte)_random.Next(numericUpDown_AIRoughnessMin.Value.Value, numericUpDown_AIRoughnessMax.Value.Value + 1);
 
             if (numericUpDown_BaseSkillMin.Value > numericUpDown_BaseSkillMax.Value)
                 numericUpDown_BaseSkillMax.Value = numericUpDown_BaseSkillMin.Value;
@@ -429,21 +429,21 @@ namespace GTEventGenerator
             if (numericUpDown_AccelSkillMin.Value > numericUpDown_AccelSkillMax.Value)
                 numericUpDown_AccelSkillMax.Value = numericUpDown_AccelSkillMin.Value;
 
-            raceEntry.AccelSkill = _random.Next(numericUpDown_AccelSkillMin.Value.Value, numericUpDown_AccelSkillMax.Value.Value + 1);
+            raceEntry.AccelSkill = (sbyte)_random.Next(numericUpDown_AccelSkillMin.Value.Value, numericUpDown_AccelSkillMax.Value.Value + 1);
 
             if (numericUpDown_BrakeSkillMin.Value > numericUpDown_BrakeSkillMax.Value)
                 numericUpDown_BrakeSkillMax.Value = numericUpDown_BrakeSkillMin.Value;
 
-            raceEntry.BrakingSkill = _random.Next(numericUpDown_BrakeSkillMin.Value.Value, numericUpDown_BrakeSkillMax.Value.Value + 1);
+            raceEntry.BrakingSkill = (short)_random.Next(numericUpDown_BrakeSkillMin.Value.Value, numericUpDown_BrakeSkillMax.Value.Value + 1);
 
             if (numericUpDown_CornerSkillMin.Value > numericUpDown_CornerSkillMax.Value)
                 numericUpDown_CornerSkillMax.Value = numericUpDown_CornerSkillMin.Value;
 
-            raceEntry.CorneringSkill = _random.Next(numericUpDown_CornerSkillMin.Value.Value, numericUpDown_CornerSkillMax.Value.Value + 1);
+            raceEntry.CorneringSkill = (short)_random.Next(numericUpDown_CornerSkillMin.Value.Value, numericUpDown_CornerSkillMax.Value.Value + 1);
 
             if (numericUpDown_StartSkillMin.Value > numericUpDown_StartSkillMax.Value)
                 numericUpDown_StartSkillMax.Value = numericUpDown_StartSkillMin.Value;
-            raceEntry.StartingSkill = _random.Next(numericUpDown_StartSkillMin.Value.Value, numericUpDown_StartSkillMax.Value.Value + 1);
+            raceEntry.StartingSkill = (sbyte)_random.Next(numericUpDown_StartSkillMin.Value.Value, numericUpDown_StartSkillMax.Value.Value + 1);
 
 
             raceEntry.TireFront = (TireType)comboBox_AIGenTyreComp.SelectedIndex - 1;

@@ -3,6 +3,8 @@ using System.Xml;
 using System.ComponentModel;
 
 using GTEventGenerator.Entities;
+using GTEventGenerator.Database;
+using PDTools.Utils;
 
 namespace GTEventGenerator
 {
@@ -14,6 +16,7 @@ namespace GTEventGenerator
         public string DriverName { get; set; } = "Unnamed";
         public string DriverRegion { get; set; } = "PDI";
 
+        #region Skill Properties
         private int _baseSkill = 80;
         public int BaseSkill
         {
@@ -25,8 +28,8 @@ namespace GTEventGenerator
             }
         }
 
-        private int _brakingSkill = 80;
-        public int BrakingSkill
+        private short _brakingSkill = 80;
+        public short BrakingSkill
         {
             get => _brakingSkill;
             set
@@ -36,8 +39,8 @@ namespace GTEventGenerator
             }
         }
 
-        private int _corneringSKill = 80;
-        public int CorneringSkill
+        private short _corneringSKill = 80;
+        public short CorneringSkill
         {
             get => _corneringSKill;
             set
@@ -47,30 +50,30 @@ namespace GTEventGenerator
             }
         }
 
-        private int _accelSkill = 80;
-        public int AccelSkill
+        private sbyte _accelSkill = 80;
+        public sbyte AccelSkill
         {
             get => _accelSkill;
             set
             {
-                if (value <= 200 && value >= 0)
+                if (value <= 100 && value >= 0)
                     _accelSkill = value;
             }
         }
 
-        private int _startSkill = 80;
-        public int StartingSkill
+        private sbyte _startSkill = 80;
+        public sbyte StartingSkill
         {
             get => _startSkill;
             set
             {
-                if (value <= 200 && value >= 0)
+                if (value <= 100 && value >= 0)
                     _startSkill = value;
             }
         }
 
-        private int _roughness = -1;
-        public int Roughness
+        private sbyte _roughness = -1;
+        public sbyte Roughness
         {
             get => _roughness;
             set
@@ -79,6 +82,7 @@ namespace GTEventGenerator
                     _roughness = value;
             }
         }
+        #endregion
 
         private int _delay;
         public int Delay
@@ -90,7 +94,6 @@ namespace GTEventGenerator
                     _delay = value;
             }
         }
-        public int raceBucket { get; set; }
 
         private int _initialVelocity = -1;
         public int InitialVelocity
@@ -141,93 +144,37 @@ namespace GTEventGenerator
             }
         }
 
-        private int _ballastWeight;
-        public int BallastWeight
-        {
-            get => _ballastWeight;
-            set
-            {
-                if (value < 0)
-                    value = 0;
-                else if (value > 1000)
-                    value = 1000;
-                _ballastWeight = value;
-            }
-        }
+        public byte BallastWeight { get; set; }
+        public sbyte BallastPosition { get; set; } = -1;
+        public sbyte DownforceRear { get; set; } = -1;
+        public sbyte DownforceFront { get; set; } = -1;
 
-        private int _ballastPosition;
-        public int BallastPosition
-        {
-            get => _ballastPosition;
-            set
-            {
-                if (value < -1000)
-                    value = 0;
-                else if (value > 1000)
-                    value = 1000;
-                _ballastPosition = value;
-            }
-        }
-
-        private int _downforceRear;
-        public int DownforceRear
-        {
-            get => _downforceRear;
-            set
-            {
-                if (value < 0)
-                    value = 0;
-                else if (value > 1000)
-                    value = 1000;
-                _downforceRear = value;
-            }
-        }
-
-        private int _downforceFront;
-        public int DownforceFront
-        {
-            get => _downforceFront;
-            set
-            {
-                if (value < 0)
-                    value = 0;
-                else if (value > 1000)
-                    value = 1000;
-                _downforceFront = value;
-            }
-        }
-
-        public int BodyPaintID { get; set; }
-        public int WheelPaintID { get; set; }
-        public int WheelID { get; set; }
-        public int WheelInchUp { get; set; }
-        public int AeroKit { get; set; }
-        public int FlatFloor { get; set; }
-        public int AeroOther { get; set; }
+        public short BodyPaintID { get; set; } = -1;
+        public short WheelPaintID { get; set; } = -1;
+        public int WheelID { get; set; } = -1;
+        public int WheelInchUp { get; set; } = -1;
+        public int AeroKit { get; set; } = -1;
+        public int FlatFloor { get; set; } = -1;
+        public int AeroOther { get; set; } = -1;
 
         #endregion
+
         public string CarLabel { get; set; }
         public string ActualCarName { get; set; }
         public StartType StartType { get; set; } = StartType.NONE;
 
-        public int ColorIndex { get; set; }
+        public byte RaceClassID { get; set; }
+
+        public short ColorIndex { get; set; }
         public TireType TireFront { get; set; } = TireType.NONE_SPECIFIED;
         public TireType TireRear { get; set; } = TireType.NONE_SPECIFIED;
 
-        public EngineNATuneState EngineStage { get; set; }
-        public EngineTurboKit TurboKit { get; set; }
-        public EngineComputer Computer { get; set; }
-        public Muffler Exhaust { get; set; }
-        public Suspension Suspension { get; set; }
-        public Transmission Transmission { get; set; }
-
-        public EventEntry()
-        {
-            this.Delay = 0;
-            this.raceBucket = 0;
-            this.InitialVelocity = 0;
-            this.InitialVCoord = 0;
-        }
+        public EngineNATuneState EngineStage { get; set; } = EngineNATuneState.NONE;
+        public EngineTurboKit TurboKit { get; set; } = EngineTurboKit.NONE;
+        public EngineComputer Computer { get; set; } = EngineComputer.NONE;
+        public Muffler Exhaust { get; set; } = Muffler.UNSPECIFIED;
+        public Suspension Suspension { get; set; } = Suspension.UNSPECIFIED;
+        public Transmission Transmission { get; set; } = Transmission.UNSPECIFIED;
 
         public void WriteToXml(XmlWriter xml, bool isFixed)
         {
@@ -246,8 +193,14 @@ namespace GTEventGenerator
 
             if (!IsPresentEntry)
             {
-                xml.WriteElementFloat("initial_position", InitialVCoord);
-                xml.WriteElementInt("initial_velocity", InitialVelocity);
+                if (isFixed)
+                {
+                    xml.WriteElementFloat("initial_position", InitialVCoord);
+                    xml.WriteElementInt("initial_velocity", InitialVelocity);
+                    xml.WriteElementInt("delay", Delay);
+                    if (StartType != StartType.NONE)
+                        xml.WriteElementValue("start_type", StartType.ToString());
+                }
 
                 xml.WriteElementValue("driver_name", IsAI ? DriverName : "Player");
                 xml.WriteElementInt("player_no", IsAI ? -1 : 0);
@@ -255,8 +208,7 @@ namespace GTEventGenerator
                 if (IsAI)
                     xml.WriteElementValue("driver_region", DriverRegion);
 
-                xml.WriteElementInt("delay", Delay);
-                xml.WriteElementInt("race_class_id", 0);
+                xml.WriteElementInt("race_class_id", RaceClassID);
 
                 if (IsAI)
                 {
@@ -267,10 +219,11 @@ namespace GTEventGenerator
                     xml.WriteElementInt("ai_skill_starting", StartingSkill);
                     xml.WriteElementInt("ai_roughness", Roughness);
                 }
-
-                if (StartType != StartType.NONE)
-                    xml.WriteElementValue("start_type", StartType.ToString());
             }
+
+            // Fixed entries can have a child entry_base.
+            if (isFixed)
+                xml.WriteStartElement("entry_base");
 
             if (EngineStage != EngineNATuneState.NONE)
                 xml.WriteElementValue("engine_na_tune_stage", EngineStage.ToString());
@@ -327,17 +280,83 @@ namespace GTEventGenerator
             if (TireRear != TireType.NONE_SPECIFIED)
                 xml.WriteElementValue("tire_r", TireRear.ToString());
 
+            if (isFixed)
+                xml.WriteEndElement();
+
             xml.WriteEndElement();
+        }
+
+        public void WriteEntryBaseToBuffer(ref BitStream bs, GameDB db)
+        {
+            bs.WriteUInt32(0xE6_EB_45_F8);
+            bs.WriteUInt32(1_06);
+
+            // Write car (carthin)
+            int carCode = !string.IsNullOrEmpty(CarLabel) ? db.GetCarCodeByLabel(CarLabel) : 0;
+            bs.WriteInt32(carCode);
+            bs.WriteInt16(ColorIndex);
+            bs.WriteInt16(0);
+            bs.WriteInt32(0);
+
+            bs.WriteNullStringAligned4(DriverName);
+            bs.WriteNullStringAligned4(DriverRegion);
+            bs.WriteByte(RaceClassID);
+            bs.WriteByte(0); // Proxy Driver Model
+
+            // boost_rate count, ignore with empty list
+            bs.WriteInt32(0);
+
+            bs.WriteInt16(BrakingSkill);
+            bs.WriteInt16(CorneringSkill);
+            bs.WriteSByte(AccelSkill);
+            bs.WriteSByte(StartingSkill);
+            bs.WriteSByte(Roughness);
+
+            bs.WriteSByte((sbyte)EngineStage);
+            bs.WriteSByte((sbyte)TurboKit);
+            bs.WriteSByte((sbyte)Computer);
+            bs.WriteSByte((sbyte)Exhaust);
+            bs.WriteSByte((sbyte)Suspension);
+            bs.WriteInt16((sbyte)WheelID);
+            bs.WriteInt16((sbyte)WheelPaintID);
+            bs.WriteInt16((sbyte)WheelInchUp);
+            bs.WriteSByte((sbyte)TireFront);
+            bs.WriteSByte((sbyte)TireRear);
+
+            // Aero stuff
+            bs.WriteSByte(-1);
+            bs.WriteSByte(-1);
+            bs.WriteSByte(-1);
+            bs.WriteSByte(-1);
+
+            bs.WriteByte((byte)PowerLimiter);
+            bs.WriteSByte(DownforceFront);
+            bs.WriteSByte(DownforceRear);
+            bs.WriteInt16(BodyPaintID);
+            bs.WriteInt16(-1); // Unk
+            bs.WriteInt16(-1); // decken_number
+
+            bs.WriteInt16(-1); // head/body codes
+            bs.WriteInt16(-1);
+            bs.WriteInt16(-1);
+            bs.WriteInt16(-1);
+
+            bs.WriteByte(0); // ai_reaction
+            bs.WriteByte(BallastWeight);
+            bs.WriteSByte(BallastPosition);
+            bs.WriteSByte(-1); // Decken Type
+            bs.WriteSByte(-1); // Decken Custom ID
+            bs.WriteSByte(-1); // Decken Custom Type
         }
     }
 
     public enum EngineNATuneState // PARTS_NATUNE
     {
         [Description("Default")]
-        NONE,
+        NONE = -1,
 
         [Description("Stage 1")]
-        LEVEL1,
+        LEVEL1 = 1,
 
         [Description("Stage 2")]
         LEVEL2,
@@ -355,7 +374,7 @@ namespace GTEventGenerator
     public enum EngineTurboKit // PARTS_TURBINEKIT
     {
         [Description("Default")]
-        NONE,
+        NONE = -1,
 
         [Description("NO (?)")]
         NO,
@@ -379,15 +398,18 @@ namespace GTEventGenerator
     public enum EngineComputer // PARTS_COMPUTER
     {
         [Description("Default")]
-        NONE,
+        NONE = -1,
 
         [Description("Sports Computer")]
-        LEVEL1,
+        LEVEL1 = 1,
         LEVEL2,
     }
 
     public enum Muffler // PARTS_MUFFLER
     {
+        [Description("Unspecified")]
+        UNSPECIFIED = -1,
+
         [Description("Default")]
         NONE,
 
@@ -403,6 +425,9 @@ namespace GTEventGenerator
 
     public enum Suspension // PARTS_SUSPENSION
     {
+        [Description("Unspecified")]
+        UNSPECIFIED = -1,
+
         [Description("Default")]
         NORMAL,
 
@@ -424,6 +449,9 @@ namespace GTEventGenerator
 
     public enum Transmission // PARTS_GEAR
     {
+        [Description("Unspecified")]
+        UNSPECIFIED = -1,
+
         [Description("Default")]
         NORMAL,
 

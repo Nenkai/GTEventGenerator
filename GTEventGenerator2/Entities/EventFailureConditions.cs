@@ -6,34 +6,65 @@ using System.Threading.Tasks;
 using System.Xml;
 
 using GTEventGenerator.Utils;
+using PDTools.Utils;
 
 namespace GTEventGenerator.Entities
 {
     public class EventFailureConditions
     {
-        public FailCondition FailConditions { get; set; }
+        public List<FailCondition> FailConditions { get; set; } = new List<FailCondition>();
+        public List<int> DataList { get; set; } = new List<int>();
+        public bool NoFailureAtResult { get; set; }
 
         public void WriteToXml(XmlWriter xml)
         {
-            if (FailConditions != FailCondition.NONE)
+            if (FailConditions.Count != 0)
             {
                 xml.WriteStartElement("failure_condition");
 
                 xml.WriteStartElement("type_list");
                 {
-                    var values = Enum.GetValues(typeof(FailCondition))
-                        .Cast<int>()
-                        .Where(f => f != (int)FailCondition.NONE && (f & (int)FailConditions) == f)
-                        .ToList();
-
-                    foreach (var value in values)
-                        xml.WriteElementValue("type", ((FailCondition)value).ToString());
+                    foreach (var value in FailConditions)
+                        xml.WriteElementValue("type", value.ToString());
                 }
                 xml.WriteEndElement();
+
+                if (DataList.Count != 0)
+                {
+                    xml.WriteStartElement("data_list");
+                    foreach (var data in DataList)
+                        xml.WriteElementInt("data", data);
+                    xml.WriteEndElement();
+                }
+
+                xml.WriteElementBool("no_failure_at_result", NoFailureAtResult);
 
                 xml.WriteEndElement();
             }
             
+        }
+
+        public void ReadFromCache(ref BitStream reader)
+        {
+            if (reader.ReadUInt32() != 0xE6_E6_DC_CE)
+                throw new Exception("Failure condition magic did not match expected (E6 E6 DC CE)");
+
+            uint version = reader.ReadUInt32();
+        }
+
+        public void WriteToCache(ref BitStream bs)
+        {
+            bs.WriteUInt32(0xE6_E6_DC_CE);
+            bs.WriteUInt32(1_00);
+
+            bs.WriteInt32(FailConditions.Count);
+            foreach (var value in FailConditions)
+                bs.WriteInt32((int)value);
+
+            bs.WriteInt32(DataList.Count);
+            foreach (var value in DataList)
+                bs.WriteInt32(value);
+            bs.WriteBool(NoFailureAtResult);
         }
 
         public void ParseFailConditions(XmlNode node)
@@ -44,7 +75,21 @@ namespace GTEventGenerator.Entities
                 {
                     case "type_list":
                         foreach (XmlNode type in pNode.SelectNodes("type"))
-                            FailConditions |= type.ReadValueEnum<FailCondition>();
+                        {
+                            FailCondition cond = type.ReadValueEnum<FailCondition>();
+                            if (cond == FailCondition.NONE || FailConditions.Contains(cond))
+                                continue;
+                            FailConditions.Add(cond);
+                        }
+                        break;
+
+                    case "data_list":
+                        foreach (XmlNode data in pNode.SelectNodes("data"))
+                            DataList.Add(data.ReadValueInt());
+                        break;
+
+                    case "no_failure_at_result":
+                        NoFailureAtResult = pNode.ReadValueBool();
                         break;
 
                 }
@@ -56,14 +101,26 @@ namespace GTEventGenerator.Entities
     public enum FailCondition
     {
         NONE,
-        WRONGWAY = 0x01,
-        COURSE_OUT = 0x02,
-        HIT_CAR = 0x04,
-        HIT_CAR_HARD = 0x08,
-        PYLON = 0x10,
-        HIT_WALL = 0x20,
-        HIT_WALL_HARD = 0x40,
-        WRONGWAY_LOOSE = 0x80,
+        COURSE_OUT,
+        HIT_WALL_HARD,
+        HIT_CAR_HARD,
+        HIT_CAR,
+        PYLON,
+        HIT_WALL,
+        SPIN_FULL,
+        SPIN_HALF,
+        WHEEL_SPIN,
+        LOCK_BRAKE,
+        SLIP_ANGLE,
+        LESS_SPEED,
+        MORE_SPEED,
+        MORE_GFORCE,
+        PENALTY_ROAD,
+        LOW_MU_ROAD,
+        SLALOM,
+        WRONGWAY,
+        WRONGWAY_LOOSE,
+        MAX,
     }
 }
 
