@@ -37,6 +37,7 @@ namespace GTEventGenerator
         {
             SetSettingValue("Discord_Presence_Enabled", 0);
             SetSettingValue("Minify_XML", 1);
+            SetSettingValue("Create_FGP", 0);
         }
 
         public void Save(string file)

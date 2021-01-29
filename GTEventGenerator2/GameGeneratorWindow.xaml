@@ -23,6 +23,7 @@
                 </MenuItem>
                 <MenuItem Header="Edit">
                     <MenuItem Header="Minify XML's while Exporting" Name="minimizeXMLToolStripMenuItem" IsCheckable="True" Checked="minimizeXMLToolStripMenuItem_Checked" Unchecked="minimizeXMLToolStripMenuItem_Checked" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
+                    <MenuItem Header="Create Cache File while exporting (GT6)" Name="exportCacheToolStripMenuItem" IsCheckable="True" Checked="exportCacheToolStripMenuItem_Checked" Unchecked="exportCacheToolStripMenuItem_Checked" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
                     <Separator />
                     <MenuItem Header="Regenerate ALL AI's..." Template="{DynamicResource SingleDropDownMenuItem}">
                         <MenuItem Header="Region/Names" Name="randomizeAINamesToolStripMenuItem" Click="randomizeAINamesToolStripMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>

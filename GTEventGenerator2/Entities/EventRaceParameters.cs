@@ -8,6 +8,9 @@ using System.ComponentModel;
 using System.Globalization;
 
 using PDTools.Utils;
+using GTEventGenerator.PDUtils;
+
+using GTEventGenerator.Database;
 
 namespace GTEventGenerator.Entities
 {
@@ -24,7 +27,9 @@ namespace GTEventGenerator.Entities
         public bool BoostFlag { get; set; }
         public byte BoostType { get; set; }
         public byte BoostLevel { get; set; }
+        public int BehaviorFallBack { get; set; }
         public CompleteType CompleteType { get; set; } = CompleteType.BYLAPS;
+        public byte CourseOutPenaltyMargin { get; set; }
         public DateTime? Date { get; set; } = new DateTime(1970, 6, 1, 12, 00, 00);
         public DecisiveWeatherType DecisiveWeather { get; set; } = DecisiveWeatherType.SUNNY;
         public bool DisableRecordingReplay { get; set; }
@@ -51,12 +56,15 @@ namespace GTEventGenerator.Entities
         public LineGhostRecordType LineGhostRecordType { get; set; }
         public int? LineGhostPlayMax { get; set; }
         public short MinutesCount { get; set; }
+        public bool NeedTireChange { get; set; }
         public bool OnlineOn { get; set; }
         public bool PaceNote { get; set; }
         public PenaltyLevel PenaltyLevel { get; set; } = PenaltyLevel.DEFAULT;
         public bool PenaltyNoReset { get; set; }
+        public byte PitConstraint { get; set; } // 16 max
         public RaceType RaceType { get; set; } = RaceType.COMPETITION;
         public short RacersMax { get; set; } = 8;
+        public byte RaceInitialLaps { get; set; } = 0;
 
         private int _trackWetness;
         public int TrackWetness
@@ -79,7 +87,9 @@ namespace GTEventGenerator.Entities
         public StartType StartType { get; set; } = StartType.GRID;
         public SessionType SessionType { get; set; }
         public SlipstreamBehavior SlipstreamBehavior { get; set; } = SlipstreamBehavior.GAME;
+        public StartSignalType StartSignalType { get; set; } = StartSignalType.NORMAL;
         public byte StartTimeOffset { get; set; }
+        public bool VehicleFreezeMode { get; set; } // stage_data->at_quick seems to also enable this
         public bool WithGhost { get; set; }
         public bool ReplaceAtCourseOut { get; set; }
         public short WeatherAccel { get; set; }
@@ -87,18 +97,18 @@ namespace GTEventGenerator.Entities
         public sbyte WeatherBaseCelsius { get; set; } = 24;
         public sbyte WeatherMaxCelsius { get; set; } = 3;
         public sbyte WeatherMinCelsius { get; set; } = 3;
-        public bool WeatherNoPrecipitation { get; set; }
+        public bool WeatherNoPrecipitation { get; set; } = true;
         public bool WeatherNoSchedule { get; set; }
         public bool WeatherNoWind { get; set; }
         public byte WeatherPointNum { get; set; }
         public bool WeatherPrecRainOnly { get; set; }
         public bool WeatherPrecSnowOnly { get; set; }
-        public short WeatherTotalSec { get; set; }
+        public short WeatherTotalSec { get; set; } = 90;
         public bool WeatherRandom { get; set; }
         public int WeatherRandomSeed { get; set; }
         public List<WeatherData> NewWeatherData { get; set; } = new List<WeatherData>();
 
-        public byte[] GridList { get; set; } = new byte[32];
+        public sbyte[] GridList { get; set; } = new sbyte[32];
         public byte[] DelayStartList { get; set; } = new byte[32];
 
         public BoostTable[] BoostTables { get; set; } = new BoostTable[2] { new BoostTable(), new BoostTable() };
@@ -107,8 +117,20 @@ namespace GTEventGenerator.Entities
         private short[] LaunchPositionList { get; set; } = new short[32];
         private short[] StartTypeSlotList { get; set; } = new short[32];
 
-        public int[] EventVList { get; set; } = new int[30];
+        public short[] EventVList { get; set; } = new short[30];
         public PenaltyParameter PenaltyParameter { get; set; } = new PenaltyParameter();
+
+        public EventRaceParameters()
+        {
+            for (int i = 0; i < 32; i++)
+            {
+                GridList[i] = -1;
+                StartTypeSlotList[i] = -1;
+            }
+
+            for (int i = 0; i < 30; i++)
+                EventVList[i] = -1;
+        }
 
         public void WriteToXml(Event parent, XmlWriter xml)
         {
@@ -118,6 +140,8 @@ namespace GTEventGenerator.Entities
             xml.WriteElementBool("allow_codriver", AllowCoDriver);
             xml.WriteElementInt("auto_standing_delay", 0);
             xml.WriteElementBool("autostart_pitout", AutostartPitout);
+            if (BehaviorFallBack != 0)
+                xml.WriteElementInt("behavior_fallback", BehaviorFallBack);
             xml.WriteElementValue("behavior_damage_type", BehaviorDamage.ToString());
             xml.WriteElementValue("behavior_slip_stream_type", SlipstreamBehavior.ToString());
             xml.WriteElementInt("boost_type", BoostType);
@@ -128,7 +152,8 @@ namespace GTEventGenerator.Entities
             xml.WriteElementValue("complete_type", CompleteType.ToString());
             xml.WriteElementInt("consume_fuel", FuelUseMultiplier);
             xml.WriteElementInt("consume_tire", TireUseMultiplier);
-
+            if (CourseOutPenaltyMargin != 0)
+                xml.WriteElementInt("course_out_penalty_margin", CourseOutPenaltyMargin);
             xml.WriteStartElement("datetime");
             if (Date is null)
                 xml.WriteAttributeString("datetime", "1970/00/00 00:00:00");
@@ -159,18 +184,29 @@ namespace GTEventGenerator.Entities
             xml.WriteElementIntIfSet("line_ghost_play_max", LineGhostPlayMax);
             xml.WriteElementValue("low_mu_type", "MODERATE");
             xml.WriteElementInt("mu_ratio100", 100);
+            if (NeedTireChange)
+                xml.WriteElementBool("need_tire_change", NeedTireChange);
             xml.WriteElementBool("online_on", OnlineOn);
             xml.WriteElementBool("pace_note", PaceNote);
             xml.WriteElementInt("penalty_level", (int)PenaltyLevel);
             xml.WriteElementBool("penalty_no_level", PenaltyNoReset);
+            if (PitConstraint != 0)
+                xml.WriteElementInt("pit_constraint", PitConstraint);
             xml.WriteElementInt("race_limit_laps", LapCount);
             xml.WriteElementInt("race_limit_minute", MinutesCount);
+            if (RaceInitialLaps != 0)
+                xml.WriteElementInt("race_initial_laps", RaceInitialLaps);
+
             xml.WriteElementBoolIfTrue("rolling_player_grid", RollingPlayerGrid);
             xml.WriteElementValue("race_type", RaceType.ToString());
             xml.WriteElementValue("start_type", StartType.ToString());
+            if (StartSignalType != StartSignalType.NORMAL)
+                xml.WriteElementValue("start_signal_type", StartSignalType.ToString());
             xml.WriteElementFloat("time_progress_speed", TimeProgressSpeed);
             xml.WriteElementInt("time_to_finish", (int)TimeToFinish.TotalMilliseconds);
             xml.WriteElementInt("time_to_start", (int)TimeToStart.TotalMilliseconds);
+            if (VehicleFreezeMode)
+                xml.WriteElementBool("vehicle_freeze_mode", VehicleFreezeMode);
             xml.WriteElementInt("weather_base_celsius", WeatherBaseCelsius);
             xml.WriteElementInt("weather_max_celsius", WeatherMaxCelsius);
             xml.WriteElementInt("weather_min_celsius", WeatherMinCelsius);
@@ -231,6 +267,8 @@ namespace GTEventGenerator.Entities
                         BehaviorDamage = raceNode.ReadValueEnum<BehaviorDamageType>(); break;
                     case "behavior_slip_stream_type":
                         SlipstreamBehavior = raceNode.ReadValueEnum<SlipstreamBehavior>(); break;
+                    case "behavior_fallback":
+                        BehaviorFallBack = raceNode.ReadValueInt(); break;
                     case "boost_type":
                         BoostType = raceNode.ReadValueByte(); break;
                     case "boost_level":
@@ -241,6 +279,8 @@ namespace GTEventGenerator.Entities
                         FuelUseMultiplier = raceNode.ReadValueByte(); break;
                     case "consume_tire": 
                         TireUseMultiplier = raceNode.ReadValueByte(); break;
+                    case "course_out_penalty_margin":
+                        CourseOutPenaltyMargin = raceNode.ReadValueByte(); break;
                     case "datetime":
                         var dateStr = raceNode.Attributes["datetime"].Value;
                         if (dateStr.Equals("1970/00/00 00:00:00"))
@@ -300,6 +340,8 @@ namespace GTEventGenerator.Entities
                         LineGhostRecordType = raceNode.ReadValueEnum<LineGhostRecordType>(); break;
                     case "line_ghost_play_max":
                         LineGhostPlayMax = raceNode.ReadValueInt(); break;
+                    case "need_tire_change":
+                        NeedTireChange = raceNode.ReadValueBool(); break;
                     case "online_on":
                         OnlineOn = raceNode.ReadValueBool(); break;
                     case "pace_note":
@@ -308,10 +350,15 @@ namespace GTEventGenerator.Entities
                         PenaltyLevel = raceNode.ReadValueEnum<PenaltyLevel>(); break;
                     case "penalty_no_level":
                         PenaltyNoReset = raceNode.ReadValueBool(); break;
+                    case "pit_constraint":
+                        byte val = raceNode.ReadValueByte();
+                        PitConstraint = (byte)(val > 16 ? 16 : val); break;
                     case "race_limit_laps": 
                         LapCount = raceNode.ReadValueShort(); break;
                     case "race_limit_minute": 
                         MinutesCount = raceNode.ReadValueShort(); break;
+                    case "race_initial_laps":
+                        RaceInitialLaps = raceNode.ReadValueByte(); break;
                     case "race_type":
                         RaceType = raceNode.ReadValueEnum<RaceType>(); break;
                     case "racers_max":
@@ -323,12 +370,16 @@ namespace GTEventGenerator.Entities
                         RollingPlayerGrid = raceNode.ReadValueBool(); break;
                     case "start_type":
                         StartType = raceNode.ReadValueEnum<StartType>(); break;
+                    case "start_signal_type":
+                        StartSignalType = raceNode.ReadValueEnum<StartSignalType>(); break;
                     case "time_progress_speed":
                         TimeProgressSpeed = float.Parse(raceNode.ReadValueString()); break;
                     case "time_to_finish":
                         TimeToFinish = TimeSpan.FromMilliseconds(raceNode.ReadValueInt()); break;
                     case "time_to_start":
                         TimeToStart = TimeSpan.FromMilliseconds(raceNode.ReadValueInt()); break;
+                    case "vehicle_freeze_mode":
+                        VehicleFreezeMode = raceNode.ReadValueBool(); break;
                     case "weather_base_celsius":
                         WeatherBaseCelsius = raceNode.ReadValueSByte(); break;
                     case "weather_max_celsius":
@@ -396,17 +447,135 @@ namespace GTEventGenerator.Entities
             if (rpVersion < 122)
                 ReadFromCacheOld(ref reader, rpVersion); // Read Old
             else
-                ;
+                ReadFromCacheNew(ref reader);
 
             ReadBoostPenaltyParametersAndNewer(ref reader, rpVersion);
 
             reader.SeekToByte(currentPos + bufferSize); // pRVar2->BufferSize + param_2;
+        }
 
+        private void ReadFromCacheNew(ref BitStream reader)
+        {
+            SessionType = (SessionType)reader.ReadBits(3);
+            RaceType = (RaceType)reader.ReadByte();
+            StartType = (StartType)reader.ReadByte();
+            CompleteType = (CompleteType)reader.ReadByte();
+            FinishType = (FinishType)reader.ReadByte();
+            LapCount = reader.ReadInt16();
+            MinutesCount = reader.ReadInt16();
+            TimeToStart = TimeSpan.FromMilliseconds(reader.ReadInt32());
+            TimeToFinish = TimeSpan.FromMilliseconds(reader.ReadInt32());
+            reader.ReadInt16(); // entry_max
+            reader.ReadInt16(); // ? field_0x16 - Related to racers max
+            reader.ReadBits(7); // Unk
+            reader.ReadInt32(); // unk
+            reader.ReadByte(); // course_layout_no
+            reader.ReadByte(); // Race Initial Laps
+            KeepLoadGhost = reader.ReadBoolBit();
+            reader.ReadInt32(); // course_code
+            LineGhostPlayMax = reader.ReadByte();
+            GoalTimeUseLapTotal = reader.ReadBoolBit();
+            reader.ReadBits(2); // Intentional
+            reader.ReadBoolBit(); // Force Pitcrew Off
+            reader.ReadInt32(); // scenery_code
+            reader.ReadInt32(); // Unk field_0x3c
+            reader.ReadInt64(); // unk field_0x40
+            reader.ReadInt16(); // packet_timeout_interval
+            reader.ReadInt16(); // packet_timeout_latency
+            reader.ReadInt16(); // packet_timeout_lag
+            RacersMax = reader.ReadInt16();
+            reader.ReadInt32(); // unk field 0x2c
+            AutostartPitout = reader.ReadBoolBit();
+            StartTimeOffset = (byte)reader.ReadBits(5);
+            reader.ReadBits(3); // unk - Check this, got 3 on from game and 0 from built
+            AutoStandingDelay = reader.ReadByte();
+            reader.ReadBits(3); // unk
+            reader.ReadBits(2); // start signal type
+            reader.ReadBoolBit(); // unk
+            reader.ReadBoolBit(); // bench_test
+            reader.ReadByte(); // mu_ratio100
+            reader.ReadBoolBit(); // unk
+            EnableDamage = reader.ReadBoolBit();
+            reader.ReadBits(2); // low_mu_type
+            BehaviorDamage = (BehaviorDamageType)reader.ReadBits(2);
+            reader.ReadBoolBit(); // gps
+            PenaltyNoReset = reader.ReadBoolBit();
+            SlipstreamBehavior = (SlipstreamBehavior)reader.ReadBits(2);
+            reader.ReadBits(4); // Pit constraint
+            reader.ReadBoolBit(); // need_tire_change
+            reader.ReadBits(4); // after_race_penalty_sec_5
+            reader.ReadBoolBit(); // is_speedtest_milemode
+            LineGhostRecordType = (LineGhostRecordType)reader.ReadBits(2);
+            reader.ReadBits(2); // attack_seperate_type
+            PenaltyLevel = (PenaltyLevel)reader.ReadSByte();
+            reader.ReadBoolBit(); // auto_start_with_session
+            reader.ReadBoolBit(); // auto_end_with_session
+            ImmediateFinish = reader.ReadBoolBit();
+            OnlineOn = reader.ReadBoolBit();
+            Endless = reader.ReadBoolBit();
+            reader.ReadBits(2); // use grid list
+            GhostType = (GhostType)reader.ReadByte();
+            GridSortType = (GridSortType)reader.ReadByte();
+            Accumulation = reader.ReadBool();
+            EnablePit = reader.ReadBoolBit();
+            Flagset = (Flagset)reader.ReadByte();
+            reader.ReadBoolBit(); // Unk
+            DisableCollision = reader.ReadBoolBit();
+            reader.ReadByte(); // Penalty Condition
+            AcademyEvent = reader.ReadBool();
+            FuelUseMultiplier = reader.ReadByte();
+            reader.ReadByte(); // bspec_vitality_10
+            reader.ReadByte(); // consideration_type
+            TireUseMultiplier = reader.ReadByte();
+            reader.ReadByte(); // temperature_tire
+            reader.ReadByte(); // temperature_engine
+            reader.ReadByte(); // unk field_0x5a
+            LightingMode = (LightingMode)reader.ReadByte();
+            reader.ReadUInt32(); // datetime
+            TimeProgressSpeed = reader.ReadByte();
+            AllowCoDriver = reader.ReadBool();
+            PaceNote = reader.ReadBool();
+            reader.ReadByte(); // team_count
+            reader.ReadIntoByteArray(32, GridList, BitStream.Byte_Bits);
+            reader.ReadIntoByteArray(32, DelayStartList, BitStream.Byte_Bits);
+            EventStartV = reader.ReadInt32();
+            EventGoalV = reader.ReadInt32();
+            EventGoalWidth = reader.ReadSByte();
+            FixedRetention = reader.ReadBoolBit();
+            TrackWetness = (int)reader.ReadBits(4);
+            DecisiveWeather = (DecisiveWeatherType)reader.ReadBits(3);
+            WeatherTotalSec = reader.ReadInt16();
+            WeatherPointNum = (byte)reader.ReadBits(4);
+            WeatherPointNum = (byte)reader.ReadBits(4);
+
+            for (int i = 1; i < 15; i++)
+                reader.ReadBits(0x0c); // Do thing weather related with it
+
+            for (int i = 0; i < 16; i++)
+                reader.ReadBits(6); // Do thing weather related with it
+            for (int i = 0; i < 16; i++)
+                reader.ReadBits(6); // Again, and same function
+
+            WeatherRandomSeed = reader.ReadInt32();
+            WeatherNoPrecipitation = reader.ReadBoolBit(); //   weather_no_precipitation
+            WeatherNoWind = reader.ReadBoolBit(); //   weather_no_wind
+            WeatherPrecRainOnly = reader.ReadBoolBit(); //   weather_prec_rain_only
+            WeatherPrecSnowOnly = reader.ReadBoolBit(); //   weather_prec_snow_only
+            WeatherNoSchedule = reader.ReadBoolBit(); //   weather_no_schedule
+            WeatherRandom = reader.ReadBoolBit(); //   weather_random
+            reader.ReadBoolBit(); //   param_1->field_0xe0 = (uVar3 & 0x1) << 0x39 | param_1->field_0xe0 & 0xfdffffffffffffff;
+            WeatherBaseCelsius = (sbyte)reader.ReadBits(7);
+            WeatherMinCelsius = (sbyte)reader.ReadBits(4);
+            WeatherMaxCelsius = (sbyte)reader.ReadBits(4);
+            WeatherAccel = (short)reader.ReadBits(10);
+            WeatherAccelWaterRetention = (short)reader.ReadBits(10);
+            reader.ReadBits(6); //   param_1->field_0xe0 = (uVar3 & 0x3f) << 0x10 | param_1->field_0xe0 & 0xffffffffffc0ffff;
+            reader.ReadBoolBit(); // Unk
         }
 
         private void ReadFromCacheOld(ref BitStream reader, int rpVersion)
         {
-            reader.ReadBits(3); // session_type
+            SessionType = (SessionType)reader.ReadBits(3); // session_type
             RaceType = (RaceType)reader.ReadBits(13); // race_type
             StartType = (StartType)reader.ReadInt16();
             CompleteType = (CompleteType)reader.ReadInt16();
@@ -509,12 +678,7 @@ namespace GTEventGenerator.Entities
             reader.ReadByte(); // temperature_engine
             reader.ReadByte(); // unk field_5a
             LightingMode = (LightingMode)reader.ReadByte(); // lighting_mode
-            reader.ReadBits(6); //   *(ulonglong *)&param_1->temperature_tire = (uVar3 & 0x3f) << 0x1a | *(ulonglong*)&param_1->temperature_tire & 0xffffffff03ffffff;
-            reader.ReadBits(4); //   *(ulonglong *)&param_1->temperature_tire = (uVar3 & 0xf) << 0x16 | *(ulonglong*)&param_1->temperature_tire & 0xfffffffffc3fffff;
-            reader.ReadBits(5); //   *(ulonglong *)&param_1->temperature_tire = (uVar3 & 0x1f) << 0x11 | *(ulonglong*)&param_1->temperature_tire & 0xffffffffffc1ffff;
-            reader.ReadBits(5); //   *(ulonglong *)&param_1->temperature_tire = (uVar3 & 0x1f) << 0xc | *(ulonglong*)&param_1->temperature_tire & 0xfffffffffffe0fff;
-            reader.ReadBits(6); //   *(ulonglong *)&param_1->temperature_tire = (uVar3 & 0x3f) << 0x6 | *(ulonglong*)&param_1->temperature_tire & 0xfffffffffffff03f;
-            reader.ReadBits(6); //   *(ulonglong *)&param_1->temperature_tire = uVar3 & 0x3f | *(ulonglong*)&param_1->temperature_tire & 0xffffffffffffffc0;
+            reader.ReadUInt32(); // Datetime
             reader.ReadByte(); // time_progress_speed
             AllowCoDriver = reader.ReadBool(); // allow_codriver
             reader.ReadByte(); // pace_note
@@ -565,9 +729,9 @@ namespace GTEventGenerator.Entities
         private void ReadBoostPenaltyParametersAndNewer(ref BitStream reader, int rpVersion)
         {
             reader.ReadByte(); // useLaunchData
-            reader.ReadIntoByteArray(32, new byte[32], BitStream.Byte_Bits); // launch speed list
-            reader.ReadIntoShortArray(32, new short[64], BitStream.Short_Bits); // launch_position_list
-            reader.ReadIntoShortArray(32, new short[64], BitStream.Short_Bits); // start_type_slot_list
+            reader.ReadIntoByteArray(32, LaunchSpeedList, BitStream.Byte_Bits); // launch speed list
+            reader.ReadIntoShortArray(32, LaunchPositionList, BitStream.Short_Bits); // launch_position_list
+            reader.ReadIntoShortArray(32, StartTypeSlotList, BitStream.Short_Bits); // start_type_slot_list
 
             // boost_table
             for (int i = 0; i < 2; i++)
@@ -587,13 +751,13 @@ namespace GTEventGenerator.Entities
             }
 
             reader.ReadByte(); // boost_level
-            reader.ReadByte(); // rolling_player_grid
+            reader.ReadSByte(); // rolling_player_grid
             reader.ReadByte(); // field_0x323
             reader.ReadByte(); // boost_flag
             reader.ReadByte(); // boost_type
             reader.ReadByte(); // disable_recording_replay
             reader.ReadByte(); // ghost_presence_type
-            reader.ReadIntoByteArray(30, new byte[60], BitStream.Short_Bits); // event_v_list
+            reader.ReadIntoShortArray(30, EventVList, BitStream.Short_Bits); // event_v_list
 
             ReadPenaltyParameter(ref reader);
 
@@ -706,16 +870,18 @@ namespace GTEventGenerator.Entities
             PenaltyParameter.PenaSpeedRatio3 = reader.ReadByte(); // pena_speed_ratio3
         }
 
-        public void WriteToCache(ref BitStream bs)
+        public void WriteToCache(ref BitStream bs, GameDB db, Event parent)
         {
-            bs.WriteInt16(0x2BB); // Buffer Size.
+            int cPos = bs.BytePosition;
+            bs.WriteInt16(0x410); // Buffer Size. Writen size does not match, but is intentionally larger for later versions
             bs.WriteInt16(1_23); // Version
 
-            WriteGeneralSettings(ref bs);
+            WriteGeneralSettings(ref bs, db, parent);
             WriteOtherSettings(ref bs);
+            bs.SeekToByte(cPos + 0x410);
         }
 
-        private void WriteGeneralSettings(ref BitStream bs)
+        private void WriteGeneralSettings(ref BitStream bs, GameDB db, Event parent)
         {
             bs.WriteBits((ulong)SessionType, 3);
             bs.WriteByte((byte)RaceType);
@@ -729,21 +895,21 @@ namespace GTEventGenerator.Entities
             bs.WriteInt16(RacersMax); // EntryMax
             bs.WriteInt16(16); // ? field_0x16 - Related to racers max
             bs.WriteBits(0, 7); // Unk
-            bs.WriteInt32(0); // Unk
+            bs.WriteInt32(-1); // Unk
             bs.WriteByte(0); // CourseLayoutNo
-            bs.WriteByte(0); // Race Initial Laps
+            bs.WriteByte(RaceInitialLaps);
             bs.WriteBoolBit(KeepLoadGhost);
-            bs.WriteInt32(0); // course_code
-            bs.WriteByte((byte)(LineGhostPlayMax ?? -1)); // Line Ghost Play Max
+            bs.WriteInt32(db.GetCourseCodeByLabel(parent.Course.CourseLabel)); // course_code
+            bs.WriteByte((byte)(LineGhostPlayMax ?? -1));
             bs.WriteBoolBit(GoalTimeUseLapTotal);
             bs.WriteBits(0, 2); // Intentional
             bs.WriteBoolBit(false); // force_pitcrew_off
-            bs.WriteInt32(0); // scenery_code
+            bs.WriteInt32(-1); // scenery_code
             bs.WriteInt32(0); // Unk field_0x3c
             bs.WriteInt64(0); // unk field_0x40
             bs.WriteInt16(4000); // packet_timeout_interval
             bs.WriteInt16(4000); // packet_timeout_latency
-            bs.WriteInt64(4000); // packet_timeout_lag
+            bs.WriteInt16(4000); // packet_timeout_lag
             bs.WriteInt16(RacersMax);
             bs.WriteInt32(0); // unk field 0x2c
             bs.WriteBoolBit(AutostartPitout);
@@ -751,26 +917,26 @@ namespace GTEventGenerator.Entities
             bs.WriteBits(0, 3); // unk
             bs.WriteByte(AutoStandingDelay);
             bs.WriteBits(0, 3); // Unk
-            bs.WriteBits(0/*StartSignalType*/, 2);
+            bs.WriteBits((ulong)StartSignalType, 2);
             bs.WriteBoolBit(false); // Unk
             bs.WriteBoolBit(false); // bench_test
-            bs.WriteByte(0); // mu_ratio100
-            bs.WriteBoolBit(false); // unk
+            bs.WriteByte(100); // mu_ratio100
+            bs.WriteBoolBit(true); // unk
             bs.WriteBoolBit(EnableDamage);
             bs.WriteBits(0, 2); // low_mu_type
             bs.WriteBits((ulong)BehaviorDamage, 2);
             bs.WriteBoolBit(false); // gps
             bs.WriteBoolBit(PenaltyNoReset);
             bs.WriteBits((ulong)SlipstreamBehavior, 2);
-            bs.WriteBits(0, 4); // pit_constraint
-            bs.WriteBoolBit(false); // need_tire_change
+            bs.WriteBits(PitConstraint, 4);
+            bs.WriteBoolBit(NeedTireChange);
             bs.WriteBits(0, 4); // after_race_penalty_sec5
             bs.WriteBoolBit(false); // is_speedtest_milemode
             bs.WriteBits((ulong)LineGhostRecordType, 2);
             bs.WriteBits(0, 2); // attack_seperate_type
             bs.WriteByte((byte)PenaltyLevel);
-            bs.WriteBoolBit(false); // auto_start_with_session
-            bs.WriteBoolBit(false); // auto_end_with_finish
+            bs.WriteBoolBit(true); // auto_start_with_session, no xml
+            bs.WriteBoolBit(false); // auto_end_with_finish, no xml
             bs.WriteBoolBit(ImmediateFinish);
             bs.WriteBoolBit(OnlineOn);
             bs.WriteBoolBit(Endless);
@@ -785,7 +951,7 @@ namespace GTEventGenerator.Entities
             bs.WriteByte(0); // penalty_condition
             bs.WriteBool(AcademyEvent);
             bs.WriteByte(FuelUseMultiplier);
-            bs.WriteByte(0); // bspec_vitality_10
+            bs.WriteByte(10); // bspec_vitality_10
             bs.WriteByte(0); // consideration_type
             bs.WriteByte(TireUseMultiplier);
             bs.WriteByte(0); // temperature_tire
@@ -793,15 +959,18 @@ namespace GTEventGenerator.Entities
             bs.WriteByte(0); // unk field_0x5a
             bs.WriteByte((byte)LightingMode);
 
-            // datetime is written seperately normally, we do it in one go of 1 uint
-            bs.WriteUInt32(0);
+            // datetime parts's bits are written seperately (i.e 5 5 5 6 6 6)
+            var pdtime = new PDIDATETIME32();
+            pdtime.SetDateTime(Date ?? new DateTime(1970, 6, 1, 12, 00, 00));
+            bs.WriteUInt32(pdtime.GetRawData());
+
             bs.WriteByte((byte)TimeProgressSpeed);
             bs.WriteBool(AllowCoDriver);
             bs.WriteBool(PaceNote);
             bs.WriteByte(0); // team_count, not in xmls
 
             for (int i = 0; i < 32; i++)
-                bs.WriteByte(GridList[i]);
+                bs.WriteSByte(GridList[i]);
             for (int i = 0; i < 32; i++)
                 bs.WriteByte(DelayStartList[i]);
 
@@ -819,7 +988,7 @@ namespace GTEventGenerator.Entities
 
             // Stub while figured
             for (int i = 1; i < 15; i++)
-                bs.WriteBits(0, 0x0c); // Do thing weather related with it
+                bs.WriteBits(0, 12); // Do thing weather related with it
 
             for (int i = 0; i < 16; i++)
                 bs.WriteBits(0, 6); // Do thing weather related with it
@@ -834,13 +1003,13 @@ namespace GTEventGenerator.Entities
             bs.WriteBoolBit(WeatherNoSchedule);
             bs.WriteBoolBit(WeatherRandom);
             bs.WriteBoolBit(false); // Unk
-            bs.WriteBits((ulong)WeatherBaseCelsius, 7); // weather_base_celsius
+            bs.WriteBits((ulong)WeatherBaseCelsius, 7);
             bs.WriteBits((ulong)WeatherMinCelsius, 4);
             bs.WriteBits((ulong)WeatherMaxCelsius, 4);
-            bs.WriteBits((ulong)WeatherAccel, 10); //   weather_accel10
+            bs.WriteBits((ulong)WeatherAccel, 10);
             bs.WriteBits((ulong)WeatherAccelWaterRetention, 10); // weather_accel_water_retention10
-            bs.WriteBits(42, 6); //   param_1->field_0xe0 = (uVar3 & 0x3f) << 0x10 | param_1->field_0xe0 & 0xffffffffffc0ffff; - Unk
-            bs.WriteBoolBit(false); // Unk
+            bs.WriteBits(0, 6); //   param_1->field_0xe0 = (uVar3 & 0x3f) << 0x10 | param_1->field_0xe0 & 0xffffffffffc0ffff; - Unk
+            bs.WriteBoolBit(true); // Unk
         }
 
         private void WriteOtherSettings(ref BitStream bs)
@@ -869,8 +1038,17 @@ namespace GTEventGenerator.Entities
                 bs.WriteByte(0);
             }
 
+            for (int i = 0; i < 32; i++)
+            {
+                for (int j = 0; j < 6; j++)
+                {
+                    bs.WriteByte(0); // Front
+                    bs.WriteByte(0); // Rear
+                }
+            }
+
             bs.WriteByte(BoostLevel);
-            bs.WriteBool(RollingPlayerGrid);
+            bs.WriteSByte((sbyte)(RollingPlayerGrid ? 1 : -1));
             bs.WriteBool(false); // Unk field_0x323
             bs.WriteBool(BoostFlag);
             bs.WriteByte(BoostType);
@@ -878,7 +1056,7 @@ namespace GTEventGenerator.Entities
             bs.WriteByte((byte)GhostPresenceType);
 
             for (int i = 0; i < 30; i++)
-                bs.WriteInt32(EventVList[i]);
+                bs.WriteInt16(EventVList[i]);
 
             // Write Penalty Parameter
             bs.WriteBool(PenaltyParameter.Enable);
@@ -964,9 +1142,9 @@ namespace GTEventGenerator.Entities
             bs.WriteByte(0); // field_0x3f6
             bs.WriteByte(0); // large_entry_max
             bs.WriteByte(0); // Pitstage_revision
-            bs.WriteByte(0); // vehicle_freeze_mode
-            bs.WriteByte(0); // course_out_penalty_margine
-            bs.WriteInt32(0); // behavior_fallback
+            bs.WriteBool(VehicleFreezeMode); // vehicle_freeze_mode
+            bs.WriteByte(CourseOutPenaltyMargin); // course_out_penalty_margine
+            bs.WriteInt32(BehaviorFallBack); // behavior_fallback
 
             bs.WriteBits(0, 1);
             bs.WriteBits(0, 7);
@@ -1003,42 +1181,20 @@ namespace GTEventGenerator.Entities
 
     public enum StartType
     {
-        NONE,
+        [Description("None (No control of the car")]
+        NONE = -1,
 
         [Description("Grid")]
-        GRID,
-
-        [Description("For Time Trial")]
-        ATTACK, 
+        GRID = 0,
 
         [Description("Rolling Start (Start Line)")]
         ROLLING,
 
-        [Description("Rolling (Same Accel. as Own Car)")]
-        ROLLING2,
-
-        [Description("Rolling (Define Start Time)")]
-        ROLLING3,
-
-        [Description("Rolling (Define Start & Accel)")]
-        ROLLING_NOLIMIT,
-
-        [Description("Standing (Set Coordinates)")]
-        STANDING,
-
-        [Description("Double-File Rolling (Left)")]
-        ROLLING_L,
-
-        [Description("Double-File Rolling (Right)")]
-        ROLLING_R,
-        
         [Description("Pit Start")]
         PIT,
 
-        PITWORK,
-
-        [Description("Same Grid (collisions OFF)")]
-        SAME_GRID,
+        [Description("For Time Trial")]
+        ATTACK,
 
         [Description("Dispersed")]
         DISPERSED,
@@ -1046,8 +1202,28 @@ namespace GTEventGenerator.Entities
         [Description("Drift Position (Standing)")]
         COURSEINFO,
 
+        [Description("Rolling (Same Accel. as Own Car)")]
+        ROLLING2,
+
+        [Description("Same Grid (collisions OFF)")]
+        SAME_GRID,
+
+        [Description("Rolling (Define Start Time)")]
+        ROLLING3,
+
         [Description("Drift Position (Rolling)")]
         COURSEINFO_ROLLING,
+
+        [Description("Standing (Set Coordinates)")]
+        STANDING,
+
+        [Description("Rolling (Define Start & Accel)")]
+        ROLLING_NOLIMIT,
+
+        FREE,
+        STANDING_L,
+        STANDING_R,
+        PITWORK,
 
         [Description("Rolling Start - Dbl. File, Left Ahead")]
         ROLLING_DL,
@@ -1055,7 +1231,19 @@ namespace GTEventGenerator.Entities
         [Description("Rolling Start - Dbl. File, Right Ahead")]
         ROLLING_DR,
 
-        FREE,
+        GRID_FLYING,
+        PITIN,
+        RALLY,
+        STANDING_CENTER,
+
+        /*
+        [Description("Double-File Rolling (Left)")]
+        ROLLING_L,
+
+        [Description("Double-File Rolling (Right)")]
+        ROLLING_R,
+        */
+
     }
     public enum GridSortType
     {
@@ -1089,6 +1277,9 @@ namespace GTEventGenerator.Entities
         [Description("No Ghost")]
         NONE,
 
+        [Description("Full (GT5?)")]
+        FULL,
+
         [Description("One Lap")]
         ONELAP,
 
@@ -1097,8 +1288,7 @@ namespace GTEventGenerator.Entities
         NORMAL,
         TRGRANK_ALL,
 
-        [Description("Full (GT5?)")]
-        FULL, 
+
     }
 
     public enum LineGhostRecordType
@@ -1124,14 +1314,20 @@ namespace GTEventGenerator.Entities
     public enum SlipstreamBehavior
     {
         GAME,
+        SIMULATION,
+        REAL,
     }
 
     public enum RaceType
     {
         COMPETITION,
-        DEMO,
         TIMEATTACK,
-        DRIFTATTACK
+        DRIFTATTACK,
+        DEMO,
+        OVERTAKE,
+        SPEEDTEST,
+        DARALOGGER,
+        NONE,
     }
 
     public enum LightingMode
@@ -1145,7 +1341,12 @@ namespace GTEventGenerator.Entities
 
     public enum Flagset
     {
-        FLAGSET_NORMAL
+        FLAGSET_NONE,
+        FLAGSET_NORMAL,
+        FLAGSET_F1,
+        FLAGSET_NASCAR,
+        FLAGSET_LOW,
+        FLAGSET_RALLY,
     }
 
     public enum DecisiveWeatherType
@@ -1177,20 +1378,23 @@ namespace GTEventGenerator.Entities
 
     public enum CompleteType
     {
-        [Description("None")]
-        NONE,
-
         [Description("Finish After a Number of Laps")]
-        BYLAPS,
-
-        [Description("By Section")]
-        BYSECTION,
+        BYLAPS = 0,
 
         [Description("Finish After Time (Endurance)")]
-        BYTIME,
+        BYTIME = 1,
+
+        [Description("By Section")]
+        BYSECTION = 2,
+
+        [Description("None")]
+        NONE = 3,
+
+        [Description("Other (?)")]
+        OTHER = 4,
 
         [Description("By Stop (licenses)")]
-        BYSTOP,
+        BYSTOP = 5,
     }
 
     public enum SessionType
@@ -1198,5 +1402,12 @@ namespace GTEventGenerator.Entities
         FINAL,
         QUALIFY,
         PRACTICE,
+    }
+
+    public enum StartSignalType
+    {
+        NORMAL,
+        BLACK_OUT,
+        GREEN_LIGHT,
     }
 }

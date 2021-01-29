@@ -155,6 +155,7 @@ namespace GTEventGenerator.Entities
             Regulations.ReadFromCache(ref reader);
             Constraints.ReadFromCache(ref reader);
             RaceParameters.ReadFromCache(ref reader);
+            Course.ReadFromBuffer(ref reader);
             // Entries
             EvalConditions.ReadFromCache(ref reader);
             AchieveCondition.ReadFromCache(ref reader);
@@ -173,8 +174,7 @@ namespace GTEventGenerator.Entities
             bs.WriteInt16(0); // field_0x2a - Defaulted to 0
             Regulations.WriteToCache(ref bs, db);
             Constraints.WriteToCache(ref bs);
-            RaceParameters.WriteToCache(ref bs);
-            bs.SeekToByteFromCurrentPosition(1);
+            RaceParameters.WriteToCache(ref bs, db, this);
             Course.WriteToCache(ref bs, db);
             Entries.WriteToCache(ref bs, db);
             EvalConditions.WriteToCache(ref bs);
@@ -186,8 +186,8 @@ namespace GTEventGenerator.Entities
             WriteRankingsToBuffer(ref bs);
             Replay.WriteToCache(ref bs);
             Information.WriteToCache(ref bs);
-            bs.WriteInt64(0); // Begin Date
-            bs.WriteInt64(0); // End Date
+            bs.WriteDouble(JulianTime.DateTimeToJulian(StartDate)); 
+            bs.WriteDouble(JulianTime.DateTimeToJulian(EndDate));
             StageData.WriteToCache(ref bs);
             bs.WriteNullStringAligned4(PenaltyScript);
             bs.WriteNullStringAligned4(AIScript);
@@ -204,8 +204,8 @@ namespace GTEventGenerator.Entities
             bs.WriteInt16(0); // replay_rank_limit
             bs.WriteInt16(100); // display_rank_limit
             bs.WriteUInt64(EventID); // board_id
-            bs.WriteUInt64(0); // begin_date todo
-            bs.WriteUInt64(0); // end_date todo
+            bs.WriteDouble(JulianTime.DateTimeToJulian(RankingStartDate)); // begin_date todo
+            bs.WriteDouble(JulianTime.DateTimeToJulian(RankingEndDate)); // end_date todo
             bs.WriteInt16(0); // registration
             bs.WriteSByte(0); // registration_type
         }
@@ -369,8 +369,11 @@ namespace GTEventGenerator.Entities
         [Description("Arcade Drift Attack")]
         DRIFT_ATTACK = 2,
 
+        [Description("Free Run")]
+        FREE_RUN = 3,
+
         [Description("GT Mode Race")]
-        EVENT_RACE = 3,
+        EVENT_RACE = 4,
 
         [Description("Rally Event (GT5)")]
         EVENT_RALLY = 5,
@@ -422,4 +425,5 @@ namespace GTEventGenerator.Entities
         [Description("By Drift Score")]
         DRIFT,
     }
+
 }

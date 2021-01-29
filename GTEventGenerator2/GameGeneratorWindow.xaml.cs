@@ -13,6 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Xml;
 using System.Windows.Input;
+using System.Security.Cryptography;
 
 using Microsoft.Win32;
 
@@ -112,6 +113,7 @@ namespace GTEventGenerator
                 DiscordRichPresenceMenuItem.IsChecked = true;
             }
             minimizeXMLToolStripMenuItem.IsChecked = Settings.HasEnabledSetting("Minify_XML");
+            exportCacheToolStripMenuItem.IsChecked = Settings.HasEnabledSetting("Create_FGP");
 
             txtGameParamName.Text = GameParameter.EventList.Title;
             txtGameParamDesc.Text = GameParameter.EventList.Description;
@@ -376,6 +378,9 @@ namespace GTEventGenerator
 
         private void minimizeXMLToolStripMenuItem_Checked(object sender, RoutedEventArgs e)
             => Settings.SetSettingValue("Minify_XML", minimizeXMLToolStripMenuItem.IsChecked);
+
+        private void exportCacheToolStripMenuItem_Checked(object sender, RoutedEventArgs e)
+            => Settings.SetSettingValue("Create_FGP", exportCacheToolStripMenuItem.IsChecked);
 
         private void randomizeAINamesToolStripMenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -1100,14 +1105,39 @@ namespace GTEventGenerator
             bool minify = Settings.HasEnabledSetting("Minify_XML");
             GameParameter.EventList.WriteToXML(GameParameter, mainParamFile, BaseEventID, cboEventCategory.SelectedItem.ToString(), minify);
 
-            using (var xml = XmlWriter.Create(Path.Combine(selectedPath, $"r{GameParameter.FolderId}.xml"), new XmlWriterSettings() { Indent = !minify, IndentChars = "  " }))
+            string eventXmlPath = Path.Combine(selectedPath, $"r{GameParameter.FolderId}.xml");
+            using (var xml = XmlWriter.Create(eventXmlPath, new XmlWriterSettings() { Indent = !minify, IndentChars = "  " }))
             {
                 xml.WriteStartElement("xml");
                 GameParameter.WriteToXml(xml);
                 xml.WriteEndElement();
             }
 
-            GameParameter.WriteToCache(GameDatabase);
+            if (Settings.HasEnabledSetting("Create_FGP")) 
+            {
+                byte[] file = File.ReadAllBytes(eventXmlPath);
+
+                /* Original GT6 Events cache the files using an MD5.
+                 * The FGP file contains the file name of the cache file in gp_cache
+                 * It does not have to be MD5'd at all, so we ignore doing it
+                 */
+
+                * 
+                string cacheFileName;
+                using (var md5 = MD5.Create())
+                {
+                    byte[] file = File.ReadAllBytes(eventXmlPath);
+                    md5Str = BitConverter.ToString(md5.ComputeHash(file)).Replace("-", "").ToLower();
+                    File.WriteAllText(eventXmlPath + ".fgp", md5Str);
+                }
+                */
+
+
+                string pathDir = Path.Combine(selectedPath, md5Str);
+                */
+                File.WriteAllBytes(pathDir, GameParameter.Serialize(GameDatabase));
+            }
+
             MessageBox.Show($"Event and races successfully written to {selectedPath}\\{GameParameter.FolderFileName}.xml and {selectedPath}\\r{GameParameter.FolderId}.xml!", 
                 "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }

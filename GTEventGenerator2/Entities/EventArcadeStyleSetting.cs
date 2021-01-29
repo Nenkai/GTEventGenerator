@@ -27,6 +27,14 @@ namespace GTEventGenerator.Entities
         public ushort InitialVelocityL { get; set; } = 80;
         public ushort InitialVelocityH { get; set; } = 150;
 
+        public ArcadeStyleSettingSection[] Sections = new ArcadeStyleSettingSection[16];
+
+        public EventArcadeStyleSetting()
+        {
+            for (int i = 0; i < 16; i++)
+                Sections[i] = new ArcadeStyleSettingSection();
+        }
+
         public void WriteToCache(ref BitStream bs)
         {
             bs.WriteUInt32(0xE6_E6_F9_01);
@@ -50,18 +58,17 @@ namespace GTEventGenerator.Entities
             bs.WriteUInt16(InitialVelocityL);
             bs.WriteUInt16(InitialVelocityH);
 
-            // TODO Arcade Style Sections Cache Write
             for (int i = 0; i < 16; i++)
             {
-                bs.WriteByte(0);
-                bs.WriteUInt32(0);
+                bs.WriteSByte(Sections[i].SectionExtendSeconds);
+                bs.WriteSingle(Sections[i].CourseV);
             }
         }
     }
 
     public class ArcadeStyleSettingSection
     {
-        public byte SectionExtendSeconds { get; set; }
+        public sbyte SectionExtendSeconds { get; set; } = -1;
         public float CourseV { get; set; } 
     }
 }

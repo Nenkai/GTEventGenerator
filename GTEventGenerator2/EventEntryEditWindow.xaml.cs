@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Linq;
 
 using Xceed.Wpf.Toolkit;
 using Xceed.Wpf.Toolkit.PropertyGrid;
@@ -38,15 +39,16 @@ namespace GTEventGenerator
 
             iud_CarColorIndex.Value = entry.ColorIndex;
 
-            var startTypes = (StartType[])Enum.GetValues(typeof(StartType));
+            var startTypes = ((StartType[])Enum.GetValues(typeof(StartType)))
+                                                .OrderBy(e => (int)e).ToArray();
+
             for (int i = 0; i < startTypes.Length; i++)
             {
-                var s = (StartType)i;
-                string sName = s.Humanize();
+                string sName = startTypes[i].Humanize();
                 comboBox_StartingType.Items.Add(sName);
             }
 
-            comboBox_StartingType.SelectedIndex = (int)_entry.StartType;
+            comboBox_StartingType.SelectedIndex = (int)_entry.StartType + 1;
         }
 
         private void iud_CarColorIndex_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -60,7 +62,7 @@ namespace GTEventGenerator
         }
 
         private void comboBox_StartingType_SelectedIndexChanged(object sender, EventArgs e)
-            => _entry.StartType = (StartType)comboBox_StartingType.SelectedIndex;
+            => _entry.StartType = (StartType)comboBox_StartingType.SelectedIndex - 1;
 
         private void btn_CarSettings_Click(object sender, RoutedEventArgs e)
         {

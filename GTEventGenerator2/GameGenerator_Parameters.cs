@@ -114,7 +114,7 @@ namespace GTEventGenerator
             => CurrentEvent.RaceParameters.GhostPresenceType = (GhostPresenceType)comboBox_GhostPresence.SelectedIndex;
 
         private void comboBox_StartingType_SelectedIndexChanged(object sender, EventArgs e)
-            => CurrentEvent.RaceParameters.StartType = (StartType)comboBox_StartingType.SelectedIndex;
+            => CurrentEvent.RaceParameters.StartType = (StartType)comboBox_StartingType.SelectedIndex - 1;
 
         private void numericUpDown_TireConsumptionMultiplier_ValueChanged(object sender, EventArgs e)
         {
@@ -335,7 +335,7 @@ namespace GTEventGenerator
             comboBox_LineGhostRecordType.SelectedIndex = (int)CurrentEvent.RaceParameters.LineGhostRecordType;
             numericUpDown_MaxGhostLines.Value = CurrentEvent.RaceParameters.LineGhostPlayMax;
             comboBox_Flagset.SelectedIndex = (int)CurrentEvent.RaceParameters.Flagset;
-            comboBox_StartingType.SelectedIndex = (int)CurrentEvent.RaceParameters.StartType;
+            comboBox_StartingType.SelectedIndex = (int)CurrentEvent.RaceParameters.StartType + 1;
             comboBox_RaceType.SelectedIndex = (int)CurrentEvent.RaceParameters.RaceType;
             comboBox_DecisiveWeather.SelectedIndex = (int)CurrentEvent.RaceParameters.DecisiveWeather;
             cb_StartTime.IsChecked = CurrentEvent.RaceParameters.Date != null;
@@ -435,11 +435,11 @@ namespace GTEventGenerator
                 comboBox_Flagset.Items.Add(fName);
             }
 
-            var startTypes = (StartType[])Enum.GetValues(typeof(StartType));
+            var startTypes = ((StartType[])Enum.GetValues(typeof(StartType)))
+                                            .OrderBy(e => (int)e).ToArray();
             for (int i = 0; i < startTypes.Length; i++)
             {
-                var s = (StartType)i;
-                string sName = s.Humanize();
+                string sName = startTypes[i].Humanize();
                 comboBox_StartingType.Items.Add(sName);
             }
 

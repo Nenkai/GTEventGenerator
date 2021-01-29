@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Diagnostics;
+using System.IO;
 
 namespace PDTools.Utils
 {
@@ -24,6 +25,10 @@ namespace PDTools.Utils
 
         public bool UnkBool { get; set; }
 
+#if DEBUG
+        private StreamWriter _sw;
+#endif
+
         /// <summary>
         /// Creates a new bit stream based on an existing buffer.
         /// </summary>
@@ -41,6 +46,9 @@ namespace PDTools.Utils
             UnkBool = false;
 
             IsEndOfStream = false;
+#if DEBUG
+            _sw = null;
+#endif
         }
 
         /// <summary>
@@ -59,6 +67,10 @@ namespace PDTools.Utils
             UnkBool = false;
 
             IsEndOfStream = false;
+
+#if DEBUG
+            _sw = null;
+#endif
         }
 
         // Non Original
@@ -86,6 +98,9 @@ namespace PDTools.Utils
         // Non original
         public void SeekToByte(int byteOffset)
         {
+            if (byteOffset > SourceBuffer.Length)
+                EnsureCapacity((SourceBuffer.Length - byteOffset) * Byte_Bits);
+
             _currentBuffer = SourceBuffer.Slice(byteOffset);
             CurrentByte = _currentBuffer[0];
             RemainingByteBits = 0;
@@ -93,6 +108,9 @@ namespace PDTools.Utils
 
         public void SeekToByteFromCurrentPosition(int byteOffset)
         {
+            if (byteOffset + BytePosition > SourceBuffer.Length)
+                EnsureCapacity(byteOffset * Byte_Bits);
+
             _currentBuffer = _currentBuffer.Slice(byteOffset);
             CurrentByte = _currentBuffer[0];
             RemainingByteBits = 0;
@@ -151,7 +169,7 @@ namespace PDTools.Utils
         {
             int val = ReadInt32();
             if (val != -1)
-                return *(float*)val;
+                return *(float*)&val;
             return -1;
         }
 
@@ -246,6 +264,33 @@ namespace PDTools.Utils
         /// <param name="arraySize">Size of the array.</param>
         /// <param name="dest">Bytes destination.</param>
         /// <param name="elemBitSize">Bits to read per element. Note that each element will still go within each byte in the destination.</param>
+        public void ReadIntoByteArray(int arraySize, sbyte[] dest, int elemBitSize /*, bool debugMaybe */)
+        {
+            if (dest.Length != 0 && arraySize != 0) // if (dest != destEndPos)
+            {
+                for (int i = 0; i < arraySize; i++)
+                {
+                    sbyte value = 0;
+                    if (/* this->field_0x14 == false || */ false) // !CanRead(elemBitSize)) Ignore for time being
+                    {
+                        // this->field_0x14 = false;
+                    }
+                    else
+                    {
+                        value = (sbyte)ReadBits(elemBitSize);
+                    }
+
+                    dest[i] = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Reads an array.
+        /// </summary>
+        /// <param name="arraySize">Size of the array.</param>
+        /// <param name="dest">Bytes destination.</param>
+        /// <param name="elemBitSize">Bits to read per element. Note that each element will still go within each byte in the destination.</param>
         // The original function (GT6 1.22 EU - FUN_00e2de14 takes an extra argument to go through two paths,
         // seemingly does the exact same so probably compiler macro)
         // Original Impl
@@ -272,21 +317,24 @@ namespace PDTools.Utils
 
         private void EnsureCapacity(long bitCount)
         {
+            bitCount += Byte_Bits; // Since we may slice to the next byte, better to be safe
+
             uint bitsLeftThisByte = Byte_Bits - RemainingByteBits;
             long totalFreeBits = (_currentBuffer.Length * Byte_Bits) + bitsLeftThisByte;
 
-            if (bitCount > totalFreeBits)
+            if ( bitCount > totalFreeBits)
             {
+                int cPos = BytePosition < 0 ? SourceBuffer.Length : BytePosition;
+
                 // Expand our buffer by twice the size everytime
                 var newBuffer = new byte[SourceBuffer.Length * 2];
 
                 // Copy our buffer over the larger one
                 SourceBuffer.CopyTo(newBuffer.AsSpan());
+                SourceBuffer = newBuffer;
 
                 // Ensure that the current representation of the rest of our stream is updated
-                int newCurrentBufPos = newBuffer.Length - (SourceBuffer.Length + _currentBuffer.Length);
-                SourceBuffer = newBuffer;
-                _currentBuffer = SourceBuffer.Slice(newCurrentBufPos);
+                _currentBuffer = SourceBuffer.Slice(cPos);
             }
         }
 
@@ -336,6 +384,10 @@ namespace PDTools.Utils
             RemainingByteBits = (uint)bitsWritenForThisByte;
             _currentBuffer = buf;
             CurrentByte = (byte)currentByte;
+
+#if DEBUG
+            _sw?.WriteLine($"[{BytePosition} - {RemainingByteBits}/8] Wrote {value} ({bitCountToWrite} bits)");
+#endif
         }
 
         public void WriteNullStringAligned4(string value)
@@ -352,19 +404,32 @@ namespace PDTools.Utils
 
             var bytes = Encoding.UTF8.GetBytes(value);
             var bytesSize = bytes.Length;
+            EnsureCapacity(((bytesSize + 1) + 4) * Byte_Bits); // Account for string bytes length + null termination + pad
 
             int nullTerminatedSize = bytesSize + 1;
             WriteInt32(nullTerminatedSize);
+
             bytes.AsSpan().CopyTo(_currentBuffer);
 
             int pad = nullTerminatedSize % 4;
             if (nullTerminatedSize % 4 != 0)
                 pad = 4;
 
-            int totalSize = nullTerminatedSize + pad;
+            int totalSize = pad + (nullTerminatedSize & 0xffffffc);
             SeekToByteFromCurrentPosition(totalSize);
         }
 
+        public void WriteByteData(Span<byte> data, bool withPrefixLength = true)
+        {
+            EnsureCapacity(((withPrefixLength ? 4 : 0) + data.Length) * Byte_Bits);
+
+            if (withPrefixLength)
+                WriteInt32(data.Length);
+
+            data.CopyTo(_currentBuffer);
+            SeekToByteFromCurrentPosition(data.Length);
+
+        }
         public void WriteUInt64(ulong value)
             => WriteBits(value, Long_Bits);
 
@@ -377,8 +442,19 @@ namespace PDTools.Utils
         public void WriteInt32(int value)
             => WriteBits((ulong)value, Int_Bits);
 
+        public void WriteInt32OrNull(int? value)
+        {
+            if (value == null || value == -1)
+                WriteBits(unchecked((ulong)-1), Int_Bits);
+            else
+                WriteBits((ulong)value, Int_Bits);
+        }
+
         public unsafe void WriteSingle(float value)
             => WriteBits((ulong)*(int*)&value, Int_Bits);
+
+        public unsafe void WriteDouble(double value)
+            => WriteBits((ulong)value, Long_Bits);
 
         public void WriteBool4OrNull(bool? value)
         {
@@ -392,13 +468,16 @@ namespace PDTools.Utils
             => WriteBits((ulong)value, Short_Bits);
 
         public void WriteUInt16(uint value)
-            => WriteBits((ulong)value, Short_Bits);
+            => WriteBits(value, Short_Bits);
 
         public void WriteByte(byte value)
-            => WriteBits((ulong)value, Byte_Bits);
+            => WriteBits(value, Byte_Bits);
 
         public void WriteBool(bool value)
             => WriteBits((ulong)(value ? 1 : 0), Byte_Bits);
+
+        public void WriteBool2(bool value)
+            => WriteBits((ulong)(value ? 1 : 0), Short_Bits);
 
         public void WriteBool4(bool value)
             => WriteBits((ulong)(value ? 1 : 0), Int_Bits);
@@ -410,6 +489,31 @@ namespace PDTools.Utils
             => WriteBits((ulong)(value ? 1 : 0), 1);
 
         public Span<byte> GetBuffer()
-            => SourceBuffer.Slice(BytePosition);
+            => SourceBuffer.Slice(0, BytePosition);
+
+        #region Debug Tools
+
+        /// <summary>
+        /// Logs bits written into the specified file. DEBUG only.
+        /// </summary>
+        /// <param name="path"></param>
+        public void StartWriteLog(string path)
+        {
+#if DEBUG
+            _sw = new StreamWriter(path);
+#endif
+        }
+
+        public void EndWriteLog(string path)
+        {
+#if DEBUG
+            if (_sw != null)
+            {
+                _sw.Flush();
+                _sw.Dispose();
+            }
+#endif
+        }
+        #endregion
     }
 }

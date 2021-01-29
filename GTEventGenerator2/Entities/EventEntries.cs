@@ -206,12 +206,17 @@ namespace GTEventGenerator.Entities
                     if (!newEntry.IsAI && !string.IsNullOrEmpty(newEntry.CarLabel))
                     {
                         if (!string.IsNullOrEmpty(newEntry.CarLabel))
+                        {
                             Player = newEntry;
+                            Player?.SetAsPlayerSkills();
+                        }
                     }
                     else
                         AI.Add(newEntry);
                 }
             }
+
+            
         }
 
         public EventEntry ParseEntry(XmlNode entryNode, EventEntry parentEntry = null)
@@ -283,7 +288,7 @@ namespace GTEventGenerator.Entities
                         newEntry.Transmission = entryDetailNode.ReadValueEnum<Transmission>(); break;
 
                     case "power_limiter":
-                        newEntry.PowerLimiter = float.Parse(entryDetailNode.ReadValueString()); break;
+                        newEntry.PowerLimiter = entryDetailNode.ReadValueUInt(); break;
                     case "wheel":
                         newEntry.WheelID = entryDetailNode.ReadValueInt(); break;
                     case "wheel_color":
@@ -328,13 +333,21 @@ namespace GTEventGenerator.Entities
 
         public void WriteToCache(ref BitStream bs, GameDB db)
         {
-            bs.WriteUInt32(0xE6_E6_00_02);
+            bs.WriteUInt32(0xE6_E6_00_2F);
             bs.WriteUInt32(1_00);
 
             WriteEntryGenerateToBuffer(ref bs, db);
 
-            // TODO: Write Fixed Entry List
-            bs.WriteInt32(0);
+
+            int fixEntryCount = AI.Count + (Player != null ? 1 : 0);
+            bs.WriteInt32(fixEntryCount);
+            if (fixEntryCount > 0)
+            {
+                foreach (var ai in AI)
+                    ai.WriteEntryToBuffer(ref bs, db, false);
+
+                Player?.WriteEntryToBuffer(ref bs, db, true);
+            }
         }
 
         private void WriteEntryGenerateToBuffer(ref BitStream bs, GameDB db)
@@ -343,8 +356,8 @@ namespace GTEventGenerator.Entities
             bs.WriteUInt32(1_03);
 
             bs.WriteInt32(0); // TODO entry_num
-            bs.WriteInt32(PlayerPos);
-            bs.WriteInt32((int)AIEntryGenerateType);
+            bs.WriteInt32(AIBases.Count > 0 ? PlayerPos : 0);
+            bs.WriteInt32(AIBases.Count > 0 ? (int)AIEntryGenerateType : (int)EntryGenerateType.NONE);
             bs.WriteInt32((int)EnemyListType);
             bs.WriteUInt64(4294967295); // race_code
             bs.WriteInt32(AIBaseSkillStarting);
@@ -370,9 +383,10 @@ namespace GTEventGenerator.Entities
             bs.WriteSByte(0); // bspec_lv_offset
             bs.WriteInt16(GapForRollingDistance);
             bs.WriteInt16(RollingStartV);
-            bs.WriteSByte((sbyte)((GapForRollingDistance != 0 || RollingStartV != 0) ? 1 : -1));
+            bs.WriteSByte((sbyte)((GapForRollingDistance != 0 || RollingStartV != 0) ? 1 : 0));
             bs.WriteSByte((sbyte)AISortType);
         }
+
     }
 
 

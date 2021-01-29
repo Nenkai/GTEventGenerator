@@ -385,7 +385,12 @@ namespace GTEventGenerator.Entities
 
             int carCount = reader.ReadInt32();
             for (int i = 0; i < carCount; i++)
+            {
                 reader.ReadInt32();
+                reader.ReadInt16();
+                reader.ReadInt16();
+                reader.ReadInt32();
+            }
 
             NeedLicense = reader.ReadBool4();
             PowerMax = reader.ReadInt32();
@@ -431,7 +436,12 @@ namespace GTEventGenerator.Entities
 
             int banCars = reader.ReadInt32();
             for (int i = 0; i < banCars; i++)
+            {
                 reader.ReadInt32();
+                reader.ReadInt16();
+                reader.ReadInt16();
+                reader.ReadInt32();
+            }
 
             reader.ReadInt32(); // car_tag_id
             reader.ReadInt32(); // restrictor_limit
@@ -471,8 +481,8 @@ namespace GTEventGenerator.Entities
             bs.WriteInt32(WeightMin);
             bs.WriteInt32(CarLengthMax);
             bs.WriteInt32(CarLengthMin);
-            bs.WriteInt32((int)DrivetrainNeeded);
-            bs.WriteInt32((int)AspirationNeeded);
+            bs.WriteInt32(DrivetrainNeeded == 0 ? -1 : (int)DrivetrainNeeded);
+            bs.WriteInt32(AspirationNeeded == 0 ? -1 : (int)AspirationNeeded);
             bs.WriteInt32(YearMax);
             bs.WriteInt32(YearMin);
             bs.WriteInt32(ASpecLevelMax);

@@ -192,6 +192,7 @@
     </Compile>
     <Compile Include="PDUtils\BitStream.cs" />
     <Compile Include="PDUtils\CourseMakerUtil.cs" />
+    <Compile Include="PDUtils\JulianTime.cs" />
     <Compile Include="PDUtils\MCarParameter.cs" />
     <Compile Include="PDUtils\Enums\Enums.cs" />
     <Compile Include="PDUtils\PDIDATETIME32.cs" />

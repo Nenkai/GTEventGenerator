@@ -150,7 +150,7 @@ namespace GTEventGenerator.Database
         public int GetCarCodeByLabel(string label)
         {
             var cmd = new SQLiteCommand($"SELECT VehicleCode FROM Vehicles WHERE VehicleInternalName = @VehicleInternalName");
-            cmd.Parameters.AddWithValue("VehicleName", label);
+            cmd.Parameters.AddWithValue("VehicleInternalName", label);
             cmd.Connection = _sConn;
             var res = cmd.ExecuteReader();
             res.Read();

@@ -319,19 +319,43 @@ namespace GTEventGenerator.Entities
                 }
             }
 
-            bs.WriteInt32(0 /* RewardPresents.Length */); // TODO
+            if (RewardPresents.Any(r => r != null))
+            {
+                bs.WriteInt32(RewardPresents.Length);
+                foreach (var present in RewardPresents)
+                {
+                    var pres = present ?? new EventPresent();
+                    pres.WriteToCache(ref bs);
+                }
+            }
+            else
+                bs.WriteInt32(0);
+
             bs.WriteInt32(0); // special_reward_code - GT5 only so meh
-            bs.WriteInt16((short)PresentType);
+            bs.WriteBool2(GivesAllTrophyRewards);
             bs.WriteInt16(PPBase); // pp_base
             bs.WriteInt16(PercentAtPP100);
             bs.WriteBool(IsOnce);
             bs.WriteBool(false); // unk field_0x4b
-            bs.WriteInt32(0 /* RewardParticipationPresents.Length */); // TODO
+
+            if (ParticipatePresents.Any(r => r != null))
+            {
+                bs.WriteInt32(ParticipatePresents.Length);
+                foreach (var present in ParticipatePresents)
+                {
+                    var pres = present ?? new EventPresent();
+                    pres.WriteToCache(ref bs);
+                }
+            }
+            else
+                bs.WriteInt32(0);
+
             bs.WriteByte((byte)ParticipationPresentType);
 
             EventEntry entryBaseReward = TunedEntryPresent ?? new EventEntry();
             entryBaseReward.WriteEntryBaseToBuffer(ref bs, db);
         }
+
         public EventPresent TryGetTunedCarPresent()
         {
             var tunedCarReward = RewardPresents.FirstOrDefault(e => e?.PresentType == Entities.PresentType.CAR_PARAMETER);
@@ -394,6 +418,51 @@ namespace GTEventGenerator.Entities
             present.PresentType = PresentType.SUIT;
             present.SuitID = suitID;
             return present;
+        }
+
+        public void WriteToCache(ref BitStream bs)
+        {
+            bs.WriteUInt32(0x_E6_E6_D2_B3);
+            bs.WriteUInt32(1_00);
+
+            // type_id
+            switch (PresentType)
+            {
+                case PresentType.NONE:
+                case PresentType.SUIT:
+                    bs.WriteUInt32(0); break;
+                case PresentType.PAINT:
+                    bs.WriteUInt32(3); break;
+                case PresentType.CAR:
+                case PresentType.CAR_PARAMETER:
+                    bs.WriteUInt32(9); break;
+                default:
+                    bs.WriteUInt32(0); break;
+            }
+
+            // itemcategory
+            bs.WriteInt32((int)PresentType);
+
+            // Arg 1
+            if (PresentType == PresentType.PAINT)
+                bs.WriteInt32(PaintID);
+            else if (PresentType == PresentType.SUIT)
+                bs.WriteInt32(0);
+            else
+                bs.WriteInt32(-1);
+
+            bs.WriteInt32(0); // Arg 2
+            bs.WriteInt32(0); // Arg 3
+
+            if (PresentType == PresentType.SUIT)
+                bs.WriteInt32(SuitID);
+            else
+                bs.WriteInt32(0);
+
+            bs.WriteNullStringAligned4(CarLabel);
+
+            // Blob Size
+            bs.WriteInt32(0);
         }
 
         public void WriteToXml(XmlWriter xml)

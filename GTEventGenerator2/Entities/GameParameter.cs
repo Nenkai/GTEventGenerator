@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 using System.IO;
+using Syroot.BinaryData;
 using PDTools.Utils;
 using GTEventGenerator.Database;
 
@@ -129,7 +130,9 @@ namespace GTEventGenerator.Entities
         public void ReadFromCache(string path)
         {
             BitStream reader = new BitStream(File.ReadAllBytes(path));
-            reader.SeekToByte(0x12);
+
+            if (reader.SourceBuffer[0] == 0x0E)
+                reader.SeekToByte(0x12);
 
             uint magic = reader.ReadUInt32();
             if (magic != 0xE5E54F17 && magic != 0xE6E64F17)
@@ -148,7 +151,7 @@ namespace GTEventGenerator.Entities
             }
         }
 
-        public byte[] WriteToCache(GameDB db)
+        private byte[] WriteToCache(GameDB db)
         {
             BitStream bs = new BitStream(1024);
             bs.WriteUInt32(0xE6_E6_4F_17);
@@ -167,11 +170,56 @@ namespace GTEventGenerator.Entities
             bs.WriteBool(EventList.IsChampionship);
             bs.WriteBool(false); // arcade
             bs.WriteBool(false); // keep_sequence
-            bs.WriteBool(false); // launch_context
+            bs.WriteByte((byte)LaunchContext.NONE); // launch_context
 
             bs.WriteUInt32(0xE6_E6_4F_18); // End Magic Terminator
 
             return bs.GetBuffer().ToArray();
+        }
+
+        public byte[] Serialize(GameDB db)
+        {
+            // We could use a PD struct utility for all this, but eh, effort, its just two fields
+            using (var ms = new MemoryStream())
+            using (var bs = new BinaryStream(ms, ByteConverter.Big))
+            {
+                bs.WriteByte(0x0E); // PD Struct version
+                bs.Position += 4; // Write symbols later
+                bs.WriteByte(0x0A);
+                bs.WriteByte(9);
+                bs.WriteInt32(2);
+                bs.WriteByte(7);
+                bs.WriteInt16(6);
+
+                bs.Position += 4; // Write GP Size later
+
+                var gp = WriteToCache(db);
+
+                bs.WriteBytes(gp);
+                bs.WriteByte(7);
+                bs.WriteByte(1);
+                bs.WriteByte(3);
+                bs.WriteInt32(101); // GP VERSION
+
+                long symbolsOffset = bs.Position;
+                bs.WriteByte(2);
+                bs.WriteByte(4); bs.WriteString("data", StringCoding.Raw);
+                bs.WriteByte(7); bs.WriteString("version", StringCoding.Raw);
+
+                bs.Position = 1;
+                bs.WriteUInt32((uint)symbolsOffset);
+
+                bs.Position = 14;
+                bs.WriteInt32(gp.Length);
+
+                return ms.ToArray();
+            }
+        }
+
+        public enum LaunchContext
+        {
+            NONE,
+            ACACDEMY,
         }
     }
 }

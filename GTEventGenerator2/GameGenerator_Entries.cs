@@ -132,25 +132,15 @@ namespace GTEventGenerator
 
             if (comboBox_entryGenerateType.Items.Count == 0)
             {
-                var types = (EntryGenerateType[])Enum.GetValues(typeof(EntryGenerateType));
-                for (int i = 0; i < types.Length; i++)
-                {
-                    var type = (EntryGenerateType)i;
-                    string typeName = type.Humanize();
-                    comboBox_entryGenerateType.Items.Add(typeName);
-                }
+                foreach (var type in (EntryGenerateType[])Enum.GetValues(typeof(EntryGenerateType)))
+                    comboBox_entryGenerateType.Items.Add(type.Humanize());
             }
             comboBox_entryGenerateType.SelectedIndex = (int)CurrentEvent.Entries.AIEntryGenerateType;
 
             if (comboBox_EntrySortType.Items.Count == 0)
             {
-                var types = (EnemySortType[])Enum.GetValues(typeof(EnemySortType));
-                for (int i = 0; i < types.Length; i++)
-                {
-                    var type = (EnemySortType)i;
-                    string typeName = type.Humanize();
-                    comboBox_EntrySortType.Items.Add(typeName);
-                }
+                foreach (var type in (EnemySortType[])Enum.GetValues(typeof(EnemySortType)))
+                    comboBox_EntrySortType.Items.Add(type.Humanize());
             }
             comboBox_EntrySortType.SelectedIndex = (int)CurrentEvent.Entries.AISortType;
         }
@@ -246,7 +236,7 @@ namespace GTEventGenerator
             if (listBox_AICarList.SelectedIndex == -1)
                 return;
 
-            var entry = new EventEntry();
+            var entry = new EventEntry(isPlayer: true);
             entry.IsAI = false;
 
             entry.CarLabel = GameDatabase.GetCarLabelByActualName((string)listBox_AICarList.SelectedItem);

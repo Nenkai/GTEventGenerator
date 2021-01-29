@@ -33,15 +33,15 @@ namespace GTEventGenerator.Entities
         public sbyte TrackDayMode { get; set; } = 1;
         public sbyte BattleMode { get; set; } = 1;
         public sbyte FreerunPenalty { get; set; }
-        public sbyte FreerunCollision { get; set; }
+        public bool FreerunCollision { get; set; } = true;
         public int Weather { get; set; }
         public int GameRegionCode { get; set; }
         public string LoungeOwnerID { get; set; }
         public sbyte Scope { get; set; }
-        public short AlarmTime { get; set; }
+        public short AlarmTime { get; set; } = -1;
         public sbyte RoomPolicy { get; set; }
         public uint GeneratedCourseHash { get; set; }
-        public short AlarmTimeValue { get; set; }
+        public short AlarmTimeValue { get; set; } = -1;
         public byte ThemeColorIndex { get; set; }
         public short QualifierRaceType { get; set; } = 7;
         public short QualifierBegin { get; set; }
@@ -60,7 +60,7 @@ namespace GTEventGenerator.Entities
         public ulong ClubEventID { get; set; }
         public uint EventSettingVersion { get; set; }
         public uint EventSettingHash { get; set; }
-        public uint SceneryCourseCode { get; set; }
+        public int SceneryCourseCode { get; set; } = -1;
 
         public bool AutoGrantOwnership { get; set; } = true;
         public int NatRestriction { get; set; } = 1;
@@ -103,7 +103,7 @@ namespace GTEventGenerator.Entities
             bs.WriteSByte(TrackDayMode);
             bs.WriteSByte(BattleMode);
             bs.WriteSByte(FreerunPenalty);
-            bs.WriteSByte(FreerunCollision);
+            bs.WriteBool(FreerunCollision);
 
             bs.WriteInt32(100); // QCP Size
             for (int i = 0; i < 100; i++)
@@ -158,7 +158,7 @@ namespace GTEventGenerator.Entities
             bs.WriteUInt32(EventSettingVersion);
             bs.WriteUInt32(EventSettingHash);
             bs.WriteUInt64(0);
-            bs.WriteUInt32(SceneryCourseCode);
+            bs.WriteInt32(SceneryCourseCode);
         }
     }
 }

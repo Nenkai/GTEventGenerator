@@ -140,7 +140,15 @@ namespace GTEventGenerator.Entities
             else
             {
                 for (int i = 0; i < 24; i++)
+                {
+                    if (i >= 15 && i <= 19) // Ignored locales
+                    {
+                        bs.WriteInt32(0);
+                        continue;
+                    }
+
                     bs.WriteNullStringAligned4(list["GB"]);
+                }
             }
         }
 
