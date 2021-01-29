@@ -226,6 +226,38 @@ namespace GTEventGenerator.Entities
             xml.WriteElementInt("weather_accel_water_retention10", WeatherAccelWaterRetention);
             xml.WriteElementBool("boost_flag", BoostFlag);
 
+            xml.WriteElementInt("entry_max", RacersMax);
+            xml.WriteElementInt("racers_max", RacersMax);
+
+            if (BoostTables.Any(t => !t.IsDefault()))
+            {
+                xml.WriteStartElement("boost_table_array");
+                for (int i = 0; i < 2; i++)
+                {
+                    xml.WriteStartElement("boost_table");
+                    {
+                        xml.WriteElementInt("param", i);
+
+                        BoostTable table = BoostTables[i];
+                        xml.WriteElementInt("param", table.FrontLimit);
+                        xml.WriteElementInt("param", table.FrontMaximumRate);
+                        xml.WriteElementInt("param", table.FrontStart);
+                        xml.WriteElementInt("param", table.FrontInitialRate);
+
+                        xml.WriteElementInt("param", table.RearLimit);
+                        xml.WriteElementInt("param", table.RearMaximumRate);
+                        xml.WriteElementInt("param", table.RearStart);
+                        xml.WriteElementInt("param", table.RearInitialRate);
+
+                        xml.WriteElementInt("param", table.ReferenceRank);
+                        xml.WriteElementInt("param", table.Unk);
+                    }
+                    xml.WriteEndElement();
+
+                }
+                xml.WriteEndElement();
+            }
+
             if (NewWeatherData.Count != 0)
             {
                 xml.WriteStartElement("new_weather_data");
@@ -239,10 +271,6 @@ namespace GTEventGenerator.Entities
                 }
                 xml.WriteEndElement();
             }
-
-            xml.WriteElementInt("entry_max", RacersMax);
-            xml.WriteElementInt("racers_max", RacersMax);
-            xml.WriteEmptyElement("boost_table_array");
             xml.WriteEndElement();
         }
 
@@ -269,6 +297,8 @@ namespace GTEventGenerator.Entities
                         SlipstreamBehavior = raceNode.ReadValueEnum<SlipstreamBehavior>(); break;
                     case "behavior_fallback":
                         BehaviorFallBack = raceNode.ReadValueInt(); break;
+                    case "boost_table_array":
+                        ParseBoostTables(raceNode); break;
                     case "boost_type":
                         BoostType = raceNode.ReadValueByte(); break;
                     case "boost_level":
@@ -433,6 +463,54 @@ namespace GTEventGenerator.Entities
                             }
                         }
                         break;
+                }
+            }
+        }
+
+        public void ParseBoostTables(XmlNode boostTableArrayNode)
+        {
+            foreach (XmlNode boostTableNode in boostTableArrayNode.SelectNodes("boost_table"))
+            {
+                var paramList = boostTableNode.SelectNodes("param");
+                int currentIndex = -1;
+                for (int i = 0; i < paramList.Count; i++)
+                {
+                    XmlNode currentNode = paramList[i];
+                    
+                    if (i == 0)
+                        currentIndex = currentNode.ReadValueInt();
+                    else
+                    {
+                        if (i == -1 || i >= 2)
+                            break; // No valid table here
+
+                        switch (i)
+                        {
+                            case 1:
+                                BoostTables[currentIndex].FrontLimit = currentNode.ReadValueByte(); break;
+                            case 2:
+                                BoostTables[currentIndex].FrontMaximumRate = currentNode.ReadValueSByte(); break;
+                            case 3:
+                                BoostTables[currentIndex].FrontStart = currentNode.ReadValueByte(); break;
+                            case 4:
+                                BoostTables[currentIndex].FrontInitialRate = currentNode.ReadValueSByte(); break;
+
+                            case 5:
+                                BoostTables[currentIndex].RearLimit = currentNode.ReadValueByte(); break;
+                            case 6:
+                                BoostTables[currentIndex].RearMaximumRate = currentNode.ReadValueSByte(); break;
+                            case 7:
+                                BoostTables[currentIndex].RearStart = currentNode.ReadValueByte(); break;
+                            case 8:
+                                BoostTables[currentIndex].RearInitialRate = currentNode.ReadValueSByte(); break;
+
+                            case 9:
+                                BoostTables[currentIndex].ReferenceRank = currentNode.ReadValueByte(); break;
+                            case 10:
+                                BoostTables[currentIndex].Unk = currentNode.ReadValueByte(); break;
+                        }
+                    }
+
                 }
             }
         }

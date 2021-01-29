@@ -279,6 +279,12 @@ namespace GTEventGenerator
             var chk = sender as CheckBox;
             CurrentEvent.RaceParameters.WithGhost = chk.IsChecked.Value;
         }
+
+        private void btn_BoostTable_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new BoostTableEditWindow(CurrentEvent.RaceParameters.BoostTables);
+            window.ShowDialog();
+        }
         #endregion
 
         #region Pane 4

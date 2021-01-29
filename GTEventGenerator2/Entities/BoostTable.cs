@@ -34,6 +34,16 @@ namespace GTEventGenerator.Entities
         public sbyte RearInitialRate { get; set; }
 
         public byte ReferenceRank { get; set; }
-        private byte Unk { get; set; }
+        public byte Unk { get; set; }
+
+        public bool IsDefault()
+        {
+            if (FrontLimit == 0 && FrontMaximumRate == 0 && FrontStart == 0  && FrontInitialRate == 0
+              && RearLimit == 0 && RearMaximumRate == 0 && RearStart == 0 && RearInitialRate == 0
+              && ReferenceRank == 0 && Unk == 0)
+                return true;
+
+            return false;
+        }
     }
 }

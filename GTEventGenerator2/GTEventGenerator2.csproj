@@ -146,6 +146,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BoostTableEditWindow.xaml.cs">
+      <DependentUpon>BoostTableEditWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CarParameter\CarParameterMainWindow.xaml.cs">
       <DependentUpon>CarParameterMainWindow.xaml</DependentUpon>
     </Compile>
@@ -205,6 +208,10 @@
     <Compile Include="Utils\RegionUtil.cs" />
     <Compile Include="Utils\MiscUtils.cs" />
     <Compile Include="Utils\XmlUtils.cs" />
+    <Page Include="BoostTableEditWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CarParameter\CarParameterMainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

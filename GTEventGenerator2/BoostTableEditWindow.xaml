@@ -1,0 +1,174 @@
+﻿<Window x:Class="GTEventGenerator.BoostTableEditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:GTEventGenerator"
+        mc:Ignorable="d"
+        Title="Boost Table Settings Panel"
+        ResizeMode="NoResize"
+        Height="546.813" Width="348.129">
+    <DockPanel Background="#262626">
+        <TabControl DockPanel.Dock="Top" Name="tabBoostTable" TabStripPlacement= "Top" IsTabStop="False" SelectionChanged="tabBoostTable_SelectionChanged">
+            <TabItem Name="tabTable1">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" >
+                        <Image Width="16" Source="Resources/UI/TabLogos/FolderInfo.png"/>
+                        <TextBlock Text="Table 1" />
+                    </StackPanel>
+                </TabItem.Header>
+            </TabItem>
+            <TabItem Name="tabTable2">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" >
+                        <Image Width="16" Source="Resources/UI/TabLogos/FolderInfo.png"/>
+                        <TextBlock Text="Table 2 (Unused?)" />
+                    </StackPanel>
+                </TabItem.Header>
+            </TabItem>
+        </TabControl>
+        <Grid DockPanel.Dock="Bottom">
+            <GroupBox Canvas.Left="10" Canvas.Top="391" Margin="10,10,10,304" >
+                <GroupBox.Header>
+                    <TextBlock Text="Front Boost (When AI is AHEAD of the player)"/>
+                </GroupBox.Header>
+                <Canvas>
+                    <Label Content="Boost Initial Rate" Canvas.Left="10" Canvas.Top="8" Width="213">
+                        <Label.ToolTip>
+                            <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Front Initial Rate</TextBlock> <LineBreak />
+                           The first step of the boost.<LineBreak/>
+                           This value also applies to how fast/slow the transition is from Initial to Maximum Rate.<LineBreak/> 
+                           <LineBreak/>
+                           <TextBlock FontStyle="Italic">Example:</TextBlock><LineBreak/>
+                           If the value is set to 5, the enemy will receive a 1.05x boost when near the player.<LineBreak/>
+                           When further ahead/behind, it will also speed up the transition from Initial to Maximum rate, such as 1.05x to 1.08x.
+                        </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:SByteUpDown Height="24" Value="{Binding FrontInitialRate}" Width="70" Canvas.Left="228" Canvas.Top="10" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                    <Label Content="Boost Start" Canvas.Left="10" Canvas.Top="39" Width="213">
+                        <Label.ToolTip>
+                            <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Front Start</TextBlock> <LineBreak />
+                           This controls the distance it will take for the Maximum Rate to apply to the enemy car.<LineBreak/>
+                           Distance in meters (possibly?).<LineBreak/> 
+                           <LineBreak/>
+                           <TextBlock FontStyle="Italic">Example:</TextBlock><LineBreak/>
+                           If the value is set to 20, it will take approximately 20 meters ahead/behind the enemy car<LineBreak/>
+                           for the start applying the Maximum Rate of the boost.
+                        </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:ByteUpDown Height="24" Value="{Binding FrontStart}" Width="70" Canvas.Left="228" Canvas.Top="39" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                    <Label Content="Boost Maximum Rate" Canvas.Left="10" Canvas.Top="68" Width="213">
+                        <Label.ToolTip>
+                            <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Front Maximum Rate</TextBlock> <LineBreak />
+                           The second step of the boost.<LineBreak/>
+                           This is controlled by Start and Limit parameters, and is the highest the boost can go.<LineBreak/>
+                           Once the distance for Start is met, this rate is applied.
+                        </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:SByteUpDown Height="24" Value="{Binding FrontMaximumRate}" Width="70" Canvas.Left="228" Canvas.Top="68" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                    <Label Content="Boost Limit" Canvas.Left="10" Canvas.Top="97" Width="213">
+                        <Label.ToolTip>
+                            <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Front Limit</TextBlock> <LineBreak />
+                           This controls the distance it will take for the Maximum Rate to be <TextBlock FontWeight="Bold">fully</TextBlock> applied to the enemy car.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontStyle="Italic">Example:</TextBlock><LineBreak/>
+                           If Initial Rate is 1.05x, Maximum Rate is 1.15x and Limit is 115, it will take 115 meters (might not be meters?)<LineBreak/>
+                           for the boost to transition from 1.05x to 1.15x.
+                        </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:ByteUpDown Height="24" Value="{Binding FrontLimit}" Width="70" Canvas.Left="228" Canvas.Top="97" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                </Canvas>
+            </GroupBox>
+            <GroupBox Canvas.Left="10" Canvas.Top="391" Margin="10,185,10,128" >
+                <GroupBox.Header>
+                    <TextBlock Text="Rear Boost (When AI is BEHIND the player)"/>
+                </GroupBox.Header>
+                <Canvas>
+
+                    <Label Content="Boost Initial Rate" Canvas.Left="10" Canvas.Top="8" Width="213">
+                        <Label.ToolTip>
+                            <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Rear Initial Rate</TextBlock> <LineBreak />
+                           The first step of the boost.<LineBreak/>
+                           This value also applies to how fast/slow the transition is from Initial to Maximum Rate.<LineBreak/> 
+                           <LineBreak/>
+                           <TextBlock FontStyle="Italic">Example:</TextBlock><LineBreak/>
+                           If the value is set to 5, the enemy will receive a 1.05x boost when near the player.<LineBreak/>
+                           When further ahead/behind, it will also speed up the transition from Initial to Maximum rate, such as 1.05x to 1.08x.
+                        </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:SByteUpDown Height="24" Value="{Binding RearInitialRate}" Width="70" Canvas.Left="228" Canvas.Top="10" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                    <Label Content="Boost Start" Canvas.Left="10" Canvas.Top="39" Width="213">
+                        <Label.ToolTip>
+                            <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Rear Start</TextBlock> <LineBreak />
+                           This controls the distance it will take for the Maximum Rate to apply to the enemy car.<LineBreak/>
+                           Distance in meters (possibly?).<LineBreak/> 
+                           <LineBreak/>
+                           <TextBlock FontStyle="Italic">Example:</TextBlock><LineBreak/>
+                           If the value is set to 20, it will take approximately 20 meters ahead/behind the enemy car<LineBreak/>
+                           for the start applying the Maximum Rate of the boost.
+                        </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:ByteUpDown Height="24" Width="70" Value="{Binding RearStart}" Canvas.Left="228" Canvas.Top="39" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                    <Label Content="Boost Maximum Rate" Canvas.Left="10" Canvas.Top="68" Width="213">
+                        <Label.ToolTip>
+                            <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Rear Maximum Rate</TextBlock> <LineBreak />
+                           The second step of the boost.<LineBreak/>
+                           This is controlled by Start and Limit parameters, and is the highest the boost can go.<LineBreak/>
+                           Once the distance for Start is met, this rate is applied.
+                        </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:SByteUpDown Height="24" Width="70" Value="{Binding RearMaximumRate}" Canvas.Left="228" Canvas.Top="68" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                    <Label Content="Boost Limit" Canvas.Left="10" Canvas.Top="97" Width="213">
+                        <Label.ToolTip>
+                            <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Rear Limit</TextBlock> <LineBreak />
+                           This controls the distance it will take for the Maximum Rate to be <TextBlock FontWeight="Bold">fully</TextBlock> applied to the enemy car.<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontStyle="Italic">Example:</TextBlock><LineBreak/>
+                           If Initial Rate is 1.05x, Maximum Rate is 1.15x and Limit is 115, it will take 115 meters (might not be meters?)<LineBreak/>
+                           for the boost to transition from 1.05x to 1.15x.
+                        </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:ByteUpDown Height="24" Width="70" Value="{Binding RearLimit}" Canvas.Left="228" Canvas.Top="97" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                </Canvas>
+            </GroupBox>
+            <GroupBox Canvas.Left="10" Canvas.Top="391" Margin="10,361,10,10" >
+                <GroupBox.Header>
+                    <TextBlock Text="Misc"/>
+                </GroupBox.Header>
+                <Canvas>
+
+                    <Label Content="Reference Rank" Canvas.Left="10" Canvas.Top="8" Width="213"/>
+                    <xctk:ByteUpDown Height="24" Width="70" Value="{Binding ReferenceRank}" Canvas.Left="228" Canvas.Top="10" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                    <Label Content="Unknown" Canvas.Left="10" Canvas.Top="39" Width="213"/>
+                    <xctk:ByteUpDown Height="24" Width="70" Value="{Binding Unk}" Canvas.Left="228" Canvas.Top="39" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+
+                </Canvas>
+            </GroupBox>
+        </Grid>
+    </DockPanel>
+</Window>
