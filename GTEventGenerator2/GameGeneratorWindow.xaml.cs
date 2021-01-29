@@ -1120,9 +1120,7 @@ namespace GTEventGenerator
                 /* Original GT6 Events cache the files using an MD5.
                  * The FGP file contains the file name of the cache file in gp_cache
                  * It does not have to be MD5'd at all, so we ignore doing it
-                 */
 
-                * 
                 string cacheFileName;
                 using (var md5 = MD5.Create())
                 {
@@ -1132,9 +1130,9 @@ namespace GTEventGenerator
                 }
                 */
 
+                File.WriteAllText(eventXmlPath + ".fgp", GameParameter.FolderFileName);
 
-                string pathDir = Path.Combine(selectedPath, md5Str);
-                */
+                string pathDir = Path.Combine(selectedPath, GameParameter.FolderFileName);
                 File.WriteAllBytes(pathDir, GameParameter.Serialize(GameDatabase));
             }
 

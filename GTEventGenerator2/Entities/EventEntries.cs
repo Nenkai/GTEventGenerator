@@ -266,6 +266,10 @@ namespace GTEventGenerator.Entities
                         newEntry.StartingSkill = entryDetailNode.ReadValueSByte();
                         break;
 
+                    case "ai_roughness":
+                        newEntry.Roughness = entryDetailNode.ReadValueSByte();
+                        break;
+
                     case "entry_base": // For fixed entries with a child entry_base.
                         ParseEntry(entryDetailNode, newEntry); break;
 
@@ -355,8 +359,8 @@ namespace GTEventGenerator.Entities
             bs.WriteUInt32(0xE6_E6_41_14);
             bs.WriteUInt32(1_03);
 
-            bs.WriteInt32(0); // TODO entry_num
-            bs.WriteInt32(AIBases.Count > 0 ? PlayerPos : 0);
+            bs.WriteInt32(AIsToPickFromPool); // entry_num
+            bs.WriteInt32(AIBases.Count > 0 ? PlayerPos - 1 : 0);
             bs.WriteInt32(AIBases.Count > 0 ? (int)AIEntryGenerateType : (int)EntryGenerateType.NONE);
             bs.WriteInt32((int)EnemyListType);
             bs.WriteUInt64(4294967295); // race_code

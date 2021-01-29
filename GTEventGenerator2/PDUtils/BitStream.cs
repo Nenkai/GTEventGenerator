@@ -78,12 +78,12 @@ namespace PDTools.Utils
         {
             get
             {
+                if (_currentBuffer.Length == 0)
+                    return SourceBuffer.Length;
+
                 fixed (byte* current = _currentBuffer,
                        start = SourceBuffer)
                 {
-                    if (current == start)
-                        return 0;
-
                     return (int)(current - start);
                 }
             }
@@ -108,7 +108,7 @@ namespace PDTools.Utils
 
         public void SeekToByteFromCurrentPosition(int byteOffset)
         {
-            if (byteOffset + BytePosition > SourceBuffer.Length)
+            if (byteOffset + BytePosition >= SourceBuffer.Length)
                 EnsureCapacity(byteOffset * Byte_Bits);
 
             _currentBuffer = _currentBuffer.Slice(byteOffset);
@@ -322,7 +322,7 @@ namespace PDTools.Utils
             uint bitsLeftThisByte = Byte_Bits - RemainingByteBits;
             long totalFreeBits = (_currentBuffer.Length * Byte_Bits) + bitsLeftThisByte;
 
-            if ( bitCount > totalFreeBits)
+            if (bitCount >= totalFreeBits)
             {
                 int cPos = BytePosition < 0 ? SourceBuffer.Length : BytePosition;
 
@@ -428,8 +428,8 @@ namespace PDTools.Utils
 
             data.CopyTo(_currentBuffer);
             SeekToByteFromCurrentPosition(data.Length);
-
         }
+
         public void WriteUInt64(ulong value)
             => WriteBits(value, Long_Bits);
 

@@ -184,10 +184,25 @@ namespace GTEventGenerator.Entities
         [Description("By Time (in MS)")]
         TIME,
 
+        [Description("By Finish Order")]
+        ORDER,
+
+        [Description("Cones Hit")]
+        PYLON,
+
         [Description("By Drift Score")]
         DRIFT,
 
+        [Description("VS Ghost (to be specified)")]
+        VS_GHOST,
+
+        [Description("Distance Travelled")]
+        DIST,
+
+        [Description("Fuel Spent")]
+        FUEL,
+
         [Description("By Overtake Count")]
-        OVERTAKE,
+        OVER_TAKE,
     }
 }
