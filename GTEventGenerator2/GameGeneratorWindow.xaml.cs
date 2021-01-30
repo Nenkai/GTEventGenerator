@@ -51,6 +51,7 @@ namespace GTEventGenerator
         public static RoutedCommand EventSwitchDownCommand = new RoutedCommand();
 
         private bool _processEventSwitch = true;
+        private bool _loading = true;
         public List<string> EventNames { get; set; }
         public GameGeneratorWindow()
         {
@@ -152,6 +153,7 @@ namespace GTEventGenerator
             EventSwitchDownCommand.InputGestures.Add(new KeyGesture(Key.Down, ModifierKeys.Control));
             CommandBindings.Add(new CommandBinding(EventSwitchUpCommand, EventSwitchUpCommand_Executed));
             CommandBindings.Add(new CommandBinding(EventSwitchDownCommand, EventSwitchDownCommand_Executed));
+            _loading = false;
 
         }
 
@@ -380,7 +382,24 @@ namespace GTEventGenerator
             => Settings.SetSettingValue("Minify_XML", minimizeXMLToolStripMenuItem.IsChecked);
 
         private void exportCacheToolStripMenuItem_Checked(object sender, RoutedEventArgs e)
-            => Settings.SetSettingValue("Create_FGP", exportCacheToolStripMenuItem.IsChecked);
+        {
+            if (_loading)
+                return;
+
+            if (exportCacheToolStripMenuItem.IsChecked)
+            {
+                var res = MessageBox.Show("This option makes the generator export a cache file and .fgp file for GT6 1.22 ONLY.\n" +
+                    "These are used in GT6 to drastically speed up loading large folders (up to 5 times with 60 events).\n" +
+                    "This may not work 100%, so use and test this accordingly when you are fully done with your event.\n\n" +
+                    "Once exporting, drag the cache file (the one without any file extension) to the game_parameter/gp_cache folder. The other files goes in the event folder as usual.\n\n" +
+                    "Enable this option?", "Information",
+                       MessageBoxButton.YesNo, MessageBoxImage.Information);
+                if (res != MessageBoxResult.Yes)
+                    exportCacheToolStripMenuItem.IsChecked = false;
+            }
+
+            Settings.SetSettingValue("Create_FGP", exportCacheToolStripMenuItem.IsChecked);
+        }
 
         private void randomizeAINamesToolStripMenuItem_Click(object sender, RoutedEventArgs e)
         {
