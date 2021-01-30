@@ -412,7 +412,7 @@ namespace GTEventGenerator.Entities
         SPEC_DB = 4,
 
         [Description("ORDER")]
-        ORDER = 4,
+        ORDER = 5,
 
         [Description("Shuffle and Randomly Pick (Default)")]
         ENTRY_BASE_SHUFFLE = 6,

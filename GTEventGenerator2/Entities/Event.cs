@@ -467,7 +467,7 @@ namespace GTEventGenerator.Entities
         ARCADE_STYLE_RACE = 32,
 
         [Description("Practice (GT6)")]
-        PRACTICE = 32,
+        PRACTICE = 33,
 
     }
 
