@@ -72,7 +72,7 @@
                             <CheckBox Name="chkIsChampionship" Height="34" Width="190" TabIndex="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Unchecked="chkIsChampionship_CheckedChanged" Checked="chkIsChampionship_CheckedChanged" Canvas.Left="10" Canvas.Top="10" >Championship</CheckBox>
                         </Canvas>
                     </GroupBox>
-                    <Label Name="label6" Content="Stars Needed" Height="24" Width="91"  TabIndex="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="182">
+                    <Label Name="label6" Content="Stars Needed" Height="24" Width="108"  TabIndex="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="250">
                         <Label.ToolTip>
                             <TextBlock>
                                 <TextBlock FontWeight="Bold" FontSize="14">Stars Needed</TextBlock><LineBreak/>
@@ -81,9 +81,9 @@
                             </TextBlock>
                         </Label.ToolTip>
                     </Label>
-                    <xctk:IntegerUpDown Name="iud_StarsNeeded" ValueChanged="iud_StarsNeeded_ValueChanged" Value="0" Height="20" Width="232" Canvas.Left="121" Canvas.Top="185" Minimum="0" Maximum="1000" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                    <xctk:IntegerUpDown Name="iud_StarsNeeded" ValueChanged="iud_StarsNeeded_ValueChanged" Value="0" Height="20" Width="350" Canvas.Left="121" Canvas.Top="254" Minimum="0" Maximum="1000" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                    <Label Name="label_folderID" Content="Folder ID" Height="24" Width="91" TabIndex="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="211">
+                    <Label Name="label_folderID" Content="Folder ID" Height="24" Width="91" TabIndex="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="279">
                         <Label.ToolTip>
                             <TextBlock>
                                 <TextBlock FontWeight="Bold" FontSize="14">Folder ID</TextBlock><LineBreak/>
@@ -93,9 +93,9 @@
                             </TextBlock>
                         </Label.ToolTip>
                     </Label>
-                    <xctk:ULongUpDown Name="iud_FolderID" ValueChanged="iud_FolderID_ValueChanged" Height="20" Width="232" Canvas.Left="121" Canvas.Top="213" Value="1000" Minimum="0" Maximum="10000" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                    <xctk:ULongUpDown Name="iud_FolderID" ValueChanged="iud_FolderID_ValueChanged" Height="20" Width="350" Canvas.Left="121" Canvas.Top="282" Value="1000" Minimum="0" Maximum="10000" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                    <Label Name="label_folderFileName" Content="Intl. Folder Name" Height="24" Width="108" TabIndex="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="240">
+                    <Label Name="label_folderFileName" Content="Intl. Folder Name" Height="24" Width="108" TabIndex="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="308">
                         <Label.ToolTip>
                             <TextBlock>
                                 <TextBlock FontWeight="Bold" FontSize="14">Internal Folder Name</TextBlock><LineBreak/>
@@ -105,9 +105,9 @@
                             </TextBlock>
                         </Label.ToolTip>
                     </Label>
-                    <TextBox Name="tb_FolderFileName" Canvas.Left="121" Canvas.Top="244" Width="232" TextChanged="tb_FolderFileName_TextChanged" />
-                    <TextBox Name="txtGameParamName" Height="20" Width="232" TabIndex="1" TextChanged="txtFolderName_TextChanged" HorizontalAlignment="Right" VerticalAlignment="Bottom" TextWrapping="Wrap" Canvas.Left="121" Canvas.Top="35" />
-                    <TextBox Name="txtGameParamDesc" Height="92" Width="232" TabIndex="2" TextChanged="txtFolderDesc_TextChanged" HorizontalAlignment="Right" VerticalAlignment="Bottom" TextWrapping="Wrap" Canvas.Left="121" Canvas.Top="60" />
+                    <TextBox Name="tb_FolderFileName" Canvas.Left="121" Canvas.Top="314" Width="350" TextChanged="tb_FolderFileName_TextChanged" />
+                    <TextBox Name="txtGameParamName" Height="20" Width="350" TabIndex="1" TextChanged="txtFolderName_TextChanged" HorizontalAlignment="Right" VerticalAlignment="Bottom" TextWrapping="Wrap" Canvas.Left="121" Canvas.Top="33" />
+                    <TextBox Name="txtGameParamDesc" Height="152" Width="350" TabIndex="2" TextChanged="txtFolderDesc_TextChanged" HorizontalAlignment="Right" VerticalAlignment="Bottom" TextWrapping="Wrap" Canvas.Left="121" Canvas.Top="60" />
                     <Label Name="label5" Height="24" Content="Folder Description" Width="108"  TabIndex="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="8" Canvas.Top="60" >
                         <Label.ToolTip>
                             <TextBlock>
@@ -117,7 +117,7 @@
                         </Label.ToolTip>
                     </Label>
                     <Label Name="label4" Height="24" Width="108"  TabIndex="4" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="8" Canvas.Top="33" >Folder Name</Label>
-                    <Label Name="label3" Content="Folder Category" Height="27" Width="108" TabIndex="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="154" >
+                    <Label Name="label3" Content="Folder Category" Height="27" Width="108" TabIndex="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="218" >
                         <Label.ToolTip>
                             <TextBlock>
                                 <TextBlock FontWeight="Bold" FontSize="14">Folder Category</TextBlock><LineBreak/>
@@ -126,7 +126,7 @@
                             </TextBlock>
                         </Label.ToolTip>
                     </Label>
-                    <ComboBox Name="cboEventCategory" Height="23" Width="232" TabIndex="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="cboEventCategory_SelectedIndexChanged" Canvas.Left="123" Canvas.Top="157" />
+                    <ComboBox Name="cboEventCategory" Height="23" Width="350" TabIndex="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="cboEventCategory_SelectedIndexChanged" Canvas.Left="121" Canvas.Top="222" />
                     <!--<Button Name="btnEventGenerate" Height="43" Width="137" TabIndex="8" Click="btnEventGenerate_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="659" Canvas.Top="479" >Generate Event</Button>
                     <Button Name="btnOpenMenuDB" Height="43" Width="137" TabIndex="7" Click="btnOpenMenuDB_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="801" Canvas.Top="479" >Open MenuDB</Button>-->
                 </Canvas>
@@ -370,7 +370,7 @@
                     </Label>
                     <TextBox Name="txt_Description" Height="287" Width="469" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" TextWrapping="Wrap" AcceptsReturn="True" Canvas.Left="116" Canvas.Top="76" TextChanged="txt_Description_TextChanged" />
 
-                    <GroupBox Header="Online Event Information (GT6 Seasonals)" Height="353" Width="348" Canvas.Left="590" Canvas.Top="10">
+                    <GroupBox Header="Online Event Information (GT6 Seasonals)" Height="353" Width="348" Canvas.Left="623" Canvas.Top="10">
                         <Canvas>
                             <Label Content="Start Date" Canvas.Left="10" Canvas.Top="10" >
                                 <Label.ToolTip>
@@ -1758,6 +1758,7 @@
                                     <TextBlock FontWeight="Bold">None (Pool Ignored)</TextBlock>: AI Pool won't be used. <TextBlock FontWeight="Bold">Use this when using fixed entries.</TextBlock><LineBreak />
                                     <TextBlock FontWeight="Bold">Shuffle And Randomly Pick</TextBlock>: Entries will randomly be picked from the AI Pool, amount depending on 'AIs to pick from pool'.<LineBreak />
                                     <TextBlock FontWeight="Bold">Pick Entries by order</TextBlock>: Entries will randomly be picked from the AI Pool by order, amount depending on 'AIs to pick from pool'.<LineBreak />
+                                    <TextBlock FontWeight="Bold">Other types are undocumented and should not be used unless you know what you are doing.</TextBlock><LineBreak />
                                     <LineBreak />
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry_generate->generate_type</TextBlock>
                                     </TextBlock>
@@ -2495,13 +2496,90 @@
                     </GroupBox>
                 </Canvas>
             </TabItem>
-            <TabItem Name="tabArcadeStyleSettings">
+            <TabItem Name="tabArcadeStyleSettings" IsEnabled="False">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal" >
-                        <Image Width="16" Source="Resources/UI/TabLogos/Events.png"/>
+                        <Image Width="16" Source="Resources/UI/TabLogos/ArcadeStyle.png"/>
                         <TextBlock Text="Arcade Style" />
                     </StackPanel>
                 </TabItem.Header>
+                <Canvas>
+                    <GroupBox Height="512" Width="297" Canvas.Left="10" Canvas.Top="10">
+                        <GroupBox.Header>
+                            <TextBlock Text="Arcade Style Race Settings"/>
+                        </GroupBox.Header>
+                        <Canvas>
+                            <Label Content="Enable:  Jump Bonuses" Canvas.Left="10" Canvas.Top="10" Width="132"/>
+                            <CheckBox IsChecked="{Binding Path=ArcadeStyleSettings.EnableJumpBonus}" Canvas.Left="147" Canvas.Top="14" Width="20"/>
+
+                            <Label Content="Speed Traps" Canvas.Left="172" Canvas.Top="10" Width="82"/>
+                            <CheckBox IsChecked="{Binding Path=ArcadeStyleSettings.EnableSpeedTrap}" Canvas.Left="259" Canvas.Top="15" Width="17"/>
+
+                            <Label Content="Extra Seconds on Overtake" Canvas.Left="10" Canvas.Top="40" Width="172"/>
+                            <xctk:ByteUpDown Value="{Binding Path=ArcadeStyleSettings.OvertakeSeconds}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="202" Canvas.Top="45" Width="73"/>
+
+                            <Label Content="Initial Seconds on Start" Canvas.Left="10" Canvas.Top="70" Width="172"/>
+                            <xctk:ByteUpDown Value="{Binding Path=ArcadeStyleSettings.StartSeconds}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="202" Canvas.Top="75" Width="73"/>
+
+                            <Label Content="Extend Seconds Default" Canvas.Left="10" Canvas.Top="100" Width="217"/>
+                            <xctk:ByteUpDown Value="{Binding Path=ArcadeStyleSettings.DefaultExtendSeconds}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="202" Canvas.Top="105" Width="73"/>
+
+                            <Label Content="Max Seconds" Canvas.Left="10" Canvas.Top="130" Width="217"/>
+                            <xctk:ByteUpDown Value="{Binding Path=ArcadeStyleSettings.LimitSeconds}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="202" Canvas.Top="135" Width="73"/>
+
+                            <Label Content="Level Up Step" Canvas.Left="10" Canvas.Top="160" Width="217"/>
+                            <xctk:ByteUpDown Value="{Binding Path=ArcadeStyleSettings.LevelUpStep}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="202" Canvas.Top="165" Width="73"/>
+
+                            <Label Content="Appear Step V" Canvas.Left="10" Canvas.Top="190" Width="217"/>
+                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.AppearStepV}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="202" Canvas.Top="195" Width="73"/>
+
+                            <Label Content="Disappear Step V" Canvas.Left="10" Canvas.Top="220" Width="217"/>
+                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.DisappearStepV}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="202" Canvas.Top="225" Width="73"/>
+
+                            <Label Content="Afford Time" Canvas.Left="10" Canvas.Top="250" Width="217"/>
+                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.AffordTime}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="202" Canvas.Top="255" Width="73"/>
+
+                            <Label Content="Overtake Score" Canvas.Left="10" Canvas.Top="280" Width="217"/>
+                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.OvertakeScore}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="202" Canvas.Top="285" Width="73"/>
+
+                            <Label Content="Speed Trap Score" Canvas.Left="10" Canvas.Top="310" Width="217"/>
+                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.SpeedTrapScore}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="202" Canvas.Top="315" Width="73"/>
+
+                            <Label Content="Jump Bonus Score" Canvas.Left="10" Canvas.Top="340" Width="217"/>
+                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.JumpBonusScore}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="202" Canvas.Top="345" Width="73"/>
+
+                            <Label Content="Startup Step V" Canvas.Left="10" Canvas.Top="370" Width="217"/>
+                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.StartupStepV}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="202" Canvas.Top="375" Width="73"/>
+
+                            <Label Content="Startup Offset V" Canvas.Left="10" Canvas.Top="400" Width="217"/>
+                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.StartupOffsetV}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="202" Canvas.Top="405" Width="73"/>
+
+                            <Label Content="Initial Velocity -  Low" Canvas.Left="10" Canvas.Top="430" Width="126"/>
+                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.InitialVelocityL}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="128" Canvas.Top="435" Width="54"/>
+
+                            <Label Content="High" Canvas.Left="184" Canvas.Top="431" Width="38"/>
+                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.InitialVelocityH}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="221" Canvas.Top="435" Width="53"/>
+
+                        </Canvas>
+                    </GroupBox>
+
+                    <GroupBox Height="512" Width="655" Canvas.Left="316" Canvas.Top="10">
+                        <GroupBox.Header>
+                            <TextBlock Text="Track Sector Setup/Listing"/>
+                        </GroupBox.Header>
+                        <Canvas>
+                            <Label Content="Position (in track meters)" Canvas.Left="10" Canvas.Top="10" Width="155" />
+                            <xctk:UShortUpDown Name="iud_ArcadeSectionPos" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="170" Canvas.Top="15" Width="67" ValueChanged="iud_ArcadeSectionPos_ValueChanged"/>
+
+                            <Label Content="Extra Seconds for Sector" Canvas.Left="10" Canvas.Top="41" Width="155" />
+                            <xctk:SByteUpDown Name="iud_ArcadeSectionExtraSec" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="170" Canvas.Top="46" Width="67" ValueChanged="iud_ArcadeSectionExtraSec_ValueChanged"/>
+
+                            <Button Content="Set Sector" Canvas.Left="10" Canvas.Top="426" Width="236" Height="35"/>
+                            <ListBox Name="lb_ArcadeSections" Canvas.Left="260" Canvas.Top="10" Height="451" Width="375" SelectionChanged="lb_ArcadeSections_SelectionChanged"/>
+                        </Canvas>
+                    </GroupBox>
+
+                </Canvas>
             </TabItem>
         </TabControl>
     </DockPanel>

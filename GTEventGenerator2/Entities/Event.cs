@@ -120,6 +120,9 @@ namespace GTEventGenerator.Entities
                 xml.WriteStartElement("begin_date"); xml.WriteString(StartDate.ToString("yyyy/MM/dd HH:mm:ss")); xml.WriteEndElement();
                 xml.WriteStartElement("end_date"); xml.WriteString(EndDate.ToString("yyyy/MM/dd HH:mm:ss")); xml.WriteEndElement();
 
+                if (GameMode == GameMode.ARCADE_STYLE_RACE)
+                    ArcadeStyleSettings.WriteToXml(xml);
+
                 if (IsSeasonalEvent && RankingDisplayType != RankingDisplayType.NONE)
                 {
                     xml.WriteStartElement("ranking");
@@ -280,6 +283,10 @@ namespace GTEventGenerator.Entities
                         IsSeasonalEvent = node.ReadValueBool();
                         break;
 
+                    case "arcade_style_setting":
+                        ArcadeStyleSettings.ParseArcadeStyleSetting(node);
+                        break;
+
                     case "inheritance":
                         Inheritance = node.ReadValueBool();
                         break;
@@ -378,17 +385,68 @@ namespace GTEventGenerator.Entities
         [Description("Rally Event (GT5)")]
         EVENT_RALLY = 5,
 
+        [Description("Split Battle")]
+        SPLIT_BATTLE = 6,
+
+        [Description("Split Battle (Online)")]
+        SPLIT_ONLINE_BATTLE = 7,
+
+        [Description("Online Room")]
+        ONLINE_ROOM = 8,
+
+        [Description("Online Battle")]
+        ONLINE_BATTLE = 9,
+
         [Description("Seasonal Time Trial")]
         ONLINE_TIME_ATTACK = 10,
 
         [Description("License")]
         LICENSE = 11,
 
+        [Description("Adhoc Battle Pro (PSP)")]
+        ADHOC_BATTLE_PRO = 12,
+
+        [Description("Adhoc Battle Ama (PSP)")]
+        ADHOC_BATTLE_AMA = 13,
+
+        [Description("Adhoc Battle Shuffle (PSP)")]
+        ADHOC_BATTLE_SHUFFLE = 14,
+
+        [Description("Multimonitor Client")]
+        MULTIMONITOR_CLIENT = 15,
+
+        [Description("Behavior")]
+        BEHAVIOR = 16,
+
+        [Description("Race Edit (GT5)")]
+        RACE_EDIT = 17,
+
+        [Description("Ranking View")]
+        RANKING_VIEW = 18,
+
+        [Description("Track Test (GT6)")]
+        COURSE_EDIT = 19,
+
         [Description("Special Event (GT5 School)")]
         SCHOOL = 20,
 
+        [Description("Arena")]
+        ARENA = 21,
+
+        [Description("Tour (GT5)")]
+        TOUR = 22,
+
+        [Description("Speed Test (GT5)")]
+        SPEED_TEST = 23,
+
+        [Description("Course Maker (GT5)")]
+        COURSE_MAKER = 24,
+
         [Description("Drag Race (GT6, 2P only)")]
         DRAG_RACE = 25,
+
+        [Description("Tutorial (GT6)")]
+        TUTORIAL = 26,
 
         [Description("Mission")]
         MISSION = 27,
@@ -399,11 +457,17 @@ namespace GTEventGenerator.Entities
         [Description("Seasonal Drift Attack")]
         ONLINE_DRIFT_ATTACK = 29,
 
+        [Description("GPS Replay")]
+        GPS_REPLAY = 30,
+
         [Description("Seasonal Race")]
         ONLINE_SINGLE_RACE = 31,
 
-        [Description("Overtake Mission (GT6)")]
+        [Description("Sierra/Arcade Style/Overtake Mission (GT6)")]
         ARCADE_STYLE_RACE = 32,
+
+        [Description("Practice (GT6)")]
+        PRACTICE = 32,
 
     }
 

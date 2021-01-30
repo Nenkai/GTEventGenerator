@@ -766,6 +766,8 @@ namespace GTEventGenerator
                 return;
 
             CurrentEvent.GameMode = (GameMode)(sender as ComboBox).SelectedIndex;
+
+            CheckTabAvailability();
         }
 
         private void cb_Spec_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -932,7 +934,10 @@ namespace GTEventGenerator
             PopulateSelectedTab();
             PopulateEventDetails();
             _processEventSwitch = true;
+
             UpdateDiscordPresence();
+
+            CheckTabAvailability();
         }
 
         /// <summary>
@@ -1032,6 +1037,8 @@ namespace GTEventGenerator
 
             randomizeAISkillsToolStripMenuItem.IsEnabled = isEnabled;
             randomizeAITireCompoundToolStripMenuItem.IsEnabled = isEnabled;
+
+            CheckTabAvailability();
         }
 
         void CheckMenuDB(string file)
@@ -1199,6 +1206,8 @@ namespace GTEventGenerator
                 ReloadEventLists(isQuickPick: false);
             else
                 ToggleEventControls(false);
+
+            CheckTabAvailability();
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -1250,6 +1259,11 @@ namespace GTEventGenerator
             {
                 if (CurrentEvent.Rewards.NeedsPopulating)
                     PopulateRewards();
+            }
+            else if (current.Name.Equals("tabArcadeStyleSettings"))
+            {
+                if (CurrentEvent.ArcadeStyleSettings.NeedsPopulating)
+                    PopulateArcadeStyle();
             }
         }
 
@@ -1337,6 +1351,21 @@ namespace GTEventGenerator
             RefreshFolderControls();
         }
 
+        /// <summary>
+        /// Checks the current context for available tabs.
+        /// </summary>
+        private void CheckTabAvailability()
+        {
+            if (CurrentEvent is null)
+                return;
+
+            // Check for arcade style
+            tabArcadeStyleSettings.IsEnabled = CurrentEvent.GameMode == GameMode.ARCADE_STYLE_RACE;
+            var current = tabEvent.SelectedItem as TabItem;
+
+            if (current.Name.Equals("tabArcadeStyleSettings"))
+                tabEvent.SelectedIndex = 0;
+        }
         #endregion
     }
 }

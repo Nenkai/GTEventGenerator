@@ -182,6 +182,17 @@ namespace GTEventGenerator
             return 0;
         }
 
+        public static ushort ReadValueUShort(this XmlNode node)
+        {
+            if (TryGetValueAttribute(node, out XmlAttribute attr))
+            {
+                if (ushort.TryParse(attr.Value, out ushort value))
+                    return value;
+            }
+
+            return 0;
+        }
+
         public static ulong ReadValueULong(this XmlNode node)
         {
             if (TryGetValueAttribute(node, out XmlAttribute attr))

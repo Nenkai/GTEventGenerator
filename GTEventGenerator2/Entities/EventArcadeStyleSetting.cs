@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
+using GTEventGenerator.Utils;
 using PDTools.Utils;
+
 namespace GTEventGenerator.Entities
 {
     public class EventArcadeStyleSetting
@@ -27,12 +30,112 @@ namespace GTEventGenerator.Entities
         public ushort InitialVelocityL { get; set; } = 80;
         public ushort InitialVelocityH { get; set; } = 150;
 
-        public ArcadeStyleSettingSection[] Sections = new ArcadeStyleSettingSection[16];
+        public bool NeedsPopulating { get; set; } = true;
+        public List<ArcadeStyleSettingSection> Sections { get; set; } = new List<ArcadeStyleSettingSection>();
 
         public EventArcadeStyleSetting()
         {
             for (int i = 0; i < 16; i++)
-                Sections[i] = new ArcadeStyleSettingSection();
+                Sections.Add(new ArcadeStyleSettingSection());
+        }
+
+        public void WriteToXml(XmlWriter xml)
+        {
+            xml.WriteStartElement("arcade_style_setting");
+
+            xml.WriteElementInt("start_seconds", StartSeconds);
+            xml.WriteElementInt("default_extend_seconds", DefaultExtendSeconds);
+            xml.WriteElementInt("limit_seconds", LimitSeconds);
+            xml.WriteElementInt("level_up_step", LevelUpStep);
+            xml.WriteElementInt("overtake_seconds", OvertakeSeconds);
+            xml.WriteElementBool("enable_speed_trap", EnableSpeedTrap);
+            xml.WriteElementBool("enable_jump_bonus", EnableJumpBonus);
+            xml.WriteElementInt("appear_step_v", AppearStepV);
+            xml.WriteElementInt("disappear_step_v", DisappearStepV);
+            xml.WriteElementInt("afford_time", AffordTime);
+            xml.WriteElementInt("overtake_score", OvertakeScore);
+            xml.WriteElementInt("speed_trap_score", SpeedTrapScore);
+            xml.WriteElementInt("jump_bonus_score", JumpBonusScore);
+            xml.WriteElementInt("startup_step_v", StartupStepV);
+            xml.WriteElementInt("startup_offset_v", StartupOffsetV);
+            xml.WriteElementInt("initial_velocity_l", InitialVelocityL);
+            xml.WriteElementInt("initial_velocity_h", InitialVelocityH);
+
+            xml.WriteStartElement("section_extend_seconds");
+            for (int i = 0; i < Sections.Count; i++)
+                xml.WriteElementInt("seconds", Sections[i].SectionExtendSeconds);
+            xml.WriteEndElement();
+
+            xml.WriteStartElement("speed_trap");
+            for (int i = 0; i < Sections.Count; i++)
+                xml.WriteElementUInt("coursev", Sections[i].CourseV);
+            xml.WriteEndElement();
+
+            xml.WriteEndElement();
+        }
+
+        public void ParseArcadeStyleSetting(XmlNode asNode)
+        {
+            foreach (XmlNode node in asNode.ChildNodes)
+            {
+                switch (node.Name)
+                {
+                    case "start_seconds":
+                        StartSeconds = node.ReadValueByte(); break;
+                    case "default_extend_seconds":
+                        DefaultExtendSeconds = node.ReadValueByte(); break;
+                    case "limit_seconds":
+                        LimitSeconds = node.ReadValueByte(); break;
+                    case "level_up_step":
+                        LevelUpStep = node.ReadValueByte(); break;
+                    case "overtake_seconds":
+                        OvertakeSeconds = node.ReadValueByte(); break;
+                    case "enable_speed_trap":
+                        EnableSpeedTrap = node.ReadValueBool(); break;
+                    case "enable_jump_bonus":
+                        EnableJumpBonus = node.ReadValueBool(); break;
+                    case "appear_step_v":
+                        AppearStepV = node.ReadValueUShort(); break;
+                    case "disappear_step_v":
+                        DisappearStepV = node.ReadValueUShort(); break;
+                    case "afford_time":
+                        AffordTime = node.ReadValueUShort(); break;
+                    case "overtake_score":
+                        OvertakeScore = node.ReadValueUShort(); break;
+                    case "speed_trap_score":
+                        SpeedTrapScore = node.ReadValueUShort(); break;
+                    case "jump_bonus_score":
+                        JumpBonusScore = node.ReadValueUShort(); break;
+                    case "startup_step_v":
+                        StartupStepV = node.ReadValueUShort(); break;
+                    case "startup_offset_v":
+                        StartupOffsetV = node.ReadValueUShort(); break;
+                    case "initial_velocity_l":
+                        InitialVelocityL = node.ReadValueUShort(); break;
+                    case "initial_velocity_h":
+                        InitialVelocityH = node.ReadValueUShort(); break;
+
+                    case "section_extend_seconds":
+                        int i = 0;
+                        foreach (XmlNode sec in node.SelectNodes("seconds"))
+                        {
+                            if (i >= 16)
+                                break;
+                            Sections[i++].SectionExtendSeconds = sec.ReadValueSByte();
+                        }
+                        break;
+
+                    case "speed_trap":
+                        int j = 0;
+                        foreach (XmlNode sec in node.SelectNodes("coursev"))
+                        {
+                            if (j >= 16)
+                                break;
+                            Sections[j++].CourseV = sec.ReadValueUInt();
+                        }
+                        break;
+                }
+            }
         }
 
         public void WriteToCache(ref BitStream bs)
@@ -69,6 +172,18 @@ namespace GTEventGenerator.Entities
     public class ArcadeStyleSettingSection
     {
         public sbyte SectionExtendSeconds { get; set; } = -1;
-        public float CourseV { get; set; } 
+        public uint CourseV { get; set; } 
+
+        public override string ToString()
+        {
+            string s = $"Section: At {CourseV}m, ";
+
+            if (SectionExtendSeconds == -1)
+                s += $"No Extra Seconds";
+            else
+                s += $"+{SectionExtendSeconds}s";
+
+            return s;
+        }
     }
 }

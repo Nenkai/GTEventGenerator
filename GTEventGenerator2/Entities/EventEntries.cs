@@ -399,7 +399,22 @@ namespace GTEventGenerator.Entities
         [Description("None (Pool Ignored)")]
         NONE = 0,
 
-        [Description("Shuffle and Randomly Pick")]
+        [Description("SHUFFLE")]
+        SHUFFLE = 1,
+
+        [Description("ONE_MAKE")]
+        ONE_MAKE = 2,
+
+        [Description("ENEMY_LIST")]
+        ENEMY_LIST = 3,
+
+        [Description("SPEC_DB")]
+        SPEC_DB = 4,
+
+        [Description("ORDER")]
+        ORDER = 4,
+
+        [Description("Shuffle and Randomly Pick (Default)")]
         ENTRY_BASE_SHUFFLE = 6,
 
         [Description("Pick entries by Order")]

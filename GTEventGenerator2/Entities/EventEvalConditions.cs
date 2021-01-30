@@ -190,7 +190,7 @@ namespace GTEventGenerator.Entities
         [Description("Cones Hit")]
         PYLON,
 
-        [Description("By Drift Score")]
+        [Description("Drift Score/Arcade Style Score")]
         DRIFT,
 
         [Description("VS Ghost (to be specified)")]
