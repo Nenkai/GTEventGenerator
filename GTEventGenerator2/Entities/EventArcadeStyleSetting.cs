@@ -176,12 +176,17 @@ namespace GTEventGenerator.Entities
 
         public override string ToString()
         {
-            string s = $"Section: At {CourseV}m, ";
+            string s = $"Section: ";
 
             if (SectionExtendSeconds == -1)
-                s += $"No Extra Seconds";
+                s += $"No Extra Seconds,";
             else
-                s += $"+{SectionExtendSeconds}s";
+                s += $"+{SectionExtendSeconds}s,";
+
+            if (CourseV != 0)
+                s += $"Speed Trap at {CourseV}m";
+            else
+                s += $"No Speed Trap";
 
             return s;
         }

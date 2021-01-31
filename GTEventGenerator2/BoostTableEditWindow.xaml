@@ -47,7 +47,7 @@
                         </TextBlock>
                         </Label.ToolTip>
                     </Label>
-                    <xctk:SByteUpDown Height="24" Value="{Binding FrontInitialRate}" Width="70" Canvas.Left="228" Canvas.Top="10" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                    <xctk:SByteUpDown Height="24" Value="{Binding FrontInitialRate}" Width="70" Minimum="-99" Canvas.Left="228" Canvas.Top="10" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                     <Label Content="Boost Start" Canvas.Left="10" Canvas.Top="39" Width="213">
                         <Label.ToolTip>
@@ -74,7 +74,7 @@
                         </TextBlock>
                         </Label.ToolTip>
                     </Label>
-                    <xctk:SByteUpDown Height="24" Value="{Binding FrontMaximumRate}" Width="70" Canvas.Left="228" Canvas.Top="68" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                    <xctk:SByteUpDown Height="24" Value="{Binding FrontMaximumRate}" Width="70" Minimum="-99" Canvas.Left="228" Canvas.Top="68" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                     <Label Content="Boost Limit" Canvas.Left="10" Canvas.Top="97" Width="213">
                         <Label.ToolTip>
@@ -110,7 +110,7 @@
                         </TextBlock>
                         </Label.ToolTip>
                     </Label>
-                    <xctk:SByteUpDown Height="24" Value="{Binding RearInitialRate}" Width="70" Canvas.Left="228" Canvas.Top="10" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                    <xctk:SByteUpDown Height="24" Value="{Binding RearInitialRate}" Width="70" Minimum="-99" Canvas.Left="228" Canvas.Top="10" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                     <Label Content="Boost Start" Canvas.Left="10" Canvas.Top="39" Width="213">
                         <Label.ToolTip>
@@ -137,7 +137,7 @@
                         </TextBlock>
                         </Label.ToolTip>
                     </Label>
-                    <xctk:SByteUpDown Height="24" Width="70" Value="{Binding RearMaximumRate}" Canvas.Left="228" Canvas.Top="68" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                    <xctk:SByteUpDown Height="24" Width="70" Value="{Binding RearMaximumRate}" Canvas.Left="228" Canvas.Top="68" Minimum="-99" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                     <Label Content="Boost Limit" Canvas.Left="10" Canvas.Top="97" Width="213">
                         <Label.ToolTip>

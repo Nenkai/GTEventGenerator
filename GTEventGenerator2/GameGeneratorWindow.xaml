@@ -2504,7 +2504,7 @@
                     </StackPanel>
                 </TabItem.Header>
                 <Canvas>
-                    <GroupBox Height="512" Width="297" Canvas.Left="10" Canvas.Top="10">
+                    <GroupBox Height="512" Width="390" Canvas.Left="10" Canvas.Top="10">
                         <GroupBox.Header>
                             <TextBlock Text="Arcade Style Race Settings"/>
                         </GroupBox.Header>
@@ -2515,60 +2515,147 @@
                             <Label Content="Speed Traps" Canvas.Left="172" Canvas.Top="10" Width="82"/>
                             <CheckBox IsChecked="{Binding Path=ArcadeStyleSettings.EnableSpeedTrap}" Canvas.Left="259" Canvas.Top="15" Width="17"/>
 
-                            <Label Content="Extra Seconds on Overtake" Canvas.Left="10" Canvas.Top="40" Width="172"/>
-                            <xctk:ByteUpDown Value="{Binding Path=ArcadeStyleSettings.OvertakeSeconds}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="202" Canvas.Top="45" Width="73"/>
+                            <Label Content="Extra Seconds on Overtake" Canvas.Left="10" Canvas.Top="40" Width="172">
+                                <Label.ToolTip>
+                                    <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Overtake Seconds</TextBlock> <LineBreak />
+                                    Extra Seconds when overtaking a car. Can be 0.<LineBreak/>
+                                    Default is 5.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">arcade_race_setting->overtake_seconds</TextBlock>
+                                    </TextBlock>
+                                </Label.ToolTip>
+                            </Label>
+                            <xctk:ByteUpDown Value="{Binding Path=ArcadeStyleSettings.OvertakeSeconds}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="295" Canvas.Top="46" Width="73"/>
 
-                            <Label Content="Initial Seconds on Start" Canvas.Left="10" Canvas.Top="70" Width="172"/>
-                            <xctk:ByteUpDown Value="{Binding Path=ArcadeStyleSettings.StartSeconds}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="202" Canvas.Top="75" Width="73"/>
+                            <Label Content="Initial Seconds on Event Start" Canvas.Left="10" Canvas.Top="70" Width="280">
+                                <Label.ToolTip>
+                                    <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Start Seconds</TextBlock> <LineBreak />
+                                    Initial seconds when starting.<LineBreak/>
+                                    Default is 60.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">arcade_race_setting->start_seconds</TextBlock>
+                                    </TextBlock>
+                                </Label.ToolTip>
+                            </Label>
+                            <xctk:ByteUpDown Value="{Binding Path=ArcadeStyleSettings.StartSeconds}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="295" Canvas.Top="75" Width="73"/>
 
-                            <Label Content="Extend Seconds Default" Canvas.Left="10" Canvas.Top="100" Width="217"/>
-                            <xctk:ByteUpDown Value="{Binding Path=ArcadeStyleSettings.DefaultExtendSeconds}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="202" Canvas.Top="105" Width="73"/>
+                            <Label Content="Default Bonus Seconds on New Sector Reached" Canvas.Left="10" Canvas.Top="100" Width="280">
+                                <Label.ToolTip>
+                                    <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Default Extend Seconds</TextBlock> <LineBreak />
+                                    Seconds given for reaching a new sector.<LineBreak/>
+                                    Default is 25.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">arcade_race_setting->default_extend_seconds</TextBlock>
+                                    </TextBlock>
+                                </Label.ToolTip>
+                            </Label>
+                            <xctk:ByteUpDown Value="{Binding Path=ArcadeStyleSettings.DefaultExtendSeconds}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="295" Canvas.Top="105" Width="73"/>
 
-                            <Label Content="Max Seconds" Canvas.Left="10" Canvas.Top="130" Width="217"/>
-                            <xctk:ByteUpDown Value="{Binding Path=ArcadeStyleSettings.LimitSeconds}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="202" Canvas.Top="135" Width="73"/>
+                            <Label Content="Max Seconds" Canvas.Left="10" Canvas.Top="130" Width="217">
+                                <Label.ToolTip>
+                                    <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Limit Seconds</TextBlock> <LineBreak />
+                                    Max Seconds that the player can have. Countdown maxout.<LineBreak/>
+                                    Default is 150.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">arcade_race_setting->limit_seconds</TextBlock>
+                                    </TextBlock>
+                                </Label.ToolTip>
+                            </Label>
+                            <xctk:ByteUpDown Value="{Binding Path=ArcadeStyleSettings.LimitSeconds}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="295" Canvas.Top="135" Width="73"/>
 
                             <Label Content="Level Up Step" Canvas.Left="10" Canvas.Top="160" Width="217"/>
-                            <xctk:ByteUpDown Value="{Binding Path=ArcadeStyleSettings.LevelUpStep}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="202" Canvas.Top="165" Width="73"/>
+                            <xctk:ByteUpDown Value="{Binding Path=ArcadeStyleSettings.LevelUpStep}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="295" Canvas.Top="165" Width="73"/>
 
-                            <Label Content="Appear Step V" Canvas.Left="10" Canvas.Top="190" Width="217"/>
-                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.AppearStepV}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="202" Canvas.Top="195" Width="73"/>
+                            <Label Content="Distance for next cars to appear (in M)" Canvas.Left="10" Canvas.Top="190" Width="217">
+                                <Label.ToolTip>
+                                    <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Appear Step V</TextBlock> <LineBreak />
+                                    Distance between the next car(s) in meters, before appearing. Make this high enough to be realistic.<LineBreak/>
+                                    Default is 700.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">arcade_race_setting->appear_step_v</TextBlock>
+                                    </TextBlock>
+                                </Label.ToolTip>
+                            </Label>
+                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.AppearStepV}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="295" Canvas.Top="195" Width="73"/>
 
-                            <Label Content="Disappear Step V" Canvas.Left="10" Canvas.Top="220" Width="217"/>
-                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.DisappearStepV}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="202" Canvas.Top="225" Width="73"/>
+                            <Label Content="Distance for cars to disappear after Overtake (in M)" Canvas.Left="10" Canvas.Top="220" Width="285">
+                                <Label.ToolTip>
+                                    <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Disappear Step V</TextBlock> <LineBreak />
+                                    Distance after passing a car in meters, before disappearing. Make this high enough to be realistic.<LineBreak/>
+                                    Default is 250.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">arcade_race_setting->disappear_step_v</TextBlock>
+                                    </TextBlock>
+                                </Label.ToolTip>
+                            </Label>
+                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.DisappearStepV}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="295" Canvas.Top="225" Width="73"/>
 
                             <Label Content="Afford Time" Canvas.Left="10" Canvas.Top="250" Width="217"/>
-                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.AffordTime}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="202" Canvas.Top="255" Width="73"/>
+                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.AffordTime}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="295" Canvas.Top="255" Width="73"/>
 
-                            <Label Content="Overtake Score" Canvas.Left="10" Canvas.Top="280" Width="217"/>
-                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.OvertakeScore}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="202" Canvas.Top="285" Width="73"/>
+                            <Label Content="Score Bonus on Overtake" Canvas.Left="10" Canvas.Top="280" Width="217">
+                                <Label.ToolTip>
+                                    <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Overtake Score</TextBlock> <LineBreak />
+                                    Points given on overtake.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">arcade_race_setting->overtake_score</TextBlock>
+                                    </TextBlock>
+                                </Label.ToolTip>
+                            </Label>
+                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.OvertakeScore}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="295" Canvas.Top="285" Width="73"/>
 
-                            <Label Content="Speed Trap Score" Canvas.Left="10" Canvas.Top="310" Width="217"/>
-                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.SpeedTrapScore}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="202" Canvas.Top="315" Width="73"/>
+                            <Label Content="Score Bonus on Speed Traps" Canvas.Left="10" Canvas.Top="310" Width="217">
+                                <Label.ToolTip>
+                                    <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Speed Trap Score</TextBlock> <LineBreak />
+                                    Points given during speed traps.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">arcade_race_setting->speed_trap_score</TextBlock>
+                                    </TextBlock>
+                                </Label.ToolTip>
+                            </Label>
+                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.SpeedTrapScore}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="295" Canvas.Top="315" Width="73"/>
 
-                            <Label Content="Jump Bonus Score" Canvas.Left="10" Canvas.Top="340" Width="217"/>
-                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.JumpBonusScore}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="202" Canvas.Top="345" Width="73"/>
+                            <Label Content="Jump Bonus Score" Canvas.Left="10" Canvas.Top="340" Width="217">
+                                <Label.ToolTip>
+                                    <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Jump Bonus Score</TextBlock> <LineBreak />
+                                    Points given during jump bonuses.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">arcade_race_setting->jump_bonus_score</TextBlock>
+                                    </TextBlock>
+                                </Label.ToolTip>
+                            </Label>
+                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.JumpBonusScore}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="295" Canvas.Top="345" Width="73"/>
 
-                            <Label Content="Startup Step V" Canvas.Left="10" Canvas.Top="370" Width="217"/>
-                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.StartupStepV}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="202" Canvas.Top="375" Width="73"/>
+                            <Label Content="Distance for the first car to appear" Canvas.Left="10" Canvas.Top="370" Width="217"/>
+                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.StartupStepV}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="295" Canvas.Top="375" Width="73"/>
 
-                            <Label Content="Startup Offset V" Canvas.Left="10" Canvas.Top="400" Width="217"/>
-                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.StartupOffsetV}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="202" Canvas.Top="405" Width="73"/>
+                            <Label Content="Offset for the first car to appear" Canvas.Left="10" Canvas.Top="400" Width="217"/>
+                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.StartupOffsetV}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="295" Canvas.Top="405" Width="73"/>
 
-                            <Label Content="Initial Velocity -  Low" Canvas.Left="10" Canvas.Top="430" Width="126"/>
-                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.InitialVelocityL}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="128" Canvas.Top="435" Width="54"/>
+                            <Label Content="Initial Velocity                Low" Canvas.Left="10" Canvas.Top="430" Width="159"/>
+                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.InitialVelocityL}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="295" Canvas.Top="435" Width="73"/>
 
-                            <Label Content="High" Canvas.Left="184" Canvas.Top="431" Width="38"/>
-                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.InitialVelocityH}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="221" Canvas.Top="435" Width="53"/>
+                            <Label Content="High" Canvas.Left="252" Canvas.Top="430" Width="38"/>
+                            <xctk:UShortUpDown Value="{Binding Path=ArcadeStyleSettings.InitialVelocityH}" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="174" Canvas.Top="435" Width="73"/>
 
                         </Canvas>
                     </GroupBox>
 
-                    <GroupBox Height="512" Width="655" Canvas.Left="316" Canvas.Top="10">
+                    <GroupBox Height="512" Width="566" Canvas.Left="405" Canvas.Top="10">
                         <GroupBox.Header>
                             <TextBlock Text="Track Sector Setup/Listing"/>
                         </GroupBox.Header>
                         <Canvas>
-                            <Label Content="Position (in track meters)" Canvas.Left="10" Canvas.Top="10" Width="155" />
+                            <Label Content="Speed Trap Pos (in meters)" Canvas.Left="10" Canvas.Top="10" Width="155" />
                             <xctk:UShortUpDown Name="iud_ArcadeSectionPos" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="170" Canvas.Top="15" Width="67" ValueChanged="iud_ArcadeSectionPos_ValueChanged"/>
 
                             <Label Content="Extra Seconds for Sector" Canvas.Left="10" Canvas.Top="41" Width="155" />

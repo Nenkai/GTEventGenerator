@@ -396,22 +396,22 @@ namespace GTEventGenerator.Entities
 
     public enum EntryGenerateType
     {
-        [Description("None (Pool Ignored)")]
+        [Description("None (Pool Ignored, use for fixed entries)")]
         NONE = 0,
 
-        [Description("SHUFFLE")]
+        [Description("Shuffle - Depends on entry_generate->cars XML node array")]
         SHUFFLE = 1,
 
-        [Description("ONE_MAKE")]
+        [Description("One Make - Depends on the player's car")]
         ONE_MAKE = 2,
 
-        [Description("ENEMY_LIST")]
+        [Description("Enemy List - Randomly Chosen, Type depends on EnemyListType")]
         ENEMY_LIST = 3,
 
-        [Description("SPEC_DB")]
+        [Description("SpecDB (Do not use - unimplemented)")]
         SPEC_DB = 4,
 
-        [Description("ORDER")]
+        [Description("Order - Depends on entry_generate->cars XML node array")]
         ORDER = 5,
 
         [Description("Shuffle and Randomly Pick (Default)")]
