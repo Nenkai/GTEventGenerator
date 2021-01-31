@@ -57,7 +57,7 @@ namespace GTEventGenerator
 
         public static void WriteElementIntIfSet(this XmlWriter xml, string localName, int? value)
         {
-            if (value != 0)
+            if (value != null && value != 0)
                 WriteElementValue(xml, localName, value.ToString());
         }
 

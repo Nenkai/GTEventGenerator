@@ -161,7 +161,18 @@
                 </GroupBox.Header>
                 <Canvas>
 
-                    <Label Content="Reference Rank" Canvas.Left="10" Canvas.Top="8" Width="213"/>
+                    <Label Content="Reference Rank" Canvas.Left="10" Canvas.Top="8" Width="213">
+                        <Label.ToolTip>
+                            <TextBlock>
+                           <TextBlock FontWeight="Bold" FontSize="14">Reference Rank</TextBlock> <LineBreak />
+                           This is enabled by the boost_type bool (Boost Type checkbox in Race Settings), which must be enabled in order for this to function.<LineBreak/>
+                           This controls when to apply boost based on your position in the race. For example...<LineBreak/>
+                           <LineBreak/>
+                           <TextBlock FontStyle="Italic">Example:</TextBlock><LineBreak/>
+                           If the reference rank is set to 8, the boost will be applied if you are 9th in the event.
+                        </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
                     <xctk:ByteUpDown Height="24" Width="70" Value="{Binding ReferenceRank}" Canvas.Left="228" Canvas.Top="10" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                     <Label Content="Unknown" Canvas.Left="10" Canvas.Top="39" Width="213"/>

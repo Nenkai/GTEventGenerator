@@ -14,7 +14,7 @@
                 <MenuItem Name="toolStripMenuItem1" Header="File">
                     <MenuItem Header="New Folder" Name="newEventToolStripMenuItem" Click="newEventToolStripMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
                     <MenuItem Header="Import Folder (GT6)..." Name="importEventToolStripMenuItem" Click="importEventToolStripMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
-                    <MenuItem Header="Import Cache (GT6)..." Name="importCacheToolStripMenuItem" Click="importCacheToolStripMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
+                    <!--<MenuItem Header="Import Cache (GT6)..." Name="importCacheToolStripMenuItem" Click="importCacheToolStripMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>-->
                     <MenuItem Header="Export Folder (GT6)..." Name="exportEventToolStripMenuItem" Click="exportEventToolStripMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
                     <Separator />
                     <MenuItem Header="Import Event List (GT5)..." Click="importEventListToolStripMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
@@ -781,6 +781,17 @@
                                     Useful for lower difficulties events, where a crash would not respawn you on the track, causing more time loss.<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->replace_at_courseout</TextBlock>
+                                    </TextBlock>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+
+                            <CheckBox Name="checkBox_BoostType" Content="Boost Type" Height="24" Width="154" TabIndex="55" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.BoostType}" Canvas.Left="501" Canvas.Top="399">
+                                <CheckBox.ToolTip>
+                                    <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Boost Type</TextBlock> <LineBreak />
+                                    Enables reference rank in boost tables (GT6).<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->boost_type</TextBlock>
                                     </TextBlock>
                                 </CheckBox.ToolTip>
                             </CheckBox>

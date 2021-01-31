@@ -25,7 +25,7 @@ namespace GTEventGenerator.Entities
         public byte AutoStandingDelay { get; set; }
         public BehaviorDamageType BehaviorDamage { get; set; } = BehaviorDamageType.WEAK;
         public bool BoostFlag { get; set; }
-        public byte BoostType { get; set; }
+        public bool BoostType { get; set; }
         public byte BoostLevel { get; set; }
         public int BehaviorFallBack { get; set; }
         public CompleteType CompleteType { get; set; } = CompleteType.BYLAPS;
@@ -144,7 +144,7 @@ namespace GTEventGenerator.Entities
                 xml.WriteElementInt("behavior_fallback", BehaviorFallBack);
             xml.WriteElementValue("behavior_damage_type", BehaviorDamage.ToString());
             xml.WriteElementValue("behavior_slip_stream_type", SlipstreamBehavior.ToString());
-            xml.WriteElementInt("boost_type", BoostType);
+            xml.WriteElementBool("boost_type", BoostType);
             if (BoostLevel != 0)
                 xml.WriteElementInt("boost_level", BoostLevel);
 
@@ -300,7 +300,7 @@ namespace GTEventGenerator.Entities
                     case "boost_table_array":
                         ParseBoostTables(raceNode); break;
                     case "boost_type":
-                        BoostType = raceNode.ReadValueByte(); break;
+                        BoostType = raceNode.ReadValueBool(); break;
                     case "boost_level":
                         BoostLevel = raceNode.ReadValueByte(); break;
                     case "complete_type": 
@@ -1129,7 +1129,7 @@ namespace GTEventGenerator.Entities
             bs.WriteSByte((sbyte)(RollingPlayerGrid ? 1 : -1));
             bs.WriteBool(false); // Unk field_0x323
             bs.WriteBool(BoostFlag);
-            bs.WriteByte(BoostType);
+            bs.WriteBool(BoostType);
             bs.WriteBool(DisableRecordingReplay);
             bs.WriteByte((byte)GhostPresenceType);
 

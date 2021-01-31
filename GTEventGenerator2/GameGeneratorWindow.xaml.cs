@@ -77,6 +77,16 @@ namespace GTEventGenerator
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            if (GameParameter?.Events?.Count != 0)
+            {
+                if (MessageBox.Show("You are currently editing a folder. Are you sure that you would like to exit?",
+                    "Exiting", MessageBoxButton.YesNo, MessageBoxImage.Information) != MessageBoxResult.Yes)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+
             Settings.Save(".settings");
             if (Client != null && !Client.IsDisposed)
                 Client.Dispose();
@@ -529,7 +539,7 @@ namespace GTEventGenerator
 
         private void menuItem_SingleRaceSample_Click(object sender, RoutedEventArgs e)
         {
-            CurrentEvent.GameMode = GameMode.SINGLE_RACE;
+            CurrentEvent.GameMode = GameMode.EVENT_RACE; // SINGLE_RACE
             CurrentEvent.PlayStyle.PlayType = PlayType.RACE;
             CurrentEvent.RaceParameters.RaceType = RaceType.COMPETITION;
             CurrentEvent.RaceParameters.StartType = StartType.GRID;
