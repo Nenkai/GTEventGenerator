@@ -25,17 +25,28 @@
                     <MenuItem Header="Minify XML's while Exporting" Name="minimizeXMLToolStripMenuItem" IsCheckable="True" Checked="minimizeXMLToolStripMenuItem_Checked" Unchecked="minimizeXMLToolStripMenuItem_Checked" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
                     <MenuItem Header="Create Cache File while exporting (GT6)" Name="exportCacheToolStripMenuItem" IsCheckable="True" Checked="exportCacheToolStripMenuItem_Checked" Unchecked="exportCacheToolStripMenuItem_Checked" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
                     <Separator />
-                    <MenuItem Header="Regenerate ALL AI's..." Template="{DynamicResource SingleDropDownMenuItem}">
-                        <MenuItem Header="Region/Names" Name="randomizeAINamesToolStripMenuItem" Click="randomizeAINamesToolStripMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
-                        <MenuItem Header="Tire Compounds" Name="randomizeAITireCompoundToolStripMenuItem" Click="randomizeAITireCompoundToolStripMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
+                    <MenuItem Name="menuRegenerate" Header="Regenerate ALL AI's..." Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False">
+                        <MenuItem Header="Region/Names" Click="randomizeAINamesToolStripMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
+                        <MenuItem Header="Tire Compounds" Click="randomizeAITireCompoundToolStripMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
                         <Separator/>
-                        <MenuItem Header="Roughness" Name="randomizeAIRoughnessToolStripMenuItem" Click="randomizeAIRoughnessMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
-                        <MenuItem Header="Base Skill" Name="randomizeAIBaseSkillToolStripMenuItem" Click="randomizeAIBaseSkillMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
-                        <MenuItem Header="Corner Skill"  Name="randomizeAICornerSkillToolStripMenuItem" Click="randomizeAICornerSkillMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
-                        <MenuItem Header="Braking Skill"  Name="randomizeAIBrakingSkillToolStripMenuItem" Click="randomizeAIBrakingSkillMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
-                        <MenuItem Header="Accel Skill"  Name="randomizeAIAccelSkillToolStripMenuItem" Click="randomizeAIAccelSkillMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
-                        <MenuItem Header="Starting Skill"  Name="randomizeAIStartSkillToolStripMenuItem" Click="randomizeAIStartSkillMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
-                        <MenuItem Header="(All Skills)"  Name="randomizeAISkillsToolStripMenuItem" Click="randomizeAISkillsMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False"></MenuItem>
+                        <MenuItem Header="Roughness" Click="randomizeAIRoughnessMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
+                        <MenuItem Header="Base Skill" Click="randomizeAIBaseSkillMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
+                        <MenuItem Header="Corner Skill"  Click="randomizeAICornerSkillMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
+                        <MenuItem Header="Braking Skill" Click="randomizeAIBrakingSkillMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
+                        <MenuItem Header="Accel Skill"  Click="randomizeAIAccelSkillMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
+                        <MenuItem Header="Starting Skill" Click="randomizeAIStartSkillMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
+                        <MenuItem Header="(All Skills)" Click="randomizeAISkillsMenuItem_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
+                    </MenuItem>
+                    <MenuItem Name="menuSample" Header="Apply Game Mode Sample..." Template="{DynamicResource SingleDropDownMenuItem}" IsEnabled="False">
+                        <MenuItem Header="Single Race" Name="menuItem_SingleRaceSample" Click="menuItem_SingleRaceSample_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
+                        <MenuItem Header="Time Attack" Name="menuItem_TimeAttackSample" Click="menuItem_TimeAttackSample_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
+                        <MenuItem Header="Seasonal Time Attack" Name="menuItem_OnlineTimeAttackSample" Click="menuItem_SeasonalTimeAttackSample_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
+                        <MenuItem Header="Drift Attack" Name="menuItem_DriftAttackSample" Click="menuItem_DriftAttackSample_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
+                        <MenuItem Header="Seasonal Drift Attack" Name="menuItem_OnlineDriftAttackSample" Click="menuItem_SeasonalDriftAttackSample_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
+                        <MenuItem Header="Free Run" Name="menuItem_FreeRunSample" Click="menuItem_FreeRunSample_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
+                        <MenuItem Header="License" Name="menuItem_LicenseSample" Click="menuItem_LicenseSample_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
+                        <MenuItem Header="Arcade Style Race (Sierra)" Name="menuItem_ArcadeStyleSample" Click="menuItem_ArcadeStyleSample_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
+
                     </MenuItem>
 
                 </MenuItem>

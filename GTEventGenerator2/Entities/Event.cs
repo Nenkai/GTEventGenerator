@@ -362,6 +362,7 @@ namespace GTEventGenerator.Entities
             Course.NeedsPopulating = true;
             EvalConditions.NeedsPopulating = true;
             Information.NeedsPopulating = true;
+            ArcadeStyleSettings.NeedsPopulating = true;
         }
     }
 

@@ -527,6 +527,163 @@ namespace GTEventGenerator
             }
         }
 
+        private void menuItem_SingleRaceSample_Click(object sender, RoutedEventArgs e)
+        {
+            CurrentEvent.GameMode = GameMode.SINGLE_RACE;
+            CurrentEvent.PlayStyle.PlayType = PlayType.RACE;
+            CurrentEvent.RaceParameters.RaceType = RaceType.COMPETITION;
+            CurrentEvent.RaceParameters.StartType = StartType.GRID;
+            CurrentEvent.RaceParameters.CompleteType = CompleteType.BYLAPS;
+            CurrentEvent.RaceParameters.TimeToStart = TimeSpan.FromSeconds(6);
+            CurrentEvent.RaceParameters.TimeToFinish = TimeSpan.FromSeconds(30);
+            CurrentEvent.RaceParameters.EnablePit = false;
+            CurrentEvent.RaceParameters.FinishType = FinishType.TARGET;
+            CurrentEvent.RaceParameters.LineGhostPlayMax = 0;
+            CurrentEvent.RaceParameters.LineGhostRecordType = LineGhostRecordType.OFF;
+            CurrentEvent.RaceParameters.GhostType = GhostType.NONE;
+            CurrentEvent.RaceParameters.PenaltyLevel = PenaltyLevel.NONE;
+            CurrentEvent.RaceParameters.EnableDamage = true;
+            CurrentEvent.RaceParameters.BehaviorDamage = BehaviorDamageType.WEAK;
+
+            CurrentEvent.MarkUnpopulated();
+            PopulateSelectedTab();
+            PopulateEventDetails();
+        }
+
+        private void menuItem_FreeRunSample_Click(object sender, RoutedEventArgs e)
+        {
+            CurrentEvent.GameMode = GameMode.FREE_RUN;
+            CurrentEvent.PlayStyle.PlayType = PlayType.RACE;
+            CurrentEvent.RaceParameters.RaceType = RaceType.TIMEATTACK;
+            CurrentEvent.RaceParameters.StartType = StartType.ATTACK;
+            CurrentEvent.RaceParameters.CompleteType = CompleteType.NONE;
+            CurrentEvent.RaceParameters.FinishType = FinishType.FASTEST;
+            CurrentEvent.RaceParameters.LineGhostPlayMax = 0;
+            CurrentEvent.RaceParameters.LineGhostRecordType = LineGhostRecordType.OFF;
+            CurrentEvent.RaceParameters.GhostType = GhostType.ONELAP;
+            CurrentEvent.RaceParameters.PenaltyLevel = PenaltyLevel.NONE;
+            CurrentEvent.RaceParameters.EnableDamage = true;
+            CurrentEvent.RaceParameters.BehaviorDamage = BehaviorDamageType.WEAK;
+
+            CurrentEvent.MarkUnpopulated();
+            PopulateSelectedTab();
+            PopulateEventDetails();
+        }
+
+        private void menuItem_LicenseSample_Click(object sender, RoutedEventArgs e)
+        {
+            CurrentEvent.GameMode = GameMode.LICENSE;
+            CurrentEvent.PlayStyle.PlayType = PlayType.RACE;
+            CurrentEvent.RaceParameters.RaceType = RaceType.COMPETITION;
+            CurrentEvent.RaceParameters.StartType = StartType.STANDING;
+            CurrentEvent.RaceParameters.CompleteType = CompleteType.NONE;
+            CurrentEvent.RaceParameters.FinishType = FinishType.FASTEST;
+            CurrentEvent.RaceParameters.LapCount = 0;
+            CurrentEvent.RaceParameters.LineGhostPlayMax = 10;
+            CurrentEvent.RaceParameters.LineGhostRecordType = LineGhostRecordType.ONE;
+            CurrentEvent.RaceParameters.PenaltyLevel = PenaltyLevel.NONE;
+            CurrentEvent.RaceParameters.EnableDamage = false;
+            CurrentEvent.RaceParameters.BehaviorDamage = BehaviorDamageType.WEAK;
+
+            CurrentEvent.EvalConditions.ConditionType = EvalConditionType.TIME;
+            CurrentEvent.EvalConditions.Gold = 59000;
+            CurrentEvent.EvalConditions.Silver = 59000;
+            CurrentEvent.EvalConditions.Bronze = 59000;
+
+            CurrentEvent.MarkUnpopulated();
+            PopulateSelectedTab();
+            PopulateEventDetails();
+        }
+
+        private void menuItem_TimeAttackSample_Click(object sender, RoutedEventArgs e)
+        {
+            CurrentEvent.GameMode = GameMode.TIME_ATTACK;
+            CurrentEvent.PlayStyle.PlayType = PlayType.RACE;
+            CurrentEvent.RaceParameters.RaceType = RaceType.TIMEATTACK;
+            CurrentEvent.RaceParameters.StartType = StartType.ATTACK;
+            CurrentEvent.RaceParameters.CompleteType = CompleteType.NONE;
+            CurrentEvent.RaceParameters.LapCount = 1;
+            CurrentEvent.RaceParameters.LineGhostPlayMax = 10;
+            CurrentEvent.RaceParameters.LineGhostRecordType = LineGhostRecordType.ONE;
+            CurrentEvent.RaceParameters.FinishType = FinishType.NONE;
+            CurrentEvent.RaceParameters.GhostType = GhostType.ONELAP;
+            CurrentEvent.RaceParameters.PenaltyLevel = PenaltyLevel.DEFAULT;
+            CurrentEvent.RaceParameters.EnableDamage = false;
+            CurrentEvent.RaceParameters.BehaviorDamage = BehaviorDamageType.WEAK;
+
+            CurrentEvent.MarkUnpopulated();
+            PopulateSelectedTab();
+            PopulateEventDetails();
+
+        }
+
+        private void menuItem_SeasonalTimeAttackSample_Click(object sender, RoutedEventArgs e)
+        {
+            menuItem_TimeAttackSample_Click(sender, e);
+            CurrentEvent.GameMode = GameMode.ONLINE_TIME_ATTACK;
+            CurrentEvent.StartDate = new DateTime(1999, 04, 01);
+            CurrentEvent.EndDate = new DateTime(2999, 04, 01);
+            CurrentEvent.RankingStartDate = new DateTime(1999, 04, 01);
+            CurrentEvent.RankingEndDate = new DateTime(2999, 04, 01);
+            CurrentEvent.RaceParameters.EnableDamage = true;
+
+            CurrentEvent.MarkUnpopulated();
+            PopulateSelectedTab();
+            PopulateEventDetails();
+        }
+
+        private void menuItem_DriftAttackSample_Click(object sender, RoutedEventArgs e)
+        {
+            CurrentEvent.GameMode = GameMode.DRIFT_ATTACK;
+            CurrentEvent.PlayStyle.PlayType = PlayType.RACE;
+            CurrentEvent.RaceParameters.RaceType = RaceType.DRIFTATTACK;
+            CurrentEvent.RaceParameters.StartType = StartType.COURSEINFO;
+            CurrentEvent.RaceParameters.CompleteType = CompleteType.NONE;
+            CurrentEvent.RaceParameters.LineGhostPlayMax = 10;
+            CurrentEvent.RaceParameters.TimeToStart = TimeSpan.FromSeconds(1.9);
+            CurrentEvent.RaceParameters.TimeToFinish = TimeSpan.FromSeconds(2);
+            CurrentEvent.RaceParameters.LineGhostRecordType = LineGhostRecordType.OFF;
+            CurrentEvent.RaceParameters.GhostType = GhostType.NONE;
+            CurrentEvent.RaceParameters.PenaltyLevel = PenaltyLevel.NONE;
+            CurrentEvent.RaceParameters.EnableDamage = true;
+            CurrentEvent.RaceParameters.BehaviorDamage = BehaviorDamageType.WEAK;
+
+            CurrentEvent.MarkUnpopulated();
+            PopulateSelectedTab();
+            PopulateEventDetails();
+        }
+
+        private void menuItem_SeasonalDriftAttackSample_Click(object sender, RoutedEventArgs e)
+        {
+            menuItem_DriftAttackSample_Click(sender, e);
+            CurrentEvent.GameMode = GameMode.ONLINE_DRIFT_ATTACK;
+
+            CurrentEvent.MarkUnpopulated();
+            PopulateSelectedTab();
+            PopulateEventDetails();
+        }
+
+        private void menuItem_ArcadeStyleSample_Click(object sender, RoutedEventArgs e)
+        {
+            CurrentEvent.GameMode = GameMode.ARCADE_STYLE_RACE;
+            cb_gameModes.SelectedIndex = (int)CurrentEvent.GameMode;
+
+            CurrentEvent.PlayStyle.PlayType = PlayType.RACE;
+            CurrentEvent.RaceParameters.RaceType = RaceType.TIMEATTACK;
+            CurrentEvent.RaceParameters.StartType = StartType.STANDING_CENTER;
+            CurrentEvent.RaceParameters.CompleteType = CompleteType.BYLAPS;
+            CurrentEvent.RaceParameters.LapCount = 1;
+            CurrentEvent.RaceParameters.FinishType = FinishType.TARGET;
+            CurrentEvent.RaceParameters.GhostType = GhostType.NONE;
+            CurrentEvent.RaceParameters.PenaltyLevel = PenaltyLevel.NONE;
+            CurrentEvent.RaceParameters.EnableDamage = false;
+            CurrentEvent.RaceParameters.BehaviorDamage = BehaviorDamageType.WEAK;
+
+            CurrentEvent.MarkUnpopulated();
+            PopulateSelectedTab();
+            PopulateEventDetails();
+        }
+
         private void cb_QuickEventPicker_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cb_QuickEventPicker.SelectedIndex != -1 && _processEventSwitch)
@@ -1045,17 +1202,8 @@ namespace GTEventGenerator
             btnRemoveRace.IsEnabled = GameParameter?.Events?.Any() == true;
             btnCopyRace.IsEnabled = GameParameter?.Events?.Any() == true;
 
-            randomizeAINamesToolStripMenuItem.IsEnabled = isEnabled;
-
-            randomizeAIRoughnessToolStripMenuItem.IsEnabled = isEnabled;
-            randomizeAIBaseSkillToolStripMenuItem.IsEnabled = isEnabled;
-            randomizeAICornerSkillToolStripMenuItem.IsEnabled = isEnabled;
-            randomizeAIBrakingSkillToolStripMenuItem.IsEnabled = isEnabled;
-            randomizeAIAccelSkillToolStripMenuItem.IsEnabled = isEnabled;
-            randomizeAIStartSkillToolStripMenuItem.IsEnabled = isEnabled;
-
-            randomizeAISkillsToolStripMenuItem.IsEnabled = isEnabled;
-            randomizeAITireCompoundToolStripMenuItem.IsEnabled = isEnabled;
+            menuRegenerate.IsEnabled = isEnabled;
+            menuSample.IsEnabled = isEnabled;
 
             CheckTabAvailability();
         }
