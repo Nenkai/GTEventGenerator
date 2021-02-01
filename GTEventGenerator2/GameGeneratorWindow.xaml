@@ -466,7 +466,7 @@
                             <TextBlock Text="Weather Parameters"/>
                         </GroupBox.Header>
                         <Canvas>
-                            <Button Content="Setup Weather Steps" Canvas.Left="10" Canvas.Top="441" Width="224" Click="NewWeatherData_Click" Height="27"/>
+                            <Button Content="Setup Weather Steps (GT6)" Canvas.Left="10" Canvas.Top="441" Width="224" Click="NewWeatherData_Click" Height="27"/>
                             <Label Name="label_WeatherAccelRetention" Content="Road Drying Speed" Height="27" Width="151" TabIndex="22" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="300">
                                 <Label.ToolTip>
                                     <TextBlock>

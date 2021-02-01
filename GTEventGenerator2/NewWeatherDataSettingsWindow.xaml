@@ -13,7 +13,7 @@
         <GroupBox Margin="10,10,263,38" Height="254" >
 
             <GroupBox.Header>
-                <TextBlock Text="Weather Steps Listing"/>
+                <TextBlock Name="tb_WeatherSteps" Text="Weather Steps Listing"/>
             </GroupBox.Header>
             <Canvas>
                 <ListBox Name="lb_WeatherParamList" Height="178" Width="208" SelectionChanged="lb_WeatherParamList_SelectionChanged" Canvas.Left="10" Canvas.Top="10"/>

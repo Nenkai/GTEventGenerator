@@ -37,6 +37,8 @@ namespace GTEventGenerator
             TimeProgressionLength = timeProgressionLength;
             lbl_TotalTimeProgression.Content = "Total Weather Progression is set to last for " +
                 $"{timeProgressionLength.Humanize(3, maxUnit: Humanizer.Localisation.TimeUnit.Hour, minUnit: Humanizer.Localisation.TimeUnit.Second)}";
+
+            UpdateAndCheckListLimit();
         }
 
         private void btn_AddNew_Click(object sender, RoutedEventArgs e)
@@ -54,6 +56,7 @@ namespace GTEventGenerator
             if (Points.Count == 1)
                 CurrentPoint = Points[0];
             SetPointDescription();
+            UpdateAndCheckListLimit();
         }
 
         private void lb_WeatherParamList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -104,6 +107,7 @@ namespace GTEventGenerator
             }
 
             lb_WeatherParamList.Items.Refresh();
+            UpdateAndCheckListLimit();
         }
 
         public void SetPointDescription()
@@ -134,6 +138,13 @@ namespace GTEventGenerator
                     return;
                 }
             }
+        }
+
+        private void UpdateAndCheckListLimit()
+        {
+            tb_WeatherSteps.Text = $"Weather Steps Listing ({Points.Count}/16)";
+            btn_AddNew.IsEnabled = Points.Count < 16;
+
         }
     }
 }
