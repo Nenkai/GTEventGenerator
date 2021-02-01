@@ -314,7 +314,7 @@ namespace GTEventGenerator
         {
             var openFile = new OpenFileDialog();
             openFile.InitialDirectory = Directory.GetCurrentDirectory();
-            openFile.Filter = "Event List XML Files (r/l*.xml) (*.xml)|*.xml";
+            openFile.Filter = "Folder XML Files (i.e sundaycup.xml) (*.xml)|*.xml";
             openFile.Title = "Import Events";
             openFile.ShowDialog();
 
