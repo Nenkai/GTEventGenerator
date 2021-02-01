@@ -110,7 +110,6 @@ namespace GTEventGenerator.Entities
                 Course.WriteToXml(xml);
                 PlayStyle.WriteToXml(xml);
                 Regulations.WriteToXml(xml);
-                PlayStyle.WriteToXml(xml);
                 xml.WriteElementValue("penalty_script", PenaltyScriptName);
                 xml.WriteElementValue("ai_script", AIScriptName);
                 EvalConditions.WriteToXml(xml);
