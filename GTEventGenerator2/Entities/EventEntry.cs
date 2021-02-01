@@ -112,7 +112,7 @@ namespace GTEventGenerator
             get => _initialVCoord;
             set
             {
-                if (value <= 99999 && value >= -1)
+                if (value <= 99999)
                     _initialVCoord = value;
             }
         }
