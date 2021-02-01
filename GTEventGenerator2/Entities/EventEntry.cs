@@ -314,7 +314,7 @@ namespace GTEventGenerator
             if (PowerLimiter != 0 && PowerLimiter != 1000)
                 xml.WriteElementUInt("power_limiter", PowerLimiter);
 
-            if (MaxGearSpeed != -1)
+            if (MaxGearSpeed != 0)
                 xml.WriteElementInt("gear_max_speed", MaxGearSpeed);
 
             if (BodyPaintID != -1)
