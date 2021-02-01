@@ -310,6 +310,49 @@ namespace GTEventGenerator
             Close();
         }
 
+        private void importEventFromFolderToolStripMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var openFile = new OpenFileDialog();
+            openFile.InitialDirectory = Directory.GetCurrentDirectory();
+            openFile.Filter = "Event List XML Files (r/l*.xml) (*.xml)|*.xml";
+            openFile.Title = "Import Events";
+            openFile.ShowDialog();
+
+            if (openFile.FileName.Contains(".xml"))
+            {
+                GameParameter gp;
+                try
+                {
+                    gp = ImportFolder(openFile.FileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Could not read event folder: {ex.Message}", "Error",
+                       MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                if (!gp.Events.Any())
+                {
+                    MessageBox.Show($"No events found in provided folder.", "Information",
+                       MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                var selector = new EventImportSelectorWindow(gp);
+                selector.ShowDialog();
+
+                if (selector.SelectedEvent != null)
+                {
+                    GameParameter.Events.Add(selector.SelectedEvent);
+                    GameParameter.OrderEventIDs();
+
+                    ReloadEventLists(lstRaces.SelectedIndex);
+                    UpdateEventListing();
+                }
+            }
+        }
+
         private void decryptTedMenuItem_Click(object sender, RoutedEventArgs e)
         {
             var openFile = new OpenFileDialog();
@@ -1214,6 +1257,7 @@ namespace GTEventGenerator
 
             menuRegenerate.IsEnabled = isEnabled;
             menuSample.IsEnabled = isEnabled;
+            importEventFromFolderToolStripMenuItem.IsEnabled = isEnabled;
 
             CheckTabAvailability();
         }

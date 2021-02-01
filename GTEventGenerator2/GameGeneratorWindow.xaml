@@ -46,8 +46,9 @@
                         <MenuItem Header="Free Run" Name="menuItem_FreeRunSample" Click="menuItem_FreeRunSample_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
                         <MenuItem Header="License" Name="menuItem_LicenseSample" Click="menuItem_LicenseSample_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
                         <MenuItem Header="Arcade Style Race (Sierra)" Name="menuItem_ArcadeStyleSample" Click="menuItem_ArcadeStyleSample_Click" Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
-
                     </MenuItem>
+                    <Separator/>
+                    <MenuItem Header="Import Event From Another Folder" Name="importEventFromFolderToolStripMenuItem" Click="importEventFromFolderToolStripMenuItem_Click" IsEnabled="False"  Template="{DynamicResource SingleDropDownMenuItem}"></MenuItem>
 
                 </MenuItem>
                 <MenuItem Header="Tools">
@@ -2684,7 +2685,7 @@
                             <xctk:SByteUpDown Name="iud_ArcadeSectionExtraSec" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Canvas.Left="170" Canvas.Top="46" Width="67" ValueChanged="iud_ArcadeSectionExtraSec_ValueChanged"/>
 
                             <Button Content="Set Sector" Canvas.Left="10" Canvas.Top="426" Width="236" Height="35"/>
-                            <ListBox Name="lb_ArcadeSections" Canvas.Left="260" Canvas.Top="10" Height="451" Width="375" SelectionChanged="lb_ArcadeSections_SelectionChanged"/>
+                            <ListBox Name="lb_ArcadeSections" Canvas.Left="260" Canvas.Top="10" Height="451" Width="284" SelectionChanged="lb_ArcadeSections_SelectionChanged"/>
                         </Canvas>
                     </GroupBox>
 
