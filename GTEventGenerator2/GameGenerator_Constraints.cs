@@ -106,7 +106,6 @@ namespace GTEventGenerator
             comboBox_ConstrainedTiresMaxF.SelectedIndex = (int)CurrentEvent.Constraints.FrontTireLimit+1;
             comboBox_ConstrainedTiresSuggestF.SelectedIndex = (int)CurrentEvent.Constraints.SuggestedFrontTire+1;
             comboBox_ConstrainedTiresSuggestR.SelectedIndex = (int)CurrentEvent.Constraints.SuggestedRearTire+1;
-            
 
             sud_PowerLimit.Value = CurrentEvent.Constraints.PowerLimit;
             CurrentEvent.Constraints.NeedsPopulating = false;

@@ -18,7 +18,12 @@ namespace GTEventGenerator.Entities
         private bool? _absEnabled;
         public bool? ABSEnabled
         {
-            get => ABSConstrained ? _absEnabled : null;
+            get 
+            {
+                if (ABSConstrained)
+                    return _absEnabled ?? false;
+                return null;
+            }
             set
             {
                 _absEnabled = value;
@@ -30,7 +35,12 @@ namespace GTEventGenerator.Entities
         private bool? _activeSteeringEnabled;
         public bool? ActiveSteeringEnabled
         {
-            get => ActiveSteeringConstrained ? _activeSteeringEnabled : null;
+            get
+            {
+                if (ActiveSteeringConstrained)
+                    return _activeSteeringEnabled ?? false;
+                return null;
+            }
             set
             {
                 _activeSteeringEnabled = value;
@@ -42,7 +52,12 @@ namespace GTEventGenerator.Entities
         private bool? _asmEnabled;
         public bool? ASMEnabled
         {
-            get => ASMConstrained ? _asmEnabled : null;
+            get
+            {
+                if (ASMConstrained)
+                    return _asmEnabled ?? false;
+                return null;
+            }
             set
             {
                 _asmEnabled = value;
@@ -51,14 +66,19 @@ namespace GTEventGenerator.Entities
         }
 
         public bool SkidRecoveryForceConstrained { get; set; }
-        private bool? _skidRecoveryForceEnabled;
-        public bool? SkidRecoveryForceEnabled
+        private bool? _skidRecoveryForceDisabled;
+        public bool? SkidRecoveryForceDisabled
         {
-            get => SkidRecoveryForceConstrained ? _skidRecoveryForceEnabled : null;
+            get
+            {
+                if (SkidRecoveryForceConstrained)
+                    return _skidRecoveryForceDisabled ?? false;
+                return null;
+            }
             set
             {
-                _skidRecoveryForceEnabled = value;
-                SkidRecoveryForceConstrained = _skidRecoveryForceEnabled.HasValue;
+                _skidRecoveryForceDisabled = value;
+                SkidRecoveryForceConstrained = _skidRecoveryForceDisabled.HasValue;
             }
         }
 
@@ -74,7 +94,12 @@ namespace GTEventGenerator.Entities
         private bool? _drivingLineEnabled;
         public bool? DrivingLineEnabled
         {
-            get => DrivingLineConstrained ? _drivingLineEnabled : null;
+            get
+            {
+                if (DrivingLineConstrained)
+                    return _drivingLineEnabled ?? false;
+                return null;
+            }
             set
             {
                 _drivingLineEnabled = value;
@@ -93,7 +118,12 @@ namespace GTEventGenerator.Entities
         private bool? _tcsEnabled;
         public bool? TCSEnabled
         {
-            get => TCSConstrained ? _tcsEnabled : null;
+            get
+            {
+                if (TCSConstrained)
+                    return _tcsEnabled ?? false;
+                return null;
+            }
             set
             {
                 _tcsEnabled = value;
@@ -105,7 +135,12 @@ namespace GTEventGenerator.Entities
         private bool? _transmissionEnabled;
         public bool? TransmissionEnabled
         {
-            get => TransmissionConstrained ? _transmissionEnabled : null;
+            get
+            {
+                if (TransmissionConstrained)
+                    return _transmissionEnabled ?? false;
+                return null;
+            }
             set
             {
                 _transmissionEnabled = value;
@@ -117,7 +152,12 @@ namespace GTEventGenerator.Entities
         private bool? _tuningEnabled;
         public bool? TuningEnabled
         {
-            get => TuningConstrained ? _tuningEnabled : null;
+            get
+            {
+                if (TuningConstrained)
+                    return _tuningEnabled ?? false;
+                return null;
+            }
             set
             {
                 _tuningEnabled = value;
@@ -129,7 +169,12 @@ namespace GTEventGenerator.Entities
         private bool? _suggestedGearEnabled;
         public bool? SuggestedGearEnabled
         {
-            get => SuggestedGearConstrained ? _suggestedGearEnabled : null;
+            get
+            {
+                if (SuggestedGearConstrained)
+                    return _suggestedGearEnabled ?? false;
+                return null;
+            }
             set
             {
                 _suggestedGearEnabled = value;
@@ -168,7 +213,7 @@ namespace GTEventGenerator.Entities
             RearTireLimit = (TireType)reader.ReadInt32();
             NeededRearTire = (TireType)reader.ReadInt32();
             SuggestedRearTire = (TireType)reader.ReadInt32();
-            SkidRecoveryForceEnabled = reader.ReadBool4();
+            SkidRecoveryForceDisabled = reader.ReadBool4();
             ActiveSteeringEnabled = reader.ReadBool4();
             int cars = reader.ReadInt32();
             for (int i = 0; i < cars; i++)
@@ -204,7 +249,7 @@ namespace GTEventGenerator.Entities
             bs.WriteInt32((int)RearTireLimit);
             bs.WriteInt32((int)NeededRearTire);
             bs.WriteInt32((int)SuggestedRearTire);
-            bs.WriteBool4OrNull(SkidRecoveryForceEnabled);
+            bs.WriteBool4OrNull(SkidRecoveryForceDisabled);
             bs.WriteBool4OrNull(ActiveSteeringEnabled);
 
             bs.WriteInt32(0); // Cars
@@ -234,7 +279,7 @@ namespace GTEventGenerator.Entities
             if (PowerLimit.HasValue)
                 xml.WriteElementFloat("restrictor_limit", (float)Math.Floor((double)(PowerLimit * 10f)));
 
-            xml.WriteElementBoolOrNull("simulation", !SkidRecoveryForceEnabled);
+            xml.WriteElementBoolOrNull("simulation", SkidRecoveryForceDisabled);
             xml.WriteElementEnumInt("suggest_tire_f", SuggestedFrontTire);
             xml.WriteElementEnumInt("suggest_tire_r", SuggestedRearTire);
             xml.WriteElementBoolIfSet("suggested_gear", SuggestedGearEnabled);
@@ -284,7 +329,7 @@ namespace GTEventGenerator.Entities
                         PowerLimit = constraintNode.ReadValueInt() / 10f;
                         break;
                     case "simulation":
-                        SkidRecoveryForceEnabled = constraintNode.ReadValueBoolNull();
+                        SkidRecoveryForceDisabled = constraintNode.ReadValueBoolNull();
                         break;
                     case "suggest_tire_f":
                         SuggestedFrontTire = constraintNode.ReadValueEnum<TireType>();

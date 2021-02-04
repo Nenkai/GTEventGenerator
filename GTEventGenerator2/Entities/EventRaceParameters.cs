@@ -442,6 +442,7 @@ namespace GTEventGenerator.Entities
                         WeatherAccel = raceNode.ReadValueShort(); break;
                     case "boost_flag":
                         BoostFlag = raceNode.ReadValueBool(); break;
+
                     case "new_weather_data":
                         {
                             foreach (XmlNode point in raceNode.SelectNodes("point"))
@@ -481,7 +482,7 @@ namespace GTEventGenerator.Entities
                         currentIndex = currentNode.ReadValueInt();
                     else
                     {
-                        if (i == -1 || i >= 2)
+                        if (currentIndex == -1 || currentIndex >= 2)
                             break; // No valid table here
 
                         switch (i)

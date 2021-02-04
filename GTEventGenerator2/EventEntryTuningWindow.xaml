@@ -94,11 +94,12 @@
                 </Label>
                 <xctk:IntegerUpDown Value="{Binding MaxGearSpeed}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="114,200,0,0" Height="20" Width="77" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                <Label Content="Power Limiter (%)" HorizontalAlignment="Left" Margin="234,200,0,0" VerticalAlignment="Top" Width="Auto">
+                <Label Content="Power Limiter" HorizontalAlignment="Left" Margin="234,200,0,0" VerticalAlignment="Top" Width="Auto">
                     <Label.ToolTip>
                         <TextBlock>
                            <TextBlock FontWeight="Bold" FontSize="14">Power Limiter</TextBlock> <LineBreak />
                            Sets the car's power limiter restriction. May conflict or override max gear speed.<LineBreak/>
+                           10 = 1%. 1000 = 100%
                            <LineBreak/>
                            <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->power_limiter</TextBlock>
                         </TextBlock>

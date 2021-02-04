@@ -2022,7 +2022,8 @@
                                 </Label.ToolTip>
                             </Label>
 
-                            <CheckBox Name="checkBox_SuggestedGearConstrained" Height="14" Width="15" TabIndex="21" HorizontalAlignment="Right" IsChecked="{Binding Path=Constraints.SuggestedGearConstrained}" VerticalAlignment="Bottom" Canvas.Left="145" Canvas.Top="277" />
+                            <CheckBox Name="checkBox_SuggestedGearConstrained" Height="14" Width="15" TabIndex="21" HorizontalAlignment="Right"
+                                      IsChecked="{Binding Path=Constraints.SuggestedGearConstrained}" VerticalAlignment="Bottom" Canvas.Left="145" Canvas.Top="277" />
                             <CheckBox Name="checkBox_SuggestedGearForced" Height="14" Width="15" TabIndex="22" IsEnabled="{Binding Path=Constraints.SuggestedGearConstrained}" IsChecked="{Binding Path=Constraints.SuggestedGearEnabled}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="210" Canvas.Top="277" />
                             <Label Name="label_SuggestedGear" Content="Suggested Gear" Height="26" Width="131" TabIndex="20" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="269" >
                                 <Label.ToolTip>
@@ -2035,7 +2036,8 @@
                                 </Label.ToolTip>
                             </Label>
 
-                            <CheckBox Name="checkBox_TuningConstrained" Height="14" Width="15" TabIndex="21" HorizontalAlignment="Right" IsChecked="{Binding Path=Constraints.TuningConstrained}" VerticalAlignment="Bottom" Canvas.Left="145" Canvas.Top="247" />
+                            <CheckBox Name="checkBox_TuningConstrained" Height="14" Width="15" TabIndex="21" HorizontalAlignment="Right"
+                                      IsChecked="{Binding Path=Constraints.TuningConstrained}" VerticalAlignment="Bottom" Canvas.Left="145" Canvas.Top="247" />
                             <CheckBox Name="checkBox_TuningForced" Height="14" Width="15" TabIndex="22" IsEnabled="{Binding Path=Constraints.TuningConstrained}" IsChecked="{Binding Path=Constraints.TuningEnabled}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="210" Canvas.Top="247" />
                             <Label Name="label_Tuning" Content="Vehicle Tuning" Height="26" Width="131" TabIndex="20" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="238" >
                                 <Label.ToolTip>
@@ -2048,7 +2050,8 @@
                                 </Label.ToolTip>
                             </Label>
 
-                            <CheckBox Name="checkBox_DrivingLineConstrained" Height="14" Width="15" TabIndex="21" HorizontalAlignment="Right" IsChecked="{Binding Path=Constraints.DrivingLineConstrained}" VerticalAlignment="Bottom" Canvas.Left="145" Canvas.Top="215" />
+                            <CheckBox Name="checkBox_DrivingLineConstrained" Height="14" Width="15" TabIndex="21" HorizontalAlignment="Right"
+                                      IsChecked="{Binding Path=Constraints.DrivingLineConstrained}" VerticalAlignment="Bottom" Canvas.Left="145" Canvas.Top="215" />
                             <CheckBox Name="checkBox_DrivingLineForced" Height="14" Width="15" TabIndex="22" IsEnabled="{Binding Path=Constraints.DrivingLineConstrained}" IsChecked="{Binding Path=Constraints.DrivingLineEnabled}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="210" Canvas.Top="215" />
                             <Label Name="label_DrivingLine" Content="Driving Line" Height="26" Width="131" TabIndex="20" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="207" >
                                 <Label.ToolTip>
@@ -2061,7 +2064,8 @@
                                 </Label.ToolTip>
                             </Label>
 
-                            <CheckBox Name="checkBox_TransmissionConstrained" Height="14" Width="15" TabIndex="18" IsChecked="{Binding Path=Constraints.TransmissionConstrained}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="145" Canvas.Top="183" />
+                            <CheckBox Name="checkBox_TransmissionConstrained" Height="14" Width="15" TabIndex="18"
+                                      IsChecked="{Binding Path=Constraints.TransmissionConstrained}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="145" Canvas.Top="183" />
                             <CheckBox Name="checkBox_TransmissionForced" Height="14" Width="15" TabIndex="19" IsEnabled="{Binding Path=Constraints.TransmissionConstrained}" IsChecked="{Binding Path=Constraints.TransmissionEnabled}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="210" Canvas.Top="183" />
                             <Label Name="label_Transmission" Content="Transmission" Height="26" Width="131" TabIndex="17" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="176" >
                                 <Label.ToolTip>
@@ -2074,7 +2078,8 @@
                                 </Label.ToolTip>
                             </Label>
 
-                            <CheckBox Name="checkBox_TCSConstrained" Height="14" Width="15" TabIndex="15" HorizontalAlignment="Right" IsChecked="{Binding Path=Constraints.TCSConstrained}" VerticalAlignment="Bottom" Canvas.Left="145" Canvas.Top="152" />
+                            <CheckBox Name="checkBox_TCSConstrained" Height="14" Width="15" TabIndex="15" HorizontalAlignment="Right" 
+                                      IsChecked="{Binding Path=Constraints.TCSConstrained}" VerticalAlignment="Bottom" Canvas.Left="145" Canvas.Top="152" />
                             <CheckBox Name="checkBox_TCSForced" Height="14" Width="15" TabIndex="16" IsEnabled="{Binding Path=Constraints.TCSConstrained}" IsChecked="{Binding Path=Constraints.TCSEnabled}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="210" Canvas.Top="152" />
                             <Label Name="label_TCS" Content="TCS" Height="26" Width="127" TabIndex="14" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="145" Canvas.Left="6" >
                                 <Label.ToolTip>
@@ -2088,20 +2093,22 @@
                                 </Label.ToolTip>
                             </Label>
 
-                            <CheckBox Name="checkBox_SRFConstrained" Height="14" Width="15" TabIndex="12" IsChecked="{Binding Path=Constraints.SkidRecoveryForceConstrained}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="145" Canvas.Top="121" />
-                            <CheckBox Name="checkBox_SRFForced" Height="14" Width="15" TabIndex="13" IsEnabled="{Binding Path=Constraints.SkidRecoveryForceConstrained}" IsChecked="{Binding Path=Constraints.SkidRecoveryForceEnabled}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="210" Canvas.Top="121" />
-                            <Label Name="label_SkidRecoveryForce" Content="Skid Recovery Force" Height="26" Width="131" TabIndex="11" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="114" >
+                            <CheckBox Name="checkBox_SRFConstrained" Height="14" Width="15" TabIndex="12"
+                                      IsChecked="{Binding Path=Constraints.SkidRecoveryForceConstrained}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="145" Canvas.Top="121" />
+                            <CheckBox Name="checkBox_SRFForced" Height="14" Width="15" TabIndex="13" IsChecked="{Binding Path=Constraints.SkidRecoveryForceDisabled}" IsEnabled="{Binding Path=Constraints.SkidRecoveryForceConstrained}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="210" Canvas.Top="121" />
+                            <Label Name="label_SkidRecoveryForce" Content="Simulation (SKF Off)" Height="26" Width="131" TabIndex="11" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="114" >
                                 <Label.ToolTip>
                                     <TextBlock>
-                                    <TextBlock FontWeight="Bold" FontSize="14">Skid Recovery Force</TextBlock> <LineBreak />
+                                    <TextBlock FontWeight="Bold" FontSize="14">Simulation aka Skid Recovery Force</TextBlock> <LineBreak />
                                     Set this option to "Prohibited" if you want to disallow use of the Skid Recovery Force function. When this function is disabled, it will be more difficult to control your car when the wheels slide.<LineBreak/>
-                                    <LineBreak/>
+                                    ON means SKF is OFF (Simulation).<LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">constraint->simulation</TextBlock>
                                     </TextBlock>
                                 </Label.ToolTip>
                             </Label>
 
-                            <CheckBox Name="checkBox_ASMConstrained" Height="14" Width="15" TabIndex="9" IsChecked="{Binding Path=Constraints.ASMConstrained}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="145" Canvas.Top="91" />
+                            <CheckBox Name="checkBox_ASMConstrained" Height="14" Width="15" TabIndex="9"
+                                      IsChecked="{Binding Path=Constraints.ASMConstrained}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="145" Canvas.Top="91" />
                             <CheckBox Name="checkBox_ASMForced" Height="14" Width="15" TabIndex="10" IsEnabled="{Binding Path=Constraints.ASMConstrained}" IsChecked="{Binding Path=Constraints.ASMEnabled}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="210" Canvas.Top="91" />
                             <Label Name="label_ASM" Content="ASM" Height="26" Width="131" TabIndex="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="85" >
                                 <Label.ToolTip>
@@ -2115,7 +2122,8 @@
                                 </Label.ToolTip>
                             </Label>
 
-                            <CheckBox Name="checkBox_ActiveSteeringConstrained" Height="14" Width="15" IsChecked="{Binding Path=Constraints.ActiveSteeringConstrained}" TabIndex="6" HorizontalAlignment="Right" VerticalAlignment="Bottom"  Canvas.Left="145" Canvas.Top="61" />
+                            <CheckBox Name="checkBox_ActiveSteeringConstrained" Height="14" Width="15"
+                                      IsChecked="{Binding Path=Constraints.ActiveSteeringConstrained}" TabIndex="6" HorizontalAlignment="Right" VerticalAlignment="Bottom"  Canvas.Left="145" Canvas.Top="61" />
                             <CheckBox Name="checkBox_ActiveSteeringForced" Height="14" Width="15" TabIndex="7" IsEnabled="{Binding Path=Constraints.ActiveSteeringConstrained}" IsChecked="{Binding Path=Constraints.ActiveSteeringEnabled}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="210" Canvas.Top="61" />
                             <Label Name="label_ActiveSteering" Content="Active Steering" Height="26" Width="125" TabIndex="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="54" Canvas.Left="6" >
                                 <Label.ToolTip>
@@ -2128,7 +2136,8 @@
                                 </Label.ToolTip>
                             </Label>
 
-                            <CheckBox Name="checkBox_ABSConstrained" Height="14" Width="15" TabIndex="4" IsChecked="{Binding Path=Constraints.ABSConstrained}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="145" Canvas.Top="31" />
+                            <CheckBox Name="checkBox_ABSConstrained" Height="14" Width="15" TabIndex="4"
+                                      IsChecked="{Binding Path=Constraints.ABSConstrained}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="145" Canvas.Top="31" />
                             <CheckBox Name="checkBox_ABSForced" Height="14" Width="15" TabIndex="3" IsEnabled="{Binding Path=Constraints.ABSConstrained}" IsChecked="{Binding Path=Constraints.ABSEnabled}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="210" Canvas.Top="31" />
                             <Label Name="label_ABS" Content="ABS" Height="26" Width="131" TabIndex="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="23" >
                                 <Label.ToolTip>
