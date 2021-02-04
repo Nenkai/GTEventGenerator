@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Xml;
 using System.Windows.Input;
 using System.Security.Cryptography;
-
+using Microsoft.WindowsAPICodePack.Dialogs;
 using Microsoft.Win32;
 
 using Humanizer;
@@ -204,16 +204,17 @@ namespace GTEventGenerator
                 }
             }
 
-            var saveFile = new System.Windows.Forms.FolderBrowserDialog();
+            var saveFile = new CommonOpenFileDialog();
+            saveFile.IsFolderPicker = true;
+            if (saveFile.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                if (string.IsNullOrEmpty(saveFile.FileName))
+                    return;
 
-            //saveFile.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-            saveFile.ShowDialog();
-            if (string.IsNullOrEmpty(saveFile.SelectedPath))
-                return;
+                selectedPath = saveFile.FileName;
 
-            selectedPath = saveFile.SelectedPath;
-
-            GenerateGameParameter();
+                GenerateGameParameter();
+            }
 
         }
 
