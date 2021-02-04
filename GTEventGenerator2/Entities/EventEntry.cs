@@ -492,6 +492,9 @@ namespace GTEventGenerator
         [Description("Default")]
         NONE = -1,
 
+        [Description("(Placeholder Level 0)")]
+        LEVEL0 = 0,
+
         [Description("Stage 1")]
         LEVEL1 = 1,
 
