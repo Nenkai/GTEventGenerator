@@ -46,10 +46,10 @@ namespace GTEventGenerator.Entities
             get => _name;
             set
             {
-                Information.SetTitle(value); // In the maintime
                 _name = value;
             }
         }
+
         public GameMode GameMode { get; set; } = GameMode.EVENT_RACE;
         public EventType EventType { get; set; } = EventType.RACE;
         public bool Inheritance { get; set; }

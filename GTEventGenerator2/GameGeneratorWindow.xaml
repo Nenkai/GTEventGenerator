@@ -156,7 +156,7 @@
                             <TextBlock Text="Event Information"/>
                         </GroupBox.Header>
                         <Canvas Margin="0,0,0,0" >
-                            <Label Name="label_gameMode" Content="Game Mode" Height="23" Width="76" TabIndex="14" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="40">
+                            <Label Name="label_gameMode" Content="Game Mode" Height="23" Width="76" TabIndex="14" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="10">
                                 <Label.ToolTip>
                                     <TextBlock>
                                         <TextBlock FontWeight="Bold" FontSize="14">Game Mode</TextBlock>
@@ -186,7 +186,7 @@
                                     </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            <ComboBox Name="cb_gameModes" Height="23" Width="200" IsEnabled="False" TabIndex="13" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="91" Canvas.Top="41" SelectionChanged="cb_gameModes_SelectionChanged" />
+                            <ComboBox Name="cb_gameModes" Height="23" Width="200" IsEnabled="False" TabIndex="13" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="91" Canvas.Top="13" SelectionChanged="cb_gameModes_SelectionChanged" />
 
                             <CheckBox Name="checkBox_SeasonalEvent" Content="Seasonal Event" Height="24" Width="281" TabIndex="56" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsEnabled="False" IsChecked="{Binding IsSeasonalEvent}" Canvas.Top="289" Canvas.Left="10">
                                 <CheckBox.ToolTip>
@@ -201,7 +201,7 @@
                                 </CheckBox.ToolTip>
                             </CheckBox>
 
-                            <Label Content="A/B Spec" Canvas.Left="10" Canvas.Top="68" Width="76">
+                            <Label Content="A/B Spec" Canvas.Left="10" Canvas.Top="38" Width="76">
                                 <Label.ToolTip>
                                     <TextBlock>
                                         <TextBlock FontWeight="Bold" FontSize="14">A/B Spec</TextBlock>
@@ -217,9 +217,9 @@
                                     </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            <ComboBox Name="cb_Spec" Height="23" Width="200" IsEnabled="False" TabIndex="13" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="91" Canvas.Top="71" SelectionChanged="cb_Spec_SelectionChanged" />
+                            <ComboBox Name="cb_Spec" Height="23" Width="200" IsEnabled="False" TabIndex="13" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="91" Canvas.Top="41" SelectionChanged="cb_Spec_SelectionChanged" />
 
-                            <Label Content="Play Type" Canvas.Left="10" Canvas.Top="99" Width="76">
+                            <Label Content="Play Type" Canvas.Left="10" Canvas.Top="66" Width="76">
                                 <Label.ToolTip>
                                     <TextBlock>
                                         <TextBlock FontWeight="Bold" FontSize="14">Play Type</TextBlock>
@@ -233,9 +233,9 @@
                                 </Label.ToolTip>
                             </Label>
 
-                            <ComboBox Name="cb_PlayType" Height="23" Width="200" IsEnabled="False" TabIndex="13" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="91" Canvas.Top="101" SelectionChanged="cb_PlayType_SelectionChanged" />
+                            <ComboBox Name="cb_PlayType" Height="23" Width="200" IsEnabled="False" TabIndex="13" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="91" Canvas.Top="69" SelectionChanged="cb_PlayType_SelectionChanged" />
 
-                            <Label Content="Max Cars" Canvas.Left="10" Canvas.Top="130" Width="76">
+                            <Label Content="Max Cars" Canvas.Left="10" Canvas.Top="95" Width="76" Height="24">
                                 <Label.ToolTip>
                                     <TextBlock>
                                         <TextBlock FontWeight="Bold" FontSize="14">Max Cars</TextBlock>
@@ -250,9 +250,9 @@
                                     </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            <xctk:IntegerUpDown Name="iud_RacerMax" Canvas.Left="91" Canvas.Top="136" Width="200" Minimum="1" IsEnabled="False" Value="{Binding Path=RaceParameters.RacersMax}" Maximum="16" ValueChanged="iud_RacerMax_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:IntegerUpDown Name="iud_RacerMax" Canvas.Left="91" Canvas.Top="97" Width="200" Minimum="1" IsEnabled="False" Value="{Binding Path=RaceParameters.RacersMax}" Maximum="16" ValueChanged="iud_RacerMax_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                            <Label Content="Event ID" Canvas.Left="10" Canvas.Top="161" Width="63">
+                            <Label Content="Event ID" Canvas.Left="10" Canvas.Top="119" Width="76">
                                 <Label.ToolTip>
                                     <TextBlock>
                                         <TextBlock FontWeight="Bold" FontSize="14">Event ID</TextBlock>
@@ -266,7 +266,7 @@
                                     </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            <xctk:ULongUpDown Name="iud_EventID" ValueChanged="iud_EventID_ValueChanged" IsEnabled="False" Canvas.Left="91" Canvas.Top="165" Width="200" Minimum="1" Value="{Binding EventID}" Maximum="9900000" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:ULongUpDown Name="iud_EventID" ValueChanged="iud_EventID_ValueChanged" IsEnabled="False" Canvas.Left="91" Canvas.Top="122" Width="200" Minimum="1" Value="{Binding EventID}" Maximum="9900000" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <GroupBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="318" Height="143" Width="281" >
                                 <GroupBox.Header>
@@ -287,16 +287,6 @@
                                     <RadioButton Name="rdoStarsThree" IsEnabled="False" Height="24" Width="133" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Checked="rdoStarsThree_CheckedChanged" Canvas.Left="10" Canvas.Top="68" >3 Stars (1st/3rd/Any)</RadioButton>
                                 </Canvas>
                             </GroupBox>
-                            <Label Name="lblRaceName" Height="24" Content="Event Name" Width="76" TabIndex="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="11" >
-                                <Label.ToolTip>
-                                    <TextBlock>
-                                        <TextBlock FontWeight="Bold" FontSize="14">Event Name</TextBlock>
-                                        <LineBreak/>
-                                        Name for your event (Can also be edited in the Event Information tab).
-                                    </TextBlock>
-                                </Label.ToolTip>
-                            </Label>
-                            <TextBox Name="txtEventName" Height="21" Width="200" TabIndex="3" IsEnabled="False" TextChanged="txtEventName_TextChanged" HorizontalAlignment="Right" VerticalAlignment="Bottom" TextWrapping="Wrap" Canvas.Left="91" Canvas.Top="14" />
                         </Canvas>
                     </GroupBox>
                     <GroupBox Header="Event Listing" Height="512" Canvas.Top="10" Canvas.Left="10" Width="343">
@@ -343,46 +333,60 @@
                     </StackPanel>
                 </TabItem.Header>
                 <Canvas Name="cantabEventInfo" >
-                    <Label Content="Title/Event Name" Canvas.Left="10" Canvas.Top="10" >
-                        <Label.ToolTip>
-                            <TextBlock>
+                    <GroupBox Canvas.Left="10" Canvas.Top="10" Height="512" Width="608">
+                        <GroupBox.Header>
+                            <Grid>
+                                <TextBlock Text="Localization"/>
+                                <TextBlock Text="Language:" Margin="323,1,-183,-1"/>
+                                <ComboBox Name="cb_InfoLanguage" Width="200" Margin="388,0,-388,0" SelectionChanged="cb_InfoLanguage_SelectionChanged"/>
+                            </Grid>
+                        </GroupBox.Header>
+                        <Canvas>
+                            <Label Content="Title/Event Name" Canvas.Left="10" Canvas.Top="10" >
+                                <Label.ToolTip>
+                                    <TextBlock>
                                 <TextBlock FontWeight="Bold" FontSize="14">Event Name</TextBlock>
                                 <LineBreak/>
                                 Name for your event. <LineBreak/>
                                 <LineBreak/>
                                 <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">information->title</TextBlock>
                              </TextBlock>
-                        </Label.ToolTip>
-                    </Label>
-                    <TextBox Name="txt_EventTitle" Height="20" Width="469" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="116" Canvas.Top="16" TextChanged="txtEventName_TextChanged"/>
+                                </Label.ToolTip>
+                            </Label>
+                            <TextBox Name="txt_EventTitle" Height="20" Width="469" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="117" Canvas.Top="14" TextChanged="txtEventName_TextChanged"/>
+                            <Button Content="Set to All Locales" Canvas.Left="492" Canvas.Top="39" Height="22" Click="btn_TitleApplyAllLocales_Click"/>
 
-                    <Label Content="One Line Title" Canvas.Top="41" Canvas.Left="10">
-                        <Label.ToolTip>
-                            <TextBlock>
+                            <Label Content="One Line Title" Canvas.Top="66" Canvas.Left="10">
+                                <Label.ToolTip>
+                                    <TextBlock>
                                 <TextBlock FontWeight="Bold" FontSize="14">One Line Title</TextBlock> <LineBreak />
                                 For GT6 only. <LineBreak />
                                 One line title, will display in non regular folders, below the event card (scrolling if larger than screen width). <LineBreak/>
                                 <LineBreak/>
                                 <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">information->one_line_title</TextBlock>
                              </TextBlock>
-                        </Label.ToolTip>
-                    </Label>
-                    <TextBox Name="txt_OneLineTitle" Height="20" Width="469" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="116" Canvas.Top="44" TextChanged="txt_OneLineTitle_TextChanged" />
+                                </Label.ToolTip>
+                            </Label>
+                            <TextBox Name="txt_OneLineTitle" Height="22" Width="469" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="117" Canvas.Top="66" TextChanged="txt_OneLineTitle_TextChanged" />
+                            <Button Content="Set to All Locales" Canvas.Left="492" Canvas.Top="93" Height="22" Click="btn_OneLineTitleApplyAllLocales_Click"/>
 
-                    <Label Content="Description" Canvas.Top="72" Canvas.Left="10">
-                        <Label.ToolTip>
-                            <TextBlock>
+                            <Label Content="Description" Canvas.Top="120" Canvas.Left="10" Width="101">
+                                <Label.ToolTip>
+                                    <TextBlock>
                                 <TextBlock FontWeight="Bold" FontSize="14">Description</TextBlock> <LineBreak />
                                 For GT6 only. <LineBreak />
                                 Description to show on the Event Info screen. Can have multiple lines and symbols. <LineBreak/>
                                 <LineBreak/>
                                 <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">information->description</TextBlock>
                              </TextBlock>
-                        </Label.ToolTip>
-                    </Label>
-                    <TextBox Name="txt_Description" Height="287" Width="469" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" TextWrapping="Wrap" AcceptsReturn="True" Canvas.Left="116" Canvas.Top="76" TextChanged="txt_Description_TextChanged" />
+                                </Label.ToolTip>
+                            </Label>
+                            <TextBox Name="txt_Description" Height="301" Width="469" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" TextWrapping="Wrap" AcceptsReturn="True" Canvas.Left="117" Canvas.Top="120" TextChanged="txt_Description_TextChanged" />
+                            <Button Content="Set to All Locales" Canvas.Left="492" Canvas.Top="426" Height="22" Click="btn_DescriptionApplyAllLocales_Click"/>
+                        </Canvas>
+                    </GroupBox>
 
-                    <GroupBox Header="Online Event Information (GT6 Seasonals)" Height="353" Width="348" Canvas.Left="623" Canvas.Top="10">
+                    <GroupBox Header="Online Event Information (GT6 Seasonals)" Height="512" Width="348" Canvas.Left="623" Canvas.Top="10">
                         <Canvas>
                             <Label Content="Start Date" Canvas.Left="10" Canvas.Top="10" >
                                 <Label.ToolTip>

@@ -259,7 +259,8 @@ namespace GTEventGenerator
             openFile.Title = "Import Events";
             openFile.ShowDialog();
 
-            new GameParameter().ReadFromCache(openFile.FileName);
+            if (!string.IsNullOrEmpty(openFile.FileName))
+                new GameParameter().ReadFromCache(openFile.FileName);
         }
 
         private void newEventToolStripMenuItem_Click(object sender, EventArgs e)
@@ -274,7 +275,6 @@ namespace GTEventGenerator
                 CurrentEvent = null;
 
                 RefreshFolderControls();
-                txtEventName.Text = "";
 
                 tabEvent.SelectedIndex = 0;
 
@@ -799,6 +799,10 @@ namespace GTEventGenerator
             Event evnt = new Event();
             evnt.Index = GameParameter.Events.Count + 1;
             evnt.Name = $"Event {evnt.Index}";
+
+            foreach (var code in EventInformation.LocaleCodes)
+                evnt.Information.Titles[code] = $"Event {evnt.Index}";
+
             evnt.Rewards.Stars = 3;
 
             EventNames.Add($"{evnt.Index} - {evnt.Name}");
@@ -816,32 +820,6 @@ namespace GTEventGenerator
 
             btnRemoveRace.IsEnabled = GameParameter.Events.Count <= 100;
             btnCopyRace.IsEnabled = GameParameter.Events.Count <= 100;
-            _processEventSwitch = true;
-        }
-
-        private void txtEventName_TextChanged(object sender, EventArgs e)
-        {
-            if (CurrentEvent is null || !_processEventSwitch)
-                return;
-
-            CurrentEvent.Name = (sender as TextBox).Text;
-            _processEventSwitch = false;
-            txtEventName.Text = CurrentEvent.Name;
-            txt_EventTitle.Text = CurrentEvent.Name;
-            _processEventSwitch = true;
-
-            CurrentEvent.Information.SetTitle(CurrentEvent.Name);
-
-            int currentEventIndex = GameParameter.Events.IndexOf(CurrentEvent);
-
-            if (currentEventIndex < EventNames.Count)
-                EventNames[currentEventIndex] = $"{CurrentEvent.Index} - {CurrentEvent.Name}";
-
-            ReloadEventLists();
-            UpdateEventListing();
-
-            _processEventSwitch = false;
-            cb_QuickEventPicker.SelectedIndex = currentEventIndex;
             _processEventSwitch = true;
         }
 
@@ -1046,8 +1024,21 @@ namespace GTEventGenerator
                 return;
             }
 
-            
-            _eventImage = System.Drawing.Image.FromFile(openImage.FileName);
+            try
+            {
+                _eventImage = System.Drawing.Image.FromFile(openImage.FileName);
+            }
+            catch
+            {
+                MessageBox.Show("Could not load the image.", "Image Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (_eventImage.Width > 1920 || _eventImage.Height > 1080)
+            {
+                MessageBox.Show("Image file is too big in size. Recommended: 432x244.", "Image Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
             using (Graphics graphic = Graphics.FromImage(new Bitmap(_eventImage)))
             {
@@ -1195,7 +1186,6 @@ namespace GTEventGenerator
                 rdoStarsOne.IsChecked = true;
             else if (CurrentEvent.Rewards.Stars == 3)
                 rdoStarsThree.IsChecked = true;
-            txtEventName.Text = CurrentEvent.Name;
 
             iud_EventID.IsEnabled = GameParameter.Events.Any() && CurrentEvent == GameParameter.Events[0];
         }
@@ -1236,7 +1226,6 @@ namespace GTEventGenerator
                 i.IsEnabled = isEnabled;
             }
 
-            txtEventName.IsEnabled = isEnabled;
             btnCreditRewards.IsEnabled = isEnabled;
             rdoStarsNone.IsEnabled = isEnabled;
             rdoStarsOne.IsEnabled = isEnabled;
@@ -1263,7 +1252,7 @@ namespace GTEventGenerator
             CheckTabAvailability();
         }
 
-        void CheckMenuDB(string file)
+        public void CheckMenuDB(string file)
         {
             MenuDB = new MenuDB(file);
 
@@ -1288,7 +1277,7 @@ namespace GTEventGenerator
             }
         }
 
-        void GenerateGameParameter()
+        public void GenerateGameParameter()
         {
             if (/*!eventHasNoStars && */!validationErrors)
             {
@@ -1552,12 +1541,14 @@ namespace GTEventGenerator
                 var evnt = GameParameter.Events[i];
                 if (!string.IsNullOrEmpty(evnt.Information.Titles["GB"])) // Grab GB one if provided
                 {
-                    GameParameter.Events[i].Name = evnt.Information.Titles["GB"];
+                    evnt.Name = evnt.Information.Titles["GB"];
                 }
                 else
                 {
-                    GameParameter.Events[i].Name = $"Event {i + 1}";
-                    GameParameter.Events[i].Information.SetTitle($"Event {i + 1}");
+                    evnt.Name = $"Event {i + 1}";
+
+                    foreach (var code in EventInformation.LocaleCodes)
+                        evnt.Information.Titles[code] = $"Event {i + 1}";
                 }
             }
 

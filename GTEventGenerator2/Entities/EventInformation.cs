@@ -17,23 +17,36 @@ namespace GTEventGenerator.Entities
         public Dictionary<string, string> OneLineTitles { get; set; }
         public Dictionary<string, string> Descriptions { get; set; }
 
+        public static readonly List<string> LocaleCodes = new List<string>()
+        {
+            "JP","US","GB","FR","ES","DE","IT","NL","PT","RU","PL",
+            "TR","KR","EL","TW","CN","DK","NO","SE","FI","CZ","HU","BP","MS",
+        };
+
         public static readonly Dictionary<string, string> Locales = new Dictionary<string, string>()
         {
             { "JP", "Japanese" },
             { "US", "American" },
-            { "GB", "British" },
+            { "GB", "British (Primary)" },
             { "FR", "French" },
+            { "ES", "Spanish" },
             { "DE", "German" },
             { "IT", "Italian" },
-            { "ES", "Spanish" },
-            { "PT", "Portuguese" },
             { "NL", "Dutch" },
+            { "PT", "Portuguese" },
             { "RU", "Russian" },
-            { "KR", "Korean" },
-            { "TW", "Chinese (Taiwan)" },
-            { "EL", "Greek" },
-            { "TR", "Turkish" },
             { "PL", "Polish" },
+            { "TR", "Turkish" },
+            { "KR", "Korean" },
+            { "EL", "Greek" },
+
+            { "TW", "Chinese (Taiwan) - Unused" }, // Non included
+            { "CN", "Chinese - Unused" }, // Non included
+            { "DK", "Danish - Unused" }, // Non included 
+            { "NO", "Norwegian - Unused" }, // Non included
+            { "SE", "Swedish - Unused" }, // Non included
+
+            { "FI", "Finish" },
             { "CZ", "Czech" },
             { "HU", "Magyar (Hungary)" },
             { "BP", "Portuguese (Brazillian)" },
@@ -47,22 +60,19 @@ namespace GTEventGenerator.Entities
             Descriptions = InitializeLocaleStrings();
         }
 
-        public void SetTitle(string title)
+        public void SetTitle(string locale, string title)
         {
-            foreach (var locale in Locales)
-                Titles[locale.Key] = title;
+            Titles[locale] = title;
         }
 
-        public void SetOneLineTitle(string title)
+        public void SetOneLineTitle(string locale, string title)
         {
-            foreach (var locale in Locales)
-                OneLineTitles[locale.Key] = title;
+            OneLineTitles[locale] = title;
         }
 
-        public void SetDescription(string description)
+        public void SetDescription(string locale, string description)
         {
-            foreach (var locale in Locales)
-                Descriptions[locale.Key] = description;
+            Descriptions[locale] = description;
         }
 
         private Dictionary<string, string> InitializeLocaleStrings()
@@ -83,21 +93,29 @@ namespace GTEventGenerator.Entities
                 xml.WriteElementValue("race_info_minute", "");
 
                 xml.WriteStartElement("title");
-                foreach (var title in Titles)
-                    xml.WriteElementString(title.Key, title.Value);
+                WriteLocales(Titles);
                 xml.WriteEndElement();
 
                 xml.WriteStartElement("one_line_title");
-                foreach (var title in OneLineTitles)
-                    xml.WriteElementString(title.Key, title.Value);
+                WriteLocales(OneLineTitles);
                 xml.WriteEndElement();
 
                 xml.WriteStartElement("description");
-                foreach (var desc in Descriptions)
-                    xml.WriteElementString(desc.Key, desc.Value);
+                WriteLocales(Descriptions);
                 xml.WriteEndElement();
             } 
             xml.WriteEndElement();
+
+            void WriteLocales(Dictionary<string, string> locales)
+            {
+                foreach (var title in locales)
+                {
+                    if (title.Key == "TW" || title.Key == "CN" || title.Key == "DK" || title.Key == "NO" || title.Key == "SE")
+                        continue;
+
+                    xml.WriteElementString(title.Key, title.Value);
+                }
+            }
         }
 
         public void WriteToCache(ref BitStream bs)
@@ -147,7 +165,7 @@ namespace GTEventGenerator.Entities
                         continue;
                     }
 
-                    bs.WriteNullStringAligned4(list["GB"]);
+                    bs.WriteNullStringAligned4(list.ElementAt(i).Value);
                 }
             }
         }
@@ -158,7 +176,6 @@ namespace GTEventGenerator.Entities
             {
                 switch (informationNode.Name)
                 {
-                    // Use GB only without localisation for the time being
                     case "title":
                         foreach (XmlNode titleNode in informationNode.ChildNodes)
                         {
@@ -175,18 +192,14 @@ namespace GTEventGenerator.Entities
                         foreach (XmlNode descNode in informationNode.ChildNodes)
                         {
                             if (Descriptions.TryGetValue(descNode.Name, out _))
-                            {
                                 Descriptions[descNode.Name] = descNode.InnerText;
-                            }
                         }
                         break;
                     case "one_line_title":
                         foreach (XmlNode descNode in informationNode.ChildNodes)
                         {
                             if (Descriptions.TryGetValue(descNode.Name, out _))
-                            {
                                 OneLineTitles[descNode.Name] = descNode.InnerText;
-                            }
                         }
                         break;
                 }
