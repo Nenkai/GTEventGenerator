@@ -290,6 +290,10 @@ namespace GTEventGenerator.Entities
                         Inheritance = node.ReadValueBool();
                         break;
 
+                    case "stage_data":
+                        StageData.ParseStageData(node);
+                        break;
+
                     case "begin_date":
                         string date = node.InnerText.Replace("/00", "/01");
                         DateTime.TryParseExact(date, "yyyy/MM/dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime time);

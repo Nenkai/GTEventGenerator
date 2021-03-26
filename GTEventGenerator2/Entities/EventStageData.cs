@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
+using GTEventGenerator.Utils;
 using PDTools.Utils;
 namespace GTEventGenerator.Entities
 {
@@ -46,12 +48,123 @@ namespace GTEventGenerator.Entities
             foreach (var stageResetData in RaceEnd)
                 stageResetData.WriteToCache(ref bs);
         }
+
+        public void ParseStageData(XmlNode node)
+        {
+            foreach (XmlNode pNode in node.ChildNodes)
+            {
+                switch (pNode.Name)
+                {
+                    case "layout_type_at_quick":
+                        LayoutTypeAtQuick = pNode.ReadValueEnum<StageLayoutType>();
+                        break;
+                    case "layout_type_before_start":
+                        LayoutTypeBeforeStart = pNode.ReadValueEnum<StageLayoutType>();
+                        break;
+                    case "layout_type_countdown":
+                        LayoutTypeCountdown = pNode.ReadValueEnum<StageLayoutType>();
+                        break;
+                    case "layout_type_race_end":
+                        LayoutTypeRaceEnd = pNode.ReadValueEnum<StageLayoutType>();
+                        break;
+
+
+                    case "at_quick_back":
+                        AtQuick = ParseStageDataResetList();
+                        break;
+                    case "before_start":
+                        BeforeStart = ParseStageDataResetList();
+                        break;
+                    case "race_start":
+                        RaceStart = ParseStageDataResetList();
+                        break;
+                    case "race_end":
+                        RaceEnd = ParseStageDataResetList();
+                        break;
+                }
+            }
+        }
+
+        public void WriteToXml(XmlWriter xml)
+        {
+            if (AtQuick.Count == 0 && BeforeStart.Count == 0 && RaceEnd.Count == 0 && RaceStart.Count == 0)
+                return;
+
+            xml.WriteStartElement("stage_data");
+
+            xml.WriteElementValue("layout_type_at_quick", LayoutTypeAtQuick.ToString());
+            xml.WriteElementValue("layout_type_before_start", LayoutTypeBeforeStart.ToString());
+            xml.WriteElementValue("layout_type_countdown", LayoutTypeCountdown.ToString());
+            xml.WriteElementValue("layout_type_race_end", LayoutTypeRaceEnd.ToString());
+
+            if (AtQuick.Count != 0)
+            {
+                xml.WriteElementValue("at_quick_back");
+                foreach (var stage in AtQuick)
+                    stage.WriteToXml(xml);
+                xml.WriteEndElement();
+            }
+
+            if (BeforeStart.Count != 0)
+            {
+                xml.WriteElementValue("before_start");
+                foreach (var stage in BeforeStart)
+                    stage.WriteToXml(xml);
+                xml.WriteEndElement();
+            }
+
+            if (RaceStart.Count != 0)
+            {
+                xml.WriteElementValue("race_start");
+                foreach (var stage in RaceStart)
+                    stage.WriteToXml(xml);
+                xml.WriteEndElement();
+            }
+
+            if (RaceEnd.Count != 0)
+            {
+                xml.WriteElementValue("race_end");
+                foreach (var stage in RaceEnd)
+                    stage.WriteToXml(xml);
+                xml.WriteEndElement();
+            }
+
+            xml.WriteEndElement();
+        }
+
+        public List<StageResetData> ParseStageDataResetList(XmlNode node)
+        {
+            var list = new List<StageResetData>();
+            foreach (XmlNode pNode in node.SelectNodes("stage_reset_data"))
+            {
+                var data = new StageResetData();
+                switch (pNode.Name)
+                {
+                    case "code":
+                        data.Code = pNode.ReadValueString(); break;
+                    case "coord":
+                        data.Coord = pNode.ReadValueEnum<StageCoordType>(); break;
+                    case "x":
+                        data.X = pNode.ReadValueSingle(); break;
+                    case "y":
+                        data.Y = pNode.ReadValueSingle(); break;
+                    case "z":
+                        data.Z = pNode.ReadValueSingle(); break;
+                    case "rotydeg":
+                        data.Z = pNode.ReadValueSingle(); break;
+                    case "vcoord":
+                        data.Z = pNode.ReadValueSingle(); break;
+                }
+
+                list.Add(data);
+            }
+        }
     }
 
     public class StageResetData
     {
         public string Code { get; set; }
-        public sbyte Coord { get; set; }
+        public StageCoordType Coord { get; set; }
         public sbyte TargetID { get; set; }
         public sbyte ResourceID { get; set; }
         public float X { get; set; }
@@ -65,7 +178,7 @@ namespace GTEventGenerator.Entities
             bs.WriteUInt32(0xE6_E6_0D_DD);
             bs.WriteUInt32(1_00);
             bs.WriteNullStringAligned4(Code);
-            bs.WriteSByte(Coord);
+            bs.WriteSByte((sbyte)Coord);
             bs.WriteSByte(TargetID);
             bs.WriteSByte(ResourceID);
             bs.WriteSByte(0); // Unk field_0x1f
@@ -75,6 +188,17 @@ namespace GTEventGenerator.Entities
             bs.WriteSingle(RotYDeg);
             bs.WriteSingle(VCoord);
         }
+
+        public void WriteToXml(XmlWriter xml)
+        {
+            xml.WriteElementValue("code", Code);
+            xml.WriteElementValue("coord", Coord.ToString());
+            xml.WriteElementFloat("x", X);
+            xml.WriteElementFloat("y", X);
+            xml.WriteElementFloat("z", X);
+            xml.WriteElementFloat("rotydeg", X);
+            xml.WriteElementFloat("vcoord", X);
+        }
     }
 
     public enum StageLayoutType
@@ -83,5 +207,17 @@ namespace GTEventGenerator.Entities
         RANK,
         SLOT,
         FRONT_2GRID,
+    }
+
+    public enum StageCoordType
+    {
+        WORLD,
+        GRID,
+        PITSTOP,
+        VCOORD,
+        START,
+        GRID_ALL,
+        PITSTOP_ALL,
+        VCOORD_CENTER
     }
 }
