@@ -47,8 +47,8 @@ namespace GTEventGenerator
             if (Points.Any())
             {
                 point.TimeRate = Points.Last().TimeRate + 10;
-                if (point.TimeRate > 100)
-                    point.TimeRate = 100;
+                if (point.TimeRate > 100f)
+                    point.TimeRate = 100.0f;
             }
             Points.Add(point);
 
@@ -112,17 +112,17 @@ namespace GTEventGenerator
 
         public void SetPointDescription()
         {
-            if (CurrentPoint.TimeRate == 0)
+            if (CurrentPoint.TimeRate <= 0f)
             {
                 lbl_CurrentPointDesc.Text = "Weather at Event Start";
             }
-            else if (CurrentPoint.TimeRate == 100)
+            else if (CurrentPoint.TimeRate >= 100f)
             {
                 lbl_CurrentPointDesc.Text = "Weather at the end of progression";
             }
             else
             {
-                var time = new TimeSpan(TimeProgressionLength.Ticks / 100 * CurrentPoint.TimeRate);
+                var time = new TimeSpan((long)(TimeProgressionLength.Ticks / 100 * CurrentPoint.TimeRate));
                 lbl_CurrentPointDesc.Text = $"Step to occur at {time.Humanize(3, maxUnit: Humanizer.Localisation.TimeUnit.Hour, minUnit: Humanizer.Localisation.TimeUnit.Second)}";
             }
         }

@@ -8,11 +8,12 @@ namespace GTEventGenerator.Entities
 {
     public class WeatherData
     {
-        public int TimeRate { get; set; }
+        public float TimeRate { get; set; }
         public float Low { get; set; }
         public float High { get; set; }
 
         public override string ToString()
             => $"Step ({TimeRate}%) Low: {Low} - High: {High}";
+
     }
 }

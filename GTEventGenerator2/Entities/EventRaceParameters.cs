@@ -103,7 +103,7 @@ namespace GTEventGenerator.Entities
         public byte WeatherPointNum { get; set; }
         public bool WeatherPrecRainOnly { get; set; }
         public bool WeatherPrecSnowOnly { get; set; }
-        public short WeatherTotalSec { get; set; } = 90;
+        public ushort WeatherTotalSec { get; set; } = 90;
         public bool WeatherRandom { get; set; }
         public int WeatherRandomSeed { get; set; }
         public List<WeatherData> NewWeatherData { get; set; } = new List<WeatherData>();
@@ -264,7 +264,7 @@ namespace GTEventGenerator.Entities
                 foreach (var data in NewWeatherData)
                 {
                     xml.WriteStartElement("point");
-                    xml.WriteElementInt("time_rate", data.TimeRate);
+                    xml.WriteElementFloat("time_rate", data.TimeRate);
                     xml.WriteElementFloat("low", data.Low);
                     xml.WriteElementFloat("high", data.High);
                     xml.WriteEndElement();
@@ -435,7 +435,7 @@ namespace GTEventGenerator.Entities
                     case "weather_accel_water_retention10":
                         WeatherAccelWaterRetention = raceNode.ReadValueShort(); break;
                     case "weather_total_sec":
-                        WeatherTotalSec = raceNode.ReadValueShort(); break;
+                        WeatherTotalSec = raceNode.ReadValueUShort(); break;
                     case "with_ghost":
                         WithGhost = raceNode.ReadValueBool(); break;
                     case "weather_accel10":
@@ -453,7 +453,7 @@ namespace GTEventGenerator.Entities
                                     switch (pointNode.Name)
                                     {
                                         case "time_rate":
-                                            data.TimeRate = pointNode.ReadValueInt(); break;
+                                            data.TimeRate = pointNode.ReadValueSingle(); break;
                                         case "low":
                                             data.Low = float.Parse(pointNode.ReadValueString(), CultureInfo.InvariantCulture.NumberFormat); break;
                                         case "high":
@@ -623,7 +623,7 @@ namespace GTEventGenerator.Entities
             FixedRetention = reader.ReadBoolBit();
             TrackWetness = (int)reader.ReadBits(4);
             DecisiveWeather = (DecisiveWeatherType)reader.ReadBits(3);
-            WeatherTotalSec = reader.ReadInt16();
+            WeatherTotalSec = reader.ReadUInt16();
             WeatherPointNum = (byte)reader.ReadBits(4);
             WeatherPointNum = (byte)reader.ReadBits(4);
 
@@ -631,9 +631,9 @@ namespace GTEventGenerator.Entities
                 reader.ReadBits(0x0c); // Do thing weather related with it
 
             for (int i = 0; i < 16; i++)
-                reader.ReadBits(6); // Do thing weather related with it
+                reader.ReadBits(6); // low
             for (int i = 0; i < 16; i++)
-                reader.ReadBits(6); // Again, and same function
+                reader.ReadBits(6); // high
 
             WeatherRandomSeed = reader.ReadInt32();
             WeatherNoPrecipitation = reader.ReadBoolBit(); //   weather_no_precipitation
@@ -773,7 +773,7 @@ namespace GTEventGenerator.Entities
 
             // entering weather zone
             reader.ReadBits(3); // decisive_weather
-            WeatherTotalSec = reader.ReadInt16(); // weather points? confirm this
+            WeatherTotalSec = reader.ReadUInt16(); // weather points? confirm this
             reader.ReadBits(4); // unk (field_0xae & 0x3ff)
             reader.ReadBits(4); // unk (field_0xae & 0xfc00)
 
@@ -838,7 +838,7 @@ namespace GTEventGenerator.Entities
             reader.ReadByte(); // ghost_presence_type
             reader.ReadIntoShortArray(30, EventVList, BitStream.Short_Bits); // event_v_list
 
-            ReadPenaltyParameter(ref reader);
+            PenaltyParameter.ReadPenaltyParameter(ref reader);
 
             var arr2 = new short[1];
             // Unk
@@ -867,86 +867,6 @@ namespace GTEventGenerator.Entities
                 reader.ReadBits(1); //  param_1->pilot_commands = uVar2 << 0x3f | param_1->pilot_commands & 0x7fffffffffffffff;
                 reader.ReadBits(7); //  param_1->pilot_commands = (uVar2 & 0x7f) << 0x38 | param_1->pilot_commands & 0x80ffffffffffffff;
             }
-        }
-
-        private void ReadPenaltyParameter(ref BitStream reader)
-        {
-            PenaltyParameter.Enable = reader.ReadBool(); // enable
-            PenaltyParameter.CarCrashInterval = reader.ReadByte(); // car_crash_interval
-            PenaltyParameter.ScoreSumThreshold = reader.ReadInt16(); // score_sum_threshold
-            PenaltyParameter.CondType = reader.ReadByte(); // cond_type
-            PenaltyParameter.RatioDiffMin = reader.ReadByte(); // ratio_diff_min
-            PenaltyParameter.ScoreDiffMin = reader.ReadInt16(); // score_diff_min
-            PenaltyParameter.CarImpactThreshold = reader.ReadByte(); // car_impact_threshold
-            PenaltyParameter.CarImpactThreshold2 = reader.ReadByte(); // car_impact_threshold2
-            PenaltyParameter.VelocityDirAngle0 = reader.ReadByte(); // velocity_dir_angle0
-            PenaltyParameter.VelocityDirAngle1 = reader.ReadByte(); // velocity_dir_angle1
-            PenaltyParameter.VelocityDirScore0 = reader.ReadInt16(); // velocity_dir_score0
-            PenaltyParameter.VelocityDirScore1 = reader.ReadInt16(); // velocity_dir_score1
-            PenaltyParameter.SteeringAngle0 = reader.ReadByte(); // steering_angle0
-            PenaltyParameter.SteeringAngle1 = reader.ReadByte(); // steering_angle1
-            PenaltyParameter.SpeedScore0 = reader.ReadInt16(); // speed_score0
-            PenaltyParameter.SpeedScore1 = reader.ReadInt16(); // speed_score1
-            PenaltyParameter.Speed0 = reader.ReadByte(); // speed0
-            PenaltyParameter.Speed1 = reader.ReadByte(); // speed1
-            reader.ReadInt16(); // unk field_0x18
-            reader.ReadInt16(); // unk field_0x1a
-            PenaltyParameter.BackwardAngle = reader.ReadByte(); // backward_angle
-            PenaltyParameter.BackwardMoveRatio = reader.ReadByte(); // backward_move_ratio
-            PenaltyParameter.WallImpactThreshold = reader.ReadByte(); // wall_impact_threshold
-            PenaltyParameter.WallAlongTimer = reader.ReadByte(); // wall_along_timer
-            PenaltyParameter.WallAlongCounter = reader.ReadByte(); // wall_along_counter
-            PenaltyParameter.PunishSpeedLimit = reader.ReadByte(); // punish_speed_limit
-            PenaltyParameter.PunishImpactThreshold0 = reader.ReadByte(); // punish_impact_threshold0
-            PenaltyParameter.PunishImpactThreshold1 = reader.ReadByte(); // punish_impact_threshold1
-
-            // Needs research
-            for (int i = 0; i < 8; i++)
-            {
-                reader.ReadByte();
-                reader.ReadByte();
-                reader.ReadByte();
-                reader.ReadByte();
-                reader.ReadByte();
-                reader.ReadByte();
-                reader.ReadByte();
-                reader.ReadByte();
-            }
-
-            PenaltyParameter.PunishCollision = reader.ReadBool(); // punish_collision
-            PenaltyParameter.CollisionRecoverDelay = reader.ReadByte(); // collision_recover_delay
-            PenaltyParameter.ShortcutRadius = reader.ReadInt16(); // shortcut_radius
-            PenaltyParameter.ShortcutMinSpeed = reader.ReadByte(); // shortcut_min_speed
-            PenaltyParameter.FreeCrashedbyAutodrive = reader.ReadBool(); // free_crashed_by_autodrive
-            PenaltyParameter.FreeRatioByAutodrive = reader.ReadByte(); // free_ratio_by_autodrive
-            PenaltyParameter.PitPenalty = reader.ReadBool(); // pit_penalty
-            PenaltyParameter.SideSpeed0 = reader.ReadByte(); // side_speed0
-            PenaltyParameter.SideSpeed1 = reader.ReadByte(); // side_speed1
-            PenaltyParameter.SideSpeedScore0 = reader.ReadInt16(); // side_speed_score0
-            PenaltyParameter.SideSpeedScore1 = reader.ReadInt16(); // side_speed_score1
-            PenaltyParameter.ShortcutCancelTime1 = reader.ReadByte(); // shortcut_cancel_time1
-            PenaltyParameter.ShortcutCancelTime0 = reader.ReadByte(); // shortcut_cancel_time0
-            PenaltyParameter.CollisionOffScore0 = reader.ReadInt16(); // collision_off_score0
-            PenaltyParameter.CollisionOffScore1 = reader.ReadInt16(); // collision_off_score1
-            PenaltyParameter.CollisionOffScoreType = reader.ReadByte(); // collision_off_score_type
-            reader.ReadByte(); // unk field_0x79
-            PenaltyParameter.FreeLessRatio = reader.ReadByte(); // free_less_ratio
-            PenaltyParameter.CancelSteeringAngleDiff = reader.ReadByte(); // cancel_steering_angle_diff
-            PenaltyParameter.CollisionOffDispScore0 = reader.ReadInt16(); // collision_off_disp_score0
-            PenaltyParameter.ShortcutCancelInJamSpeed = reader.ReadByte(); // shortcut_cancel_in_jam_speed_ratio
-            reader.ReadByte(); // unk field_0x7f
-            PenaltyParameter.SteeringScoreRatioMin = reader.ReadByte(); // steering_score_ratio_min
-            PenaltyParameter.SteeringScoreRatioMax = reader.ReadByte(); // steering_score_ratio_max
-            PenaltyParameter.WallImpactThreshold = reader.ReadByte(); // wall_impact_threshold0
-            PenaltyParameter.ShortcutRatio = reader.ReadByte(); // shortcut_ratio
-            PenaltyParameter.SideSpeed0Steering = reader.ReadByte(); // side_speed0_steering
-            PenaltyParameter.SideSpeed1Steering = reader.ReadByte(); // side_speed1_steering
-            PenaltyParameter.SideSpeedSteeringScore0 = reader.ReadByte(); // side_speed_steering_score0
-            PenaltyParameter.SideSpeedSteeringScore1 = reader.ReadByte(); // side_speed_steering_score1
-            PenaltyParameter.ShortcutType = reader.ReadByte(); // shortcut_type
-            PenaltyParameter.PenaSpeedRatio1 = reader.ReadByte(); // pena_speed_ratio1
-            PenaltyParameter.PenaSpeedRatio2 = reader.ReadByte(); // pena_speed_ratio2
-            PenaltyParameter.PenaSpeedRatio3 = reader.ReadByte(); // pena_speed_ratio3
         }
 
         public void WriteToCache(ref BitStream bs, GameDB db, Event parent)
@@ -1061,18 +981,11 @@ namespace GTEventGenerator.Entities
             bs.WriteBits((ulong)TrackWetness, 4); // initial_retention10
             bs.WriteBits((ulong)DecisiveWeather, 3);
 
-            bs.WriteInt16(WeatherTotalSec);
+            bs.WriteUInt16((ushort)(WeatherTotalSec / 2));
             bs.WriteBits(WeatherPointNum, 4);
-            bs.WriteBits(WeatherPointNum, 4); // Again Maybe?
+            bs.WriteBits(0, 4); // Again Maybe?
 
-            // Stub while figured
-            for (int i = 1; i < 15; i++)
-                bs.WriteBits(0, 12); // Do thing weather related with it
-
-            for (int i = 0; i < 16; i++)
-                bs.WriteBits(0, 6); // Do thing weather related with it
-            for (int i = 0; i < 16; i++)
-                bs.WriteBits(0, 6); // Again, and same function
+            WriteWeatherData(ref bs);
 
             bs.WriteInt32(WeatherRandomSeed);
             bs.WriteBoolBit(WeatherNoPrecipitation);
@@ -1138,81 +1051,7 @@ namespace GTEventGenerator.Entities
                 bs.WriteInt16(EventVList[i]);
 
             // Write Penalty Parameter
-            bs.WriteBool(PenaltyParameter.Enable);
-            bs.WriteByte(PenaltyParameter.CarCrashInterval);
-            bs.WriteInt16(PenaltyParameter.ScoreSumThreshold);
-            bs.WriteByte(PenaltyParameter.CondType);
-            bs.WriteByte(PenaltyParameter.RatioDiffMin);
-            bs.WriteInt16(PenaltyParameter.ScoreDiffMin);
-            bs.WriteByte(PenaltyParameter.CarImpactThreshold);
-            bs.WriteByte(PenaltyParameter.CarImpactThreshold2);
-            bs.WriteByte(PenaltyParameter.VelocityDirAngle0);
-            bs.WriteByte(PenaltyParameter.VelocityDirAngle1);
-            bs.WriteInt16(PenaltyParameter.VelocityDirScore0);
-            bs.WriteInt16(PenaltyParameter.VelocityDirScore1);
-            bs.WriteByte(PenaltyParameter.SteeringAngle0);
-            bs.WriteByte(PenaltyParameter.SteeringAngle1);
-            bs.WriteInt16(PenaltyParameter.SpeedScore0);
-            bs.WriteInt16(PenaltyParameter.SpeedScore1);
-            bs.WriteByte(PenaltyParameter.Speed0);
-            bs.WriteByte(PenaltyParameter.Speed1);
-            bs.WriteInt16(PenaltyParameter.unk0);
-            bs.WriteInt16(PenaltyParameter.unk1);
-            bs.WriteByte(PenaltyParameter.BackwardAngle);
-            bs.WriteByte(PenaltyParameter.BackwardMoveRatio);
-            bs.WriteByte(PenaltyParameter.WallImpactThreshold);
-            bs.WriteByte(PenaltyParameter.WallAlongTimer);
-            bs.WriteByte(PenaltyParameter.WallAlongCounter);
-            bs.WriteByte(PenaltyParameter.PunishSpeedLimit);
-            bs.WriteByte(PenaltyParameter.PunishImpactThreshold0);
-            bs.WriteByte(PenaltyParameter.PunishImpactThreshold1);
-
-            for (int i = 0; i < 8; i++)
-            {
-                bs.WriteByte(PenaltyParameter.UnkPenaltyDatas[i].unk1);
-                bs.WriteByte(PenaltyParameter.UnkPenaltyDatas[i].unk2);
-                bs.WriteByte(PenaltyParameter.UnkPenaltyDatas[i].unk3);
-                bs.WriteByte(PenaltyParameter.UnkPenaltyDatas[i].unk4);
-                bs.WriteByte(PenaltyParameter.UnkPenaltyDatas[i].unk5);
-                bs.WriteByte(PenaltyParameter.UnkPenaltyDatas[i].unk6);
-                bs.WriteByte(PenaltyParameter.UnkPenaltyDatas[i].unk7);
-                bs.WriteByte(PenaltyParameter.UnkPenaltyDatas[i].unk8);
-            }
-
-            bs.WriteBool(PenaltyParameter.PunishCollision);
-            bs.WriteByte(PenaltyParameter.CollisionRecoverDelay);
-            bs.WriteInt16(PenaltyParameter.ShortcutRadius);
-            bs.WriteByte(PenaltyParameter.ShortcutMinSpeed);
-            bs.WriteBool(PenaltyParameter.FreeCrashedbyAutodrive);
-            bs.WriteByte(PenaltyParameter.FreeRatioByAutodrive);
-            bs.WriteBool(PenaltyParameter.PitPenalty);
-            bs.WriteByte(PenaltyParameter.SideSpeed0);
-            bs.WriteByte(PenaltyParameter.SideSpeed1);
-            bs.WriteInt16(PenaltyParameter.SideSpeedScore0);
-            bs.WriteInt16(PenaltyParameter.SideSpeedScore1);
-            bs.WriteByte(PenaltyParameter.ShortcutCancelTime0);
-            bs.WriteByte(PenaltyParameter.ShortcutCancelTime1);
-            bs.WriteInt16(PenaltyParameter.CollisionOffScore0);
-            bs.WriteInt16(PenaltyParameter.CollisionOffScore1);
-            bs.WriteByte(PenaltyParameter.CollisionOffScoreType);
-            bs.WriteByte(0);
-            bs.WriteByte(PenaltyParameter.FreeLessRatio);
-            bs.WriteByte(PenaltyParameter.CancelSteeringAngleDiff);
-            bs.WriteInt16(PenaltyParameter.CollisionOffDispScore0);
-            bs.WriteByte(PenaltyParameter.ShortcutCancelInJamSpeed);
-            bs.WriteByte(0);
-            bs.WriteByte(PenaltyParameter.SteeringScoreRatioMin);
-            bs.WriteByte(PenaltyParameter.SteeringScoreRatioMax);
-            bs.WriteByte(PenaltyParameter.WallImpactThreshold0);
-            bs.WriteByte(PenaltyParameter.ShortcutRatio);
-            bs.WriteByte(PenaltyParameter.SideSpeed0Steering);
-            bs.WriteByte(PenaltyParameter.SideSpeed1Steering);
-            bs.WriteByte(PenaltyParameter.SideSpeedSteeringScore0);
-            bs.WriteByte(PenaltyParameter.SideSpeedSteeringScore1);
-            bs.WriteByte(PenaltyParameter.ShortcutType);
-            bs.WriteByte(PenaltyParameter.PenaSpeedRatio1);
-            bs.WriteByte(PenaltyParameter.PenaSpeedRatio2);
-            bs.WriteByte(PenaltyParameter.PenaSpeedRatio3);
+            PenaltyParameter.WritePenaltyParameter(ref bs);
 
             bs.WriteInt16(0); // field_0x3f0 - Array of 1
             for (int i = 0; i < 4; i++)
@@ -1228,6 +1067,56 @@ namespace GTEventGenerator.Entities
             bs.WriteBits(0, 1);
             bs.WriteBits(0, 7);
 
+        }
+
+        public void WriteWeatherData(ref BitStream bs)
+        {
+            for (int i = 0; i < 16; i++)
+            {
+                if (i == 0)
+                    continue;
+
+                // Time rate is a int that goes from 0 to 4095
+                // 16 points, 15 middle points we need to write
+                if (i < NewWeatherData.Count)
+                {
+                    WeatherData weatherPoint = (WeatherData)NewWeatherData[i];
+
+                    ulong tRate = (ulong)(weatherPoint.TimeRate * (Math.Pow(2, 12) - 1)) / 100; // Convert float from 0 to 100 into an int value between 0 and 4095
+                    bs.WriteBits(tRate, 12);
+                }
+                else
+                    bs.WriteBits(0, 12);
+            }
+
+            // Low & high goes from 0 to 63
+            for (int i = 0; i < 16; i++)
+            {
+                if (i < NewWeatherData.Count)
+                {
+                    WeatherData weatherPoint = (WeatherData)NewWeatherData[i];
+
+                    float rawVal = weatherPoint.Low + 1f; // Ensure to care about -1 to 0
+                    ulong lowBits = (ulong)(rawVal * (Math.Pow(2, 6) - 1)); // Convert float from 0 to 2 into an int value between 0 and 63
+                    bs.WriteBits(lowBits, 4);
+                }
+                else
+                    bs.WriteBits(0, 4);
+            }
+
+            for (int i = 0; i < 16; i++)
+            {
+                if (i < NewWeatherData.Count)
+                {
+                    WeatherData weatherPoint = (WeatherData)NewWeatherData[i];
+
+                    float rawVal = weatherPoint.Low + 1f; // Ensure to care about -1 to 0
+                    ulong highBits = (ulong)(rawVal * (Math.Pow(2, 6) - 1)); // Convert float from 0 to 2 into an int value between 0 and 63
+                    bs.WriteBits(highBits, 6);
+                }
+                else
+                    bs.WriteBits(0, 4);
+            }
         }
     }
 

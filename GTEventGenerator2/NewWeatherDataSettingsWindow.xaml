@@ -36,7 +36,7 @@
                             </TextBlock>
                     </Label.ToolTip>
                 </Label>
-                <xctk:IntegerUpDown Name="iud_TimeRate" Value="{Binding TimeRate}" Height="20" Canvas.Left="163" Canvas.Top="16" Minimum="0" Maximum="100" 
+                <xctk:SingleUpDown Name="iud_TimeRate" Value="{Binding TimeRate}" Height="20" Canvas.Left="163" Canvas.Top="16" Minimum="0" Maximum="100" 
                                     BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" ValueChanged="pointTime_ValueChanged" Width="63"/>
 
                 <Label Content="Low" HorizontalAlignment="Right" VerticalAlignment="Top" Width="35" Canvas.Left="10" Canvas.Top="41">
