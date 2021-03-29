@@ -70,16 +70,16 @@ namespace GTEventGenerator.Entities
 
 
                     case "at_quick_back":
-                        AtQuick = ParseStageDataResetList();
+                        AtQuick = ParseStageDataResetList(pNode);
                         break;
                     case "before_start":
-                        BeforeStart = ParseStageDataResetList();
+                        BeforeStart = ParseStageDataResetList(pNode);
                         break;
-                    case "race_start":
-                        RaceStart = ParseStageDataResetList();
+                    case "countdown":
+                        Countdown = ParseStageDataResetList(pNode);
                         break;
                     case "race_end":
-                        RaceEnd = ParseStageDataResetList();
+                        RaceEnd = ParseStageDataResetList(pNode);
                         break;
                 }
             }
@@ -87,7 +87,7 @@ namespace GTEventGenerator.Entities
 
         public void WriteToXml(XmlWriter xml)
         {
-            if (AtQuick.Count == 0 && BeforeStart.Count == 0 && RaceEnd.Count == 0 && RaceStart.Count == 0)
+            if (AtQuick.Count == 0 && BeforeStart.Count == 0 && RaceEnd.Count == 0 && Countdown.Count == 0)
                 return;
 
             xml.WriteStartElement("stage_data");
@@ -99,7 +99,7 @@ namespace GTEventGenerator.Entities
 
             if (AtQuick.Count != 0)
             {
-                xml.WriteElementValue("at_quick_back");
+                xml.WriteStartElement("at_quick_back");
                 foreach (var stage in AtQuick)
                     stage.WriteToXml(xml);
                 xml.WriteEndElement();
@@ -107,23 +107,23 @@ namespace GTEventGenerator.Entities
 
             if (BeforeStart.Count != 0)
             {
-                xml.WriteElementValue("before_start");
+                xml.WriteStartElement("before_start");
                 foreach (var stage in BeforeStart)
                     stage.WriteToXml(xml);
                 xml.WriteEndElement();
             }
 
-            if (RaceStart.Count != 0)
+            if (Countdown.Count != 0)
             {
-                xml.WriteElementValue("race_start");
-                foreach (var stage in RaceStart)
+                xml.WriteStartElement("race_start");
+                foreach (var stage in Countdown)
                     stage.WriteToXml(xml);
                 xml.WriteEndElement();
             }
 
             if (RaceEnd.Count != 0)
             {
-                xml.WriteElementValue("race_end");
+                xml.WriteStartElement("race_end");
                 foreach (var stage in RaceEnd)
                     stage.WriteToXml(xml);
                 xml.WriteEndElement();
@@ -158,6 +158,8 @@ namespace GTEventGenerator.Entities
 
                 list.Add(data);
             }
+
+            return list;
         }
     }
 

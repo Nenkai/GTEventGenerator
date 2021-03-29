@@ -45,9 +45,9 @@ namespace GTEventGenerator.Entities
         public short GapForRollingDistance { get; set; }
 
         public sbyte AIRoughness { get; set; } = -1;
-        public int AIBaseSkillStarting { get; set; } = 80;
-        public int AICornerSkillStarting { get; set; } = 80;
-        public int AIBrakingSkillStarting { get; set; } = 80;
+        public short AIBaseSkillStarting { get; set; } = 80;
+        public short AICornerSkillStarting { get; set; } = 80;
+        public short AIBrakingSkillStarting { get; set; } = 80;
         public sbyte AIAccelSkillStarting { get; set; } = 80;
         public sbyte AIStartSkillStarting { get; set; } = 80;
 
@@ -148,11 +148,11 @@ namespace GTEventGenerator.Entities
                         switch (entryGenerateNode.Name)
                         {
                             case "ai_skill":
-                                AIBaseSkillStarting = entryGenerateNode.ReadValueInt(); break;
+                                AIBaseSkillStarting = entryGenerateNode.ReadValueShort(); break;
                             case "ai_skill_breaking":
-                                AIBrakingSkillStarting = entryGenerateNode.ReadValueInt(); break;
+                                AIBrakingSkillStarting = entryGenerateNode.ReadValueShort(); break;
                             case "ai_skill_cornering":
-                                AICornerSkillStarting = entryGenerateNode.ReadValueInt(); break;
+                                AICornerSkillStarting = entryGenerateNode.ReadValueShort(); break;
                             case "ai_skill_accelerating":
                                 AIAccelSkillStarting = entryGenerateNode.ReadValueSByte(); break;
                             case "ai_skill_starting":
@@ -247,11 +247,11 @@ namespace GTEventGenerator.Entities
                         break;
 
                     case "ai_skill":
-                        newEntry.BaseSkill = entryDetailNode.ReadValueInt();
+                        newEntry.BaseSkill = entryDetailNode.ReadValueShort();
                         break;
 
                     case "ai_skill_breaking":
-                        newEntry.BrakingSkill = entryDetailNode.ReadValueSByte();
+                        newEntry.BrakingSkill = entryDetailNode.ReadValueShort();
                         break;
 
                     case "ai_skill_cornering":

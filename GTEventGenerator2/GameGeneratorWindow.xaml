@@ -659,37 +659,38 @@
                                 <Label.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Min Temp Diff</TextBlock> <LineBreak />
-                                    Min temperature difference to the base, affects how fast water can dry.<LineBreak/>
+                                    Min temperature difference to the base, affects how fast water can dry (in 2°C increments).<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->weather_min_celsius</TextBlock>
                                     </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            <xctk:SByteUpDown Value="{Binding Path=RaceParameters.WeatherMinCelsius}"  Height="20" Width="70" Canvas.Left="164" Canvas.Top="100" Maximum="8" Minimum="-7" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:SByteUpDown Value="{Binding Path=RaceParameters.WeatherMinCelsius}"  Height="20" Width="70" Canvas.Left="164" Canvas.Top="100" Maximum="7" Minimum="-8" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_MaxTemp" Content="Max Temp Diff (in °C)" Height="28" Width="145" TabIndex="4" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="67" >
                                 <Label.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Max Temp Diff</TextBlock> <LineBreak />
-                                    Max temperature difference to the base, affects how fast water can dry.<LineBreak/>
+                                    Max temperature difference to the base, affects how fast water can dry (in 2°C increments).<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->weather_max_celsius</TextBlock>
                                     </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            <xctk:SByteUpDown Value="{Binding Path=RaceParameters.WeatherMaxCelsius}"  Height="20" Width="70" Canvas.Left="164" Canvas.Top="70" Maximum="8" Minimum="-7" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:SByteUpDown Value="{Binding Path=RaceParameters.WeatherMaxCelsius}"  Height="20" Width="70" Canvas.Left="164" Canvas.Top="70" Maximum="7" Minimum="-8" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_BaseTemp" Content="Base Temperature (in °C)" Height="30" Width="144" TabIndex="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="37" Canvas.Left="10">
                                 <Label.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Base Temperature</TextBlock> <LineBreak />
                                     Initial temperature, affects how fast water can dry.<LineBreak/>
+                                    Default is 63°C, If it is set to 63°C, it will not be specified and the default temperature course will be applied.
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->weather_base_celsius</TextBlock>
                                     </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            <xctk:SByteUpDown Value="{Binding Path=RaceParameters.WeatherBaseCelsius}"  Height="20" Width="70" Canvas.Left="166" Canvas.Top="41" Maximum="63" Minimum="-63" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:SByteUpDown Value="{Binding Path=RaceParameters.WeatherBaseCelsius}"  Height="20" Width="70" Canvas.Left="166" Canvas.Top="41" Maximum="63" Minimum="-64" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <CheckBox Name="cb_StartTime" Height="24" Width="77" TabIndex="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="8" VerticalContentAlignment="Center" Unchecked="cb_StartTime_Checked" Checked="cb_StartTime_Checked"
                                       Content="Event Date">
@@ -1728,11 +1729,11 @@
 
                             <Label Name="label_BaseSkillMin" Height="25" Width="33" TabIndex="50" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="68" 
                                    ToolTip="When an AI is generated, the minimum base skill it will use to make a random one.">Min</Label>
-                            <xctk:IntegerUpDown Name="numericUpDown_BaseSkillMin" Value="{Binding Path=Entries.AIBaseSkillStarting}" Height="20" Width="50" Canvas.Left="192" Canvas.Top="72" Maximum="200" Minimum="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:ShortUpDown Name="numericUpDown_BaseSkillMin" Height="20" Width="50" Canvas.Left="192" Canvas.Top="72" Maximum="200" Minimum="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_BaseSkillMax" Height="25" Width="36" TabIndex="49" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="71" 
                                    ToolTip="When an AI is generated, the maximum base skill it will use to make a random one.">Max</Label>
-                            <xctk:IntegerUpDown Name="numericUpDown_BaseSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="73" Value="80" Maximum="200" Minimum="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:ShortUpDown Name="numericUpDown_BaseSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="73" Value="80" Maximum="200" Minimum="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_RoughnessMin" Content="Min" Height="25" Width="33" TabIndex="50" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="40"
                                    ToolTip="When an AI is generated, the minimum roughness it will use to make a random one."/>

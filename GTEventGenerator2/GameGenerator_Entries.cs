@@ -414,7 +414,7 @@ namespace GTEventGenerator
             if (numericUpDown_BaseSkillMin.Value > numericUpDown_BaseSkillMax.Value)
                 numericUpDown_BaseSkillMax.Value = numericUpDown_BaseSkillMin.Value;
 
-            raceEntry.BaseSkill = _random.Next(numericUpDown_BaseSkillMin.Value.Value, numericUpDown_BaseSkillMax.Value.Value + 1);
+            raceEntry.BaseSkill = (short)_random.Next(numericUpDown_BaseSkillMin.Value.Value, numericUpDown_BaseSkillMax.Value.Value + 1);
 
             if (numericUpDown_AccelSkillMin.Value > numericUpDown_AccelSkillMax.Value)
                 numericUpDown_AccelSkillMax.Value = numericUpDown_AccelSkillMin.Value;

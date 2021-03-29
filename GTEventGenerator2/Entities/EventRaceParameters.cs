@@ -94,13 +94,70 @@ namespace GTEventGenerator.Entities
         public bool ReplaceAtCourseOut { get; set; }
         public short WeatherAccel { get; set; }
         public short WeatherAccelWaterRetention { get; set; }
-        public sbyte WeatherBaseCelsius { get; set; } = 24;
-        public sbyte WeatherMaxCelsius { get; set; } = 3;
-        public sbyte WeatherMinCelsius { get; set; } = 3;
+
+        public sbyte _weatherBaseCelsius = 63;
+        public sbyte WeatherBaseCelsius 
+        {
+            get => _weatherBaseCelsius;
+            set
+            {
+                // 7 bits
+                if (value < -64)
+                    value = -64;
+                else if (value > 63)
+                    value = 63;
+                _weatherBaseCelsius = value;
+            }
+        }
+
+        public sbyte _weatherMaxCelsius = 3;
+        public sbyte WeatherMaxCelsius
+        {
+            get => _weatherMaxCelsius;
+            set
+            {
+                // 4 bits
+                if (value < -8)
+                    value = -8;
+                else if (value > 7)
+                    value = 7;
+                _weatherMaxCelsius = value;
+            }
+        }
+
+        public sbyte _weatherMinCelsius = 3;
+        public sbyte WeatherMinCelsius
+        {
+            get => _weatherMinCelsius;
+            set
+            {
+                // 4 bits
+                if (value < -8)
+                    value = -8;
+                else if (value > 7)
+                    value = 3;
+                _weatherMinCelsius = value;
+            }
+        }
         public bool WeatherNoPrecipitation { get; set; } = true;
         public bool WeatherNoSchedule { get; set; }
         public bool WeatherNoWind { get; set; }
-        public byte WeatherPointNum { get; set; }
+
+        public const byte MaxWeatherPoints = 16;
+        public byte _weatherPointNum;
+        public byte WeatherPointNum
+        {
+            get => _weatherPointNum;
+            set
+            {
+                if (value > MaxWeatherPoints)
+                    value = MaxWeatherPoints;
+                else if (value < 0)
+                    value = 0;
+                _weatherPointNum = value;
+            }
+        }
+
         public bool WeatherPrecRainOnly { get; set; }
         public bool WeatherPrecSnowOnly { get; set; }
         public ushort WeatherTotalSec { get; set; } = 90;

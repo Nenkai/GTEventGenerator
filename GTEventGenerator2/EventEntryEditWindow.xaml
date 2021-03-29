@@ -6,7 +6,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:GTEventGenerator"
         mc:Ignorable="d"
-        Title="Editing Entry" Height="345" Width="663">
+        Title="Editing Entry" Height="345" Width="663" WindowStartupLocation="CenterScreen">
     <Grid Background="#262626">
         <GroupBox Header="Common Entry Settings" Height="290" Margin="290,10,10,0" VerticalAlignment="Top">
             <Grid>
@@ -111,7 +111,7 @@
                         </TextBlock>
                     </Label.ToolTip>
                 </Label>
-                <xctk:IntegerUpDown Name="iud_BaseSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding BaseSkill}" Margin="123,10,0,0" Height="20" Width="130" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                <xctk:ShortUpDown Name="iud_BaseSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding BaseSkill}" Margin="123,10,0,0" Height="20" Width="130" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                 <Label Content="Cornering Skill" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Width="92">
                     <Label.ToolTip>
@@ -123,7 +123,7 @@
                         </TextBlock>
                     </Label.ToolTip>
                 </Label>
-                <xctk:IntegerUpDown Name="iud_CorneringSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding CorneringSkill}" Margin="123,38,0,0" Height="20" Width="130" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                <xctk:ShortUpDown Name="iud_CorneringSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding CorneringSkill}" Margin="123,38,0,0" Height="20" Width="130" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                 <Label Content="Braking Skill" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" Width="92">
                     <Label.ToolTip>
@@ -135,7 +135,7 @@
                         </TextBlock>
                     </Label.ToolTip>
                 </Label>
-                <xctk:IntegerUpDown Name="iud_BrakingSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding BrakingSkill}" Margin="123,67,0,0" Height="20" Width="130" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                <xctk:ShortUpDown Name="iud_BrakingSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding BrakingSkill}" Margin="123,67,0,0" Height="20" Width="130" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                 <Label Content="Acceleration Skill" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top" Width="108">
                     <Label.ToolTip>
@@ -147,7 +147,7 @@
                         </TextBlock>
                     </Label.ToolTip>
                 </Label>
-                <xctk:IntegerUpDown Name="iud_AccelSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding AccelSkill}" Margin="123,95,0,0" Height="20" Width="130" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                <xctk:SByteUpDown Name="iud_AccelSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding AccelSkill}" Margin="123,95,0,0" Height="20" Width="130" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                 <Label Content="Starting Skill" HorizontalAlignment="Left" Margin="10,119,0,0" VerticalAlignment="Top" Width="108">
                     <Label.ToolTip>
@@ -159,7 +159,7 @@
                         </TextBlock>
                     </Label.ToolTip>
                 </Label>
-                <xctk:IntegerUpDown Name="iud_StartingSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding StartingSkill}" Margin="122,122,0,0" Height="20" Width="131" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                <xctk:SByteUpDown Name="iud_StartingSkill" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding StartingSkill}" Margin="122,122,0,0" Height="20" Width="131" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                 <Label Content="Roughness" HorizontalAlignment="Left" Margin="10,147,0,0" VerticalAlignment="Top" Width="107">
                     <Label.ToolTip>
@@ -171,7 +171,7 @@
                         </TextBlock>
                     </Label.ToolTip>
                 </Label>
-                <xctk:IntegerUpDown Name="iud_Roughness" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding Roughness}" Margin="122,150,0,0" Height="20" Width="131" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                <xctk:SByteUpDown Name="iud_Roughness" HorizontalAlignment="Left" VerticalAlignment="Top" Value="{Binding Roughness}" Margin="122,150,0,0" Height="20" Width="131" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                 <Label Content="Driver Name" HorizontalAlignment="Left" Margin="10,175,0,0" VerticalAlignment="Top" Width="92">
                     <Label.ToolTip>

@@ -498,10 +498,10 @@ namespace GTEventGenerator
                 numericUpDown_BaseSkillMax.Value = numericUpDown_BaseSkillMin.Value;
 
             foreach (var entry in CurrentEvent.Entries.AI)
-                entry.BaseSkill = _random.Next(numericUpDown_BaseSkillMin.Value.Value, numericUpDown_BaseSkillMax.Value.Value + 1);
+                entry.BaseSkill = (short)_random.Next(numericUpDown_BaseSkillMin.Value.Value, numericUpDown_BaseSkillMax.Value.Value + 1);
 
             foreach (var entry in CurrentEvent.Entries.AIBases)
-                entry.BaseSkill = _random.Next(numericUpDown_BaseSkillMin.Value.Value, numericUpDown_BaseSkillMax.Value.Value + 1);
+                entry.BaseSkill = (short)_random.Next(numericUpDown_BaseSkillMin.Value.Value, numericUpDown_BaseSkillMax.Value.Value + 1);
         }
 
         private void randomizeAICornerSkillMenuItem_Click(object sender, RoutedEventArgs e)

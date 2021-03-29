@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GTEventGenerator"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Car/Entry Tuning Window" Height="602.494" Width="465.073">
+        Title="Car/Entry Tuning Window" Height="602.494" Width="465.073" WindowStartupLocation="CenterScreen" >
     <Grid Background="#262626">
         <GroupBox Header="Car Settings (Advanced Users)" Margin="10,10,0,10" HorizontalAlignment="Left" Width="437">
             <Grid>
@@ -99,7 +99,8 @@
                         <TextBlock>
                            <TextBlock FontWeight="Bold" FontSize="14">Power Limiter</TextBlock> <LineBreak />
                            Sets the car's power limiter restriction. May conflict or override max gear speed.<LineBreak/>
-                           10 = 1%. 1000 = 100%
+                           10 = 1%. 1000 = 100%.<LineBreak/>
+                           Default is 1000.
                            <LineBreak/>
                            <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">entry->power_limiter</TextBlock>
                         </TextBlock>

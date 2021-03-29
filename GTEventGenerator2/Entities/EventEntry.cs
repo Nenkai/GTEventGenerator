@@ -17,8 +17,8 @@ namespace GTEventGenerator
         public string DriverRegion { get; set; } = "PDI";
 
         #region Skill Properties
-        private int _baseSkill = 80;
-        public int BaseSkill
+        private short _baseSkill = 80;
+        public short BaseSkill
         {
             get => _baseSkill; 
             set
