@@ -197,10 +197,18 @@ namespace GTEventGenerator
                     }
                     else if (evnt.Entries.Player is null)
                     {
-                        MessageBox.Show($"Event #{i + 1} has fixed entries but the player does not have a rented car. The player must be using a rented a car.", 
+                        MessageBox.Show($"Event #{i + 1} has fixed entries but the player does not have a rented car. The player must be using a rented car.", 
                             "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                     }
+                }
+                else if (evnt.Entries.AIBases.Any() && evnt.Entries.Player != null
+                    && evnt.Entries.AIEntryGenerateType == EntryGenerateType.ENTRY_BASE_SHUFFLE || evnt.Entries.AIEntryGenerateType == EntryGenerateType.ENTRY_BASE_ORDER)
+                {
+                    MessageBox.Show($"Event #{i + 1} has generated entries and the player has a rented car, this is not possible as it makes the game softlock.\n" +
+                        $"- You can only have generated entries without the player renting a car, or strictly fixed entries only which is where you can have a rented car.",
+                            "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
                 }
             }
 

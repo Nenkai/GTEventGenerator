@@ -253,7 +253,7 @@ namespace GTEventGenerator
             else
                 xml.WriteStartElement("entry_base");
 
-            if (!string.IsNullOrEmpty(CarLabel))
+            if (!string.IsNullOrEmpty(CarLabel) && (IsAI || isFixed)) // Pointless to write it if its a player as entry_base; it gets ignored
             {
                 xml.WriteStartElement("car");
                 xml.WriteAttributeString("color", ColorIndex.ToString());
