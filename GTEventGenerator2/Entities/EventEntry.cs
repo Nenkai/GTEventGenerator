@@ -84,13 +84,13 @@ namespace GTEventGenerator
         }
         #endregion
 
-        private int _delay = -1;
+        private int _delay = 0;
         public int Delay
         {
             get => _delay;
             set
             {
-                if (value <= 3_600_000 && value >= -1)
+                if (value <= 3_600_000 && value >= 0)
                     _delay = value;
             }
         }
