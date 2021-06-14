@@ -813,13 +813,13 @@
                                 </CheckBox.ToolTip>
                             </CheckBox>
 
-                            <CheckBox Name="checkBox_PenaltyNoReset" Content="Penalty No Level" Height="24" Width="154" TabIndex="52" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.PenaltyNoLevel}" Canvas.Left="501" Canvas.Top="213" >
+                            <CheckBox Name="checkBox_PenaltyNoReset" Content="Penalty No Level" Height="24" Width="154" TabIndex="52" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.PenaltyNoRevel}" Canvas.Left="501" Canvas.Top="213" >
                                 <CheckBox.ToolTip>
                                     <TextBlock>
-                                    <TextBlock FontWeight="Bold" FontSize="14">Penalty No Level</TextBlock> <LineBreak />
+                                    <TextBlock FontWeight="Bold" FontSize="14">Penalty No Revel</TextBlock> <LineBreak />
                                     Unknown/Undocumented<LineBreak/>
                                     <LineBreak/>
-                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->penalty_no_level</TextBlock>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->penalty_no_reset</TextBlock>
                                     </TextBlock>
                                 </CheckBox.ToolTip>
                             </CheckBox>
@@ -1650,15 +1650,15 @@
 
                             <Label Name="label_AccelSkillMax" Height="25" Width="36" TabIndex="65" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="159" 
                                    ToolTip="When an AI is generated, the maximum acceleration skill it will use to make a random one.">Max</Label>
-                            <xctk:SByteUpDown Name="numericUpDown_AccelSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="162" Value="80" Maximum="100" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:SByteUpDown Name="numericUpDown_AccelSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="162" Value="100" Maximum="100" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_StartSkillMax" Height="25" Width="36" TabIndex="65" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="187" 
                                    ToolTip="When an AI is generated, the maximum starting skill it will use to make a random one.">Max</Label>
-                            <xctk:SByteUpDown Name="numericUpDown_StartSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="191" Value="80" Maximum="100" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:SByteUpDown Name="numericUpDown_StartSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="191" Value="100" Maximum="100" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_BrakeSkillMax" Height="25" Width="36" TabIndex="64" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="129" 
                                    ToolTip="When an AI is generated, the minimum brake skill it will use to make a random one.">Max</Label>
-                            <xctk:ShortUpDown Name="numericUpDown_BrakeSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="131" Value="80" Maximum="200" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:ShortUpDown Name="numericUpDown_BrakeSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="131" Value="100" Maximum="200" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_AccelSkillMin" Height="25" Width="33" TabIndex="63" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="158" 
                                    ToolTip="When an AI is generated, the minimum acceleration skill it will use to make a random one.">Min</Label>
@@ -1693,7 +1693,7 @@
 
                             <Label Name="label_CornerSkillMax" Height="25" Width="36" TabIndex="59" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="99" 
                                    ToolTip="When an AI is generated, the maximum corner skill it will use to make a random one.">Max</Label>
-                            <xctk:ShortUpDown Name="numericUpDown_CornerSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="101" Maximum="200" Value="80" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                                <xctk:ShortUpDown Name="numericUpDown_CornerSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="101" Maximum="200" Value="100" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_BrakeSkillMin" Height="25" Width="33" TabIndex="58" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="128" 
                                    ToolTip="When an AI is generated, the minimum brake skill it will use to make a random one.">Min</Label>
@@ -1729,7 +1729,7 @@
 
                             <Label Name="label_BaseSkillMin" Height="25" Width="33" TabIndex="50" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="68" 
                                    ToolTip="When an AI is generated, the minimum base skill it will use to make a random one.">Min</Label>
-                            <xctk:ShortUpDown Name="numericUpDown_BaseSkillMin" Height="20" Width="50" Canvas.Left="192" Canvas.Top="72" Maximum="200" Minimum="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:ShortUpDown Name="numericUpDown_BaseSkillMin" Value="{Binding Path=Entries.AIBaseSkillStarting}" Height="20" Width="50" Canvas.Left="192" Canvas.Top="72" Maximum="200" Minimum="0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_BaseSkillMax" Height="25" Width="36" TabIndex="49" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="71" 
                                    ToolTip="When an AI is generated, the maximum base skill it will use to make a random one.">Max</Label>
