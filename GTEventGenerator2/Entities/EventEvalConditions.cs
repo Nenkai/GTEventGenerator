@@ -110,6 +110,9 @@ namespace GTEventGenerator.Entities
 
         public void WriteToXml(XmlWriter xml)
         {
+            if (ConditionType == EvalConditionType.NONE && Gold == 0 && Silver == 0 && Bronze == 0)
+                return;
+
             xml.WriteStartElement("eval_condition");
             {
                 if (ConditionType != EvalConditionType.NONE)
