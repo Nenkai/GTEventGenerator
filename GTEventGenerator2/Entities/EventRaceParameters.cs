@@ -246,7 +246,7 @@ namespace GTEventGenerator.Entities
             xml.WriteElementBool("online_on", OnlineOn);
             xml.WriteElementBool("pace_note", PaceNote);
             xml.WriteElementInt("penalty_level", (int)PenaltyLevel);
-            xml.WriteElementBool("penalty_no_revel", PenaltyNoReset);
+            xml.WriteElementBool("penalty_no_reset", PenaltyNoReset);
             if (PitConstraint != 0)
                 xml.WriteElementInt("pit_constraint", PitConstraint);
             xml.WriteElementInt("race_limit_laps", LapCount);
