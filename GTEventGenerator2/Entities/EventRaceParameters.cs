@@ -956,7 +956,7 @@ namespace GTEventGenerator.Entities
             bs.WriteByte(RaceInitialLaps);
             bs.WriteBoolBit(KeepLoadGhost);
             bs.WriteInt32(db.GetCourseCodeByLabel(parent.Course.CourseLabel)); // course_code
-            bs.WriteByte((byte)(LineGhostPlayMax ?? -1));
+            bs.WriteByte((byte)(LineGhostPlayMax ?? 0));
             bs.WriteBoolBit(GoalTimeUseLapTotal);
             bs.WriteBits(0, 2); // Intentional
             bs.WriteBoolBit(false); // force_pitcrew_off
@@ -1090,14 +1090,14 @@ namespace GTEventGenerator.Entities
             for (int i = 0; i < 32; i++)
             {
                 for (int j = 0; j < 6; j++)
-                {
                     bs.WriteByte(0); // Front
-                    bs.WriteByte(0); // Rear
-                }
+
+                for (int j = 0; j < 6; j++)
+                    bs.WriteByte(0); // Rear 
             }
 
             bs.WriteByte(BoostLevel);
-            bs.WriteSByte((sbyte)(RollingPlayerGrid ? 1 : -1));
+            bs.WriteSByte((sbyte)(RollingPlayerGrid ? 1 : 0));
             bs.WriteBool(false); // Unk field_0x323
             bs.WriteBool(BoostFlag);
             bs.WriteBool(BoostType);
@@ -1128,13 +1128,13 @@ namespace GTEventGenerator.Entities
 
         public void WriteWeatherData(ref BitStream bs)
         {
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i < 15; i++)
             {
                 if (i == 0)
                     continue;
 
                 // Time rate is a int that goes from 0 to 4095
-                // 16 points, 15 middle points we need to write
+                // 16 points, 14 middle points we need to write
                 if (i < NewWeatherData.Count)
                 {
                     WeatherData weatherPoint = (WeatherData)NewWeatherData[i];
@@ -1155,10 +1155,10 @@ namespace GTEventGenerator.Entities
 
                     float rawVal = weatherPoint.Low + 1f; // Ensure to care about -1 to 0
                     ulong lowBits = (ulong)(rawVal * (Math.Pow(2, 6) - 1)); // Convert float from 0 to 2 into an int value between 0 and 63
-                    bs.WriteBits(lowBits, 4);
+                    bs.WriteBits(lowBits, 6);
                 }
                 else
-                    bs.WriteBits(0, 4);
+                    bs.WriteBits(0, 6);
             }
 
             for (int i = 0; i < 16; i++)
@@ -1172,7 +1172,7 @@ namespace GTEventGenerator.Entities
                     bs.WriteBits(highBits, 6);
                 }
                 else
-                    bs.WriteBits(0, 4);
+                    bs.WriteBits(0, 6);
             }
         }
     }
