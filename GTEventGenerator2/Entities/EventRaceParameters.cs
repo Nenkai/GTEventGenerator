@@ -1037,7 +1037,7 @@ namespace GTEventGenerator.Entities
             bs.WriteSByte(EventGoalWidth ?? -1);
 
             bs.WriteBoolBit(FixedRetention);
-            bs.WriteBits((ulong)TrackWetness, 4); // initial_retention10
+            bs.WriteBits((ulong)TrackWetness + 1, 4); // initial_retention10 - 10% each
             bs.WriteBits((ulong)DecisiveWeather, 3);
 
             bs.WriteUInt16((ushort)(WeatherTotalSec / 2));
