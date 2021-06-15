@@ -479,8 +479,10 @@ namespace GTEventGenerator.Entities
                         WeatherNoSchedule = raceNode.ReadValueBool(); break;
                     case "weather_no_wind":
                         WeatherNoSchedule = raceNode.ReadValueBool(); break;
+
+                        /* Do not parse it from here, get ir from the list rather, this will be set from FixInvalidNodesIfNeeded
                     case "weather_point_num":
-                        WeatherPointNum = raceNode.ReadValueByte(); break;
+                        WeatherPointNum = raceNode.ReadValueByte(); break; */
                     case "weather_prec_rain_only":
                         WeatherPrecRainOnly = raceNode.ReadValueBool(); break;
                     case "weather_prec_snow_only":
@@ -1097,7 +1099,7 @@ namespace GTEventGenerator.Entities
             }
 
             bs.WriteByte(BoostLevel);
-            bs.WriteSByte((sbyte)(RollingPlayerGrid ? 1 : 0));
+            bs.WriteSByte((sbyte)(RollingPlayerGrid ? 1 : -1));
             bs.WriteBool(false); // Unk field_0x323
             bs.WriteBool(BoostFlag);
             bs.WriteBool(BoostType);

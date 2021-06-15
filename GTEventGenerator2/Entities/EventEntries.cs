@@ -335,16 +335,22 @@ namespace GTEventGenerator.Entities
 
             WriteEntryGenerateToBuffer(ref bs, db);
 
-
-            int fixEntryCount = AI.Count + (Player != null ? 1 : 0);
-            bs.WriteInt32(fixEntryCount);
-            if (fixEntryCount > 0)
+            bool hasGeneratedAI = AIBases.Count != 0 && AIsToPickFromPool != 0;
+            if (!hasGeneratedAI)
             {
-                foreach (var ai in AI)
-                    ai.WriteEntryToBuffer(ref bs, db, false);
+                int fixEntryCount = AI.Count + 1;
+                bs.WriteInt32(fixEntryCount);
+                if (fixEntryCount > 0)
+                {
+                    foreach (var ai in AI)
+                        ai.WriteEntryToBuffer(ref bs, db, false);
 
-                Player?.WriteEntryToBuffer(ref bs, db, true);
+                    var player = Player ?? new EventEntry(true);
+                    player.WriteEntryToBuffer(ref bs, db, true);
+                }
             }
+            else
+                bs.WriteInt32(0);
         }
 
         private void WriteEntryGenerateToBuffer(ref BitStream bs, GameDB db)

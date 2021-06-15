@@ -320,6 +320,9 @@ namespace GTEventGenerator.Entities
             int freeSlots = GetFreeCarSlotsLeft();
             if (Entries.AIsToPickFromPool > freeSlots)
                 Entries.AIsToPickFromPool = freeSlots;
+
+            // Ensure we can set it from the actual list
+            RaceParameters.WeatherPointNum = (byte)RaceParameters.NewWeatherData.Count;
         }
 
         public void ParseRankingData(XmlNode node)
