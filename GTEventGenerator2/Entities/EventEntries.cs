@@ -51,7 +51,9 @@ namespace GTEventGenerator.Entities
         public sbyte AIAccelSkillStarting { get; set; } = 80;
         public sbyte AIStartSkillStarting { get; set; } = 80;
 
-        public sbyte EnemyBSpecLv { get; set; }
+        public int EnemyLevel { get; set; }
+        public sbyte EnemyBSpecLevel { get; set; }
+        public sbyte BSpecLevelOffset { get; set; }
 
         public EntryGenerateType AIEntryGenerateType { get; set; } = EntryGenerateType.ENTRY_BASE_SHUFFLE;
         public EnemySortType AISortType { get; set; } = EnemySortType.NONE;
@@ -168,20 +170,24 @@ namespace GTEventGenerator.Entities
                                 }
                                 break;
 
+                            case "enemy_lv":
+                                EnemyLevel = entryGenerateNode.ReadValueInt(); break;
+                            case "enemy_bspec_lv":
+                                EnemyBSpecLevel = entryGenerateNode.ReadValueSByte(); break;
+                            case "bspec_lv_offset":
+                                BSpecLevelOffset = entryGenerateNode.ReadValueSByte(); break;
+
                             case "entry_num":
-                                AIsToPickFromPool = entryGenerateNode.ReadValueInt();
-                                break;
+                                AIsToPickFromPool = entryGenerateNode.ReadValueInt(); break;
 
                             case "player_pos":
-                                PlayerPos = entryGenerateNode.ReadValueInt() + 1;
-                                break;
+                                PlayerPos = entryGenerateNode.ReadValueInt() + 1; break;
+
                             case "enemy_sort_type":
-                                AISortType = entryGenerateNode.ReadValueEnum<EnemySortType>();
-                                break;
+                                AISortType = entryGenerateNode.ReadValueEnum<EnemySortType>(); break;
 
                             case "enemy_list_type":
-                                EnemyListType = entryGenerateNode.ReadValueEnum<EnemyListType>();
-                                break;
+                                EnemyListType = entryGenerateNode.ReadValueEnum<EnemyListType>(); break;
 
                             case "delays":
                                 int i = 0;
@@ -190,12 +196,10 @@ namespace GTEventGenerator.Entities
                                 break;
 
                             case "generate_type":
-                                AIEntryGenerateType = entryGenerateNode.ReadValueEnum<EntryGenerateType>();
-                                break;
+                                AIEntryGenerateType = entryGenerateNode.ReadValueEnum<EntryGenerateType>(); break;
 
                             case "gap_for_start_rolling_distance":
-                                GapForRollingDistance = entryGenerateNode.ReadValueShort();
-                                break;
+                                GapForRollingDistance = entryGenerateNode.ReadValueShort(); break;
 
                         }
                     }
@@ -240,35 +244,24 @@ namespace GTEventGenerator.Entities
                         break;
 
                     case "race_class_id":
-                        break;
+                        newEntry.RaceClassID = entryDetailNode.ReadValueByte(); break;
 
                     case "delay":
-                        newEntry.Delay = entryDetailNode.ReadValueInt();
-                        break;
+                        newEntry.Delay = entryDetailNode.ReadValueInt(); break;
+
 
                     case "ai_skill":
-                        newEntry.BaseSkill = entryDetailNode.ReadValueShort();
-                        break;
-
+                        newEntry.BaseSkill = entryDetailNode.ReadValueShort(); break;
                     case "ai_skill_breaking":
-                        newEntry.BrakingSkill = entryDetailNode.ReadValueShort();
-                        break;
-
+                        newEntry.BrakingSkill = entryDetailNode.ReadValueShort(); break;
                     case "ai_skill_cornering":
-                        newEntry.CorneringSkill = entryDetailNode.ReadValueShort();
-                        break;
-
+                        newEntry.CorneringSkill = entryDetailNode.ReadValueShort(); break;
                     case "ai_skill_accelerating":
-                        newEntry.AccelSkill = entryDetailNode.ReadValueSByte();
-                        break;
-
+                        newEntry.AccelSkill = entryDetailNode.ReadValueSByte(); break;
                     case "ai_skill_starting":
-                        newEntry.StartingSkill = entryDetailNode.ReadValueSByte();
-                        break;
-
+                        newEntry.StartingSkill = entryDetailNode.ReadValueSByte(); break;
                     case "ai_roughness":
-                        newEntry.Roughness = entryDetailNode.ReadValueSByte();
-                        break;
+                        newEntry.Roughness = entryDetailNode.ReadValueSByte(); break;
 
                     case "entry_base": // For fixed entries with a child entry_base.
                         ParseEntry(entryDetailNode, newEntry); break;
@@ -359,7 +352,7 @@ namespace GTEventGenerator.Entities
             bs.WriteUInt32(0xE6_E6_41_14);
             bs.WriteUInt32(1_03);
 
-            bs.WriteInt32(AIsToPickFromPool); // entry_num
+            bs.WriteInt32(AIsToPickFromPool + 1); // entry_num - must account for player
             bs.WriteInt32(AIBases.Count > 0 ? PlayerPos - 1 : 0);
             bs.WriteInt32(AIBases.Count > 0 ? (int)AIEntryGenerateType : (int)EntryGenerateType.NONE);
             bs.WriteInt32((int)EnemyListType);
@@ -370,7 +363,7 @@ namespace GTEventGenerator.Entities
             bs.WriteSByte(AIAccelSkillStarting);
             bs.WriteSByte(AIStartSkillStarting);
             bs.WriteSByte(AIRoughness);
-            bs.WriteInt32(0); // enemy_lv
+            bs.WriteInt32(EnemyLevel); // enemy_lv
 
             // list of cars (as carthin) - dunno how its used, we'll just write an empty list
             bs.WriteInt32(0);
@@ -383,11 +376,11 @@ namespace GTEventGenerator.Entities
             for (int i = 0; i < 32; i++)
                 bs.WriteInt32(EntryBaseDelays[i]);
 
-            bs.WriteSByte(0); // enemy_bspec_lv
-            bs.WriteSByte(0); // bspec_lv_offset
+            bs.WriteSByte(EnemyBSpecLevel); // enemy_bspec_lv
+            bs.WriteSByte(BSpecLevelOffset); // bspec_lv_offset
             bs.WriteInt16(GapForRollingDistance);
             bs.WriteInt16(RollingStartV);
-            bs.WriteSByte((sbyte)((GapForRollingDistance != 0 || RollingStartV != 0) ? 1 : 0));
+            bs.WriteBool(GapForRollingDistance != 0 || RollingStartV != 0); // Rolling start param
             bs.WriteSByte((sbyte)AISortType);
         }
 
