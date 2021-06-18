@@ -25,4 +25,4 @@ It is not yet finished.
 # Download
 https://github.com/Nenkai/GTEventGenerator/releases
 
-![Preview](https://cdn.discordapp.com/attachments/615245340773187602/765037980493676594/unknown.png)
+![Preview](https://cdn.discordapp.com/attachments/720352291105931266/854755131559247892/unknown.png)
