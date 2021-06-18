@@ -227,7 +227,7 @@ namespace GTEventGenerator.Entities
             reader.ReadInt32(); // drift_type
             SuggestedGearEnabled = reader.ReadBool4();
             reader.ReadInt32(); // in_car_view
-            reader.ReadInt32(); // enemy_tire
+            EnemyTire = (TireType)reader.ReadInt32(); // enemy_tire
             
             if (contraintVersion >= 101)
                 PowerLimit = reader.ReadSingle();
@@ -270,7 +270,7 @@ namespace GTEventGenerator.Entities
             xml.WriteElementBoolOrNull("asm", ASMEnabled);
             xml.WriteElementInt("drift_type", -1);
             xml.WriteElementBoolOrNull("driving_line", DrivingLineEnabled);
-            xml.WriteElementInt("enemy_tire", -1);
+            xml.WriteElementEnumInt("enemy_tire", EnemyTire);
             xml.WriteElementEnumInt("limit_tire_f", FrontTireLimit);
             xml.WriteElementEnumInt("limit_tire_r", RearTireLimit);
             xml.WriteElementEnumInt("need_tire_f", NeededFrontTire);

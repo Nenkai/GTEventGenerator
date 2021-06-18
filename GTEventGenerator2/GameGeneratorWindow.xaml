@@ -684,7 +684,7 @@
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Base Temperature</TextBlock> <LineBreak />
                                     Initial temperature, affects how fast water can dry.<LineBreak/>
-                                    Default is 63°C, If it is set to 63°C, it will not be specified and the default temperature course will be applied.
+                                    Default is 63, If it is set to 63, it will not be specified and the default temperature course will be applied.
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->weather_base_celsius</TextBlock>
                                     </TextBlock>

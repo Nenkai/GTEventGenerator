@@ -27,9 +27,9 @@ namespace GTEventGenerator.Entities
                     case "x":
                         X = childNode.ReadValueSingle(); break;
                     case "y":
-                        X = childNode.ReadValueSingle(); break;
+                        Y = childNode.ReadValueSingle(); break;
                     case "z":
-                        X = childNode.ReadValueSingle(); break;
+                        Z = childNode.ReadValueSingle(); break;
 
                     case "kind_db_id":
                         KindDBId = childNode.ReadValueInt(); break;
@@ -52,8 +52,8 @@ namespace GTEventGenerator.Entities
             {
                 xml.WriteElementInt("kind_db_id", KindDBId);
                 xml.WriteElementFloat("x", X);
-                xml.WriteElementFloat("y", X);
-                xml.WriteElementFloat("z", X);
+                xml.WriteElementFloat("y", Y);
+                xml.WriteElementFloat("z", Z);
 
                 if (Postures.Count > 0)
                 {
