@@ -277,8 +277,7 @@ namespace GTEventGenerator
 
                 xml.WriteElementValue("driver_name", IsAI ? DriverName : "Player");
 
-                if (!IsAI)
-                    xml.WriteElementInt("player_no", 0); // If its -1, the game then doesn't show the player name glowing in pre-race
+                xml.WriteElementInt("player_no", IsAI ? -1 : 0);
 
                 if (IsAI)
                     xml.WriteElementValue("driver_region", DriverRegion);
