@@ -30,6 +30,8 @@ namespace GTEventGenerator
 {
     public partial class GameGeneratorWindow : Window
     {
+        public const string Version = "2.0.6";
+
         private Random _random = new Random();
         private System.Drawing.Image _eventImage;
         private GameDB GameDatabase;
@@ -67,6 +69,8 @@ namespace GTEventGenerator
             cb_QuickEventPicker.ItemsSource = EventNames;
 
             Settings = new LocalSettings();
+
+            Title = $"GTEventGenerator (Gran Turismo 5/6 Event Maker) - {Version}";
         }
 
         ~GameGeneratorWindow()
