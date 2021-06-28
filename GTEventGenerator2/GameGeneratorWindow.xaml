@@ -1315,7 +1315,7 @@
                             <TextBlock Text="Other Regulations"/>
                         </GroupBox.Header>
                         <Canvas>
-                            <Label Name="label_CarLength" Content="Car Length (mm):" Height="27" Width="106" TabIndex="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="114" Canvas.Left="1">
+                            <Label Name="label_CarLength" Content="Car Length (mm):" Height="27" Width="106" TabIndex="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="113" Canvas.Left="1">
                                 <Label.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Car Length (mm)</TextBlock> <LineBreak />
@@ -1375,7 +1375,7 @@
                             </Label>
                             <xctk:IntegerUpDown Name="numericUpDown_PowerMin" Height="20" Width="54" Canvas.Left="111" Canvas.Top="64" Value="{Binding Regulations.PowerMin}" Maximum="10000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" />
 
-                            <Label Name="label_CarYearMin" Content="Year Min:" Height="27" Width="69" TabIndex="9" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="42" Canvas.Top="164">
+                            <Label Name="label_CarYearMin" Content="Year Min:" Height="27" Width="66" TabIndex="9" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="42" Canvas.Top="163">
                                 <Label.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Year Min</TextBlock> <LineBreak />
@@ -1385,9 +1385,9 @@
                                 </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            <xctk:IntegerUpDown Name="numericUpDown_CarYearMin" Height="20" Width="54" Canvas.Left="111" Canvas.Top="144" Value="{Binding Regulations.YearMin}" Minimum="-1" Maximum="3000" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:IntegerUpDown Name="numericUpDown_CarYearMin" Height="20" Width="54" Canvas.Left="111" Canvas.Top="167" Value="{Binding Regulations.YearMin}" Minimum="-1" Maximum="3000" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                            <Label Name="label_CarYearMax" Content="Year Max:" Height="23" Width="67" TabIndex="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="41" Canvas.Top="141" >
+                            <Label Name="label_CarYearMax" Content="Year Max:" Height="23" Width="67" TabIndex="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="41" Canvas.Top="138" >
                                 <Label.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Year Max</TextBlock> <LineBreak />
@@ -1397,7 +1397,7 @@
                                 </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            <xctk:IntegerUpDown Name="numericUpDown_CarYearMax" Height="20" Width="54" Canvas.Left="111" Canvas.Top="170" Value="{Binding Regulations.YearMax}" Maximum="3000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:IntegerUpDown Name="numericUpDown_CarYearMax" Height="20" Width="54" Canvas.Left="111" Canvas.Top="142" Value="{Binding Regulations.YearMax}" Maximum="3000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_TorqueMax" Content="Torque Max (nm):" Height="27" Width="104" TabIndex="7" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="173" Canvas.Top="33" >
                                 <Label.ToolTip>
@@ -1693,7 +1693,7 @@
 
                             <Label Name="label_CornerSkillMax" Height="25" Width="36" TabIndex="59" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="247" Canvas.Top="99" 
                                    ToolTip="When an AI is generated, the maximum corner skill it will use to make a random one.">Max</Label>
-                                <xctk:ShortUpDown Name="numericUpDown_CornerSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="101" Maximum="200" Value="100" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:ShortUpDown Name="numericUpDown_CornerSkillMax" Height="20" Width="50" Canvas.Left="288" Canvas.Top="101" Maximum="200" Value="100" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_BrakeSkillMin" Height="25" Width="33" TabIndex="58" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="154" Canvas.Top="128" 
                                    ToolTip="When an AI is generated, the minimum brake skill it will use to make a random one.">Min</Label>
