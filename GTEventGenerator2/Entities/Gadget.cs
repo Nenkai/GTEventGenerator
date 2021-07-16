@@ -15,7 +15,7 @@ namespace GTEventGenerator.Entities
         public float X { get; set; }
         public float Y { get; set; }
         public float Z { get; set; }
-        public int KindDBId { get; set; }
+        public byte KindDBId { get; set; }
         public List<float> Postures { get; set; } = new List<float>();
 
         public void ReadGadgetNode(XmlNode node)
@@ -32,7 +32,7 @@ namespace GTEventGenerator.Entities
                         Z = childNode.ReadValueSingle(); break;
 
                     case "kind_db_id":
-                        KindDBId = childNode.ReadValueInt(); break;
+                        KindDBId = childNode.ReadValueByte(); break;
 
                     case "posture":
                         ReadPostureNode(childNode); break;
@@ -71,7 +71,7 @@ namespace GTEventGenerator.Entities
             X = reader.ReadSingle();
             Y = reader.ReadSingle();
             Z = reader.ReadSingle();
-            KindDBId = reader.ReadInt32();
+            KindDBId = reader.ReadByte();
             int postureCount = reader.ReadInt32();
             for (int i = 0; i < postureCount; i++)
                 Postures.Add(reader.ReadSingle());
@@ -82,7 +82,7 @@ namespace GTEventGenerator.Entities
             bs.WriteSingle(X);
             bs.WriteSingle(Y);
             bs.WriteSingle(Z);
-            bs.WriteInt32(KindDBId);
+            bs.WriteByte(KindDBId);
 
             bs.WriteInt32(Postures.Count);
             foreach (var param in Postures)
