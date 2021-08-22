@@ -30,7 +30,7 @@ namespace GTEventGenerator
 {
     public partial class GameGeneratorWindow : Window
     {
-        public const string Version = "2.0.6";
+        public const string Version = "2.0.7";
 
         private Random _random = new Random();
         private System.Drawing.Image _eventImage;
