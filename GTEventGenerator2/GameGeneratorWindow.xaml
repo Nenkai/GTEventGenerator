@@ -1170,7 +1170,7 @@
                             </Label>
                             <xctk:IntegerUpDown Name="numericUpDown_TimeToStart" Height="20" Width="70" ValueChanged="numericUpDown_TimeToStart_ValueChanged" Canvas.Left="178" Canvas.Top="160" Value="6000" Maximum="100000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
-                            <Label Name="label_TimeToFinish" Content="Time To Finish (in MS)" Height="27" Width="167" TabIndex="10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="124" >
+                            <Label Name="label_TimeToFinish" Content="Time To Finish (in MS)" Height="27" Width="142" TabIndex="10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="124" >
                                 <Label.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Time To Finish</TextBlock> <LineBreak />
@@ -1182,7 +1182,7 @@
                                 </Label.ToolTip>
                             </Label>
 
-                            <xctk:IntegerUpDown Name="numericUpDown_TimeToFinish" Height="20" Width="70" ValueChanged="numericUpDown_TimeToFinish_ValueChanged" Canvas.Top="129" Canvas.Left="178" Maximum="100000" Minimum="-1" Value="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:IntegerUpDown Name="numericUpDown_TimeToFinish" Height="20" Width="82" ValueChanged="numericUpDown_TimeToFinish_ValueChanged" Canvas.Top="129" Canvas.Left="166" Minimum="-1" Value="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_FinishWidth" Content="Finish Width (in M)" Height="26" Width="135" TabIndex="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="94" >
                                 <Label.ToolTip>
@@ -1196,7 +1196,7 @@
                                 </Label.ToolTip>
                             </Label>
 
-                            <xctk:SByteUpDown Name="numericUpDown_FinishWidth" Height="20" Width="70" ValueChanged="numericUpDown_FinishWidth_ValueChanged" Canvas.Top="99" Canvas.Left="178" Minimum="-1" Value="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
+                            <xctk:SByteUpDown Name="numericUpDown_FinishWidth" Height="20" Width="82" ValueChanged="numericUpDown_FinishWidth_ValueChanged" Canvas.Top="99" Canvas.Left="166" Minimum="-1" Value="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF"/>
 
                             <Label Name="label_StartVCoord" Content="Start Coord" Height="28" Width="84" TabIndex="7" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="63" >
                                 <Label.ToolTip>
