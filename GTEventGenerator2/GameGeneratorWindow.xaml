@@ -754,6 +754,20 @@
                             </Label>
                             <ComboBox Name="comboBox_RaceType" Height="21" Width="157" TabIndex="62" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_RaceType_SelectedIndexChanged" Canvas.Left="330" Canvas.Top="212" />
 
+                            <Label Content="Low Grip Setting" Height="32" Width="104" TabIndex="61" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Left="258" Canvas.Top="238">
+                                <Label.ToolTip>
+                                    <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Low Grip Setting</TextBlock> <LineBreak />
+                                    Set the amount of grip that is lost when driving on wet roads or the outer edges of the track (green zones, etc).<LineBreak />
+                                    When set to "Low", the amount of grip lost will be less than in real life.<LineBreak /> 
+                                    When set to "Real", the road will become very slippery in wet conditions, and it will be very easy to lose grip on the edges of the track.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->low_mu_type</TextBlock>
+                                    </TextBlock>
+                                </Label.ToolTip>
+                            </Label>
+                            <ComboBox Name="comboBox_LowMuType" Height="21" Width="125" TabIndex="62" HorizontalAlignment="Left" VerticalAlignment="Center" SelectionChanged="comboBox_LowMuType_SelectedIndexChanged" Canvas.Left="362" Canvas.Top="241" />
+
                             <Label Name="label_MaxGhostLines" Content="Max Ghost Lines" Height="24" Width="131" TabIndex="59" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="260" Canvas.Top="148" >
                                 <Label.ToolTip>
                                     <TextBlock>
@@ -813,10 +827,10 @@
                                 </CheckBox.ToolTip>
                             </CheckBox>
 
-                            <CheckBox Name="checkBox_PenaltyNoReset" Content="Penalty No Level" Height="24" Width="154" TabIndex="52" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.PenaltyNoRevel}" Canvas.Left="501" Canvas.Top="213" >
+                            <CheckBox Name="checkBox_PenaltyNoReset" Content="Penalty No Level" Height="24" Width="154" TabIndex="52" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.PenaltyNoReset}" Canvas.Left="501" Canvas.Top="213" >
                                 <CheckBox.ToolTip>
                                     <TextBlock>
-                                    <TextBlock FontWeight="Bold" FontSize="14">Penalty No Revel</TextBlock> <LineBreak />
+                                    <TextBlock FontWeight="Bold" FontSize="14">Penalty No Reset</TextBlock> <LineBreak />
                                     Unknown/Undocumented<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->penalty_no_reset</TextBlock>
@@ -881,7 +895,7 @@
                             <CheckBox Name="checkBox_AcademyEvent" Content="Academy Event" Height="24" Width="154" TabIndex="45" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsChecked="{Binding RaceParameters.AcademyEvent}" Canvas.Left="501" Canvas.Top="39">
                                 <CheckBox.ToolTip>
                                     <TextBlock>
-                                    <TextBlock FontWeight="Bold" FontSize="14">Oil Breakdown/Tire Wear</TextBlock> <LineBreak />
+                                    <TextBlock FontWeight="Bold" FontSize="14">Academy Event</TextBlock> <LineBreak />
                                     Undocumented<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->academy_event</TextBlock>
@@ -1086,11 +1100,11 @@
                                     </TextBlock>
                                 </Label.ToolTip>
                             </Label>
-                            <CheckBox Name="checkBox_Endless" Content="Endless" Height="24" Width="108" TabIndex="21" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" IsChecked="{Binding RaceParameters.Endless}" Canvas.Top="280" >
+                            <CheckBox Name="checkBox_Endless" Content="Endless (Drift)" Height="24" Width="108" TabIndex="21" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="10" IsChecked="{Binding RaceParameters.Endless}" Canvas.Top="280" >
                                 <CheckBox.ToolTip>
                                     <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Endless</TextBlock> <LineBreak />
-                                    Unknown/Undocumented, but related to drift mode.<LineBreak/>
+                                    For drift mode. Whether the drift event is one full lap.<LineBreak/>
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">race->endless</TextBlock>
                                     </TextBlock>

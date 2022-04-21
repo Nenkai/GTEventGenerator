@@ -54,6 +54,7 @@ namespace GTEventGenerator.Entities
         public short LapCount { get; set; } = 1;
         public LightingMode LightingMode { get; set; } = LightingMode.AUTO;
         public LineGhostRecordType LineGhostRecordType { get; set; }
+        public LowMuType LowMuType { get; set; } = LowMuType.MODERATE;
         public int? LineGhostPlayMax { get; set; }
         public short MinutesCount { get; set; }
         public bool NeedTireChange { get; set; }
@@ -239,7 +240,7 @@ namespace GTEventGenerator.Entities
             xml.WriteElementValue("lighting_mode", LightingMode.ToString());
             xml.WriteElementValue("line_ghost_record_type", LineGhostRecordType.ToString());
             xml.WriteElementIntIfSet("line_ghost_play_max", LineGhostPlayMax);
-            xml.WriteElementValue("low_mu_type", "MODERATE");
+            xml.WriteElementValue("low_mu_type", LowMuType.ToString());
             xml.WriteElementInt("mu_ratio100", 100);
             if (NeedTireChange)
                 xml.WriteElementBool("need_tire_change", NeedTireChange);
@@ -423,6 +424,8 @@ namespace GTEventGenerator.Entities
                         KeepLoadGhost = raceNode.ReadValueBool(); break;
                     case "lighting_mode":
                         LightingMode = raceNode.ReadValueEnum<LightingMode>(); break;
+                    case "low_mu_type":
+                        LowMuType = raceNode.ReadValueEnum<LowMuType>(); break;
                     case "line_ghost_record_type":
                         LineGhostRecordType = raceNode.ReadValueEnum<LineGhostRecordType>(); break;
                     case "line_ghost_play_max":
@@ -1323,6 +1326,13 @@ namespace GTEventGenerator.Entities
         OFF,
         ONE,
         TRACKDAY
+    }
+
+    public enum LowMuType
+    {
+        MODERATE,
+        STRONG,
+        REAL
     }
 
     public enum GhostPresenceType

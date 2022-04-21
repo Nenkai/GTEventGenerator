@@ -183,6 +183,8 @@ namespace GTEventGenerator
         private void comboBox_RaceType_SelectedIndexChanged(object sender, EventArgs e)
             => CurrentEvent.RaceParameters.RaceType = (RaceType)comboBox_RaceType.SelectedIndex;
 
+        private void comboBox_LowMuType_SelectedIndexChanged(object sender, EventArgs e)
+            => CurrentEvent.RaceParameters.LowMuType = (LowMuType)comboBox_LowMuType.SelectedIndex;
 
         private void comboBox_LineGhostRecordType_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -343,6 +345,7 @@ namespace GTEventGenerator
             comboBox_Flagset.SelectedIndex = (int)CurrentEvent.RaceParameters.Flagset;
             comboBox_StartingType.SelectedIndex = (int)CurrentEvent.RaceParameters.StartType + 1;
             comboBox_RaceType.SelectedIndex = (int)CurrentEvent.RaceParameters.RaceType;
+            comboBox_LowMuType.SelectedIndex = (int)CurrentEvent.RaceParameters.LowMuType;
             comboBox_DecisiveWeather.SelectedIndex = (int)CurrentEvent.RaceParameters.DecisiveWeather;
             cb_StartTime.IsChecked = CurrentEvent.RaceParameters.Date != null;
 
@@ -455,6 +458,14 @@ namespace GTEventGenerator
                 var r = (RaceType)i;
                 string rName = r.Humanize();
                 comboBox_RaceType.Items.Add(rName);
+            }
+
+            var lowMuTypes = (LowMuType[])Enum.GetValues(typeof(LowMuType));
+            for (int i = 0; i < lowMuTypes.Length; i++)
+            {
+                var r = (LowMuType)i;
+                string rName = r.Humanize();
+                comboBox_LowMuType.Items.Add(rName);
             }
 
             var weatherTypes = (DecisiveWeatherType[])Enum.GetValues(typeof(DecisiveWeatherType));
