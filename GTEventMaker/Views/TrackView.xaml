@@ -1,0 +1,162 @@
+﻿<UserControl x:Class="GTEventMaker.Views.TrackView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GTEventMaker.Views"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             mc:Ignorable="d" 
+             d:DesignHeight="604" d:DesignWidth="1154"
+             DataContextChanged="UserControl_DataContextChanged">
+    <Grid>
+        <Grid Name="cantabEventCourse" >
+            <GroupBox Header="Course Selector" Margin="10,10,0,0" Height="492" VerticalAlignment="Top" HorizontalAlignment="Left" Width="518">
+                <Grid>
+                    <ComboBox Name="comboBox_CourseList" Height="24" Width="301" SelectionChanged="comboBox_CourseList_SelectedIndexChanged" Margin="209,-28,6,463" >
+                        <ComboBox.ToolTip>
+                            <TextBlock>
+                                        <TextBlock FontWeight="Bold" FontSize="14">Course</TextBlock> <LineBreak />
+                                        Track to play the event in.<LineBreak/>
+                                        Set to 'Course Maker User Generated' to pick a custom track.<LineBreak/>
+                                        <LineBreak/>
+                                        <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">track->course_code</TextBlock>
+                                    </TextBlock>
+                        </ComboBox.ToolTip>
+                    </ComboBox>
+
+                    <Border Background="#505050" BorderThickness="1" BorderBrush="LightGray">
+                        <Image Name="image_CourseMap" />
+                    </Border>
+
+                    <Image Name="image_CourseLogo" Width="250" Height="133" Margin="0,0,2,2" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+                    <Label Name="image_CourseLogoNoPreview" Content="Track Logo Unavailable" Width="200" Height="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="16" FontWeight="Bold" Margin="0,0,25,40" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+
+                    <Label Name="image_CourseMapNoPreview" Content="Map Preview Unavailable" Height="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="16" FontWeight="Bold" Margin="155,221,157,188"/>
+                </Grid>
+            </GroupBox>
+
+            <GroupBox Header="Parameters" Width="298" Margin="538,10,0,0" HorizontalAlignment="Left" Height="292" VerticalAlignment="Top">
+                <Grid>
+                    <Label Name="lb_CourseLayoutNumber" Content="Course Layout Number" Margin="10,10,148,0" Height="33" VerticalAlignment="Top">
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Course Layout Number</TextBlock> <LineBreak />
+                                    Unknown.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">track->course_layout_no</TextBlock>
+                                </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:IntegerUpDown Name="iud_CourseLayoutNumber" ValueChanged="iud_CourseLayoutNumber_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="181,14,10,0" Height="20" VerticalAlignment="Top"/>
+
+                    <Label Name="lb_MapOffsetWorldX" Content="Map Offset World X" Margin="10,43,148,0" Height="33" VerticalAlignment="Top">
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Map Offset World X</TextBlock> <LineBreak />
+                                    Unknown.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">track->map_offset_world_x</TextBlock>
+                                </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:ShortUpDown Name="iud_MapOffsetWorldX" ValueChanged="iud_MapOffsetWorldX_ValueChanged" Height="20" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" VerticalAlignment="Top" Margin="181,48,10,0"/>
+
+                    <Label Name="lb_MapOffsetWorldY" Content="Map Offset World Y" Margin="10,76,148,0" Height="33" VerticalAlignment="Top">
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Map Offset World Y</TextBlock> <LineBreak />
+                                    Unknown.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">track->map_offset_world_y</TextBlock>
+                                </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:ShortUpDown Name="iud_MapOffsetWorldY" Height="20" ValueChanged="iud_MapOffsetWorldY_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" VerticalAlignment="Top" Margin="181,81,10,0"/>
+
+                    <Label Name="lb_MapScale" Content="Map Scale" Margin="10,107,148,0" Height="33" VerticalAlignment="Top">
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Map Scale</TextBlock> <LineBreak />
+                                    Unknown.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">track->map_scale</TextBlock>
+                                </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:ShortUpDown Name="iud_MapScale" ValueChanged="iud_MapScale_ValueChanged" Height="20" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" VerticalAlignment="Top" Margin="181,113,10,0"/>
+
+                    <Label Name="lb_GeneratedCourseID" Content="Generated Course ID" Margin="10,140,148,0" Height="33" VerticalAlignment="Top">
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Map Scale</TextBlock> <LineBreak />
+                                    For GT6. ID of the generated course.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">track->generated_course_id</TextBlock>
+                                </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:ULongUpDown Name="iud_GeneratedCourseID" ValueChanged="iud_GeneratedCourseID_ValueChanged" Height="20" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" VerticalAlignment="Top" Margin="181,145,10,0"/>
+
+                    <CheckBox Name="cb_IsOmodetoDifficulty" Content="Is Omodeto Difficulty" Margin="15,169,10,0" Checked="cb_IsOmodetoDifficulty_Checked" Unchecked="cb_IsOmodetoDifficulty_Unchecked" Height="28" VerticalAlignment="Top">
+                        <CheckBox.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Is Omodeto Difficulty</TextBlock> <LineBreak />
+                                    Unknown.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">track->is_omodeto_difficulty</TextBlock>
+                                </TextBlock>
+                        </CheckBox.ToolTip>
+                    </CheckBox>
+                </Grid>
+            </GroupBox>
+
+
+            <GroupBox Header="GT5 Custom Track Data" IsEnabled="False" Width="298" Margin="538,307,0,10" HorizontalAlignment="Left">
+            </GroupBox>
+
+            <GroupBox Name="gb_GT6CustomTrack" Header="GT6 Custom Track Data" IsEnabled="False" Width="303" Margin="841,10,10,10">
+                <Grid>
+                    <Border Width="227" Height="109" Margin="37,10,37,432">
+                        <Grid>
+                            <Image Name="image_CustomCourseLogo" />
+                            <Label Name="lb_SelectCourseMakerTrack" Content="Select 'Course Maker User Generated'" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="12" FontWeight="Bold"/>
+                        </Grid>
+                    </Border>
+
+
+                    <Label Content="Scenery :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,124,0,0"/>
+                    <Label Name="label_CustomScenery" Content="N/A" HorizontalAlignment="Left" HorizontalContentAlignment="Right" VerticalAlignment="Top" Width="205" Margin="86,125,0,0"/>
+
+                    <Label Content="Road Width :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,155,0,0" />
+                    <Label Name="label_CustomRoadWidth" Content="N/A" HorizontalAlignment="Left" HorizontalContentAlignment="Right" VerticalAlignment="Top"  Width="188" Margin="103,156,0,0"/>
+
+                    <Label Content="Start Position :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,186,0,0"/>
+                    <Label Name="label_StartPos" Content="N/A" HorizontalAlignment="Left" HorizontalContentAlignment="Right" VerticalAlignment="Top" Width="180" Margin="111,186,0,0"/>
+
+                    <Label Content="Date Time :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,217,0,0" />
+                    <Label Name="label_Created" Content="N/A" HorizontalAlignment="Left" HorizontalContentAlignment="Right" VerticalAlignment="Top" Width="201" Margin="91,217,0,0"/>
+
+                    <Label Content="Is Circuit :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,248,0,0" />
+                    <Label Name="label_CustomIsCircuit" Content="N/A" HorizontalAlignment="Left" HorizontalContentAlignment="Right" VerticalAlignment="Top" Width="205" Margin="86,250,0,0"/>
+
+                    <Label Content="Home Straight Length :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,279,0,0" />
+                    <Label Name="label_HomeStraightLength" Content="N/A" HorizontalAlignment="Left" HorizontalContentAlignment="Right" VerticalAlignment="Top" Width="139" Margin="152,281,0,0"/>
+
+                    <Label Content="Elevation Difference :" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="310" Margin="10,307,0,0"/>
+                    <Label Name="label_ElevationDifference" Content="N/A" HorizontalAlignment="Left" HorizontalContentAlignment="Right" VerticalAlignment="Top" Width="139" Margin="152,307,0,0"/>
+
+                    <Label Content="Corners :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,338,0,0" />
+                    <Label Name="label_CustomCorners" Content="N/A" HorizontalAlignment="Left" HorizontalContentAlignment="Right" VerticalAlignment="Top" Width="209" Margin="82,338,0,0"/>
+
+                    <Label Content="Begin Position :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,369,0,0" />
+                    <Label Name="label_CustomBeginPosition" Content="N/A" HorizontalAlignment="Left" HorizontalContentAlignment="Right" VerticalAlignment="Top" Width="175" Margin="116,369,0,0"/>
+
+                    <Label Content="End Position :" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,400,0,0" />
+                    <Label Name="label_CustomEndPosition" Content="N/A" HorizontalAlignment="Left" HorizontalContentAlignment="Right" VerticalAlignment="Top" Width="185" Margin="106,400,0,0"/>
+
+                    <Button Click="Button_SelectCustomTrack_Clicked" Content="Pick .ted/.b64 Custom Track File" Width="271" Height="25" Margin="15,0,15,10" VerticalAlignment="Bottom"/>
+                </Grid>
+            </GroupBox>
+        </Grid>
+    </Grid>
+</UserControl>

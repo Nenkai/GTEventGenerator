@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="GTEventMaker.Views.FolderView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GTEventMaker.Views"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             mc:Ignorable="d" 
+             d:DesignHeight="604" d:DesignWidth="1154">
+    <Grid>
+        <GroupBox Width="441" Canvas.Left="10" Canvas.Top="10" HorizontalAlignment="Left" Header="Main Folder Information" Margin="10,10,0,10">
+            <Grid>
+                <Label Name="label_folderID" Content="Folder ID" Height="24" Width="92" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0">
+                    <Label.ToolTip>
+                        <TextBlock>
+                                <TextBlock FontWeight="Bold" FontSize="14">Folder ID</TextBlock><LineBreak/>
+                                This is your *unique* folder ID, which will also point to the XML file number.<LineBreak/>
+                                Make sure it also matches in MenuDB!
+                                <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">play_style->play_type</TextBlock>
+                            </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:ULongUpDown Name="iud_FolderID" ValueChanged="iud_FolderID_ValueChanged" Height="20" Width="304" Canvas.Left="101" Canvas.Top="14" Value="1000" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="115,14,0,0"
+                                  BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" />
+
+                <Label Content="Folder Type" Height="27" VerticalAlignment="Top"  Margin="10,39,311,0" >
+                    <Label.ToolTip>
+                        <TextBlock>
+                                <TextBlock FontWeight="Bold" FontSize="14">Folder Type</TextBlock><LineBreak/>
+                                Folder Type - How the folder is displayed (especially for GT6).<LineBreak/>
+                            </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:IntegerUpDown Name="iud_FolderType" Height="23" VerticalAlignment="Top" Margin="115,43,20,0" ValueChanged="iud_FolderType_ValueChanged" 
+                                    BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" />
+
+            </Grid>
+        </GroupBox>
+        <GroupBox HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="456" Canvas.Top="10" Width="221" Height="117" Margin="456,10,0,0" >
+            <GroupBox.Header>
+                <TextBlock Text="Championship Options"/>
+            </GroupBox.Header>
+            <Grid>
+                <Button Name="btnChampionshipRewards" Height="31" Width="190" IsEnabled="False" HorizontalAlignment="Left" VerticalAlignment="Top" Click="btn_ChampionshipRewards_Click" Margin="10,44,0,0">Set Championship Rewards</Button>
+                <CheckBox Name="chkIsChampionship" Content="Is Championship" Height="29" Width="190" HorizontalAlignment="Right" VerticalAlignment="Top" Unchecked="chkIsChampionship_CheckedChanged" Checked="chkIsChampionship_CheckedChanged" Margin="0,10,19,0"/>
+            </Grid>
+        </GroupBox>
+        <!--<Button Name="btnEventGenerate" Height="43" Width="137" TabIndex="8" Click="btnEventGenerate_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="659" Canvas.Top="479" >Generate Event</Button>
+                    <Button Name="btnOpenMenuDB" Height="43" Width="137" TabIndex="7" Click="btnOpenMenuDB_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="801" Canvas.Top="479" >Open MenuDB</Button>-->
+    </Grid>
+</UserControl>

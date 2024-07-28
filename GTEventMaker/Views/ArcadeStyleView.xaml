@@ -1,0 +1,235 @@
+﻿<UserControl x:Class="GTEventMaker.Views.ArcadeStyleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:local="clr-namespace:GTEventMaker.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="604" d:DesignWidth="1154"
+             DataContextChanged="UserControl_DataContextChanged">
+    <Grid>
+
+        <GroupBox Height="584" Width="394" Margin="10,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left">
+            <GroupBox.Header>
+                <TextBlock Text="Arcade Style Race Settings"/>
+            </GroupBox.Header>
+            <Grid>
+                <Label Content="Enable:  Jump Bonuses" Width="132" Margin="10,10,246,0" Height="25" VerticalAlignment="Top"/>
+                <CheckBox Name="cb_EnableJumpBonus" Checked="cb_EnableJumpBonus_Checked" Unchecked="cb_EnableJumpBonus_Checked" Margin="147,12,225,0" Height="25" VerticalAlignment="Top"/>
+
+                <Label Content="Speed Traps" Width="82" Margin="194,10,112,0" Height="25" VerticalAlignment="Top"/>
+                <CheckBox Name="cb_EnableSpeedTrap" Checked="cb_EnableSpeedTrap_Checked" Unchecked="cb_EnableSpeedTrap_Checked" Width="17" Margin="276,17,95,0" Height="16" VerticalAlignment="Top"/>
+
+                <Label Content="Extra Seconds on Overtake" Width="172" Margin="10,40,206,0" Height="26" VerticalAlignment="Top">
+                    <Label.ToolTip>
+                        <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Overtake Seconds</TextBlock> <LineBreak />
+                                    Extra Seconds when overtaking a car. Can be 0.<LineBreak/>
+                                    Default is 5.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">arcade_race_setting->overtake_seconds</TextBlock>
+                                    </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:ByteUpDown Name="iud_OvertakeSeconds" ValueChanged="iud_OvertakeSeconds_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Width="73" Margin="305,42,10,0" Height="22" VerticalAlignment="Top"/>
+
+                <Label Content="Initial Seconds on Event Start" Width="280" Margin="10,71,98,0" Height="26" VerticalAlignment="Top">
+                    <Label.ToolTip>
+                        <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Start Seconds</TextBlock> <LineBreak />
+                                    Initial seconds when starting.<LineBreak/>
+                                    Default is 60.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">arcade_race_setting->start_seconds</TextBlock>
+                                    </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:ByteUpDown Name="iud_StartSeconds" ValueChanged="iud_StartSeconds_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Width="73" Margin="305,73,10,0" Height="22" VerticalAlignment="Top"/>
+
+                <Label Content="Default Bonus Seconds on New Sector Reached" Width="280" Margin="10,102,98,0" Height="26" VerticalAlignment="Top">
+                    <Label.ToolTip>
+                        <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Default Extend Seconds</TextBlock> <LineBreak />
+                                    Seconds given for reaching a new sector.<LineBreak/>
+                                    Default is 25.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">arcade_race_setting->default_extend_seconds</TextBlock>
+                                    </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:ByteUpDown Name="iud_DefaultExtendSeconds" ValueChanged="iud_DefaultExtendSeconds_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Width="73" Margin="305,104,10,0" Height="22" VerticalAlignment="Top"/>
+
+                <Label Content="Max Seconds" Width="217" Margin="10,133,161,0" Height="26" VerticalAlignment="Top">
+                    <Label.ToolTip>
+                        <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Limit Seconds</TextBlock> <LineBreak />
+                                    Max Seconds that the player can have. Countdown maxout.<LineBreak/>
+                                    Default is 150.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">arcade_race_setting->limit_seconds</TextBlock>
+                                    </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:ByteUpDown Name="iud_LimitSeconds" ValueChanged="iud_LimitSeconds_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Width="73" Margin="305,135,10,0" Height="22" VerticalAlignment="Top"/>
+
+                <Label Content="Level Up Step" Width="217" Margin="10,164,161,0" Height="26" VerticalAlignment="Top">
+                    <Label.ToolTip>
+                        <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Level Up Step</TextBlock> <LineBreak />
+                                    Unknown.<LineBreak/>
+                                    Default is 7.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">arcade_race_setting->level_up_step</TextBlock>
+                                    </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:ByteUpDown Name="iud_LevelUpStep" ValueChanged="iud_LevelUpStep_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Width="73" Margin="305,166,10,0" Height="22" VerticalAlignment="Top"/>
+
+                <Label Content="Distance for next cars to appear (in M)" Width="217" Margin="10,195,161,0" Height="26" VerticalAlignment="Top">
+                    <Label.ToolTip>
+                        <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Appear Step V</TextBlock> <LineBreak />
+                                    Distance between the next car(s) in meters, before appearing. Make this high enough to be realistic.<LineBreak/>
+                                    Default is 700.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">arcade_race_setting->appear_step_v</TextBlock>
+                                    </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:UShortUpDown Name="iud_AppearStepV" ValueChanged="iud_AppearStepV_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Width="73" Margin="306,197,9,0" Height="22" VerticalAlignment="Top"/>
+
+                <Label Content="Distance for cars to disappear after Overtake (in M)" Width="285" Margin="10,226,93,0" Height="27" VerticalAlignment="Top">
+                    <Label.ToolTip>
+                        <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Disappear Step V</TextBlock> <LineBreak />
+                                    Distance after passing a car in meters, before disappearing. Make this high enough to be realistic.<LineBreak/>
+                                    Default is 250.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">arcade_race_setting->disappear_step_v</TextBlock>
+                                    </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:UShortUpDown Name="iud_DisappearStepV" ValueChanged="iud_DisappearStepV_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Width="73" Margin="306,228,9,0" Height="22" VerticalAlignment="Top"/>
+
+                <Label Content="Afford Time" Width="217" Margin="10,258,161,0" Height="26" VerticalAlignment="Top">
+                    <Label.ToolTip>
+                        <TextBlock>
+                             <TextBlock FontWeight="Bold" FontSize="14">Afford Time</TextBlock> <LineBreak />
+                             Unknown.<LineBreak/>
+                             Default is 4000.<LineBreak/>
+                             <LineBreak/>
+                             <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">arcade_race_setting->afford_time</TextBlock>
+                         </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:UShortUpDown Name="iud_AffordTime" ValueChanged="iud_AffordTime_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Width="73" Margin="306,260,9,0" Height="22" VerticalAlignment="Top"/>
+
+                <Label Content="Score Bonus on Overtake" Width="217" Margin="10,289,161,0" Height="26" VerticalAlignment="Top">
+                    <Label.ToolTip>
+                        <TextBlock>
+                             <TextBlock FontWeight="Bold" FontSize="14">Overtake Score</TextBlock> <LineBreak />
+                             Points given on overtake.<LineBreak/>
+                             <LineBreak/>
+                             <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">arcade_race_setting->overtake_score</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:UShortUpDown Name="iud_OvertakeScore" ValueChanged="iud_OvertakeScore_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Width="73" Margin="306,291,9,0" Height="22" VerticalAlignment="Top"/>
+
+                <Label Content="Score Bonus on Speed Traps" Width="217" Margin="10,320,161,0" Height="26" VerticalAlignment="Top">
+                    <Label.ToolTip>
+                        <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Speed Trap Score</TextBlock> <LineBreak />
+                                    Points given during speed traps.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">arcade_race_setting->speed_trap_score</TextBlock>
+                                    </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:UShortUpDown Name="iud_SpeedTrapScore" ValueChanged="iud_SpeedTrapScore_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Width="73" Margin="306,322,9,0" Height="22" VerticalAlignment="Top"/>
+
+                <Label Content="Jump Bonus Score" Width="217" Margin="10,351,161,0" Height="26" VerticalAlignment="Top">
+                    <Label.ToolTip>
+                        <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Jump Bonus Score</TextBlock> <LineBreak />
+                                    Points given during jump bonuses.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">arcade_race_setting->jump_bonus_score</TextBlock>
+                                    </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:UShortUpDown Name="iud_JumpBonusScore" ValueChanged="iud_JumpBonusScore_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Width="73" Margin="306,354,9,0" Height="20" VerticalAlignment="Top"/>
+
+                <Label Content="Distance for the first car to appear" Width="217" Margin="10,382,161,0" Height="26" VerticalAlignment="Top">
+                    <Label.ToolTip>
+                        <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Startup Step V</TextBlock> <LineBreak />
+                                    Distance for the first car to appear.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">arcade_race_setting->startup_step_v</TextBlock>
+                                    </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:UShortUpDown Name="iud_StartupStepV" ValueChanged="iud_StartupStepV_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Width="73" Margin="306,384,9,0" Height="22" VerticalAlignment="Top"/>
+
+                <Label Content="Offset for the first car to appear"  Width="217" Margin="10,413,161,0" Height="27" VerticalAlignment="Top">
+                    <Label.ToolTip>
+                        <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Startup Offset V</TextBlock> <LineBreak />
+                                    Distance for the first car to appear (in VCoord).<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">arcade_race_setting->startup_offset_v</TextBlock>
+                                    </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:UShortUpDown Name="iud_StartupOffsetV" ValueChanged="iud_StartupOffsetV_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Width="73" Margin="306,415,9,0" Height="22" VerticalAlignment="Top"/>
+
+                <Label Content="Initial Velocity                Low"  Width="159" Margin="10,444,219,0" Height="26" VerticalAlignment="Top">
+                    <Label.ToolTip>
+                        <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Initial Velocity (L/H)</TextBlock> <LineBreak />
+                                    Unknown.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">arcade_race_setting->initial_velocity_l/h</TextBlock>
+                                    </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:UShortUpDown Name="iud_InitialVelocityL" ValueChanged="iud_InitialVelocityL_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Width="73" Margin="172,446,143,0" Height="22" VerticalAlignment="Top"/>
+
+                <Label Content="High" Width="38" Margin="258,443,92,0" Height="27" VerticalAlignment="Top"/>
+                <xctk:UShortUpDown Name="iud_InitialVelocityH" ValueChanged="iud_InitialVelocityH_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Width="73" Margin="306,446,9,0" Height="22" VerticalAlignment="Top"/>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Extra Seconds per Section" Margin="409,0,0,0" Height="584" VerticalAlignment="Center" HorizontalAlignment="Left" Width="358">
+            <GroupBox.ToolTip>
+                <TextBlock>
+                     <TextBlock FontWeight="Bold" FontSize="14">Extra Seconds per Section</TextBlock> <LineBreak />
+                     <LineBreak/>
+                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">arcade_race_setting->section_extend_seconds->seconds[]</TextBlock>
+                 </TextBlock>
+            </GroupBox.ToolTip>
+            <Grid>
+                <ListBox Name="lb_SectionExtendSecond" Margin="10,10,10,35" SelectionChanged="lb_SectionExtendSecond_SelectionChanged"/>
+                <Label Content="Extra Seconds" Margin="10,520,136,0" Height="25" VerticalAlignment="Top"/>
+                <xctk:SByteUpDown Name="iud_ExtraSecondPerSection" ValueChanged="iud_ExtraSecondPerSection_ValueChanged" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="130,522,10,0" Height="22" VerticalAlignment="Top"/>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Speed Trap Locations (VCoords)" Margin="772,0,0,0" Height="584" VerticalAlignment="Center" HorizontalAlignment="Left" Width="372">
+            <GroupBox.ToolTip>
+                <TextBlock>
+                     <TextBlock FontWeight="Bold" FontSize="14">Speed Trap Locations (VCoords)</TextBlock> <LineBreak />
+                     <LineBreak/>
+                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">arcade_race_setting->speed_trap->course_v[]</TextBlock>
+                 </TextBlock>
+            </GroupBox.ToolTip>
+            <Grid>
+                <ListBox Name="lb_SpeedTrap" Margin="10,10,10,36" SelectionChanged="lb_SpeedTrap_SelectionChanged"/>
+                <Label Content="VCoord" Margin="10,520,136,0" Height="25" VerticalAlignment="Top"/>
+                <xctk:UIntegerUpDown Name="iud_SpeedTrap" ValueChanged="iud_SpeedTrap_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="130,522,10,0" Height="22" VerticalAlignment="Top"/>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</UserControl>
