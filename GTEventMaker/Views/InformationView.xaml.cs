@@ -42,32 +42,32 @@ public partial class InformationView : UserControl
         if (Information is null)
             return;
 
-        Language country = (Language)cb_InfoLanguage.SelectedItem;
-        Information.Title.SetText(country, txt_EventTitle.Text);
+        Language language = (Language)cb_InfoLanguage.SelectedItem;
+        Information.Title.SetText(language, txt_EventTitle.Text);
     }
 
     private void txt_Description_TextChanged(object sender, TextChangedEventArgs e)
     {
-        Language country = (Language)cb_InfoLanguage.SelectedItem;
-        Information.Description.SetText(country, txt_Description.Text);
+        Language language = (Language)cb_InfoLanguage.SelectedItem;
+        Information.Description.SetText(language, txt_Description.Text);
     }
 
     private void txt_OneLineTitle_TextChanged(object sender, TextChangedEventArgs e)
     {
-        Language country = (Language)cb_InfoLanguage.SelectedItem;
-        Information.OneLineTitle.SetText(country, txt_OneLineTitle.Text);
+        Language language = (Language)cb_InfoLanguage.SelectedItem;
+        Information.OneLineTitle.SetText(language, txt_OneLineTitle.Text);
     }
 
     private void txt_AdvancedNotice_TextChanged(object sender, TextChangedEventArgs e)
     {
-        Language country = (Language)cb_InfoLanguage.SelectedItem;
-        Information.AdvancedNotice.SetText(country, txt_AdvancedNotice.Text);
+        Language language = (Language)cb_InfoLanguage.SelectedItem;
+        Information.AdvancedNotice.SetText(language, txt_AdvancedNotice.Text);
     }
 
     private void txt_RegistrationNotice_TextChanged(object sender, TextChangedEventArgs e)
     {
-        Language country = (Language)cb_InfoLanguage.SelectedItem;
-        Information.RegistrationNotice.SetText(country, txt_RegistrationNotice.Text);
+        Language language = (Language)cb_InfoLanguage.SelectedItem;
+        Information.RegistrationNotice.SetText(language, txt_RegistrationNotice.Text);
     }
 
 
@@ -168,12 +168,12 @@ public partial class InformationView : UserControl
         if (Information is null)
             return;
 
-        Language country = (Language)cb_InfoLanguage.SelectedItem;
-        txt_EventTitle.Text = Information.Title.Texts[country];
-        txt_Description.Text = Information.Description.Texts[country];
-        txt_OneLineTitle.Text = Information.OneLineTitle.Texts[country];
-        txt_AdvancedNotice.Text = Information.AdvancedNotice.Texts[country];
-        txt_RegistrationNotice.Text = Information.RegistrationNotice.Texts[country];
+        Language language = (Language)cb_InfoLanguage.SelectedItem;
+        txt_EventTitle.Text = Information.Title.Texts[language];
+        txt_Description.Text = Information.Description.Texts[language];
+        txt_OneLineTitle.Text = Information.OneLineTitle.Texts[language];
+        txt_AdvancedNotice.Text = Information.AdvancedNotice.Texts[language];
+        txt_RegistrationNotice.Text = Information.RegistrationNotice.Texts[language];
 
         txt_LogoImagePath.Text = Information.LogoImagePath;
         iud_LogoImageLayout.Value = Information.LogoImageLayout;

@@ -1110,7 +1110,7 @@ public partial class GameMakerWindow : Window, INotifyPropertyChanged
             }
             else
             {
-                presence.Details = $"{Folder.Title[Country.GB]}";
+                presence.Details = $"{Folder.Title[PDTools.Enums.Language.GB]}";
                 presence.State = $"Event:";
                 presence.Timestamps = Timestamps.Now;
             }
