@@ -1,0 +1,172 @@
+﻿<UserControl x:Class="GTEventMaker.Views.EventsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GTEventMaker.Views"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             mc:Ignorable="d" 
+             d:DesignHeight="604" d:DesignWidth="1154"
+             Loaded="UserControl_Loaded">
+    <Grid>
+        <GroupBox Name="grp_EventInfo" Margin="525,10,0,10" HorizontalAlignment="Left" Width="319" >
+            <GroupBox.Header>
+                <TextBlock Text="Event Information"/>
+            </GroupBox.Header>
+            <Grid Margin="0,0,0,0" >
+                <Label Content="Event ID" Width="76" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0">
+                    <Label.ToolTip>
+                        <TextBlock>
+                                        <TextBlock FontWeight="Bold" FontSize="14">Event ID</TextBlock>
+                                        <LineBreak/>
+                                        Unique Identifier for this Event. 
+                                        <LineBreak/>
+                                        <TextBlock FontWeight="Bold">Note</TextBlock>: Only the first one can be edited - the program will automatically increment the other ones based on the first one.
+                                        <LineBreak/>
+                                        <LineBreak/>
+                                        <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">event_id</TextBlock>
+                                    </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:ULongUpDown Name="iud_EventID" ValueChanged="iud_EventID_ValueChanged" Width="200" Minimum="0" Maximum="9900000" 
+                                  BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="107,13,0,0"/>
+
+                <Label Name="label_gameMode" Content="Game Mode" Height="23" Width="76" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,41,0,0">
+                    <Label.ToolTip>
+                        <TextBlock>
+                                        <TextBlock FontWeight="Bold" FontSize="14">Game Mode</TextBlock>
+                                        <LineBreak/>
+                                        - <TextBlock FontWeight="Bold">GT Mode Race</TextBlock>: Normal Race within the Novice to Extreme categories.
+                                        <LineBreak/>
+                                        - <TextBlock FontWeight="Bold">License</TextBlock>: License Test.
+                                        <LineBreak/>
+                                        - <TextBlock FontWeight="Bold">Mission</TextBlock>: Moon/Senna Tribute for GT6. Allows car rewards if checks are bypassed. 
+                                        <LineBreak/>
+                                        - <TextBlock FontWeight="Bold">Special Event (School)</TextBlock>: Used for Special Events (GT5).
+                                        <LineBreak/>
+                                        - <TextBlock FontWeight="Bold">Rally Event</TextBlock>: Used for Special Rally Events (GT5).
+                                        <LineBreak/>
+                                        - <TextBlock FontWeight="Bold">Arcade Race</TextBlock>: Regular Arcade Race.
+                                        <LineBreak/>
+                                        - <TextBlock FontWeight="Bold">Seasonal Race </TextBlock>: Used for Seasonal Races (GT6/5?).
+                                        <LineBreak/>
+                                        - <TextBlock FontWeight="Bold">Seasonal Time Trial</TextBlock>: Used for Seasonal Time Trials (GT6/5?) where the player tries to beat a lap time for a reward.
+                                        <LineBreak/>
+                                        - <TextBlock FontWeight="Bold">Seasonal Drift Attack</TextBlock>: Used for Seasonal Drift Attacks (GT6/5?) where the player tries to beat a drift score within a track section.
+                                        <LineBreak/>
+                                        - <TextBlock FontWeight="Bold">Overtake Mission (GT6)</TextBlock>: Used for Sierra Events - Also known as "Arcade Style Race"
+                                        <LineBreak/>
+                                        <LineBreak/>
+                                        <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">game_mode</TextBlock>
+                                    </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <ComboBox Name="cb_gameModes" Height="23" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" SelectionChanged="cb_gameModes_SelectionChanged" Margin="107,42,0,0" />
+
+                <Label Content="Event Type" Height="27" Width="76" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,72,0,0">
+                    <Label.ToolTip>
+                        <TextBlock>
+                            <TextBlock FontWeight="Bold" FontSize="14">Event Type</TextBlock><LineBreak/>
+                            Unknown.
+                            <LineBreak/>
+                            <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">event_type</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <ComboBox Name="cb_EventType" Height="23" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" SelectionChanged="cb_EventType_SelectionChanged" Margin="107,74,0,0" />
+
+                <CheckBox Name="checkBox_SeasonalEvent" Content="Seasonal Event" Height="24" Width="287" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,104,0,0"
+                                      Checked="checkBox_SeasonalEvent_Checked" Unchecked="checkBox_SeasonalEvent_Checked">
+                    <CheckBox.ToolTip>
+                        <TextBlock>
+                                        <TextBlock FontWeight="Bold" FontSize="14">Seasonal Event</TextBlock>
+                                        <LineBreak/>
+                                        Whether if the event is a Seasonal Event, if so, the event will have date requirements to enter,<LineBreak/>
+                                        fill in the Start/End Dates (and additionally Ranking tab).
+                                        <LineBreak/>
+                                        <LineBreak/>
+                                        <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">is_seasonal_event</TextBlock>
+                                    </TextBlock>
+                    </CheckBox.ToolTip>
+                </CheckBox>
+
+                <CheckBox Name="cb_Inheritance" Content="Inheritance" Height="24" Width="287" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,133,0,0"
+                                      Checked="cb_Inheritance_Checked" Unchecked="cb_Inheritance_Checked">
+                    <CheckBox.ToolTip>
+                        <TextBlock>
+                            <TextBlock FontWeight="Bold" FontSize="14">Inheritance</TextBlock>
+                            <LineBreak/>
+                            Unknown.
+                            <LineBreak/>
+                            <LineBreak/>
+                            <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">inheritance</TextBlock>
+                        </TextBlock>
+                    </CheckBox.ToolTip>
+                </CheckBox>
+
+                <Separator Height="7" VerticalAlignment="Top" HorizontalAlignment="Center" Width="297" Margin="0,160,0,0"/>
+
+                <Label Content="Start Date" Margin="10,172,0,0" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" Width="137">
+                    <Label.ToolTip>
+                        <TextBlock>
+                             <TextBlock FontWeight="Bold" FontSize="14">Event Start Date</TextBlock> <LineBreak />
+                             For online events, when this event is available.<LineBreak/>
+                             Leave empty for no starting date.<LineBreak/>
+                             <LineBreak/>
+                             <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">begin_date</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:DateTimeUpDown Name="dt_StartDate" ValueChanged="dt_StartDate_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="130,175,0,0" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="177"/>
+
+                <Label Content="End Date" Margin="10,203,0,0" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" Width="137">
+                    <Label.ToolTip>
+                        <TextBlock>
+                             <TextBlock FontWeight="Bold" FontSize="14">Event End Date</TextBlock> <LineBreak />
+                             For online events. when this event ends.<LineBreak/>
+                             Leave empty for no starting date.<LineBreak/>
+                             <LineBreak/>
+                             <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">end_date</TextBlock>
+                        </TextBlock>
+                    </Label.ToolTip>
+                </Label>
+                <xctk:DateTimeUpDown Name="dt_EndDate" ValueChanged="dt_EndDate_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="130,206,0,0" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="177"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Event Listing" Margin="10,10,0,10" HorizontalAlignment="Left" Width="510">
+            <Grid>
+                <Button Name="btnRemoveRace" Height="24" Width="96" IsEnabled="False" Click="btn_RemoveRace_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,15,10" >Delete Selected</Button>
+                <Button Name="btnCopyRace" Height="24" Width="82" IsEnabled="False" Click="btn_CopyRace_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,127,10" >Copy Selected</Button>
+
+                <Button Name="btnAddRace" Height="24" Width="90" Click="btn_AddEvent_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,227,10" >Add Event</Button>
+                <ListBox Name="lb_Events" Width="478" HorizontalAlignment="Center" SelectionChanged="lb_Events_SelectedIndexChanged" Margin="0,10,0,39" 
+                                     DisplayMemberPath="Information.Title.Texts[2]"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox VerticalAlignment="Top" Height="512" Margin="849,10,0,0" HorizontalAlignment="Left" Width="295" >
+            <GroupBox.ToolTip>
+                <TextBlock>
+                               <TextBlock FontWeight="Bold" FontSize="14">Image Card (GT6)</TextBlock>
+                               <LineBreak/>
+                                This is only available if your event is in a Mission, Coffee Break, One Make, Endurance, or License Folder.
+                                <LineBreak/>
+                                Recommended (and default) dimensions are <TextBlock FontStyle="Italic" >320x452</TextBlock> (Height:Width).
+                            </TextBlock>
+            </GroupBox.ToolTip>
+            <GroupBox.Header>
+                <TextBlock Text="Image Card (GT6 Missions/One Make etc. only)"/>
+            </GroupBox.Header>
+            <Grid>
+                <Label Name="label_imagePreview" Height="26" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                ToolTip="GT6 Only - Event Cover if the event is not in a regular folder (i.e mission/license)" Margin="0,0,66,65" Width="217">Special Event Image Preview</Label>
+                <Label Name="label_imagePreviewSize" Height="29" Width="55" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalAlignment="Top" VerticalContentAlignment="Top" Foreground="#FF646464" FontSize="11" Margin="0,371,6,0" >320x452</Label>
+
+                <Button Name="btnPickImage" Height="46" Width="130" Click="btn_PickImage_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,143,10" >Pick Image</Button>
+                <Button Name="button7" Height="46" Width="119" Click="btn_SaveImage_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,10" >Save Image</Button>
+                <Border BorderThickness="1" BorderBrush="Gray" Margin="10,10,10,95">
+                    <Image Name="pctImagePreview" Margin="0,2,0,2"/>
+                </Border>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</UserControl>

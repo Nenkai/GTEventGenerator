@@ -1,0 +1,190 @@
+﻿<Window x:Class="GTEventMaker.GameMakerWindow"
+	    xmlns = "http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+        xmlns:x = "http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:views="clr-namespace:GTEventMaker.Views"
+	    Title="GT Event Maker" Width="1320" Height="664"
+        Loaded="GameGenerator_Load"
+        Closing="Window_Closing"
+        AllowDrop="True" 
+        Drop="Window_Drop"
+        WindowStartupLocation="CenterScreen"
+        Style="{StaticResource CustomWindowStyle}"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <Window.Resources>
+    </Window.Resources>
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top">
+            <Menu Name="menuStrip1" Height="22" HorizontalAlignment="Stretch" >
+                <MenuItem Name="toolStripMenuItem1" Header="File">
+                    <MenuItem Header="New Folder" Name="newEventToolStripMenuItem" Click="mi_newEventToolStripMenuItem_Click"></MenuItem>
+                    <Separator/>
+                    <MenuItem Header="Import Folder (GT6)..." Name="importEventToolStripMenuItem" Click="mi_importEventToolStripMenuItem_Click"></MenuItem>
+                    <MenuItem Header="Import Game Parameter (r***.xml)..." Click="mi_importEventListToolStripMenuItem_Click"></MenuItem>
+                    <MenuItem Header="Import Seasonal Game Parameter List (event_*.xml)..." Click="mi_importSeasonalGPListToolStripMenuItem_Click"></MenuItem>
+                    <Separator />
+                    <MenuItem Header="Export Folder (GT6)..." Name="exportEventToolStripMenuItem" Click="mi_exportEventToolStripMenuItem_Click"></MenuItem>
+                    <MenuItem Header="Export Game Parameter (r***.xml)..." Click="mi_ExportGameParameterToolStripMenuItem_Click"></MenuItem>
+                    <MenuItem Header="Export Seasonal Game Parameter List (event_*.xml)..." Click="mi_exportSeasonalGPListToolStripMenuItem_Click"></MenuItem>
+                    <Separator />
+                    <MenuItem Header="Exit" Click="mi_exit_Click"></MenuItem>
+                </MenuItem>
+                <MenuItem Header="Edit">
+                    <MenuItem Header="Minify XML's while Exporting" Name="minimizeXMLToolStripMenuItem" IsCheckable="True" Checked="mi_minimizeXMLToolStripMenuItem_Checked" Unchecked="mi_minimizeXMLToolStripMenuItem_Checked"></MenuItem>
+                    <!--<MenuItem Header="Create Cache File while exporting (GT6)" Name="exportCacheToolStripMenuItem" IsCheckable="True" Checked="mi_exportCacheToolStripMenuItem_Checked" Unchecked="mi_exportCacheToolStripMenuItem_Checked"></MenuItem>-->
+                    <Separator />
+                    <MenuItem Name="menuRegenerate" Header="Regenerate ALL AI's..." IsEnabled="False">
+                        <MenuItem Header="Region/Names" Click="mi_randomizeAINamesToolStripMenuItem_Click"></MenuItem>
+                        <MenuItem Header="Tire Compounds" Click="mi_randomizeAITireCompoundToolStripMenuItem_Click"></MenuItem>
+                        <Separator/>
+                        <MenuItem Header="Roughness" Click="mi_randomizeAIRoughnessMenuItem_Click"></MenuItem>
+                        <MenuItem Header="Corner Skill"  Click="mi_randomizeAICornerSkillMenuItem_Click"></MenuItem>
+                        <MenuItem Header="Braking Skill" Click="mi_randomizeAIBrakingSkillMenuItem_Click"></MenuItem>
+                        <MenuItem Header="Accel Skill"  Click="mi_randomizeAIAccelSkillMenuItem_Click"></MenuItem>
+                        <MenuItem Header="Starting Skill" Click="mi_randomizeAIStartSkillMenuItem_Click"></MenuItem>
+                        <MenuItem Header="(All Skills)" Click="mi_randomizeAISkillsMenuItem_Click"></MenuItem>
+                    </MenuItem>
+                    <MenuItem Name="menuSample" Header="Apply Game Mode Sample..." IsEnabled="False">
+                        <MenuItem Header="Single Race" Name="menuItem_SingleRaceSample" Click="mi_SingleRaceSample_Click" ></MenuItem>
+                        <MenuItem Header="Time Attack" Name="menuItem_TimeAttackSample" Click="mi_TimeAttackSample_Click"></MenuItem>
+                        <MenuItem Header="Seasonal Time Attack" Name="menuItem_OnlineTimeAttackSample" Click="mi_SeasonalTimeAttackSample_Click"></MenuItem>
+                        <MenuItem Header="Drift Attack" Name="menuItem_DriftAttackSample" Click="mi_DriftAttackSample_Click"></MenuItem>
+                        <MenuItem Header="Seasonal Drift Attack" Name="menuItem_OnlineDriftAttackSample" Click="mi_SeasonalDriftAttackSample_Click"></MenuItem>
+                        <MenuItem Header="Free Run" Name="menuItem_FreeRunSample" Click="mi_FreeRunSample_Click"></MenuItem>
+                        <MenuItem Header="License" Name="menuItem_LicenseSample" Click="mi_LicenseSample_Click"></MenuItem>
+                        <MenuItem Header="Arcade Style Race (Sierra)" Name="menuItem_ArcadeStyleSample" Click="mi_ArcadeStyleSample_Click"></MenuItem>
+                    </MenuItem>
+                    <Separator/>
+                    <MenuItem Header="Import Event From Another Folder" Name="importEventFromFolderToolStripMenuItem" Click="mi_importEventFromFolderToolStripMenuItem_Click" IsEnabled="False" ></MenuItem>
+
+                </MenuItem>
+                <MenuItem Header="Tools">
+                    <MenuItem Header="Decrypt TED.." Name="decryptTedMenuItem" Click="mi_decryptTedMenuItem_Click" ></MenuItem>
+                    <MenuItem Header="Encrypt TED.." Name="encryptTedMenuItem" Click="mi_encryptTedMenuItem_Click"></MenuItem>
+                </MenuItem>
+                <MenuItem Header="Help">
+                    <MenuItem Header="About" Click="MenuItem_About_Click"></MenuItem>
+                    <Separator />
+                    <MenuItem Header="Enable Discord Rich Presence" Name="DiscordRichPresenceMenuItem" IsCheckable="True" Checked="mi_DiscordRichPresenceMenuItem_Click" Unchecked="mi_DiscordRichPresenceMenuItem_Click"></MenuItem>
+                </MenuItem>
+            </Menu>
+            <ComboBox Name="cb_QuickEventPicker" IsEnabled="False" SelectedIndex="0" DockPanel.Dock="Right" Width="540" Height="20" Margin="0,4,4,4" SelectionChanged="cb_QuickEventPicker_SelectionChanged"/>
+
+            <Label DockPanel.Dock="Right" Width="100" Content="Current Event:" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalAlignment="Bottom"/>
+        </DockPanel>
+
+        <DockPanel DockPanel.Dock="Left">
+            <Grid Height="20" DockPanel.Dock="Top">
+                <TextBlock Text="Game Parameter        >>" FontWeight="Bold" Margin="10,0,10,0"/>
+            </Grid>
+            <Grid Width="160" DockPanel.Dock="Bottom">
+                <ListBox Name="lb_ViewList" SelectionChanged="lb_ViewList_SelectionChanged">
+                    <ListBoxItem Name="lbi_FolderInfo">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="20" Source="Resources/UI/TabLogos/FolderInfo.png"/>
+                            <TextBlock Text="Folder Info" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="2 0 3 2" />
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Name="lbi_Events">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="20" Source="Resources/UI/TabLogos/Events.png"/>
+                            <TextBlock Text="Events" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="2 0 3 2" />
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem IsEnabled="False">
+                        <Separator Width="146"/>
+                    </ListBoxItem>
+                    <ListBoxItem Name="lbi_PlayStyle" IsEnabled="False">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="20" Source="Resources/UI/TabLogos/PlayType.png"/>
+                            <TextBlock Text="Play Style" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="2 0 3 2" />
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Name="lbi_Information" IsEnabled="False">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="20" Source="Resources/UI/TabLogos/EventInfo.png"/>
+                            <TextBlock Text="Information" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="2 0 3 2" />
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Name="lbi_RaceParameters" IsEnabled="False">
+                        <StackPanel Orientation="Horizontal" >
+                            <Image Width="20" Source="Resources/UI/TabLogos/EventSettings.png"/>
+                            <TextBlock Text="Race Parameters" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="2 0 3 2" />
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Name="lbi_Regulations" IsEnabled="False">
+                        <StackPanel Orientation="Horizontal" >
+                            <Image Width="20" Source="Resources/UI/TabLogos/Regulations.png"/>
+                            <TextBlock Text="Regulations" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="2 0 3 2" />
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Name="lbi_Entries" IsEnabled="False">
+                        <StackPanel Orientation="Horizontal" >
+                            <Image Width="20" Source="Resources/UI/TabLogos/EventEntries.png"/>
+                            <TextBlock Text="Entries" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="2 0 3 2" />
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Name="lbi_Constraints" IsEnabled="False">
+                        <StackPanel Orientation="Horizontal" >
+                            <Image Width="20" Source="Resources/UI/TabLogos/DrivingSettings.png"/>
+                            <TextBlock Text="Constraints" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="2 0 3 2" />
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Name="lbi_Course" IsEnabled="False">
+                        <StackPanel Orientation="Horizontal" >
+                            <Image Width="20" Source="Resources/UI/TabLogos/CourseSettings.png"/>
+                            <TextBlock Text="Course" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="2 0 3 2" />
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Name="lbi_Rewards" IsEnabled="False">
+                        <StackPanel Orientation="Horizontal" >
+                            <Image Width="20" Source="Resources/UI/TabLogos/Rewards.png"/>
+                            <TextBlock Text="Rewards" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="2 0 3 2" />
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Name="lbi_EvalConditions" IsEnabled="False">
+                        <StackPanel Orientation="Horizontal" >
+                            <Image Width="20" Source="Resources/UI/TabLogos/EvalConditions.png"/>
+                            <TextBlock Text="Eval Conditions" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="2 0 3 2" />
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Name="lbi_FailConditions" IsEnabled="False">
+                        <StackPanel Orientation="Horizontal" >
+                            <Image Width="20" Source="Resources/UI/TabLogos/Failure.png"/>
+                            <TextBlock Text="Failure Conditions" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="2 0 3 2" />
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Name="lbi_LicenseConditions" IsEnabled="False">
+                        <StackPanel Orientation="Horizontal" >
+                            <Image Width="20" Source="Resources/UI/TabLogos/LicenseConditions.png"/>
+                            <TextBlock Text="License Conditions" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="2 0 3 2" />
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Name="lbi_ArcadeStyleSettings" IsEnabled="False">
+                        <StackPanel Orientation="Horizontal" >
+                            <Image Width="20" Source="Resources/UI/TabLogos/ArcadeStyle.png"/>
+                            <TextBlock Text="Arcade Style Settings" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="2 0 3 2" />
+                        </StackPanel>
+                    </ListBoxItem>
+
+                    <ListBoxItem Name="lbi_Replay" IsEnabled="False">
+                        <StackPanel Orientation="Horizontal" >
+                            <Image Width="20" Source="Resources/UI/TabLogos/Replay.png"/>
+                            <TextBlock Text="Replay" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="2 0 3 2" />
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Name="lbi_Ranking" IsEnabled="False">
+                        <StackPanel Orientation="Horizontal" >
+                            <Image Width="20" Source="Resources/UI/TabLogos/Ranking.png"/>
+                            <TextBlock Text="Ranking" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="2 0 3 2" />
+                        </StackPanel>
+                    </ListBoxItem>
+                </ListBox>
+            </Grid>
+        </DockPanel>
+        
+        <Grid DockPanel.Dock="Right" Height="604" Width="1154">
+            <ContentControl Name="Pages" Content="{Binding SelectedView}"/>
+        </Grid>
+    </DockPanel>
+</Window>

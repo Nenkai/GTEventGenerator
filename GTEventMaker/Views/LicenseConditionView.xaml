@@ -1,0 +1,104 @@
+﻿<UserControl x:Class="GTEventMaker.Views.LicenseConditionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GTEventMaker.Views"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             mc:Ignorable="d" 
+             d:DesignHeight="604" d:DesignWidth="1154"
+             DataContextChanged="UserControl_DataContextChanged">
+    <UserControl.Resources>
+    </UserControl.Resources>
+    <Grid>
+        <GroupBox Header="Logic" Margin="10,10,531,302">
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Right" Width="578" Margin="0,0,13,0">
+                <Border Margin="10,25,16,0"  BorderBrush="DarkGray" BorderThickness="1" CornerRadius="6,6,6,6" Height="98" VerticalAlignment="Top">
+                    <Grid HorizontalAlignment="Center" Width="550" VerticalAlignment="Top">
+
+                        <TextBlock Text="Check Type" Foreground="Gray" TextAlignment="Center" Margin="10,4,402,26" />
+                        <Button Name="btn_Check" Margin="10,24,0,0" Content="Select Check Type..." Height="46" VerticalAlignment="Top" HorizontalAlignment="Left" Width="138" Click="btn_Check_Click" MouseDown="btn_Check_MouseDown"/>
+                        <Label Content="⮞" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="161,24,0,0" RenderTransformOrigin="0.5,0.5" Height="46" VerticalAlignment="Top" HorizontalAlignment="Left" Width="36"/>
+
+                        <Label Content="Int" Margin="396,10,0,0" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" Width="37"/>
+                        <xctk:IntegerUpDown Name="iud_IntValue" Margin="438,12,0,0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" HorizontalAlignment="Left" Width="96" Height="20" VerticalAlignment="Top" 
+                                            ValueChanged="iud_IntValue_ValueChanged"/>
+
+                        <Label Content="UInt" Margin="396,36,0,0" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" Width="36"/>
+                        <xctk:UIntegerUpDown Name="iud_UIntValue" Margin="438,38,0,0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="96" 
+                                             ValueChanged="iud_UIntValue_ValueChanged"/>
+
+                        <Label Content="Float" Margin="397,62,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="44"/>
+                        <xctk:SingleUpDown Name="iud_FloatValue" Margin="438,64,0,0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="96" 
+                                           ValueChanged="iud_FloatValue_ValueChanged"/>
+
+                        <TextBlock Text="Condition" Foreground="Gray"  TextAlignment="Center" Margin="209,4,203,26" />
+                        <Button Name="btn_Condition" Margin="209,0,0,0" Content="Select Condition..." Height="46" VerticalAlignment="Center" HorizontalAlignment="Left" Width="138" Click="btn_Condition_Click"/>
+
+                        <TextBlock Text="is" Foreground="Gray" TextAlignment="Center" Margin="353,4,158,25" />
+                        <Label Content="⮞" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="356,24,0,0" RenderTransformOrigin="0.5,0.5" Height="46" VerticalAlignment="Top" HorizontalAlignment="Left" Width="36"/>
+
+                        <Button Margin="24,174,0,0" Content="Connection" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Width="150" Height="58" VerticalAlignment="Top"/>
+                    </Grid>
+                </Border>
+
+                <Label Content="🢃" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,124,0,0" RenderTransformOrigin="0.5,0.5" Height="28" VerticalAlignment="Top" HorizontalAlignment="Center" Width="66"/>
+                <Button Name="btn_ResultType" Margin="412,140,30,0" Content="Result Type" Height="32" VerticalAlignment="Top" Click="btn_ResultType_Click" />
+
+                <Button Name="btn_Connection" Margin="221,150,221,0" Content="Select Connection..." Height="27" VerticalAlignment="Top" Click="btn_Connection_Click" />
+                <Separator Margin="10,200,10,0" Height="12" VerticalAlignment="Top"/>
+
+                <TextBlock Margin="150,182,150,0" Foreground="Gray" Text="Connections will be linked to the next condition." TextAlignment="Center" TextWrapping="Wrap" Height="40" VerticalAlignment="Top" />
+
+                <Button Name="btn_AddFinishCondition" Content="Add as Finish Condition" IsEnabled="False" Margin="16,217,398,0" Height="30" VerticalAlignment="Top" Click="btn_AddFinishCondition_Click" />
+                <Button Name="btn_AddSuccessCondition" Content="Add as Success Condition" IsEnabled="False" Margin="207,217,207,0" Height="30" VerticalAlignment="Top" Click="btn_AddSuccessCondition_Click" />
+                <Button Name="btn_AddFailureCondition" Content="Add as Failure Condition" IsEnabled="False" Margin="398,217,16,0" Height="30" VerticalAlignment="Top" Click="btn_AddFailureCondition_Click" />
+
+
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Margin="628,10,271,302" Header="Parameters">
+            <Grid>
+                <Label Margin="10,10,95,222" Content="Display Mode"/>
+                <ComboBox Name="cb_DisplayMode" Margin="104,11,9,221" SelectionChanged="cb_DisplayMode_SelectionChanged"/>
+                <CheckBox Name="cb_UseBasicFinish" Content="Use Basic Finish" Checked="cb_UseBasicFinish_Checked" Unchecked="cb_UseBasicFinish_Checked" Margin="10,42,10,190"/>
+                <CheckBox Name="cb_StopOnFinish" Content="Stop On Finish" Checked="cb_StopOnFinish_Checked" Unchecked="cb_StopOnFinish_Checked" Margin="10,74,10,158"/>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Margin="888,10,10,302" Header="Gadget Names">
+            <Grid>
+                <ListBox Name="lb_GadgetNames" Margin="10,10,10,67"/>
+                <TextBox Name="tb_GadgetName" Margin="10,197,10,41"/>
+                <Button Name="btn_AddGadgetName" Margin="170,223,10,10" Content="Add" Click="btn_AddGadgetName_Click"/>
+                <Button Name="btn_RemoveGadgetName" Margin="10,223,166,10" Content="Remove" Click="btn_RemoveGadgetName_Click"/>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Finish Conditions" Margin="10,307,763,0" Height="287" VerticalAlignment="Top">
+            <Grid>
+                <ListBox Name="lb_FinishConditions" Height="200" Margin="0,10,0,0" HorizontalAlignment="Center" Width="348" VerticalAlignment="Top" SelectionChanged="lb_FinishConditions_SelectionChanged"/>
+                <Button Name="btn_RemoveFinishCondition" Content="Remove" Margin="16,215,211,10" Click="btn_RemoveFinishCondition_Click"></Button>
+                <Button Name="btn_UpdateFinishCondition" Content="Update" Margin="212,215,15,10" Click="btn_UpdateFinishCondition_Click"></Button>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Success Conditions" Margin="396,307,387,0" Height="288" VerticalAlignment="Top">
+            <Grid>
+                <ListBox Name="lb_SuccessConditions" Height="200" Margin="0,10,0,0" HorizontalAlignment="Center" Width="350" VerticalAlignment="Top" SelectionChanged="lb_SuccessConditions_SelectionChanged"/>
+                <Button Name="btn_RemoveSuccessCondition"  Content="Remove" Margin="10,215,217,10" Click="btn_RemoveSuccessCondition_Click"></Button>
+                <Button Name="btn_UpdateSuccessCondition" Content="Update" Margin="218,215,9,10" Click="btn_UpdateSuccessCondition_Click"></Button>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Failure Conditions" Margin="772,307,10,0" Height="288" VerticalAlignment="Top">
+            <Grid>
+                <ListBox Name="lb_FailureConditions" Height="199" Margin="0,10,0,0" HorizontalAlignment="Center" Width="350" VerticalAlignment="Top" SelectionChanged="lb_FailureConditions_SelectionChanged"/>
+                <Button Name="btn_RemoveFailureCondition" Content="Remove" Margin="10,215,217,10" Click="btn_RemoveFailureCondition_Click"></Button>
+                <Button Name="btn_UpdateFailureCondition" Content="Update" Margin="217,215,10,10" Click="btn_UpdateFailureCondition_Click"></Button>
+
+            </Grid>
+        </GroupBox>
+    </Grid>
+</UserControl>

@@ -1,0 +1,364 @@
+﻿<UserControl x:Class="GTEventMaker.Views.RegulationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GTEventMaker.Views"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             mc:Ignorable="d" 
+              d:DesignHeight="604" d:DesignWidth="1154"
+             DataContextChanged="UserControl_DataContextChanged">
+    <Grid>
+        <Grid >
+            <GroupBox Margin="321,402,0,10" HorizontalAlignment="Left" Width="302" >
+                <GroupBox.Header>
+                    <TextBlock Text="Country And Car Categories"/>
+                </GroupBox.Header>
+                <Grid>
+                    <Button Name="btn_RemoveCarCountry" Height="20" Width="135" TabIndex="51" HorizontalAlignment="Left" VerticalAlignment="Bottom" Canvas.Left="145" Canvas.Top="121" Click="btn_RemoveCarCountry_Click" 
+                                    ToolTip="Remove selected country from allowed countries" Margin="10,0,0,10">Remove Country</Button>
+                    <Button Name="btn_RemoveCarCategory" Height="20" Width="130" TabIndex="50" HorizontalAlignment="Left" VerticalAlignment="Bottom" Canvas.Left="10" Canvas.Top="121" Click="btn_RemoveCarCategory_Click" Margin="158,0,0,10" >Remove Category</Button>
+                    <ComboBox Name="cb_CarCategories" Height="21" Width="130" TabIndex="49" HorizontalAlignment="Right" VerticalAlignment="Top" Canvas.Top="6" Canvas.Left="10" SelectionChanged="cb_CarCategory_SelectionChanged" SelectedIndex="0" Margin="0,10,12,0">
+                        <ComboBox.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Car Categories</TextBlock> <LineBreak />
+                                    Which car category can enter the event.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">regulations->categories[]->category</TextBlock>
+                                </TextBlock>
+                        </ComboBox.ToolTip>
+                        <ComboBoxItem Content="Select Category..."/>
+                    </ComboBox>
+                    <ComboBox Name="cb_CarCountries" Height="21" TabIndex="48" VerticalAlignment="Top" Canvas.Left="145" Canvas.Top="6" SelectionChanged="cb_CarCountries_SelectionChanged" SelectedIndex="0" Margin="11,10,154,0">
+                        <ComboBox.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Car Country</TextBlock> <LineBreak />
+                                    Which car country can enter the event.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">regulations->countries[]->country</TextBlock>
+                                </TextBlock>
+                        </ComboBox.ToolTip>
+                        <ComboBoxItem Content="Select Country..."/>
+                    </ComboBox>
+
+                    <ListBox Name="lb_AllowedCategories" Width="130" HorizontalAlignment="Left" Margin="158,36,0,35"/>
+
+                    <ListBox Name="lb_AllowedCountries" Width="135" HorizontalAlignment="Left" SelectionMode="Multiple" Margin="10,36,0,35" />
+                </Grid>
+            </GroupBox>
+            <GroupBox VerticalAlignment="Top" Height="387" Margin="629,10,0,0" HorizontalAlignment="Left" Width="353" >
+                <GroupBox.Header>
+                    <TextBlock Text="General Car Regulations"/>
+                </GroupBox.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25*"/>
+                        <ColumnDefinition Width="13*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Min Length (mm)" Height="26" TabIndex="16" VerticalAlignment="Top" Margin="8,169,104,0">
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Min Length (mm)</TextBlock> <LineBreak />
+                                    Minimum car length to enter the event.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">regulations->need_length</TextBlock>
+                                </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:IntegerUpDown Name="numericUpDown_NeedLength" ValueChanged="numericUpDown_NeedLength_ValueChanged" Height="20" Width="54" Maximum="10000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="111,174,60,0" VerticalAlignment="Top"/>
+
+                    <Label Content="Nitrous" Height="26" TabIndex="16" VerticalAlignment="Top" Margin="8,199,104,0">
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Nitrous</TextBlock> <LineBreak />
+                                    Whether Nitrous is allowed. GT6 Only.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">regulations->NOS</TextBlock>
+                                </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:IntegerUpDown Name="numericUpDown_Nitrous" ValueChanged="numericUpDown_Nitrous_ValueChanged" Height="20" Width="54" Maximum="10000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="111,204,60,0" VerticalAlignment="Top"/>
+
+                    <Label Content="Max Length (mm)" Height="26" TabIndex="16" VerticalAlignment="Top" Margin="173,170,56,0" Grid.ColumnSpan="2">
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Max Length (mm)</TextBlock> <LineBreak />
+                                    Maximum car length to enter the event.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">regulations->limit_length</TextBlock>
+                                </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:IntegerUpDown Name="numericUpDown_LimitLength" ValueChanged="numericUpDown_LimitLength_ValueChanged" Height="20" Width="54" Maximum="10000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="52,174,10,0" VerticalAlignment="Top" Grid.Column="1"/>
+
+                    <Label Content="Weight Max (kg)" Height="27" TabIndex="15" VerticalAlignment="Top" Margin="173,106,67,0" Grid.ColumnSpan="2" >
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Weight Max</TextBlock> <LineBreak />
+                                    Maximum car weight to enter the event.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">regulations->limit_weight</TextBlock>
+                                </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:IntegerUpDown Name="numericUpDown_LimitWeight" ValueChanged="numericUpDown_WeightMax_ValueChanged" Height="20" Width="54" Maximum="10000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="52,110,10,0" VerticalAlignment="Top" Grid.Column="1"/>
+
+                    <Label Content="Weight Min (kg)" Height="27" TabIndex="14" VerticalAlignment="Top" Margin="8,107,116,0" >
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Weight Min</TextBlock> <LineBreak />
+                                    Minimum car weight to enter the event.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">regulations->need_weight</TextBlock>
+                                </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:IntegerUpDown Name="numericUpDown_NeedWeight" ValueChanged="numericUpDown_WeightMin_ValueChanged" Height="20" Width="54" Maximum="10000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="111,110,60,0" VerticalAlignment="Top"/>
+
+                    <Label Content="Power Max (ps)" Height="28" TabIndex="9" VerticalAlignment="Top" Margin="173,75,69,0" Grid.ColumnSpan="2" >
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Power Max</TextBlock> <LineBreak />
+                                    Place power restrictions on the race. Cars participating will not be able to exceed the HP limit set here.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">regulations->limit_power</TextBlock>
+                                </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:IntegerUpDown Name="numericUpDown_LimitPower" ValueChanged="numericUpDown_PowerMax_ValueChanged" Height="20" Minimum="-1" Maximum="10000" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="52,79,11,0" VerticalAlignment="Top" Grid.Column="1"/>
+
+                    <Label Content="Power Min (ps)" Height="27" TabIndex="8" VerticalAlignment="Top" Margin="10,74,118,0" >
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Power Min</TextBlock> <LineBreak />
+                                    Minimum car power to enter the event.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">regulations->need_power</TextBlock>
+                                </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:IntegerUpDown Name="numericUpDown_NeedPower" ValueChanged="numericUpDown_PowerMin_ValueChanged" Height="20" Width="54" Maximum="10000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="111,79,60,0" VerticalAlignment="Top" />
+
+                    <Label Content="Year Min" Height="26" TabIndex="9" VerticalAlignment="Top" Margin="10,138,148,0">
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Year Min</TextBlock> <LineBreak />
+                                    Minimum car year to enter the event.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">regulations->need_year</TextBlock>
+                                </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:IntegerUpDown Name="numericUpDown_NeedYear" ValueChanged="numericUpDown_CarYearMin_ValueChanged" Height="20" Width="54" Minimum="-1" Maximum="3000" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="111,142,60,0" VerticalAlignment="Top"/>
+
+                    <Label Content="Year Max" Height="23" TabIndex="8" VerticalAlignment="Top" Margin="173,139,100,0" Grid.ColumnSpan="2" >
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Year Max</TextBlock> <LineBreak />
+                                    Maximum car year to enter the event.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">regulations->limit_year</TextBlock>
+                                </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:IntegerUpDown Name="numericUpDown_LimitYear" ValueChanged="numericUpDown_CarYearMax_ValueChanged" Height="20" Maximum="3000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="52,142,11,0" VerticalAlignment="Top" Grid.Column="1"/>
+
+                    <Label Content="Torque Max (nm)" TabIndex="7" Margin="173,41,64,0" Height="27" VerticalAlignment="Top" Grid.ColumnSpan="2" >
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Torque Max</TextBlock> <LineBreak />
+                                    Maximum car torque to enter the event<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">regulations->limit_torque</TextBlock>
+                                </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:IntegerUpDown Name="numericUpDown_LimitTorque" ValueChanged="numericUpDown_TorqueMax_ValueChanged" Height="20" Width="54" Maximum="10000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="52,45,10,0" VerticalAlignment="Top" Grid.Column="1"/>
+
+                    <Label Content="Torque Min (nm)" TabIndex="4" Margin="10,40,110,0" Height="28" VerticalAlignment="Top">
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Torque Min</TextBlock> <LineBreak />
+                                    GT5 Only. Minimum car torque to enter the event<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">regulations->need_torque</TextBlock>
+                                </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:IntegerUpDown ValueChanged="numericUpDown_TorqueMin_ValueChanged" Name="numericUpDown_NeedTorque" Height="20" Width="54" Maximum="10000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="111,44,60,0" VerticalAlignment="Top"/>
+
+                    <Label Content="PP Max" Height="27" TabIndex="2" VerticalAlignment="Top" Margin="173,10,108,0" Grid.ColumnSpan="2" >
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Performance Points Max</TextBlock> <LineBreak />
+                                    Set a Performance Point limit. Cars that exceed this limit will not be able to participate.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">regulations->limit_pp</TextBlock>
+                                </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:IntegerUpDown Name="numericUpDown_LimitPP" ValueChanged="numericUpDown_PPMax_ValueChanged"  Height="20" Maximum="100000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="52,14,12,0" VerticalAlignment="Top" Grid.Column="1"/>
+
+                    <Label Content="PP Min" Height="27" TabIndex="1" VerticalAlignment="Top" Margin="10,10,158,0" >
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Performance Points Min</TextBlock> <LineBreak />
+                                    Minimum car PP to enter the event.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">regulations->need_pp</TextBlock>
+                                </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:IntegerUpDown ValueChanged="numericUpDown_PPMin_ValueChanged" Name="numericUpDown_NeedPP" Height="20" Width="54" Maximum="10000" Minimum="-1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="111,15,60,0" VerticalAlignment="Top"/>
+                </Grid>
+            </GroupBox>
+            <GroupBox Margin="10,402,0,10" Canvas.Top="355" Canvas.Left="10" HorizontalAlignment="Left" Width="306" >
+                <GroupBox.Header>
+                    <TextBlock Text="Allowed Manufacturers"/>
+                </GroupBox.Header>
+                <GroupBox.ToolTip>
+                    <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Allowed Manufacturers</TextBlock> <LineBreak />
+                                    Which car manufacturer can enter the event.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">regulations->tuners[]->tuner</TextBlock>
+                                </TextBlock>
+                </GroupBox.ToolTip>
+                <Grid>
+                    <Button Name="btn_ManufacturersAdd" Height="44" Width="23" Click="btn_ManufacturersAdd_Click" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0" >&gt;&gt;</Button>
+                    <ListBox Name="lbManufacturers" Width="120" Margin="10,10,0,9" HorizontalAlignment="Left" SelectionMode="Multiple" />
+                    <Button Name="btn_RemoveManufacturer" Height="44" Width="22" TabIndex="46" Click="btn_RemoveManufacturer_Click" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10" >&lt;&lt;</Button>
+                    <ListBox Name="lb_AllowedManufacturers" Width="120" HorizontalAlignment="Left"  SelectionMode="Multiple" Margin="174,10,0,10" />
+                </Grid>
+            </GroupBox>
+            <GroupBox Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Width="613" Height="387" Canvas.Top="10" >
+                <GroupBox.Header>
+                    <TextBlock Text="Cars"/>
+                </GroupBox.Header>
+                <Grid>
+                    <Label Height="24" Content="Banned Cars" Width="261" TabIndex="54" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,169,20,0" >
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Banned Cars</TextBlock> <LineBreak />
+                                    Specific cars that can NOT enter the event.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">regulations->ban_cars[]->car</TextBlock>
+                                </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <Label Content="Mandatory Cars" Width="251" TabIndex="53" HorizontalAlignment="Right" Margin="0,7,31,0" Height="26" VerticalAlignment="Top" >
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Allowed Cars</TextBlock> <LineBreak />
+                                    Specific cars that can enter the event.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">regulations->cars[]->car</TextBlock>
+                                </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <Button Name="btn_RemoveBannedCar" Height="43" Width="23" Click="btn_RemoveBannedCar_Click" TabIndex="52" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,300,291,0">&lt;&lt;</Button>
+                    <Button Name="btn_AddBannedCar" Height="41" Width="23" TabIndex="51" Click="btn_AddBannedCar_Click" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,199,291,0">&gt;&gt;</Button>
+                    <Button Name="btn_RemoveAllowedCar" Width="24" TabIndex="50" Click="btn_RemoveAllowedCar_Click" Margin="296,110,291,190">&lt;&lt;</Button>
+                    <Button Name="btn_AddAllowedCar" Height="46" Width="23" TabIndex="49" Click="btn_AddAllowedCar_Click" Margin="296,33,292,275" >&gt;&gt;</Button>
+                    <ComboBox Name="cbo_Manufacturers" Height="21" TabIndex="38" VerticalAlignment="Top" SelectionChanged="cbo_Manufacturers_SelectedIndexChanged" Canvas.Left="10" Canvas.Top="7" Margin="10,7,315,0" />
+                    <ListBox Name="lb_BannedCars" Height="145" Width="272" TabIndex="37" Margin="0,198,9,0" HorizontalAlignment="Right" VerticalAlignment="Top" SelectionMode="Multiple" />
+                    <ListBox Name="lb_AllowedCars" Height="131" Width="272" TabIndex="18" Margin="0,33,10,0" HorizontalAlignment="Right" VerticalAlignment="Top" SelectionMode="Multiple" />
+                    <ListBox Name="lb_CarSelection" Width="276" TabIndex="16" Margin="10,33,0,10" HorizontalAlignment="Left" SelectionMode="Multiple" />
+                </Grid>
+            </GroupBox>
+            <GroupBox Canvas.Left="628" Canvas.Top="125" Margin="629,402,0,10" HorizontalAlignment="Left" Width="353" >
+                <GroupBox.Header>
+                    <TextBlock Text="Tire Compound Restrictions"/>
+                </GroupBox.Header>
+                <Canvas >
+                    <Label Content="Rear Max" Height="24" Width="144" TabIndex="7" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="36" Canvas.Left="10">
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Rear Max:</TextBlock> <LineBreak />
+                                    Maximum rear tyres the player needs to enter the event.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">regulations->limit_tire_r</TextBlock>
+                                </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <ComboBox Name="cbo_LimitTireR" Height="20" Width="179" TabIndex="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="cbo_MaxTireCompoundR_SelectedIndexChanged" Canvas.Left="159" Canvas.Top="38" >
+                        <ComboBoxItem>No Restrictions</ComboBoxItem>
+                    </ComboBox>
+                    <ComboBox Name="cbo_NeedTireR" Height="20" Width="179" TabIndex="4" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="cbo_MinTireCompoundR_SelectedIndexChanged" Canvas.Left="159" Canvas.Top="95" >
+                        <ComboBoxItem>No Restrictions</ComboBoxItem>
+                    </ComboBox>
+                    <Label Content="Rear Min" Height="24" Width="144" TabIndex="6" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Top="92" Canvas.Left="10">
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Rear Min:</TextBlock> <LineBreak />
+                                    Minimum rear tyres the player needs to enter the event.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">regulations->need_tire_r</TextBlock>
+                                </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+
+                    <Label Height="24" Content="Front Max" Width="144" TabIndex="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="8" Canvas.Left="10">
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Front Max</TextBlock> <LineBreak />
+                                    Maximum front tyres the player needs to enter the event.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">regulations->limit_tire_f</TextBlock>
+                                </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+
+                    <ComboBox Name="cbo_LimitTireF" Height="20" Width="179" TabIndex="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="cbo_MaxTireCompoundF_SelectedIndexChanged" Canvas.Left="159" Canvas.Top="10" >
+                        <ComboBoxItem>No Restrictions</ComboBoxItem>
+                    </ComboBox>
+                    <Label Content="Front Min" Height="24" Width="144" TabIndex="1" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="65">
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Front Min</TextBlock> <LineBreak />
+                                    Minimum front tyres the player needs to enter the event.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">regulations->need_tire_f</TextBlock>
+                                </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <ComboBox Name="cbo_NeedTireF" Height="20" Width="179" TabIndex="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="cbo_MinTireCompoundF_SelectedIndexChanged" Canvas.Left="159" Canvas.Top="67" >
+                        <ComboBoxItem>No Restrictions</ComboBoxItem>
+                    </ComboBox>
+                </Canvas>
+            </GroupBox>
+            <GroupBox Header="Aspiration Restrictions" VerticalAlignment="Top" Canvas.Left="628" Height="120" Margin="987,127,10,0" >
+                <GroupBox.ToolTip>
+                    <TextBlock>
+                                <TextBlock FontWeight="Bold" FontSize="14">Aspirations</TextBlock> <LineBreak />
+                                Specific aspiration types that can enter the event.<LineBreak/>
+                                <LineBreak/>
+                                <TextBlock FontWeight="Bold">XML:</TextBlock><TextBlock FontStyle="Italic">regulations->need_aspiration</TextBlock>
+                             </TextBlock>
+                </GroupBox.ToolTip>
+                <Grid >
+                    <CheckBox Name="chkSC" Height="20" Width="101" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="chkSC_CheckedChanged" Unchecked="chkSC_CheckedChanged" Margin="8,55,0,0">Supercharged</CheckBox>
+                    <CheckBox Name="chkNA" Height="19" Width="42" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="chkNA_CheckedChanged" Unchecked="chkNA_CheckedChanged" Margin="8,32,0,0">NA</CheckBox>
+                    <CheckBox Name="chkT" Width="58"  HorizontalAlignment="Right" Checked="chkT_CheckedChanged" Unchecked="chkT_CheckedChanged" Margin="0,8,89,0" Height="19" VerticalAlignment="Top">Turbo</CheckBox>
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="Drivetrain Restrictions" VerticalAlignment="Top" Canvas.Left="810" Margin="987,10,10,0" >
+                <GroupBox.ToolTip>
+                    <TextBlock>
+                                <TextBlock FontWeight="Bold" FontSize="14">Drivetrain</TextBlock> <LineBreak />
+                                Specific drivetrain types that can enter the event.<LineBreak/>
+                                <LineBreak/>
+                                <TextBlock FontWeight="Bold">XML:</TextBlock><TextBlock FontStyle="Italic">regulations->need_drivetrain</TextBlock>
+                             </TextBlock>
+                </GroupBox.ToolTip>
+                <Grid>
+                    <CheckBox Name="chkRR" Height="19" Width="44" Unchecked="chkRR_CheckedChanged" Checked="chkRR_CheckedChanged" Margin="11,54,100,6" >RR</CheckBox>
+                    <CheckBox Name="chkMR" Height="19" Width="46" Unchecked="chkMR_CheckedChanged" Checked="chkMR_CheckedChanged" Margin="11,30,98,30" >MR</CheckBox>
+                    <CheckBox Name="chkAWD" Height="19" Width="53" HorizontalAlignment="Left" VerticalAlignment="Center" Unchecked="chkAWD_CheckedChanged" Checked="chkAWD_CheckedChanged" Margin="92,0,0,0" >4WD</CheckBox>
+                    <CheckBox Name="chkFF" Height="19" Width="40" HorizontalAlignment="Right" VerticalAlignment="Bottom" Unchecked="chkFF_CheckedChanged"  Checked="chkFF_CheckedChanged" Margin="0,0,104,54" >FF</CheckBox>
+                    <CheckBox Name="chkFR" Height="19" Width="42"  HorizontalAlignment="Right" VerticalAlignment="Bottom" Unchecked="chkFR_CheckedChanged" Checked="chkFR_CheckedChanged" Margin="0,0,21,54" >FR</CheckBox>
+                </Grid>
+            </GroupBox>
+        </Grid>
+    </Grid>
+</UserControl>

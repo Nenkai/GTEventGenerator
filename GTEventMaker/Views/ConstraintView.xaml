@@ -1,0 +1,230 @@
+﻿<UserControl x:Class="GTEventMaker.Views.ConstraintView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GTEventMaker.Views"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             mc:Ignorable="d" 
+             d:DesignHeight="604" d:DesignWidth="1154"
+             DataContextChanged="UserControl_DataContextChanged">
+    <Grid>
+        <Grid Name="cantabEventConstraints" Margin="0,0,9,-3" >
+            <GroupBox HorizontalAlignment="Left" VerticalAlignment="Top" Height="235" Width="292" Margin="266,10,0,0" >
+                <GroupBox.Header>
+                    <TextBlock Text="Tyres"/>
+                </GroupBox.Header>
+                <Canvas >
+                    <Label Name="label_SuggestTyreR" Content="Suggested Rear" Height="27" Width="104" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="164">
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Suggested Rear</TextBlock> <LineBreak />
+                                    Undocumented<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">constraint->suggest_tire_r</TextBlock>
+                                    </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <Label Name="label_SuggestTyreF" Content="Suggested Front" Height="26" Width="104" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Top="133" Canvas.Left="5" >
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Suggested Front</TextBlock> <LineBreak />
+                                    Undocumented<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">constraint->suggest_tire_f</TextBlock>
+                                    </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <Label Name="label_CTyreMaxR" Content="Rear Max" Height="27" Width="104" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="5" Canvas.Top="102">
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Rear Max</TextBlock> <LineBreak />
+                                    Maximum rear tyres the player can have to enter the track<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">constraint->limit_tire_r</TextBlock>
+                                    </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <Label Name="label_CTyreMaxF" Content="Front Max" Height="26" Width="103" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="71">
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Front Max</TextBlock> <LineBreak />
+                                    Maximum front tyres the player can have to enter the track<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">constraint->limit_tire_f</TextBlock>
+                                    </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <Label Name="label_CTyreMinR" Content="Rear Min" Height="26" Width="103" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="40">
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Rear Min</TextBlock> <LineBreak />
+                                    Minimum rear tyres the player needs to enter the track<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">constraint->need_tire_r</TextBlock>
+                                    </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <Label Name="label_CTyreMinF" Content="Front Min" Height="26" Width="103" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="6" Canvas.Top="9">
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Front Min</TextBlock> <LineBreak />
+                                    Minimum front tyres the player needs to enter the track<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">constraint->need_tire_f</TextBlock>
+                                    </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <ComboBox Name="comboBox_ConstrainedTiresSuggestR" Height="26" Width="156" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_ConstrainedTiresSuggestR_SelectedIndexChanged" Canvas.Left="115" Canvas.Top="164" >
+                        <ComboBoxItem>None</ComboBoxItem>
+                    </ComboBox>
+                    <ComboBox Name="comboBox_ConstrainedTiresSuggestF" Height="26" Width="156" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_ConstrainedTiresSuggestF_SelectedIndexChanged" Canvas.Left="115" Canvas.Top="133">
+                        <ComboBoxItem>None</ComboBoxItem>
+                    </ComboBox>
+                    <ComboBox Name="comboBox_ConstrainedTiresMaxF" Height="26" Width="156" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_ConstrainedTiresMaxF_SelectedIndexChanged" Canvas.Left="115" Canvas.Top="71">
+                        <ComboBoxItem>Not Constrained</ComboBoxItem>
+                    </ComboBox>
+                    <ComboBox Name="comboBox_ConstrainedTiresMinR" Height="26" Width="156" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_ConstrainedTiresMinR_SelectedIndexChanged" Canvas.Left="115" Canvas.Top="40">
+                        <ComboBoxItem>Not Constrained</ComboBoxItem>
+                    </ComboBox>
+                    <ComboBox Name="comboBox_ConstrainedTiresMaxR" Height="26" Width="156" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_ConstrainedTiresMaxR_SelectedIndexChanged" Canvas.Left="115" Canvas.Top="102" >
+                        <ComboBoxItem>Not Constrained</ComboBoxItem>
+                    </ComboBox>
+                    <ComboBox Name="comboBox_ConstrainedTiresMinF" Height="26" Width="156" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectionChanged="comboBox_ConstrainedTiresMinF_SelectedIndexChanged" Canvas.Left="115" Canvas.Top="9">
+                        <ComboBoxItem>Not Constrained</ComboBoxItem>
+                    </ComboBox>
+                </Canvas>
+            </GroupBox>
+            <GroupBox HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="487" Margin="0,0,884,110" >
+                <GroupBox.Header>
+                    <TextBlock Text="Driving Settings"/>
+                </GroupBox.Header>
+                <Grid Width="249" Margin="0,0,0,-13" >
+                    <Label Name="label_Transmission" Content="Manual Transmission" Height="26" Width="131" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,108,431" >
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Transmission</TextBlock> <LineBreak />
+                                    Whether Manual Transmission is forced ON or OFF.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">constraint->transmission</TextBlock>
+                                    </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:IntegerUpDown Name="iud_Transmission" ValueChanged="iud_Transmission_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="180,14,10,435" />
+
+                    <Label Name="label_TCS" Content="TCS" Height="26" Width="127" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,112,370" >
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">TCS</TextBlock> <LineBreak />
+                                    Set this option to "Prohibited" if you want to disallow use of the TCS (Traction Control System) function. When this function is disabled, it will be more difficult to control your car at full throttle and when exiting from corners.
+                                    Whether TCS is forced ON or OFF.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">constraint->tcs</TextBlock>
+                                    </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:IntegerUpDown Name="iud_TCS" ValueChanged="iud_TCS_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="180,75,10,374" />
+
+                    <Label Name="label_ASM" Content="ASM" Height="26" Width="131" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,108,401" >
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">ASM</TextBlock> <LineBreak />
+                                    Set this option to "Prohibited" if you want to disallow use of the ASM (Active Stability Management) function. When this function is disabled, cars will be more prone to spinning out of control.
+                                    Whether ASM is forced ON or OFF.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">constraint->asm</TextBlock>
+                                    </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:IntegerUpDown Name="iud_ASM" ValueChanged="iud_ASM_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="180,44,10,405" />
+
+                    <Label Name="label_ABS" Content="ABS" Height="26" Width="131" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,108,339" >
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">ABS</TextBlock> <LineBreak />
+                                    Set this option to "Prohibited" if you want to disallow use of the ABS (anti-lock braking system). When this function is disabled, the wheels will lock more easily when braking, making your car harder to control.
+                                    Whether ABS is forced ON or OFF.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">constraint->abs</TextBlock>
+                                    </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:IntegerUpDown Name="iud_ABS" ValueChanged="iud_ABS_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="180,106,10,343" />
+
+                    <Label Name="label_PowerLimit" Content="Power Limit" Height="26" Width="131" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,108,308" >
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Power Limit</TextBlock> <LineBreak />
+                                    If this is set to "Prohibited," only cars without power restrictors fitted will be allowed to enter. (in %).<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">constraint->restrictor_limit</TextBlock>
+                                    </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:IntegerUpDown Name="iud_PowerLimit" ValueChanged="iud_PowerLimit_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="180,137,10,312" />
+
+                    <Label Name="label_SkidRecoveryForce" Content="Simulation (SKF Off)" Height="26" Width="131" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,108,277" >
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Simulation aka Skid Recovery Force</TextBlock> <LineBreak />
+                                    Set this option to "Prohibited" if you want to disallow use of the Skid Recovery Force function. When this function is disabled, it will be more difficult to control your car when the wheels slide.<LineBreak/>
+                                    ON means SKF is OFF (Simulation).<LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">constraint->simulation</TextBlock>
+                                    </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:IntegerUpDown Name="iud_SkidRecoveryForce" ValueChanged="iud_SkidRecoveryForce_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="180,168,10,281" />
+
+                    <Label Name="label_ActiveSteering" Content="Active Steering" Height="26" Width="125" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,114,246" >
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Active Steering</TextBlock> <LineBreak />
+                                    Set this option to "Prohibited" if you want to disallow use of the active steering function. When this function is disabled, steering control will become more severe when oversteer occurs..<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">constraint->active_steering</TextBlock>
+                                    </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:IntegerUpDown Name="iud_ActiveSteering" ValueChanged="iud_ActiveSteering_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="180,199,10,250" />
+
+                    <Label Name="label_DrivingLine" Content="Driving Line" Height="26" Width="131" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,108,215" >
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Driving Line</TextBlock> <LineBreak />
+                                    Set this option to "Prohibited" if you want to disallow use of the driving line display. Disabling this will require drivers to judge the ideal driving line for themselves.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">constraint->driving_line</TextBlock>
+                                    </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:IntegerUpDown Name="iud_DrivingLine" ValueChanged="iud_DrivingLine_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="180,230,10,219" />
+
+                    <Label Name="label_SuggestedGear" Content="Suggested Gear" Height="26" Width="131" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,108,184" >
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Suggested Gear</TextBlock> <LineBreak />
+                                    GT6 Only. Whether Suggested Gear (UI) is prohibited or not.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">constraint->suggest_gear</TextBlock>
+                                    </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:IntegerUpDown Name="iud_SuggestedGear" ValueChanged="iud_SuggestedGear_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="180,261,10,188" />
+
+                    <Label Name="label_InCarView" Content="Interior View" Height="26" Width="131" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,108,153" >
+                        <Label.ToolTip>
+                            <TextBlock>
+                                    <TextBlock FontWeight="Bold" FontSize="14">Interior View</TextBlock> <LineBreak />
+                                    GT6 Only. Whether Interior View is enforced or not.<LineBreak/>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">constraint->in_car_view</TextBlock>
+                                    </TextBlock>
+                        </Label.ToolTip>
+                    </Label>
+                    <xctk:IntegerUpDown Name="iud_InCarView" ValueChanged="iud_InCarView_ValueChanged" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="180,292,10,157" />
+                </Grid>
+            </GroupBox>
+        </Grid>
+
+    </Grid>
+</UserControl>

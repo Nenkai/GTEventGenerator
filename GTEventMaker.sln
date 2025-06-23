@@ -1,0 +1,48 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GTEventMaker", "GTEventMaker\GTEventMaker.csproj", "{6C14DD56-8FE0-473C-BAB7-969BFB652790}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDTools.Structures", "PDTools\PDTools.Structures\PDTools.Structures.csproj", "{59BFC080-8434-493D-91E0-1F5BCB7974B2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDTools.Enums", "PDTools\PDTools.Enums\PDTools.Enums.csproj", "{47960B82-D89E-446F-B1D3-0A12537EC6C3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDTools.Utils", "PDTools\PDTools.Utils\PDTools.Utils.csproj", "{C5E4D2E7-C0C7-43D7-B224-5A50390D4D4E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDTools.Compression", "PDTools\PDTools.Compression\PDTools.Compression.csproj", "{B3E4003D-86BF-4171-A71D-780457B786E3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6C14DD56-8FE0-473C-BAB7-969BFB652790}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C14DD56-8FE0-473C-BAB7-969BFB652790}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C14DD56-8FE0-473C-BAB7-969BFB652790}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C14DD56-8FE0-473C-BAB7-969BFB652790}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59BFC080-8434-493D-91E0-1F5BCB7974B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59BFC080-8434-493D-91E0-1F5BCB7974B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59BFC080-8434-493D-91E0-1F5BCB7974B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59BFC080-8434-493D-91E0-1F5BCB7974B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47960B82-D89E-446F-B1D3-0A12537EC6C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47960B82-D89E-446F-B1D3-0A12537EC6C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47960B82-D89E-446F-B1D3-0A12537EC6C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47960B82-D89E-446F-B1D3-0A12537EC6C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5E4D2E7-C0C7-43D7-B224-5A50390D4D4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5E4D2E7-C0C7-43D7-B224-5A50390D4D4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5E4D2E7-C0C7-43D7-B224-5A50390D4D4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5E4D2E7-C0C7-43D7-B224-5A50390D4D4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3E4003D-86BF-4171-A71D-780457B786E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3E4003D-86BF-4171-A71D-780457B786E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3E4003D-86BF-4171-A71D-780457B786E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3E4003D-86BF-4171-A71D-780457B786E3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D5D3DD83-2538-49A3-85C8-C66F70B34A1E}
+	EndGlobalSection
+EndGlobal
