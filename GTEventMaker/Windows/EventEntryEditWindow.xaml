@@ -90,7 +90,7 @@
                 <ComboBox Name="comboBox_StartingType" Height="22" VerticalAlignment="Top" SelectionChanged="comboBox_StartingType_SelectedIndexChanged" Margin="109,134,10,0" />
             </Grid>
         </GroupBox>
-        <GroupBox Name="grp_AIParameters" Header="AI Parameters" Margin="10,0,370,0" Height="429" VerticalAlignment="Center">
+        <GroupBox Name="grp_AIParameters" Header="AI Parameters" Margin="10,0,0,0" Height="429" VerticalAlignment="Center" HorizontalAlignment="Left" Width="283">
             <Grid>
                 <Label Content="Driver Name" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top" Width="92">
                     <Label.ToolTip>
@@ -206,8 +206,8 @@
 
         <GroupBox Header="Commands" Margin="298,214,10,10">
             <Grid>
-                
-                <Button x:Name="btn_CarSettings" Content="Car Parameter Settings" Margin="10,5,10,0" VerticalAlignment="Top" Height="36" Click="btn_CarSettings_Click">
+
+                <Button x:Name="btn_CarSettings" IsEnabled="False" Content="(TODO) Car Parameter Settings" Margin="10,5,10,0" VerticalAlignment="Top" Height="36" Click="btn_CarSettings_Click">
                     <Button.ToolTip>
                         <TextBlock>
                                     <TextBlock FontWeight="Bold" FontSize="14">Car Parameter Settings</TextBlock> <LineBreak />

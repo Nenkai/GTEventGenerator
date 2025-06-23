@@ -411,6 +411,7 @@ public partial class RaceParameterView : UserControl
         }
 
         var window = new NewWeatherDataSettingsWindow(Race.NewWeatherData, TimeSpan.FromSeconds(Race.WeatherTotalSec));
+        window.Owner = Window.GetWindow(this);
         window.ShowDialog();
         iud_WeatherPointNum.Value = (byte)Race.NewWeatherData.Count;
         Race.WeatherPointNum = (byte)Race.NewWeatherData.Count;

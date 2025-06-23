@@ -1063,7 +1063,7 @@ public partial class GameMakerWindow : Window, INotifyPropertyChanged
             var gp = new GameParameter();
             eventDoc.Load(reader);
 
-            gp.ParseFromXmlNode(eventDoc["GameParameter"]); 
+            gp.ParseFromXmlNode(eventDoc["xml"]["GameParameter"]); 
             return gp;
         }
     }

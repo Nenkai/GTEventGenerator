@@ -81,7 +81,8 @@
                         <TextBlock>
                                         <TextBlock FontWeight="Bold" FontSize="14">Seasonal Event</TextBlock>
                                         <LineBreak/>
-                                        Whether if the event is a Seasonal Event, if so, the event will have date requirements to enter, fill in the Start/End Dates (and additionally Ranking tab).
+                                        Whether if the event is a Seasonal Event, if so, the event will have date requirements to enter,<LineBreak/>
+                                        fill in the Start/End Dates (and additionally Ranking tab).
                                         <LineBreak/>
                                         <LineBreak/>
                                         <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">is_seasonal_event</TextBlock>

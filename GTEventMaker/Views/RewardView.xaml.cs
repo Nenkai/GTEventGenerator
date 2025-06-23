@@ -133,7 +133,7 @@ public partial class RewardView : UserControl
         window.Owner = Window.GetWindow(this);
         window.ShowDialog();
 
-        btn_Present1.Content = PresentToString(Reward.EntryPresent.Count >= 1 ? Reward.EntryPresent[0] : null);
+        btn_EntryPresent1.Content = PresentToString(Reward.EntryPresent.Count >= 1 ? Reward.EntryPresent[0] : null);
     }
 
     private void btn_EntryPresent2_Click(object sender, RoutedEventArgs e)
@@ -145,7 +145,7 @@ public partial class RewardView : UserControl
         window.Owner = Window.GetWindow(this);
         window.ShowDialog();
 
-        btn_Present2.Content = PresentToString(Reward.EntryPresent.Count >= 2 ? Reward.EntryPresent[1] : null);
+        btn_EntryPresent2.Content = PresentToString(Reward.EntryPresent.Count >= 2 ? Reward.EntryPresent[1] : null);
     }
 
     private void btn_EntryPresent3_Click(object sender, RoutedEventArgs e)
@@ -157,15 +157,27 @@ public partial class RewardView : UserControl
         window.Owner = Window.GetWindow(this);
         window.ShowDialog();
 
-        btn_Present3.Content = PresentToString(Reward.EntryPresent.Count >= 3 ? Reward.EntryPresent[2] : null);
+        btn_EntryPresent3.Content = PresentToString(Reward.EntryPresent.Count >= 3 ? Reward.EntryPresent[2] : null);
     }
 
     public string PresentToString(EventPresent present)
     {
-        if (present is null)
+        if (present is null || (present.TypeID == GameItemType.NONE && present.CategoryID == GameItemCategory.NONE))
             return "No Present Selected";
 
-        return $"{present.TypeID} / {present.CategoryID}";
+        string str = $"{present.TypeID} / {present.CategoryID}";
+        if (present.TypeID == GameItemType.SPECIAL && present.CategoryID == GameItemCategory.PRESENTCAR_TICKET)
+        {
+            string carName = GameDatabase.GetCarNameByLabel(present.FName) ?? $"Unknown Car {present.FName}";
+            str += $" ({carName})";
+        }
+        else if (present.TypeID == GameItemType.DRIVER_ITEM && present.CategoryID == GameItemCategory.PAINT_ITEM)
+        {
+            string paintName = GameDatabase.GetPaintNameByID(present.Argument1) ?? $"Unknown Paint {present.Argument1}";
+            str += $" ({paintName})";
+        }
+
+        return str;
     }
 
     public void PopulateOneTimeRewardControls()

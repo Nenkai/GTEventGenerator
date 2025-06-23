@@ -16,7 +16,8 @@
                 <Border Margin="10,25,16,0"  BorderBrush="DarkGray" BorderThickness="1" CornerRadius="6,6,6,6" Height="98" VerticalAlignment="Top">
                     <Grid HorizontalAlignment="Center" Width="550" VerticalAlignment="Top">
 
-                        <Button Name="btn_Check" Margin="10,24,0,0" Content="Check" Height="46" VerticalAlignment="Top" HorizontalAlignment="Left" Width="138" Click="btn_Check_Click"/>
+                        <TextBlock Text="Check Type" Foreground="Gray" TextAlignment="Center" Margin="10,4,402,26" />
+                        <Button Name="btn_Check" Margin="10,24,0,0" Content="Select Check Type..." Height="46" VerticalAlignment="Top" HorizontalAlignment="Left" Width="138" Click="btn_Check_Click" MouseDown="btn_Check_MouseDown"/>
                         <Label Content="⮞" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="161,24,0,0" RenderTransformOrigin="0.5,0.5" Height="46" VerticalAlignment="Top" HorizontalAlignment="Left" Width="36"/>
 
                         <Label Content="Int" Margin="396,10,0,0" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" Width="37"/>
@@ -31,7 +32,10 @@
                         <xctk:SingleUpDown Name="iud_FloatValue" Margin="438,64,0,0" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="96" 
                                            ValueChanged="iud_FloatValue_ValueChanged"/>
 
-                        <Button Name="btn_Condition" Margin="209,24,0,0" Content="Condition" Height="46" VerticalAlignment="Top" HorizontalAlignment="Left" Width="138" Click="btn_Condition_Click"/>
+                        <TextBlock Text="Condition" Foreground="Gray"  TextAlignment="Center" Margin="209,4,203,26" />
+                        <Button Name="btn_Condition" Margin="209,0,0,0" Content="Select Condition..." Height="46" VerticalAlignment="Center" HorizontalAlignment="Left" Width="138" Click="btn_Condition_Click"/>
+
+                        <TextBlock Text="is" Foreground="Gray" TextAlignment="Center" Margin="353,4,158,25" />
                         <Label Content="⮞" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="356,24,0,0" RenderTransformOrigin="0.5,0.5" Height="46" VerticalAlignment="Top" HorizontalAlignment="Left" Width="36"/>
 
                         <Button Margin="24,174,0,0" Content="Connection" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Width="150" Height="58" VerticalAlignment="Top"/>
@@ -41,7 +45,7 @@
                 <Label Content="🢃" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,124,0,0" RenderTransformOrigin="0.5,0.5" Height="28" VerticalAlignment="Top" HorizontalAlignment="Center" Width="66"/>
                 <Button Name="btn_ResultType" Margin="412,140,30,0" Content="Result Type" Height="32" VerticalAlignment="Top" Click="btn_ResultType_Click" />
 
-                <Button Name="btn_Connection" Margin="221,150,221,0" Content="Connection" Height="27" VerticalAlignment="Top" Click="btn_Connection_Click" />
+                <Button Name="btn_Connection" Margin="221,150,221,0" Content="Select Connection..." Height="27" VerticalAlignment="Top" Click="btn_Connection_Click" />
                 <Separator Margin="10,200,10,0" Height="12" VerticalAlignment="Top"/>
 
                 <TextBlock Margin="150,182,150,0" Foreground="Gray" Text="Connections will be linked to the next condition." TextAlignment="Center" TextWrapping="Wrap" Height="40" VerticalAlignment="Top" />
@@ -71,7 +75,7 @@
                 <Button Name="btn_RemoveGadgetName" Margin="10,223,166,10" Content="Remove" Click="btn_RemoveGadgetName_Click"/>
             </Grid>
         </GroupBox>
-        
+
         <GroupBox Header="Finish Conditions" Margin="10,307,763,0" Height="287" VerticalAlignment="Top">
             <Grid>
                 <ListBox Name="lb_FinishConditions" Height="200" Margin="0,10,0,0" HorizontalAlignment="Center" Width="348" VerticalAlignment="Top" SelectionChanged="lb_FinishConditions_SelectionChanged"/>

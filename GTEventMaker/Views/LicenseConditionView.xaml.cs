@@ -37,6 +37,14 @@ public partial class LicenseConditionView : UserControl
         Populate();
     }
 
+    private void btn_Check_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.RightButton == MouseButtonState.Pressed)
+        {
+            Data.CheckType = LicenseCheckType.RANK;
+        }
+    }
+
     private void btn_Check_Click(object sender, RoutedEventArgs e)
     {
         ContextMenu cm = new ContextMenu();

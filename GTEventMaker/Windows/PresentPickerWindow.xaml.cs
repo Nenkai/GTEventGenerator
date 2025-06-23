@@ -116,6 +116,16 @@ namespace GTEventMaker
         }
 
 
+        private void cb_TypeID_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            _present.TypeID = (GameItemType)cb_TypeID.SelectedIndex;
+        }
+
+        private void cb_Category_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            _present.CategoryID = Enum.GetValues<GameItemCategory>()[cb_Category.SelectedIndex];
+        }
+
         private void iud_Arg1_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             _present.Argument1 = iud_Arg1.Value.Value;

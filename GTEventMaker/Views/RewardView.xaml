@@ -24,7 +24,7 @@
                                     </TextBlock>
                     </Button.ToolTip>
                 </Button>
-                <Separator Width="180" Margin="14,78,13,386"/>
+                <Separator Width="180" Margin="14,78,13,458"/>
                 <Button Name="btnXPRewards" Content="Set XP Rewards (GT5)" Height="63" VerticalAlignment="Top" Width="180" Click="btnXPRewards_Click" Margin="14,98,13,0">
                     <Button.ToolTip>
                         <TextBlock>
@@ -35,7 +35,7 @@
                                     </TextBlock>
                     </Button.ToolTip>
                 </Button>
-                <Separator Width="180" Margin="14,166,13,298"/>
+                <Separator Width="180" Margin="14,166,13,370"/>
                 <Button Name="btn_StarRewards" Content="Set Star Rewards (GT6)" Height="62" VerticalAlignment="Top" Width="180" Click="btn_StarRewards_Click" Margin="14,186,13,0">
                     <Button.ToolTip>
                         <TextBlock>
@@ -45,6 +45,18 @@
                                     <LineBreak/>
                                     <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">reward->star_table[]->star</TextBlock>
                                     </TextBlock>
+                    </Button.ToolTip>
+                </Button>
+
+                <Separator Width="180" Margin="14,253,13,283"/>
+                <Button Name="btn_CustomCarReward" IsEnabled="False" Content="(TODO) Custom Car Reward" Height="62" VerticalAlignment="Top" Width="180" Margin="14,273,13,0">
+                    <Button.ToolTip>
+                        <TextBlock>
+                            <TextBlock FontWeight="Bold" FontSize="14">Star Rewards</TextBlock> <LineBreak />
+                            GT6 Only. Custom car reward. Used in GT6's Arcade Style Mode<LineBreak/>
+                            <LineBreak/>
+                            <TextBlock FontWeight="Bold">XML</TextBlock>: <TextBlock FontStyle="Italic">reward->entry_base</TextBlock>
+                        </TextBlock>
                     </Button.ToolTip>
                 </Button>
 

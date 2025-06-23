@@ -8,6 +8,7 @@
         mc:Ignorable="d"
         Title="Weather Steps Control Panel" Height="341.844" Width="518.586"
         ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
         Closing="Window_Closing">
     <Grid Background="#262626">
         <GroupBox Margin="10,10,263,38" Height="254" >

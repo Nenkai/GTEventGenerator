@@ -14,10 +14,10 @@
         <GroupBox Margin="10,10,0,10" Header="Parameters" HorizontalAlignment="Left" Width="262">
             <Grid>
                 <Label Content="Type ID" Margin="10,10,0,0" Height="31" VerticalAlignment="Top" HorizontalAlignment="Left" Width="66"/>
-                <ComboBox Name="cb_TypeID" Margin="81,10,10,0" Height="28" VerticalAlignment="Top"/>
+                <ComboBox Name="cb_TypeID" Margin="81,10,10,0" Height="28" VerticalAlignment="Top" SelectionChanged="cb_TypeID_SelectionChanged"/>
 
                 <Label Content="Category" Margin="10,43,0,0" Height="31" VerticalAlignment="Top" HorizontalAlignment="Left" Width="66"/>
-                <ComboBox Name="cb_Category" Margin="81,44,10,0" Height="28" VerticalAlignment="Top"/>
+                <ComboBox Name="cb_Category" Margin="81,44,10,0" Height="28" VerticalAlignment="Top" SelectionChanged="cb_Category_SelectionChanged"/>
 
                 <Label Content="Argument 1" Margin="9,76,0,0" Height="31" VerticalAlignment="Top" HorizontalAlignment="Left" Width="80"/>
                 <xctk:IntegerUpDown Name="iud_Arg1" BorderBrush="#323232" Background="#272727" Foreground="#FFFFFF" Margin="94,79,10,0" ValueChanged="iud_Arg1_ValueChanged" Height="23" VerticalAlignment="Top"/>
@@ -34,7 +34,7 @@
                 <Label Content="F Name" Margin="10,205,0,0" Height="31" VerticalAlignment="Top" HorizontalAlignment="Left" Width="80"/>
                 <TextBox Name="tb_FName" Margin="94,206,10,0" Height="23" VerticalAlignment="Top" TextChanged="tb_FName_TextChanged" />
 
-                <Button Name="btn_EditPresentCarParameter" IsEnabled="False" Content="Edit" Canvas.Left="204" Canvas.Top="359" Width="68" Click="btn_EditPresentCarParameter_Click" Height="26" Margin="126,286,66,109"/>
+                <Button Name="btn_EditPresentCarParameter" IsEnabled="False" Content="Edit Car Parameter" Canvas.Left="204" Canvas.Top="359" Click="btn_EditPresentCarParameter_Click" Height="26" Margin="130,0,10,10" VerticalAlignment="Bottom"/>
 
             </Grid>
         </GroupBox>
